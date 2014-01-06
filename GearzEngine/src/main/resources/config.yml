@@ -1,0 +1,70 @@
+game_mode: SINGLE
+network_interface: eth1
+database:
+  host: one.tbnr.pw
+  port: 27017
+  database: gearz_test
+  collection: users
+  enable: true
+redis:
+  host: one.tbnr.pw
+  port: 6379
+formats:
+  update-nickname: "&aYour nickname is now &c<name>&a."
+  update-nickname-other: "&aYou have changed &c<player>&a's nickname to &c<name>&a."
+  nickname-taken: "&aThis nickname has been &ctaken&a!"
+  whois: "&c<nick>&a is &c<player>&a."
+  level-up: "&aYou have leveled up to level &c<level>&a."
+  xp-change: "&aYou have &c<action> <xp> XP to/from <target>&a."
+  xp-changed: "&aYou've had &c<xp> XP <action>&a."
+  points-sidebar: "&bPoints:"
+  sidebar-title: "&eTBNR Stats:"
+  sidebar-title-loading: "&8Loading..."
+  xp-sidebar: "&bXP:"
+  level-sidebar: "&bLevel:"
+  donor-points-sidebar: "&aCactusPoints:"
+  join-message: "&a&l> &b<player>&6 joined &b<game> lobby&6!"
+  leave-message: "&c&l< &b<player>&6 left &b<game> lobby&6!"
+  nickname-too-long: "&cThe nickname you have supplied is longer than 16 characters"
+  gmae-kick: "&aThe game has ended!"
+  map-loading: "&3The map &a<map>&3 was chosen. Please wait for it to load! (There will be a lot of lag, don't worry though)"
+  map-loaded: "&3The map &a<map>&3 was loaded fully! Teleporting you into the game..."
+  chat-format: "<p><n>&e&l>> &r<c_prefix> &r<prefix><name_color>%s&r<suffix>&3:<s> %s" #need to pass <prefix> <c_prefix> <suffix> and game meta stuff
+  blastoff-itemname: "&e&l<game> #<number>!"
+  blastoff-itemlore: "&e&l<online> &cplayers"
+  h2p-book-author: "&aTBNR Server"
+  h2p-book-title: "&aHow to play &3<game>&a."
+  map-lag-reminder: "&f&lThe map is still loading. Don't leave the game!"
+game-strings: #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version>
+              #<author>, <description>, and <key>
+  prefix: "<s>&l[<p><gn><s>&l]&r<s> "
+  game-cancelled: "<p><gname><s> will not begin because <p><reason><s>." #passed "<reason>" from the event
+  game-start: "<s>A new game of <p><gname><s> is starting now!"
+  begin-spectating: "<s>You are now <p>spectator<s>, no one can see you, but you can see them :)."
+  not-allowed-spectator: "<p>You can't do that!"
+  no-pvp-allowed: "<s>PvP is disabled in <p><gname><s>."
+  no-pvp: "<s>You can't PvP <p><player><s>!"
+  no-shoot: "<s>You can't shoot a bow now!"
+  no-interact: "<s>You can't do that :o"
+  no-break: "<s>You can't break this item!"
+  no-place: "<s>You can't place this item!"
+  game-ending: "<s>The game is ending!"
+  lobby-title: "<s>[<p><gn><s>-<p><n><s>]<p> <players><s>/<p><max>"
+  lobby-title-inquene: "<s>[<p><gn><s>-<p><n><s>]<p> <players><s>/<p><max>"
+  lobby-not-seating: "&cCan't join this now!"
+  voting-chest-title: "<s>[<p><gn><s>] <p>Select a map<s>!"
+  map-title: "<p><name>"
+  points-added: "<p>You have earned <s><points><p> points!!"
+  map-lore-author: "<p>Author<s>: <p><author>"
+  map-lore-description: "<p>Description<s>: <p><description>"
+  voting-clock-title: "&aCountdown until start."
+  death-message: "<p><killer><s> has killed <p><victim><s>!"
+  xp-earned: "<p>You have earned <s><xp><p> XP for playing!"
+  game-void: "&cYour points and XP from this game will not be earned."
+  solo-death: "<p><victim><s> has died!"
+  not-enough-players: "<s>We still need <p><num><s> more players!"
+  spectator-chooser: "&aSpectator Chooser"
+  spectator-tp: "&3Teleported to &a<player>&3!"
+  spectator-ingame: "<s>&lYou are still in the game. Don't disconnect, you may be added back in!"
+  no-bow: "<s>You cannot use your bow now!"
+  no-potion: "<s>You can't throw that now!"
