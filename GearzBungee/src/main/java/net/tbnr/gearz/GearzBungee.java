@@ -185,6 +185,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         if (objects == null) {
             return announcements;
         }
+
         for (Object object : objects) {
             String string = (String) object;
             AnnouncerModule.Announcement announcement = new AnnouncerModule.Announcement(string);
