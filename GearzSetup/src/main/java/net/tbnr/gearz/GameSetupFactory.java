@@ -37,7 +37,7 @@ public class GameSetupFactory implements Listener, TCommandHandler {
         this.metas = new ArrayList<>();
     }
 
-    @EventHandler
+    @EventHandler 
     @SuppressWarnings("unused")
     public void onGameRegister(GameRegisterEvent event) {
         event.setCancelled(true);
