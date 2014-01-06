@@ -12,6 +12,8 @@
         <module>GearzEngine</module>
         <module>GearzActiveRecord</module>
         <module>GearzServerLib</module>
+        <module>GearzBungee</module>
+        <module>GearzSetup</module>
     </modules>
 
 </project>
