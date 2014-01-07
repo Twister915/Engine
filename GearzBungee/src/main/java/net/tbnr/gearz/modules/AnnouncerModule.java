@@ -55,14 +55,14 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
                 return TCommandStatus.INVALID_ARGS;
             }
 
-            BasicDBList basicDBList = (BasicDBList) GearzBungee.getInstance().getConfig().get("announcements");
+            BasicDBList basicDBList = (BasicDBList) GearzBungee.getInstance().getBungeeConfig().get("announcements");
             if (basicDBList == null) {
                 basicDBList = new BasicDBList();
             }
             basicDBList.add(compile(args, 1, args.length));
             announcements.add(new Announcement(compile(args, 1, args.length)));
 
-            GearzBungee.getInstance().getConfig().put("announcements", basicDBList);
+            GearzBungee.getInstance().getBungeeConfig().put("announcements", basicDBList);
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-add"));
         } else if (args[0].equalsIgnoreCase("remove")) {
             int num;
@@ -73,7 +73,7 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
                 return TCommandStatus.INVALID_ARGS;
             }
 
-            BasicDBList basicDBList = (BasicDBList) GearzBungee.getInstance().getConfig().get("announcements");
+            BasicDBList basicDBList = (BasicDBList) GearzBungee.getInstance().getBungeeConfig().get("announcements");
             if (basicDBList == null) {
                 basicDBList = new BasicDBList();
             } else {
@@ -81,7 +81,7 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
             }
 
             announcements.remove(num);
-            GearzBungee.getInstance().getConfig().put("announcements", basicDBList);
+            GearzBungee.getInstance().getBungeeConfig().put("announcements", basicDBList);
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-remove", false, false, new String[]{"<num>", num + ""}));
 
             return TCommandStatus.SUCCESSFUL;
@@ -95,14 +95,14 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
                     return TCommandStatus.INVALID_ARGS;
                 }
 
-                GearzBungee.getInstance().getConfig().put("announcements_interval", num);
+                GearzBungee.getInstance().getBungeeConfig().put("announcements_interval", num);
 
                 interval_seconds = num;
 
                 sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-interval-set", false, false, new String[]{"<num>", num + ""}));
                 return TCommandStatus.SUCCESSFUL;
             } else {
-                Integer seconds = (Integer) GearzBungee.getInstance().getConfig().get("announcements_interval");
+                Integer seconds = (Integer) GearzBungee.getInstance().getBungeeConfig().get("announcements_interval");
 
                 sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-interval-get", false, false, new String[]{"<num>", seconds + ""}));
                 return TCommandStatus.SUCCESSFUL;

@@ -20,6 +20,7 @@ import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -79,7 +80,8 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
         return instance;
     }
 
-    @Getter InventoryRefresher inventoryRefresher;
+    @Getter
+    InventoryRefresher inventoryRefresher;
 
     public boolean showDebug() {
         return false;
@@ -106,15 +108,18 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
         }
         this.jedisPool = new JedisPool(getConfig().getString("redis.host"), getConfig().getInt("redis.port"));
         this.gamePlugins = new ArrayList<>();
-        try {
-            this.setupChat();
-            this.setupPermission();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        PluginManager pm = getServer().getPluginManager();
+        if (pm.isPluginEnabled("zPermissions") && pm.isPluginEnabled("zChat")) {
+            try {
+                this.setupChat();
+                this.setupPermission();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            GearzNickname nicknameHandler = new GearzNickname();
+            registerEvents(nicknameHandler);
+            registerCommands(nicknameHandler);
         }
-        GearzNickname nicknameHandler = new GearzNickname();
-        registerEvents(nicknameHandler);
-        registerCommands(nicknameHandler);
         GearzPlayerUtils gearzPlayerUtils = new GearzPlayerUtils();
         registerEvents(gearzPlayerUtils);
         registerCommands(gearzPlayerUtils);

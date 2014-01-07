@@ -108,9 +108,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private ListModule listModule;
 
-    @Getter
-    public GearzConfig gearzConfig;
-
     /**
      * Gets the current instance of the GearzBungee plugin.
      *
@@ -126,16 +123,11 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Override
     protected void start() {
+        this.getConfig().options().copyDefaults(true);
+        this.saveDefaultConfig();
         GearzBungee.instance = this;
-        try {
-            gearzConfig = new GearzConfig(this);
-            gearzConfig.init();
-        } catch (Exception ex) {
-            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "Failed to load config!", ex);
-            return;
-        }
         GModel.setDefaultDatabase(this.getMongoDB());
-        this.pool = new JedisPool(new JedisPoolConfig(), getGearzConfig().host);
+        this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("host"));
         //this.responder = new ServerResponder();
         this.dispatch = new NetCommandDispatch();
         this.getDispatch().registerNetCommands(new BaseReceiver());
@@ -181,7 +173,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     private List<AnnouncerModule.Announcement> loadAnnouncements() {
         List<AnnouncerModule.Announcement> announcements = Lists.newArrayList();
-        BasicDBList objects = (BasicDBList) getConfig().get("announcements");
+        BasicDBList objects = (BasicDBList) getBungeeConfig().get("announcements");
         if (objects == null) {
             return announcements;
         }
@@ -195,7 +187,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     }
 
     private int getInterval() {
-        Integer interval = (Integer) getConfig().get("announcements_interval");
+        Integer interval = (Integer) getBungeeConfig().get("announcements_interval");
         if (interval == null) {
             return 60;
         }
@@ -212,26 +204,22 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Override
     protected void stop() {
-        try {
-            getGearzConfig().save();
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        saveConfig();
     }
 
     public Object[] getMotds() {
-        Object motd = getConfig().get("motds");
+        Object motd = getBungeeConfig().get("motds");
         if (motd == null || !(motd instanceof BasicDBList)) {
             BasicDBList dbList = new BasicDBList();
             dbList.add("Another Gearz Server");
-            getConfig().put("motds", dbList);
+            getBungeeConfig().put("motds", dbList);
             return dbList.toArray();
         }
         return ((BasicDBList) motd).toArray();
     }
 
     public Object[] getCensoredWords() {
-        Object censoredWords = getConfig().get("censoredWords");
+        Object censoredWords = getBungeeConfig().get("censoredWords");
         if (censoredWords == null || !(censoredWords instanceof BasicDBList)) {
             return new Object[0];
         }
@@ -239,37 +227,37 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     }
 
     public void setCensoredWords(BasicDBList dbList) {
-        configSet("censoredWords", dbList);
+        bungeeConfigSet("censoredWords", dbList);
     }
 
     public int getMaxPlayers() {
-        Object maxPlayers = configGet("max-players");
+        Object maxPlayers = bungeeConfigGet("max-players");
         if (maxPlayers == null || !(maxPlayers instanceof Integer)) return 1;
         return (Integer) maxPlayers;  //To change body of created methods use File | Settings | File Templates.
     }
 
     @SuppressWarnings("unused")
     public void setMaxPlayers(Integer maxPlayers) {
-        configSet("max-players", maxPlayers);
+        bungeeConfigSet("max-players", maxPlayers);
     }
 
     public void setMotds(BasicDBList motds) {
-        configSet("motds", motds);
+        bungeeConfigSet("motds", motds);
     }
 
     @Override
     public String database() {
-        return getGearzConfig().database;  //To change body of implemented methods use File | Settings | File Templates.
+        return getConfig().getString("database");  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public String host() {
-        return getGearzConfig().host;  //To change body of implemented methods use File | Settings | File Templates.
+        return getConfig().getString("host");  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public int port() {
-        return getGearzConfig().port;  //To change body of implemented methods use File | Settings | File Templates.
+        return getConfig().getInt("port");  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @SuppressWarnings("unused")

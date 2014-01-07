@@ -2,4 +2,4 @@ name: GearzBungee
 version: 1.0
 author: Twister915
 main: net.tbnr.gearz.GearzBungee
-depend: [BungeeYAML]
+depends: ['BungeeYAML']

@@ -1,6 +1,7 @@
 package net.tbnr.util;
 
 import com.mongodb.*;
+import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.util.bungee.command.TCommandDispatch;
@@ -16,7 +17,7 @@ import java.net.UnknownHostException;
  * Time: 10:35 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class TPluginBungee extends Plugin {
+public abstract class TPluginBungee extends ConfigurablePlugin {
     private TCommandDispatch commandDispatch;
     private static DB mongoDB = null;
 
@@ -46,14 +47,14 @@ public abstract class TPluginBungee extends Plugin {
         return TPluginBungee.mongoDB;
     }
 
-    protected void configSet(String key, Object value) {
-        DBObject config = this.getConfig();
+    protected void bungeeConfigSet(String key, Object value) {
+        DBObject config = this.getBungeeConfig();
         config.put(key, value);
         this.getCollection().save(config);
     }
 
-    protected Object configGet(String key) {
-        DBObject config = this.getConfig();
+    protected Object bungeeConfigGet(String key) {
+        DBObject config = this.getBungeeConfig();
         if (!config.containsField(key)) return null;
         return config.get(key);
     }
@@ -62,7 +63,7 @@ public abstract class TPluginBungee extends Plugin {
         return this.getMongoDB().getCollection("bungee_config");
     }
 
-    public DBObject getConfig() {
+    public DBObject getBungeeConfig() {
         BasicDBObject object = new BasicDBObject("pl_name", this.getDescription().getName());
         DBCursor cursor = this.getCollection().find();
         DBObject obj = null;

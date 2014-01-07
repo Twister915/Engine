@@ -8,7 +8,6 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.chat.Messaging;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
@@ -31,7 +30,7 @@ public class ModBroadcast implements TCommandHandler, Listener {
     @SuppressWarnings({"unused", "deprecation"})
     public TCommandStatus modBroadcast(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length > 0) {
-            String compile = Messaging.compile(args, 0, args.length);
+            String compile = GearzBungee.getInstance().compile(args, 0, args.length);
             sendModBroadcast(sender instanceof ProxiedPlayer ? sender.getName() : "CONSOLE", compile);
             return TCommandStatus.SUCCESSFUL;
         }
@@ -67,12 +66,10 @@ public class ModBroadcast implements TCommandHandler, Listener {
         GearzBungee.handleCommandStatus(status, sender);
     }
 
-    @SuppressWarnings("deprecation")
     public void sendModBroadcast(String sender, String s) {
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
             if (!proxiedPlayer.hasPermission("gearz.modbroadcast")) continue;
-            proxiedPlayer.sendMessage(GearzBungee.getInstance().
-                    getFormat("mod-broadcast", false, false, new String[]{"<sender>", sender}, new String[]{"<message>", s}));
+            proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("mod-broadcast", false, false, new String[]{"<sender>", sender}, new String[]{"<message>", s}));
         }
     }
 }
