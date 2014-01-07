@@ -22,7 +22,7 @@ public class Messaging implements TCommandHandler {
     public TCommandStatus messageCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;
         if (args.length == 0 && GearzBungee.getInstance().getChat().isPlayerInConversation(player)) {
-            GearzBungee.getInstance().getChat().getConvoForPlayer(player).end();
+            GearzBungee.getInstance().getChat().getConversationForPlayer(player).end();
             return TCommandStatus.SUCCESSFUL;
         }
         if (args.length == 0) {

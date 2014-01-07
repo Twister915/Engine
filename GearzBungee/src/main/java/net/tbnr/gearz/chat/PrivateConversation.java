@@ -36,7 +36,7 @@ public class PrivateConversation implements Listener {
         Filter.FilterData filterData = Filter.filter(event.getMessage(), player);
         if (!filterData.isCancelled()) {
 
-            GearzBungee.getInstance().getChat().getConvoForPlayer(player).sendMessage(filterData.getMessage());
+            GearzBungee.getInstance().getChat().getConversationForPlayer(player).sendMessage(filterData.getMessage());
 
             event.setCancelled(true);
         } else {

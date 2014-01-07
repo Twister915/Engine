@@ -44,7 +44,8 @@ public class PunishCommands implements TCommandHandler {
         }
 
         String reason = compile(args, 1, args.length).trim();
-        gearzCheck.kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), sender.getName());
+        if (gearzCheck.getProxiedPlayer() != null)
+            gearzCheck.kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), sender.getName());
 
         GearzPlayer gearzTarget;
         try {
@@ -102,7 +103,8 @@ public class PunishCommands implements TCommandHandler {
         }
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
-        if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;        broadcastPunishment(PlayerInfoModule.getServerForBungee(gearzTarget.getProxiedPlayer().getServer().getInfo()).getGame(), sender.getName(), gearzTarget.getName(), PunishmentType.TEMP_BAN);
+        if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
+        broadcastPunishment(PlayerInfoModule.getServerForBungee(gearzTarget.getProxiedPlayer().getServer().getInfo()).getGame(), sender.getName(), gearzTarget.getName(), PunishmentType.TEMP_BAN);
         return TCommandStatus.SUCCESSFUL;
     }
 

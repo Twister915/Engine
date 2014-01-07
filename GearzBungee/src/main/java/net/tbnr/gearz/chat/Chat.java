@@ -34,10 +34,10 @@ public class Chat {
     }
 
     public boolean isPlayerInConversation(ProxiedPlayer proxiedPlayer) {
-        return getConvoForPlayer(proxiedPlayer) != null;
+        return getConversationForPlayer(proxiedPlayer) != null;
     }
 
-    public PrivateConversation.Conversation getConvoForPlayer(ProxiedPlayer player) {
+    public PrivateConversation.Conversation getConversationForPlayer(ProxiedPlayer player) {
         for (PrivateConversation.Conversation conversation : GearzBungee.getInstance().getChat().getConversations()) {
             if (conversation.getSender().getName().equals(player.getName())) return conversation;
         }
