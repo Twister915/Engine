@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.PlayerHandshakeEvent;
+import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
@@ -17,7 +18,7 @@ import java.util.Date;
  */
 public class LoginHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerLogin(PlayerHandshakeEvent event) {
+    public void onPlayerLogin(PreLoginEvent event) {
         GearzPlayer gearzPlayer;
         try {
             gearzPlayer = new GearzPlayer(event.getConnection().getName());
