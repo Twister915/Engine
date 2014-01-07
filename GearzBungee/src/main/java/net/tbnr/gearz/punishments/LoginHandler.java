@@ -21,6 +21,7 @@ public class LoginHandler implements Listener {
         GearzPlayer gearzPlayer;
         try {
             gearzPlayer = new GearzPlayer(event.getConnection().getName());
+            ProxyServer.getInstance().getLogger().info(event.getConnection().getName());
         } catch (GearzPlayer.PlayerNotFoundException e) {
             return;
         }
@@ -41,6 +42,7 @@ public class LoginHandler implements Listener {
         }
         ProxyServer.getInstance().getLogger().info("banned");
         String reason = activeBan.getString("reason");
+
         event.getConnection().disconnect(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}));
     }
 
