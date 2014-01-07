@@ -12,16 +12,9 @@ import java.util.Map;
 
 /**
  * Created by jake on 12/28/13.
- * <p/>
  * This class stores data for chat
  */
 public class Chat {
-    public Chat() {
-        setMuted(false);
-        this.censoredWords = new ArrayList<>();
-        this.lastMessages = Maps.newHashMap();
-        updateCensor();
-    }
 
     @Getter @Setter
     public boolean muted;
@@ -32,6 +25,13 @@ public class Chat {
     @Getter List<PrivateConversation.Conversation> conversations = new ArrayList<>();
 
     @Getter Map<ProxiedPlayer, String> lastMessages = Maps.newHashMap();
+
+    public Chat() {
+        setMuted(false);
+        this.censoredWords = new ArrayList<>();
+        this.lastMessages = Maps.newHashMap();
+        updateCensor();
+    }
 
     public boolean isPlayerInConversation(ProxiedPlayer proxiedPlayer) {
         return getConvoForPlayer(proxiedPlayer) != null;
@@ -45,10 +45,10 @@ public class Chat {
     }
 
     public void updateCensor() {
-        Object[] censoredWords1 = GearzBungee.getInstance().getCensoredWords();
+        String[] censoredWords1 = GearzBungee.getInstance().getCensoredWords();
         censoredWords.clear();
-        for (Object o : censoredWords1) {
-            if (o instanceof String) censoredWords.add(new CensoredWord((String) o));
+        for (String s : censoredWords1) {
+            censoredWords.add(new CensoredWord(s));
         }
     }
 

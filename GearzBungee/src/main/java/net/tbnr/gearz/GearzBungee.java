@@ -218,12 +218,13 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         return ((BasicDBList) motd).toArray();
     }
 
-    public Object[] getCensoredWords() {
+    public String[] getCensoredWords() {
         Object censoredWords = getBungeeConfig().get("censoredWords");
         if (censoredWords == null || !(censoredWords instanceof BasicDBList)) {
-            return new Object[0];
+            return new String[0];
         }
-        return ((BasicDBList) censoredWords).toArray();
+        BasicDBList dbListCensored = (BasicDBList)censoredWords;
+        return dbListCensored.toArray(new String[dbListCensored.size()]);
     }
 
     public void setCensoredWords(BasicDBList dbList) {
