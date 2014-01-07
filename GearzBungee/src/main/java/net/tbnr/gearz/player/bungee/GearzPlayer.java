@@ -132,14 +132,12 @@ public class GearzPlayer {
             ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string).getClass().getName());
         }
         Object bansl = dbObject.get("punishments");
-/*        if (!(bansl instanceof BasicDBList)) {
-            ProxyServer.getInstance().getLogger().info("fml2214");
-            if (bansl == null) {
-                ProxyServer.getInstance().getLogger().info("fml");
+        if (!(bansl instanceof BasicDBList)) {
+            if (dbObject.get("punishments") == null) {
+                ProxyServer.getInstance().getLogger().info("Still null!");
             }
-
             bansl = new BasicDBList();
-        }*/
+        }
         BasicDBList bans = (BasicDBList) bansl;
 
         dbObject.put("punishments", bans);
