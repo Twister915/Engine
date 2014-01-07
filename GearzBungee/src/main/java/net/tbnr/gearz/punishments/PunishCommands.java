@@ -1,6 +1,7 @@
 package net.tbnr.gearz.punishments;
 
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.modules.PlayerInfoModule;
@@ -42,7 +43,7 @@ public class PunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        String reason = compile(args, 1, args.length);
+        String reason = compile(args, 1, args.length).trim();
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.PERMANENT_BAN, true);
         } else {
@@ -78,7 +79,7 @@ public class PunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        String reason = compile(args, 2, args.length);
+        String reason = compile(args, 2, args.length).trim();
         String length = args[1];
         int duration = parseTime(length);
         Date end = new Date();
@@ -113,7 +114,7 @@ public class PunishCommands implements TCommandHandler {
 
         ProxiedPlayer target = matchedPlayers.get(0);
 
-        String reason = compile(args, 1, args.length);
+        String reason = compile(args, 1, args.length).trim();
         if (type.equals(TCommandSender.Console)) {
             GearzPlayerManager.getGearzPlayer(target).punishPlayer(reason, null, PunishmentType.KICK, true);
         } else {
@@ -144,7 +145,7 @@ public class PunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        String reason = compile(args, 1, args.length);
+        String reason = compile(args, 1, args.length).trim();
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.WARN, true);
         } else {
@@ -180,7 +181,7 @@ public class PunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        String reason = compile(args, 1, args.length);
+        String reason = compile(args, 1, args.length).trim();
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.MUTE, true);
         } else {
@@ -216,7 +217,7 @@ public class PunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        String reason = compile(args, 2, args.length);
+        String reason = compile(args, 2, args.length).trim();
         String length = args[1];
         int duration = parseTime(length);
         Date end = new Date();
@@ -244,7 +245,7 @@ public class PunishCommands implements TCommandHandler {
         }
 
         String ip = args[0];
-        String reason = compile(args, 1, args.length);
+        String reason = compile(args, 1, args.length).trim();
         if (GearzBungee.getInstance().getIpBanHandler().isBanned(ip)) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("already-ipbanned", false, true));
         }
@@ -313,8 +314,10 @@ public class PunishCommands implements TCommandHandler {
     }
 
     public void broadcastPunishment(String server, String issuer, String target, PunishmentType punishmentType) {
-        for (ProxiedPlayer proxiedPlayer : GearzBungee.getInstance().getListModule().getStaff()) {
-            proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", server}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}));
+        synchronized (GearzBungee.getInstance().getListModule().getStaff()) {
+            for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+                proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", server}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}));
+            }
         }
     }
 }
