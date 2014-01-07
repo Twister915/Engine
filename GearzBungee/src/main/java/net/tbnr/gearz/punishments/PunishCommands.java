@@ -43,7 +43,10 @@ public class PunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
+
         String reason = compile(args, 1, args.length).trim();
+        gearzTarget.kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), sender.getName());
+
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.PERMANENT_BAN, true);
         } else {
