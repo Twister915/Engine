@@ -130,6 +130,12 @@ public class GearzPlayer {
         DBObject dbObject = this.getPlayerDocument();
         Object bansl = dbObject.get("punishments");
         if (bansl == null || !(bansl instanceof BasicDBList)) {
+            ProxyServer.getInstance().getLogger().info("fml2214");
+
+            if (bansl == null) {
+                ProxyServer.getInstance().getLogger().info("fml");
+
+            }
             bansl = new BasicDBList();
         }
         BasicDBList bans = (BasicDBList) bansl;
