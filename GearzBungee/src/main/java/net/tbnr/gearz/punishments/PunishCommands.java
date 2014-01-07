@@ -30,6 +30,22 @@ public class PunishCommands implements TCommandHandler {
         if (args.length < 2) {
             return TCommandStatus.INVALID_ARGS;
         }
+        GearzPlayer gearzCheck;
+        try {
+            gearzCheck = new GearzPlayer(args[0]);
+        } catch (GearzPlayer.PlayerNotFoundException e) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("null-player", false, false));
+            return TCommandStatus.SUCCESSFUL;
+        }
+
+        if (gearzCheck.getActiveBan() != null) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("already-banned", false, false));
+            return TCommandStatus.SUCCESSFUL;
+        }
+
+        String reason = compile(args, 1, args.length).trim();
+        gearzCheck.kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), sender.getName());
+
         GearzPlayer gearzTarget;
         try {
             gearzTarget = new GearzPlayer(args[0]);
@@ -37,15 +53,6 @@ public class PunishCommands implements TCommandHandler {
             sender.sendMessage(GearzBungee.getInstance().getFormat("null-player", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
-
-        if (gearzTarget.getActiveBan() != null) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("already-banned", false, false));
-            return TCommandStatus.SUCCESSFUL;
-        }
-
-
-        String reason = compile(args, 1, args.length).trim();
-        gearzTarget.kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), sender.getName());
 
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.PERMANENT_BAN, true);
