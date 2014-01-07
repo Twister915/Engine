@@ -127,13 +127,13 @@ public class GearzPlayer {
                 add("type", punishmentType.toString()).
                 add("time", new Date()).
                 add("end", end).get();
-        Object bansl = getPlayerDocument().get("punishments");
+        DBObject dbObject = this.getPlayerDocument();
+        Object bansl = dbObject.get("punishments");
         if (bansl == null || !(bansl instanceof BasicDBList)) {
             bansl = new BasicDBList();
         }
         BasicDBList bans = (BasicDBList) bansl;
         bans.add(ban);
-        DBObject dbObject = this.getPlayerDocument();
         dbObject.put("punishments", bans);
         getCollection().save(dbObject);
         save();
