@@ -3,17 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
+
+	<parent>
         <groupId>net.tbnr.gearz</groupId>
         <artifactId>Engine</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <groupId>net.tbnr.gearz</groupId>
     <artifactId>GearzEngine</artifactId>
+    <packaging>jar</packaging>
     <version>1.0.1-SNAPSHOT</version>
+    <name>GearzEngine</name>
+    <url>https://github.com/CogzMC/Engine/tree/master/GearzEngine</url>
+	
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
+	
     <repositories>
         <repository>
             <id>bukkit-repo</id>
@@ -37,6 +47,7 @@
             <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
         </repository>
     </repositories>
+	
     <dependencies>
         <dependency>
             <artifactId>bukkit</artifactId>
@@ -92,29 +103,14 @@
             <version>1.2.16</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.artifactId}-No-Dependencies</finalName>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-file</artifactId>
-                <version>1.0-beta-3</version>
-            </extension>
-        </extensions>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
+		    <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>2.1</version>				
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -135,9 +131,17 @@
                         </configuration>
                     </execution>
                 </executions>
-                <extensions>true</extensions>
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>
