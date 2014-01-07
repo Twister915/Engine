@@ -179,7 +179,9 @@ public class GearzPlayer {
         }
         BasicDBList punishment = (BasicDBList) punishmentsl;
         for (Object o : punishment) {
+            ProxyServer.getInstance().getLogger().info("this called");
             if (!(o instanceof BasicDBObject)) continue;
+            ProxyServer.getInstance().getLogger().info("dis this get called");
             BasicDBObject ban = (BasicDBObject) o;
             PunishmentType punishmentType = PunishmentType.valueOf(ban.getString("type"));
             if (punishmentType == PunishmentType.TEMP_BAN) {
