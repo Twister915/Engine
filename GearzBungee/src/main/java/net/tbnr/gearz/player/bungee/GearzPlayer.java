@@ -114,14 +114,12 @@ public class GearzPlayer {
 
     public void punishPlayer(String reason, GearzPlayer issuer, PunishmentType punishmentType, Date end, boolean console) {
         if (getPlayerDocument() == null) return;
-        String id;
-        if (console) {
-            id = "CONSOLE";
-        } else {
-            id = issuer.getPlayerDocument().get("_id").toString();
+        ObjectId objectId = null;
+        if (!console) {
+            objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
         }
         DBObject ban = new BasicDBObjectBuilder().
-                add("issuer", id).
+                add("issuer", (console ? "CONSOLE" : objectId)).
                 add("valid", true).
                 add("reason", reason).
                 add("type", punishmentType.toString()).

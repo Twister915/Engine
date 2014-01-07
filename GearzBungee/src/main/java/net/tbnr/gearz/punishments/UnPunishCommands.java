@@ -47,8 +47,8 @@ public class UnPunishCommands implements TCommandHandler {
         sb.append(GearzBungee.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", gearzTarget.getName()}));
         for (BasicDBObject punishment : punishments) {
             Date date = punishment.getDate("time");
-            String issuer = punishment.getString("issuer");
-            if (issuer.equals("CONSOLE")) {
+            String issuer;
+            if (punishment.get("issuer") instanceof String) {
                 issuer = "CONSOLE";
             } else {
                 GearzPlayer staff;
