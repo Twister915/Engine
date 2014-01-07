@@ -182,9 +182,7 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
 
     @Override
     public void handleCommandStatus(TCommandStatus status, org.bukkit.command.CommandSender sender, TCommandSender senderType) {
-        if (status == TCommandStatus.SUCCESSFUL) {
-            return;
-        }
+        if (status == TCommandStatus.SUCCESSFUL) return;
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&6TBNR&7] &cThe command returned an error: &4" + status.toString()));
     }
 
@@ -222,9 +220,7 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
                 ex.printStackTrace();
             }
         }
-        if (!file.delete()) {
-            Gearz.getInstance().getLogger().warning("File: " + file + " could not be deleted");
-        }
+        if (!file.delete()) Gearz.getInstance().getLogger().warning("File: " + file + " could not be deleted");
     }
 
     @Override
@@ -241,13 +237,11 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
     }
 
     public static String getExternalIP() throws SocketException, IndexOutOfBoundsException {
-        if (!Bukkit.getIp().equals("")) {
-            return Bukkit.getIp();
-        }
+        if (!Bukkit.getIp().equals("")) return Bukkit.getIp();
         NetworkInterface eth0 = NetworkInterface.getByName(Gearz.getInstance().getConfig().getString("network_interface"));
-        if (eth0 == null) {
-            eth0 = NetworkInterface.getByName("eth0");
-        }
+
+        if (eth0 == null) eth0 = NetworkInterface.getByName("eth0");
+
         Enumeration<InetAddress> inetAddresses = eth0.getInetAddresses();
         ArrayList<InetAddress> list = Collections.list(inetAddresses);
         InetAddress fin = null;
@@ -257,9 +251,6 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
                 break;
             }
         }
-        if (fin == null) {
-            return null;
-        }
-        return fin.getHostAddress();
+        return fin == null ? null : fin.getHostAddress();
     }
 }

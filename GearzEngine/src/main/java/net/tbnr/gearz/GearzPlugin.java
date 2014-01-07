@@ -37,13 +37,22 @@ public abstract class GearzPlugin extends TPlugin {
 
     protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame> game) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
-        if (meta == null) {
-            throw new GearzException("No GameMeta found!");
-        }
+
+
+        if (meta == null) throw new GearzException("No GameMeta found!");
+
+        //Meta values
         this.meta = meta;
+
+
+        ///REGISTERATION
         Gearz.getInstance().getLogger().info("Game starting registration! " + meta.longName() + " v" + meta.version() + " by " + meta.author() + "[" + meta.shortName() + "]");
+
+        //Create a new arena and assign it
         this.arenaManager = new ArenaManager(this.meta.key(), arenaClass);
         Gearz.getInstance().getLogger().info("ArenaManager setup!");
+
+        //Make a game register event fire it and check if it's cancelled
         GameRegisterEvent event = new GameRegisterEvent(arenaClass, game, meta, this);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
@@ -51,23 +60,27 @@ public abstract class GearzPlugin extends TPlugin {
             return;
         }
         String game_mode = Gearz.getInstance().getConfig().getString("game_mode");
+
+        //If the game mod is single then register it as a single game
         if (game_mode.equalsIgnoreCase("SINGLE")) {
             this.gameManager = new GameManagerSingleGame(game, this);
         } else {
             throw new GearzException("Invalid defined game mode");
         }
-        if (this.gameManager instanceof TCommandHandler) {
-            registerCommands((TCommandHandler) this.gameManager);
-        }
+
+        //if game manager is instance of TCommandHandler then register it's commands
+        if (this.gameManager instanceof TCommandHandler) registerCommands((TCommandHandler) this.gameManager);
+
+        //Log that the gamemanager is set up
         Gearz.getInstance().getLogger().info("GameManager setup!");
+
+        //Register the game and events
         Gearz.getInstance().registerGame(this);
         registerEvents(this.gameManager);
     }
 
     @Override
     public void disable() {
-        if (this.gameManager != null) {
-            this.gameManager.disable();
-        }
+        if (this.gameManager != null) this.gameManager.disable();
     }
 }
