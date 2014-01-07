@@ -5,9 +5,9 @@ package net.tbnr.gearz;
  * User: Joey
  * Date: 9/26/13
  * Time: 8:24 AM
- * To change this template use File | Settings | File Templates.
  */
 public class GearzException extends Exception {
+    //GearzException ~ gearz stuff
     public GearzException(String s) {
         super(s);
     }
