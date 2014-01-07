@@ -135,7 +135,7 @@ public class GearzPlayer {
         bans.add(ban);
         DBObject dbObject = this.getPlayerDocument();
         dbObject.put("punishments", bans);
-        getCollection().insert(dbObject);
+        getCollection().save(dbObject);
         save();
         String name = (console ? "CONSOLE" : issuer.getName());
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
