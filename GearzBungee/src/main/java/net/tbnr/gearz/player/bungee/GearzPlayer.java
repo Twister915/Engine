@@ -129,7 +129,7 @@ public class GearzPlayer {
                 add("end", end).get();
         DBObject dbObject = this.getPlayerDocument();
         for (String string : dbObject.keySet()) {
-            ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string));
+            ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string).getClass().getName());
         }
         Object bansl = dbObject.get("punishments");
         if (bansl == null || !(bansl instanceof BasicDBList)) {
