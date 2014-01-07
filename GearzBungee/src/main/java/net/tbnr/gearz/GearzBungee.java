@@ -164,7 +164,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         registerEvents(new LoginHandler());
         registerCommandHandler(new PunishCommands());
         registerCommandHandler(new UnPunishCommands());
-        this.ipBanHandler = new IPBanHandler(getMongoDB().getCollection("ip-bans"));
+        this.ipBanHandler = new IPBanHandler(getMongoDB().getCollection("ipbans"));
         this.shuffleModule = new ShuffleModule();
         registerEvents(this.shuffleModule);
         registerCommandHandler(this.shuffleModule);

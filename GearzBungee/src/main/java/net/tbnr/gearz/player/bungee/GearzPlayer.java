@@ -184,7 +184,7 @@ public class GearzPlayer {
             ProxyServer.getInstance().getLogger().info("dis this get called");
             BasicDBObject ban = (BasicDBObject) o;
             PunishmentType punishmentType = PunishmentType.valueOf(ban.getString("type"));
-            if (punishmentType == PunishmentType.TEMP_BAN) {
+            if (punishmentType == PunishmentType.TEMP_BAN && ban.getBoolean("valid")) {
                 Date end = ban.getDate("end");
                 if (new Date().before(end)) {
                     return ban;
