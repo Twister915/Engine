@@ -87,7 +87,7 @@ public class UnPunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        if (gearzPlayer.getActiveBan() != null) {
+        if (gearzPlayer.getActiveBan() == null) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("not-banned", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
@@ -118,7 +118,7 @@ public class UnPunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        if (gearzPlayer.getActiveMute() != null) {
+        if (gearzPlayer.getActiveMute() == null) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("not-muted", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
