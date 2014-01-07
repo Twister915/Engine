@@ -43,8 +43,7 @@ public class UnPunishCommands implements TCommandHandler {
 
         List<BasicDBObject> punishments = gearzTarget.getPunishments();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(GearzBungee.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", gearzTarget.getName()})).append("\n");
+        sender.sendMessage(GearzBungee.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", gearzTarget.getName()}));
         int x = 0;
         for (BasicDBObject punishment : punishments) {
             Date date = punishment.getDate("time");
@@ -61,11 +60,9 @@ public class UnPunishCommands implements TCommandHandler {
                 }
             }
             String action = PunishmentType.valueOf(punishment.getString("type")).getAction();
-            sb.append(GearzBungee.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(date)}, new String[]{"<reason>", punishment.getString("reason")}, new String[]{"<action>", action}, new String[]{"<issuer>", issuer}, new String[]{"<id>", x + ""})).append("\n");
+            sender.sendMessage(GearzBungee.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(date)}, new String[]{"<reason>", punishment.getString("reason")}, new String[]{"<action>", action}, new String[]{"<issuer>", issuer}, new String[]{"<id>", x + ""}));
             x++;
         }
-
-        sender.sendMessage(sb.toString());
         return TCommandStatus.SUCCESSFUL;
     }
 
