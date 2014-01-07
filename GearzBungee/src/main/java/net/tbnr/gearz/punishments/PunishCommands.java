@@ -30,23 +30,8 @@ public class PunishCommands implements TCommandHandler {
         if (args.length < 2) {
             return TCommandStatus.INVALID_ARGS;
         }
-        GearzPlayer gearzCheck;
-        try {
-            gearzCheck = new GearzPlayer(args[0]);
-        } catch (GearzPlayer.PlayerNotFoundException e) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("null-player", false, false));
-            return TCommandStatus.SUCCESSFUL;
-        }
-
-        if (gearzCheck.getActiveBan() != null) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("already-banned", false, false));
-            return TCommandStatus.SUCCESSFUL;
-        }
 
         String reason = compile(args, 1, args.length).trim();
-        if (gearzCheck.getProxiedPlayer() != null)
-            gearzCheck.kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), sender.getName());
-
         GearzPlayer gearzTarget;
         try {
             gearzTarget = new GearzPlayer(args[0]);

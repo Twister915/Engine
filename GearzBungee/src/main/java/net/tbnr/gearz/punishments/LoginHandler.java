@@ -22,7 +22,6 @@ public class LoginHandler implements Listener {
         GearzPlayer gearzPlayer;
         try {
             gearzPlayer = new GearzPlayer(event.getConnection().getName());
-            ProxyServer.getInstance().getLogger().info(event.getConnection().getName());
         } catch (GearzPlayer.PlayerNotFoundException e) {
             return;
         }

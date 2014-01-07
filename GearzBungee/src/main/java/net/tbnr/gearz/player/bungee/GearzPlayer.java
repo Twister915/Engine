@@ -114,10 +114,7 @@ public class GearzPlayer {
 
     public void punishPlayer(String reason, GearzPlayer issuer, PunishmentType punishmentType, Date end, boolean console) {
         if (getPlayerDocument() == null) return;
-        String name = (console ? "CONSOLE" : issuer.getName());
-        //if (punishmentType.isKickable() && getProxiedPlayer() != null) {
-        //    kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
-        //}
+
         ObjectId objectId = null;
         if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
 
@@ -145,6 +142,10 @@ public class GearzPlayer {
         getCollection().save(dbObject);
         bans.add(ban);
         save();
+        String name = (console ? "CONSOLE" : issuer.getName());
+        if (punishmentType.isKickable() && getProxiedPlayer() != null) {
+            kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
+        }
     }
 
     public void unban() {
