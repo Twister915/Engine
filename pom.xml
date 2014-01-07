@@ -8,6 +8,7 @@
     <artifactId>Engine</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <name>Engine-Parent</name>
     <description>Parent project for all gearz modules.</description>
     <url>https://github.com/CogzMC/Engine</url>
