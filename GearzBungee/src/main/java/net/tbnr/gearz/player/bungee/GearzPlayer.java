@@ -119,9 +119,8 @@ public class GearzPlayer {
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
         }
         ObjectId objectId = null;
-        if (!console) {
-            objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
-        }
+        if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
+
         DBObject ban = new BasicDBObjectBuilder().
                 add("issuer", (console ? "CONSOLE" : objectId)).
                 add("valid", true).

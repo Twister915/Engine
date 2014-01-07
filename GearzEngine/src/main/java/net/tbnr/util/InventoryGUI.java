@@ -175,13 +175,9 @@ public class InventoryGUI implements Listener {
             return;
         }
         for (InventoryGUIItem item : this.items) {
-            if (item == null) {
-                continue;
-            }
-            if (event.getCurrentItem() == null) {
-                continue;
-            }
-            if (!(event.getCurrentItem().equals(item.getItem()))) {
+            if (item == null ||
+                    event.getCurrentItem() == null ||
+                    !(event.getCurrentItem().equals(item.getItem()))) {
                 continue;
             }
             this.callback.onItemSelect(this, item, player1);

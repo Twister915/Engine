@@ -26,7 +26,9 @@ formats:
   join-message: "&a&l> &b<player>&6 joined &b<game> lobby&6!"
   leave-message: "&c&l< &b<player>&6 left &b<game> lobby&6!"
   nickname-too-long: "&cThe nickname you have supplied is longer than 16 characters"
-  gmae-kick: "&aThe game has ended!"
+  game-full: "&aThe game is full! Donate to get into a full game!"
+  game-kick: "&aThe game has ended!"
+  game-kick-premium: "&aYou have been kicked in place of a higher priority member of the server"
   map-loading: "&3The map &a<map>&3 was chosen. Please wait for it to load! (There will be a lot of lag, don't worry though)"
   map-loaded: "&3The map &a<map>&3 was loaded fully! Teleporting you into the game..."
   chat-format: "<p><n>&e&l>> &r<c_prefix> &r<prefix><name_color>%s&r<suffix>&3:<s> %s" #need to pass <prefix> <c_prefix> <suffix> and game meta stuff
@@ -68,3 +70,9 @@ game-strings: #All strings should use colors <p> and <s>, and has <gname> (longN
   spectator-ingame: "<s>&lYou are still in the game. Don't disconnect, you may be added back in!"
   no-bow: "<s>You cannot use your bow now!"
   no-potion: "<s>You can't throw that now!"
+priorities:
+- staff
+- tbnr
+- hero
+- premium
+

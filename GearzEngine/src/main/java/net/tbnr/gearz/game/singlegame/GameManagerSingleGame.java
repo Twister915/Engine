@@ -1,6 +1,7 @@
 package net.tbnr.gearz.game.singlegame;
 
 import com.mongodb.BasicDBObject;
+import lombok.NonNull;
 import net.lingala.zip4j.exception.ZipException;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.GearzException;
@@ -46,6 +47,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +65,12 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
     private GearzPlugin plugin;
     private InventoryBarVotingSession votingSession;
     private GearzGame runningGame;
+    private List<String> priorities = new ArrayList<String>();
 
     public GameManagerSingleGame(Class<? extends GearzGame> gameClass, GearzPlugin plugin) throws GearzException {
+
+        populatePrioritiesList();
+
         //plugin.registerEvents(this);
         this.gearzGameClass = gameClass;
         GameMeta gameMeta1 = gameClass.getAnnotation(GameMeta.class);
@@ -119,8 +125,13 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         spawn(gearzPlayer);
         if (this.runningGame == null) {
             if (Bukkit.getOnlinePlayers().length == getGameMeta().maxPlayers()) {
-                ServerManager.setOpenForJoining(false);
-            }
+                GearzPlayer personToKick = candidateForKicking(gearzPlayer);
+                if(personToKick != null) {
+                    personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
+                } else {
+                    gearzPlayer.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
+                }
+        }
             this.votingSession.addPlayer(gearzPlayer);
         } else {
             this.runningGame.addPlayer(gearzPlayer);
@@ -142,7 +153,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         stack.setItemMeta(bookMeta);
         gearzPlayer.getPlayer().getInventory().setItem(7, stack);
         if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GameManagerSingleGame|132>--------< TPlayerJoinEvent has been CAUGHT for: " + gearzPlayer.toString());
+            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GameManagerSingleGame|156>--------< TPlayerJoinEvent has been CAUGHT for: " + gearzPlayer.toString());
         }
     }
 
@@ -386,5 +397,43 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         Gearz.getInstance().handleCommandStatus(status, sender, senderType);
+    }
+
+    /**
+     * Get the person on the server with lower priority then them if no player lower it returns null
+     * @return GearzPlayer ~ player with lower priority then them
+     */
+    @NonNull
+    private GearzPlayer candidateForKicking(GearzPlayer p) {
+        GearzPlayer candidate = null;
+        List<Player> cachedOnlinePlayers = Arrays.asList(Bukkit.getOnlinePlayers().clone());
+
+        for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
+            GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
+            if(priorityForPlayer(p) > priorityForPlayer(wannaBe)) candidate = wannaBe;
+        }
+        return candidate;
+    }
+
+    /**
+     * Get's priority of a player
+     * @param p
+     * @return priority of player, -1 default
+     */
+    @NonNull
+    private Integer priorityForPlayer(GearzPlayer p) {
+        Integer priority = -1;
+        String permissionPriority = "";
+        for (int x = 0, l = priorities.size(); x < l; x++) {
+            permissionPriority = "gearz.priority."+priorities.get(x);
+            if (p.getPlayer().hasPermission(permissionPriority)) {
+                priority = x;
+            }
+        }
+        return priority;
+    }
+
+    public void populatePrioritiesList() {
+        this.priorities = Gearz.getInstance().getConfig().getStringList("priorities");
     }
 }
