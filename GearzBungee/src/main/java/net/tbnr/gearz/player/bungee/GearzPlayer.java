@@ -127,7 +127,7 @@ public class GearzPlayer {
                 add("end", end).get();
         DBObject dbObject = this.getPlayerDocument();
         for (String string : dbObject.keySet()) {
-            ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string).getClass().getName());
+            ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string));
         }
         Object bansl = dbObject.get("punishments");
         if (!(bansl instanceof BasicDBList)) {
@@ -136,8 +136,12 @@ public class GearzPlayer {
             }
             bansl = new BasicDBList();
         }
-        BasicDBList bans = (BasicDBList) bansl;
+        ProxyServer.getInstance().getLogger().info("_______________");
 
+        BasicDBList bans = (BasicDBList) bansl;
+        for (String string : bans.keySet()) {
+            ProxyServer.getInstance().getLogger().info(string + ":" + bans.get(string));
+        }
         dbObject.put("punishments", bans);
         getCollection().save(dbObject);
         bans.add(ban);
