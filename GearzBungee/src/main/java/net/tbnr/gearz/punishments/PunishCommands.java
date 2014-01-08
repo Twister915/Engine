@@ -289,11 +289,11 @@ public class PunishCommands implements TCommandHandler {
         }
         if (time.contains("m") || time.contains("minute")) {
             duration *= 60;
-            return duration;
+            return duration * 1000;
         }
         if (time.contains("h") || time.contains("hour")) {
             duration *= 60 * 60;
-            return duration;
+            return duration * 1000;
         }
         if (time.contains("d") || time.contains("day")) {
             duration *= 60 * 60 * 24;
@@ -301,15 +301,15 @@ public class PunishCommands implements TCommandHandler {
         }
         if (time.contains("w") || time.contains("week")) {
             duration *= 60 * 60 * 24 * 7;
-            return duration;
+            return duration * 1000;
         }
         if (time.contains("month")) {
             duration *= 60 * 60 * 24 * 31;
-            return duration;
+            return duration * 1000;
         }
         if (time.contains("y") || time.contains("year")) {
             duration *= 60 * 60 * 24 * 365;
-            return duration;
+            return duration * 1000;
         }
         return 0;
     }
