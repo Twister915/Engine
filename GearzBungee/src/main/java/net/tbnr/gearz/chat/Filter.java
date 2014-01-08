@@ -23,18 +23,6 @@ public class Filter {
     public static FilterData filter(String message, ProxiedPlayer player) {
         FilterData filterData = new FilterData(message, player, false);
         if (player.hasPermission("gearz.chat.filters.bypass")) return filterData;
-        GearzPlayer gearzPlayer;
-        try {
-            gearzPlayer = new GearzPlayer(player);
-        } catch (GearzPlayer.PlayerNotFoundException e) {
-            return filterData;
-        }
-        if (gearzPlayer.isMuted()) {
-            LoginHandler.MuteData muteData = gearzPlayer.getMuteData();
-            player.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
-            filterData.setCancelled(true);
-            return filterData;
-        }
 
         if (GearzBungee.getInstance().getChat().isMuted()) {
             player.sendMessage(GearzBungee.getInstance().getFormat("chat-muted"));

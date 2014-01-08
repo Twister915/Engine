@@ -10,6 +10,8 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.player.bungee.GearzPlayer;
+import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
@@ -54,6 +56,19 @@ public class ChatManager implements Listener, TCommandHandler {
         if (GearzBungee.getInstance().getChat().isMuted()) {
             event.setCancelled(true);
             player.sendMessage(GearzBungee.getInstance().getFormat("chat-muted"));
+            return;
+        }
+
+        GearzPlayer gearzPlayer;
+        try {
+            gearzPlayer = new GearzPlayer(player);
+        } catch (GearzPlayer.PlayerNotFoundException e) {
+            return;
+        }
+        if (gearzPlayer.isMuted()) {
+            LoginHandler.MuteData muteData = gearzPlayer.getMuteData();
+            player.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
+            event.setCancelled(true);
             return;
         }
 
