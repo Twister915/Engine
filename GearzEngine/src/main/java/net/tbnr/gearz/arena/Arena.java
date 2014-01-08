@@ -78,16 +78,12 @@ public abstract class Arena implements Votable {
 
     public void loadWorld() throws GearzException, ZipException, IOException {
         GridFSDBFile one = Arena.bucket.findOne(new ObjectId(this.worldId));
-        if (one == null) {
-            throw new GearzException("Failed to load world - not found");
-        }
+        if (one == null) throw new GearzException("Failed to load world - not found");
         String worldName = RandomUtils.getRandomString(16);
         File zipHandle = new File(Gearz.getInstance().getDataFolder(), RandomUtils.getRandomString(16) + ".gWorld");
         one.writeTo(zipHandle);
         File world = new File(Bukkit.getWorldContainer(), worldName);
-        if (!world.mkdir()) {
-            throw new GearzException("Could not create world directory!");
-        }
+        if (!world.mkdir()) throw new GearzException("Could not create world directory!");
         ZipFile zippedWorld = new ZipFile(zipHandle);
         zippedWorld.extractAll(world.getPath());
         this.world = WorldCreator.name(worldName).createWorld();

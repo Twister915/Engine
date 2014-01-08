@@ -59,14 +59,12 @@ public abstract class TPlugin extends JavaPlugin {
         try {
             this.saveDefaultConfig(); //save the config
             this.commandDispatch = new TCommandDispatch(this); //Create a new command dispatch
-            if (TPlugin.playerManager == null) {
-                if (this instanceof TDatabaseMaster) {
-                    TPlugin.playerManager = new TPlayerManager(((TDatabaseMaster) this).getAuthDetails());
-                    this.registerEvents(this.getPlayerManager());
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        TPlayer tPlayer = this.getPlayerManager().addPlayer(player);
-                        Bukkit.getPluginManager().callEvent(new TPlayerJoinEvent(tPlayer));
-                    }
+            if (TPlugin.playerManager == null && this instanceof TDatabaseMaster) {
+                TPlugin.playerManager = new TPlayerManager(((TDatabaseMaster) this).getAuthDetails());
+                this.registerEvents(this.getPlayerManager());
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    TPlayer tPlayer = this.getPlayerManager().addPlayer(player);
+                    Bukkit.getPluginManager().callEvent(new TPlayerJoinEvent(tPlayer));
                 }
             }
             this.enable(); //Enable the plugin using the abstract method (hand this off to the plugin itself)
@@ -168,9 +166,7 @@ public abstract class TPlugin extends JavaPlugin {
         String string = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(formatPath));
         if (data != null) {
             for (String[] dataPart : data) {
-                if (dataPart.length < 2) {
-                    continue;
-                }
+                if (dataPart.length < 2) continue;
                 string = string.replaceAll(dataPart[0], dataPart[1]);
             }
         }

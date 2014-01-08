@@ -19,14 +19,10 @@ public class TabListener {
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType() == PacketType.Play.Client.TAB_COMPLETE) {
                     try {
-                        if (event.getPlayer().hasPermission("gearz.staff")) {
-                            return;
-                        }
+                        if (event.getPlayer().hasPermission("gearz.staff")) return;
                         PacketContainer packet = event.getPacket();
                         String message = packet.getSpecificModifier(String.class).read(0);
-                        if ((message.startsWith("/"))) {
-                            event.setCancelled(true);
-                        }
+                        if ((message.startsWith("/"))) event.setCancelled(true);
                     } catch (FieldAccessException ignored) {
 
                     }

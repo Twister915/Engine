@@ -100,9 +100,7 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
     public void enable() {
         EnderBar.resetPlayers();
         ServerManager.setHelper(this);
-        if (Gearz.bungeeName2 == null) {
-            Gearz.bungeeName2 = RandomUtils.getRandomString(16);
-        }
+        if (Gearz.bungeeName2 == null) Gearz.bungeeName2 = RandomUtils.getRandomString(16);
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.kickPlayer("Server is reloading!");
         }

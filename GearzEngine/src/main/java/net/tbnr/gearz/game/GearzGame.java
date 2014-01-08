@@ -106,9 +106,7 @@ public abstract class GearzGame implements Listener {
             @Override
             public void onItemSelect(InventoryGUI gui, InventoryGUI.InventoryGUIItem item, Player player) {
                 Player target = Bukkit.getServer().getPlayer(item.getName());
-                if (target == null) {
-                    return;
-                }
+                if (target == null) return;
                 player.getPlayer().teleport(target.getLocation());
                 player.closeInventory();
                 player.sendMessage(getFormat("spectator-tp", new String[]{"<player>", target.getName()}));
@@ -1042,9 +1040,7 @@ public abstract class GearzGame implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         GearzPlayer player = GearzPlayer.playerFromPlayer(event.getPlayer());
-        if (!isIngame(player)) {
-            return;
-        }
+        if (!isIngame(player)) return;
         if (isSpectating(player)) {
             player.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
             event.setCancelled(true);

@@ -87,9 +87,9 @@ public class TPlayer {
     protected TPlayer(Player player) {
         this.playerName = player.getName();
         this.timeJoined = Calendar.getInstance().getTimeInMillis();
-        if (TPlayerManager.getInstance().getCollection() == null) {
-            return;
-        }
+
+        if (TPlayerManager.getInstance().getCollection() == null) return;
+        
         this.playerDocument = TPlayer.getPlayerObject(player.getName());
         if (this.playerDocument == null) {
             this.playerDocument = new BasicDBObject("username", player.getName()); //So we didn't find it, create our own, and set the username var.
@@ -217,9 +217,7 @@ public class TPlayer {
     public void removeAllPotionEffects(PotionEffectType... exclusions) {
         List<PotionEffectType> doNotRemove = Arrays.asList(exclusions);
         for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
-            if (doNotRemove.contains(effect.getType())) {
-                continue;
-            }
+            if (doNotRemove.contains(effect.getType())) continue;
             this.getPlayer().removePotionEffect(effect.getType());
         }
     }
@@ -235,18 +233,14 @@ public class TPlayer {
         }
         List<PotionEffectType> potionEffectTypes = Arrays.asList(potionEffects);
         for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
-            if (potionEffectTypes.contains(effect.getType())) {
-                this.getPlayer().removePotionEffect(effect.getType());
-            }
+            if (potionEffectTypes.contains(effect.getType())) this.getPlayer().removePotionEffect(effect.getType());
         }
     }
 
     public Integer getCurrentPotionLevel(PotionEffectType effectType) {
         Integer level = -1;
         for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
-            if (!effect.getType().equals(effectType)) {
-                continue;
-            }
+            if (!effect.getType().equals(effectType)) continue;
             level = effect.getAmplifier();
             break;
         }
@@ -275,23 +269,14 @@ public class TPlayer {
      * @param slot       The slot to put the item in
      */
     public ItemStack giveItem(Material type, int quantity, short data_value, String title, String[] lore, int slot) {
-        if (type == null) {
-            return null;
-        }
-        if (quantity < 1) {
-            return null;
-        }
+        if (type == null || quantity < 1) return null;
+
         ItemStack itemStack = new ItemStack(type, quantity);
-        if (data_value > 1) {
-            itemStack.setDurability(data_value);
-        }
+        if (data_value > 1) itemStack.setDurability(data_value);
+
         ItemMeta meta = itemStack.getItemMeta();
-        if (title != null) {
-            meta.setDisplayName(title);
-        }
-        if (lore != null) {
-            meta.setLore(Arrays.asList(lore));
-        }
+        if (title != null) meta.setDisplayName(title);
+        if (lore != null) meta.setLore(Arrays.asList(lore));
         itemStack.setItemMeta(meta);
         //HotBar slots are from 1-9
         if (slot < 1 || slot > 9) {
@@ -422,12 +407,8 @@ public class TPlayer {
     void disconnected() {
         getPlayerDocument().put("online", false);
         Object o = getPlayerDocument().get("time-online");
-        if (o == null) {
-            o = 0l;
-        }
-        if (!(o instanceof Long)) {
-            return;
-        }
+        if (o == null) o = 0l;
+        if (!(o instanceof Long)) return;
         long timeOnline = (Long) o;
         long now = Calendar.getInstance().getTimeInMillis();
         timeOnline = timeOnline + (now - timeJoined);
@@ -568,23 +549,16 @@ public class TPlayer {
      * Used to reset everything about the player, can be fine tuned the reset params.
      */
     public void resetPlayer(PlayerResetParams params) {
-        if (!isOnline()) {
-            return;
-        }
-        if (params == null) {
-            params = new PlayerResetParams();
-        }
+        if (!isOnline()) return;
+        if (params == null) params = new PlayerResetParams();
+
         if (params.isClearXP()) {
             getPlayer().setExp(0);
             getPlayer().setLevel(0);
             getPlayer().setTotalExperience(0);
         }
-        if (params.isClearPotions()) {
-            removeAllPotionEffects();
-        }
-        if (params.isResetInventory()) {
-            clearInventory();
-        }
+        if (params.isClearPotions()) removeAllPotionEffects();
+        if (params.isResetInventory()) clearInventory();
         if (params.isRestoreHealth()) {
             getPlayer().setHealth(getPlayer().getMaxHealth());
             getPlayer().setRemainingAir(20);
@@ -628,18 +602,15 @@ public class TPlayer {
      * Resets the Scoreboard
      */
     public void resetScoreboard() {
-        if (!this.isOnline()) {
-            return;
-        }
+        if (!this.isOnline()) return;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.sidebar = null;
         this.getPlayer().setScoreboard(this.scoreboard);
     }
 
     public void setScoreboardSideTitle(String title) {
-        if (!this.isOnline()) {
-            return;
-        }
+        if (!this.isOnline()) return;
+
         if (this.sidebar == null) {
             String s = new BigInteger(13, Gearz.getRandom()).toString(5);
             this.sidebar = this.scoreboard.registerNewObjective(s.substring(0, Math.min(s.length(), 15)), "dummy");
@@ -649,17 +620,12 @@ public class TPlayer {
     }
 
     public void setScoreBoardSide(String key, int value) {
-        if (!this.isOnline()) {
-            return;
-        }
+        if (!this.isOnline()) return;
+
         Score score = this.sidebar.getScore(Bukkit.getOfflinePlayer(key.substring(0, Math.min(key.length(), 15))));
         score.setScore(value);
-        if (getPlayer() == null) {
-            return;
-        }
-        if (!getPlayer().isOnline()) {
-            return;
-        }
+        if (getPlayer() == null) return;
+        if (!getPlayer().isOnline()) return;
         getPlayer().setScoreboard(this.scoreboard);
     }
 

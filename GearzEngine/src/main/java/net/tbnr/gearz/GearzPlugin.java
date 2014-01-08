@@ -38,7 +38,6 @@ public abstract class GearzPlugin extends TPlugin {
     protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame> game) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
 
-
         if (meta == null) throw new GearzException("No GameMeta found!");
 
         //Meta values

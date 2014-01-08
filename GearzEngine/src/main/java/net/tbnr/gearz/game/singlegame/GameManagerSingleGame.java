@@ -374,25 +374,19 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (this.runningGame != null && this.runningGame.isRunning()) {
-            return;
-        }
+        if (this.runningGame != null && this.runningGame.isRunning()) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onHangingBreak(HangingBreakByEntityEvent event) {
-        if (this.runningGame != null && this.runningGame.isRunning()) {
-            return;
-        }
+        if (this.runningGame != null && this.runningGame.isRunning()) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent event) {
-        if (event.toWeatherState()) {
-            event.setCancelled(true);
-        }
+        if (event.toWeatherState()) event.setCancelled(true);
     }
 
     @Override
@@ -411,6 +405,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         Integer integer = priorityForPlayer(p);
         for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
             GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
+            if(wannaBe.equals(p)) continue;
             if(integer < priorityForPlayer(wannaBe)) candidate = wannaBe;
         }
         return candidate;
