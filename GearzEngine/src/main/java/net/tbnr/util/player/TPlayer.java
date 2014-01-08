@@ -437,7 +437,7 @@ public class TPlayer {
                 getPlayerDocument().put("last-seen", now);
                 save();
             }
-        }, 2L);
+        }, 40L);
     }
 
     /**
