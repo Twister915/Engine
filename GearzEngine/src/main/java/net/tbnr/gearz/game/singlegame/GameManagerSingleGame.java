@@ -36,10 +36,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -110,6 +107,18 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         return TCommandStatus.SUCCESSFUL;
     }
 
+    @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+        final GearzPlayer gearzPlayer = GearzPlayer.playerFromPlayer(event.getPlayer());
+        GearzPlayer personToKick = candidateForKicking(gearzPlayer);
+        if(personToKick != null) {
+            personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
+        } else {
+            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+            event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(final TPlayerJoinEvent event) {
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length);
@@ -118,15 +127,6 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         event.setJoinMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
         spawn(gearzPlayer);
         if (this.runningGame == null) {
-            if (Bukkit.getOnlinePlayers().length > getGameMeta().maxPlayers()) {
-                GearzPlayer personToKick = candidateForKicking(gearzPlayer);
-                if(personToKick != null) {
-                    personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
-                } else {
-                    gearzPlayer.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
-                    return;
-                }
-        }
             this.votingSession.addPlayer(gearzPlayer);
         } else {
             this.runningGame.addPlayer(gearzPlayer);
