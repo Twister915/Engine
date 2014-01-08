@@ -420,24 +420,20 @@ public class TPlayer {
      * Called by the TPlayerManager when the player disconnects. Do not call otherwise
      */
     void disconnected() {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Gearz.getInstance(), new Runnable() {
-            public void run() {
-                getPlayerDocument().put("online", false);
-                Object o = getPlayerDocument().get("time-online");
-                if (o == null) {
-                    o = 0l;
-                }
-                if (!(o instanceof Long)) {
-                    return;
-                }
-                long timeOnline = (Long) o;
-                long now = Calendar.getInstance().getTimeInMillis();
-                timeOnline = timeOnline + (now - timeJoined);
-                getPlayerDocument().put("time-online", timeOnline);
-                getPlayerDocument().put("last-seen", now);
-                save();
-            }
-        }, 40L);
+        getPlayerDocument().put("online", false);
+        Object o = getPlayerDocument().get("time-online");
+        if (o == null) {
+            o = 0l;
+        }
+        if (!(o instanceof Long)) {
+            return;
+        }
+        long timeOnline = (Long) o;
+        long now = Calendar.getInstance().getTimeInMillis();
+        timeOnline = timeOnline + (now - timeJoined);
+        getPlayerDocument().put("time-online", timeOnline);
+        getPlayerDocument().put("last-seen", now);
+        save();
     }
 
     /**

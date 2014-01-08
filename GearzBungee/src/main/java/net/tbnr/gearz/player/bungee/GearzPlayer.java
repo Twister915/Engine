@@ -12,6 +12,7 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -112,39 +113,43 @@ public class GearzPlayer {
         return ProxyServer.getInstance().getPlayer(this.username);
     }
 
-    public void punishPlayer(String reason, GearzPlayer issuer, PunishmentType punishmentType, Date end, boolean console) {
+    public void punishPlayer(final String reason, final GearzPlayer issuer, final PunishmentType punishmentType, final Date end, final boolean console) {
         if (getPlayerDocument() == null) return;
 
-        ObjectId objectId = null;
-        if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
+        ProxyServer.getInstance().getScheduler().schedule(GearzBungee.getInstance(), new Runnable() {
+            public void run() {
+                ObjectId objectId = null;
+                if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
 
-        DBObject ban = new BasicDBObjectBuilder().
-                add("issuer", (console ? "CONSOLE" : objectId)).
-                add("valid", true).
-                add("reason", reason).
-                add("type", punishmentType.toString()).
-                add("time", new Date()).
-                add("end", end).get();
-        DBObject dbObject = this.getPlayerDocument();
-        for (String string : dbObject.keySet()) {
-            ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string));
-        }
-        Object bansl = dbObject.get("punishments");
-        if (!(bansl instanceof BasicDBList)) {
-            if (dbObject.get("punishments") == null) {
-                ProxyServer.getInstance().getLogger().info("Still null!");
+                DBObject ban = new BasicDBObjectBuilder().
+                        add("issuer", (console ? "CONSOLE" : objectId)).
+                        add("valid", true).
+                        add("reason", reason).
+                        add("type", punishmentType.toString()).
+                        add("time", new Date()).
+                        add("end", end).get();
+                DBObject dbObject = getPlayerDocument();
+                for (String string : dbObject.keySet()) {
+                    ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string));
+                }
+                Object bansl = dbObject.get("punishments");
+                if (!(bansl instanceof BasicDBList)) {
+                    if (dbObject.get("punishments") == null) {
+                        ProxyServer.getInstance().getLogger().info("Still null!");
+                    }
+                    bansl = new BasicDBList();
+                }
+                ProxyServer.getInstance().getLogger().info("_______________");
+
+                BasicDBList bans = (BasicDBList) bansl;
+                bans.add(ban);
+                for (String string : bans.keySet()) {
+                    ProxyServer.getInstance().getLogger().info(string + ":" + bans.get(string));
+                }
+                dbObject.put("punishments", bans);
+                getCollection().save(dbObject);
             }
-            bansl = new BasicDBList();
-        }
-        ProxyServer.getInstance().getLogger().info("_______________");
-
-        BasicDBList bans = (BasicDBList) bansl;
-        bans.add(ban);
-        for (String string : bans.keySet()) {
-            ProxyServer.getInstance().getLogger().info(string + ":" + bans.get(string));
-        }
-        dbObject.put("punishments", bans);
-        getCollection().save(dbObject);
+        }, 2, TimeUnit.SECONDS);
         String name = (console ? "CONSOLE" : issuer.getName());
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
