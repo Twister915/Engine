@@ -58,6 +58,7 @@ public class ModBroadcast implements TCommandHandler, Listener {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
         if (modBroadcast.contains(player.getName())) {
             sendModBroadcast(player.getName(), event.getMessage());
+            event.setCancelled(true);
         }
     }
 
