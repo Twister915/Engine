@@ -1,6 +1,7 @@
 package net.tbnr.gearz;
 
 import lombok.Getter;
+import lombok.NonNull;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import net.tbnr.gearz.activerecord.GModel;
@@ -210,7 +211,7 @@ public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, 
         return this.gamePlugins.size() > 0;
     }
 
-    private static void delete(File file) {
+    private static void delete(@NonNull File file) {
         if (file.isDirectory()) {
             try {
                 for (File f : file.listFiles()) {

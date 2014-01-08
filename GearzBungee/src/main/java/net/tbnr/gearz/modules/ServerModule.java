@@ -83,12 +83,8 @@ public class ServerModule implements TCommandHandler, Listener {
                 return TCommandStatus.SUCCESSFUL;
             }
             if (!server.isCanJoin()) {
-                if (server.getStatusString().equals("lobby") && player.hasPermission("gearz.priority")) {
-                    kickPlayerForPriority(server);
-                } else {
-                    player.sendMessage(GearzBungee.getInstance().getFormat("server-not-joinable", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
+                player.sendMessage(GearzBungee.getInstance().getFormat("server-not-joinable", false));
+                return TCommandStatus.SUCCESSFUL;
             }
             GearzBungee.connectPlayer(player, server.getBungee_name());
             return TCommandStatus.SUCCESSFUL;
@@ -115,18 +111,6 @@ public class ServerModule implements TCommandHandler, Listener {
         }
 
         return TCommandStatus.SUCCESSFUL;
-    }
-
-    private void kickPlayerForPriority(Server server) {
-        String bungee_name = server.getBungee_name();
-        ServerInfo info = ProxyServer.getInstance().getServerInfo(bungee_name);
-        if (info == null) return;
-        Collection<ProxiedPlayer> players = info.getPlayers();
-        ProxiedPlayer player = null;
-        while (player == null || player.hasPermission("gearz.staff")) {
-            player = (ProxiedPlayer) players.toArray()[GearzBungee.getRandom().nextInt(players.size())];
-        }
-        GearzBungee.connectPlayer(player, info.getName());
     }
 
     @Override

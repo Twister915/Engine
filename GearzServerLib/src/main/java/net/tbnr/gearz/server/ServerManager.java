@@ -29,8 +29,12 @@ public class ServerManager {
         }
         Integer current = 1;
         List<Server> serversWithGame = getServersWithGame(currentGame);
+        List<Integer> serverNumbers = new ArrayList<>();
         for (Server s : serversWithGame) {
-            if (s.getNumber().equals(current)) current = s.getNumber() + 1;
+            serverNumbers.add(s.getNumber());
+        }
+        while (serverNumbers.contains(current)) {
+            current++;
         }
         Server serv = new Server();
         serv.setGame(currentGame);
@@ -104,5 +108,11 @@ public class ServerManager {
             if (!games.contains(server1.getGame())) games.add(server1.getGame());
         }
         return games;
+    }
+
+    public static void setMaximumPlayers(Integer maximumPlayers) {
+        Server server = getThisServer();
+        server.setMaximumPlayers(maximumPlayers);
+        server.save();
     }
 }

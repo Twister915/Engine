@@ -52,11 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 11/25/13
- * Time: 2:03 PM
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GameManagerSingleGame implements GameManager, Listener, VotingHandler, TCommandHandler {
     private final Class<? extends GearzGame> gearzGameClass;
@@ -65,13 +61,9 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
     private GearzPlugin plugin;
     private InventoryBarVotingSession votingSession;
     private GearzGame runningGame;
-    private List<String> priorities = new ArrayList<String>();
+    private List<String> priorities = new ArrayList<>();
 
     public GameManagerSingleGame(Class<? extends GearzGame> gameClass, GearzPlugin plugin) throws GearzException {
-
-        populatePrioritiesList();
-
-        //plugin.registerEvents(this);
         this.gearzGameClass = gameClass;
         GameMeta gameMeta1 = gameClass.getAnnotation(GameMeta.class);
         if (gameMeta1 == null) {
@@ -85,6 +77,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         } catch (ZipException | IOException e) {
             e.printStackTrace();
         }
+        populatePrioritiesList();
         load();
     }
 
@@ -93,6 +86,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
             @Override
             public void run() {
                 ServerManager.setStatusString("load_lobby");
+                ServerManager.setMaximumPlayers(gameMeta.maxPlayers());
                 ServerManager.setOpenForJoining(false);
             }
         }, 2L);
@@ -124,7 +118,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         event.setJoinMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
         spawn(gearzPlayer);
         if (this.runningGame == null) {
-            if (Bukkit.getOnlinePlayers().length == getGameMeta().maxPlayers()) {
+            if (Bukkit.getOnlinePlayers().length > getGameMeta().maxPlayers()) {
                 GearzPlayer personToKick = candidateForKicking(gearzPlayer);
                 if(personToKick != null) {
                     personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
@@ -419,13 +413,13 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
 
     /**
      * Get's priority of a player
-     * @param p
+     * @param p Player to test priority for.
      * @return priority of player, -1 default
      */
     @NonNull
     private Integer priorityForPlayer(GearzPlayer p) {
         Integer priority = -1;
-        String permissionPriority = "";
+        String permissionPriority;
         for (int x = 0, l = priorities.size(); x < l; x++) {
             permissionPriority = "gearz.priority."+priorities.get(x);
             if (p.getPlayer().hasPermission(permissionPriority)) {

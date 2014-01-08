@@ -31,6 +31,8 @@ public class Server extends GModel {
     private String address;
     @BasicField
     private Integer port;
+    @BasicField
+    private Integer maximumPlayers;
 
     public Server() {
         super();
@@ -42,5 +44,10 @@ public class Server extends GModel {
 
     public Server(DB database, DBObject dBobject) {
         super(database, dBobject);
+    }
+
+    public Integer getPlayerCount() {
+        if (this.playerCount == null) return 0;
+        return this.playerCount;
     }
 }
