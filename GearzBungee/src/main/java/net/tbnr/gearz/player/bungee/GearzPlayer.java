@@ -144,6 +144,10 @@ public class GearzPlayer {
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
         }
+        if (punishmentType == PunishmentType.MUTE) {
+            LoginHandler.MuteData muteData = new LoginHandler.MuteData(end, punishmentType, reason, name);
+            this.setMuteData(muteData);
+        }
     }
 
     public void punishPlayer(String reason, GearzPlayer issuer, PunishmentType punishmentType, boolean console) {
@@ -243,11 +247,11 @@ public class GearzPlayer {
             PunishmentType punishmentType = PunishmentType.valueOf(mute.getString("type"));
             if (mute.getBoolean("valid")) {
                 if (punishmentType == PunishmentType.MUTE) {
-                    return new LoginHandler.MuteData(new Date(), PunishmentType.MUTE, true, mute.getString("issuer"), mute.getString("reason"));
+                    return new LoginHandler.MuteData(new Date(), PunishmentType.MUTE, mute.getString("issuer"), mute.getString("reason"));
                 } else if (punishmentType == PunishmentType.TEMP_MUTE) {
                     Date end = mute.getDate("end");
                     if (new Date().before(end)) return null;
-                    return new LoginHandler.MuteData(end, PunishmentType.TEMP_MUTE, false, mute.getString("issuer"), mute.getString("reason"));
+                    return new LoginHandler.MuteData(end, PunishmentType.TEMP_MUTE, mute.getString("issuer"), mute.getString("reason"));
                 }
             }
         }

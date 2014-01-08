@@ -53,10 +53,10 @@ public class LoginHandler implements Listener {
         String reason;
         String issuer;
 
-        public MuteData(Date end, PunishmentType punishmentType, boolean perm, String reason, String issuer) {
+        public MuteData(Date end, PunishmentType punishmentType, String reason, String issuer) {
             this.end = end;
             this.punishmentType = punishmentType;
-            this.perm = perm;
+            this.perm = (punishmentType == PunishmentType.MUTE);
             this.reason = reason;
             this.issuer = issuer;
         }

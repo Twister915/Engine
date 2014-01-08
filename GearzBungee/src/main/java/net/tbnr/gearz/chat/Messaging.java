@@ -69,7 +69,7 @@ public class Messaging implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    @TCommand(senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/reply", permission = "gearz.message", name = "reply", aliases = {"r"})
+    @TCommand(senders = {TCommandSender.Player}, usage = "/reply", permission = "gearz.message", name = "reply", aliases = {"r"})
     @SuppressWarnings("unused")
     public TCommandStatus replyCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         String msg = compile(args, 0, args.length);
