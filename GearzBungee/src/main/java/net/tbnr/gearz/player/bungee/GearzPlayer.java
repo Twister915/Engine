@@ -145,11 +145,18 @@ public class GearzPlayer {
         bans.add(ban);
         dbObject.put("punishments", bans);
         getCollection().save(dbObject);
-        save();
         String name = (console ? "CONSOLE" : issuer.getName());
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
         }
+    }
+
+    public void punishPlayer(String reason, GearzPlayer issuer, PunishmentType punishmentType, boolean console) {
+        punishPlayer(reason, issuer, punishmentType, new Date(), console);
+    }
+
+    public void kickPlayer(String reason, String issuer) {
+        this.getProxiedPlayer().disconnect(GearzBungee.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
     }
 
     public void unban() {
@@ -161,14 +168,6 @@ public class GearzPlayer {
         getActiveMute().put("valid", false);
         this.muteData = null;
         save();
-    }
-
-    public void punishPlayer(String reason, GearzPlayer issuer, PunishmentType punishmentType, boolean console) {
-        punishPlayer(reason, issuer, punishmentType, new Date(), console);
-    }
-
-    public void kickPlayer(String reason, String issuer) {
-        this.getProxiedPlayer().disconnect(GearzBungee.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
     }
 
     public void appealPunishment(BasicDBObject punishment) {
