@@ -84,7 +84,7 @@ public class PunishCommands implements TCommandHandler {
         String length = args[1];
         Long duration = parseTime(length);
         Date end = new Date();
-        end.setTime(end.getTime() + duration);
+        end.setTime(duration);
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.TEMP_BAN, end, true);
         } else {
@@ -225,7 +225,7 @@ public class PunishCommands implements TCommandHandler {
         String length = args[1];
         Long duration = parseTime(length);
         Date end = new Date();
-        end.setTime(end.getTime() + duration);
+        end.setTime(duration);
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.TEMP_MUTE, end, true);
         } else {
@@ -239,7 +239,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
-            name = "ggipban",
+            name = "gipban",
             usage = "/ipban <ip> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.ipban")
@@ -323,9 +323,6 @@ public class PunishCommands implements TCommandHandler {
             }
         }
         if (!found)
-            throw new Exception("Illegal Date");
-
-        if (years > 20)
             throw new Exception("Illegal Date");
 
         Calendar c = new GregorianCalendar();
