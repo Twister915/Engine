@@ -411,8 +411,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         Integer integer = priorityForPlayer(p);
         for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
             GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
-            if (wannaBe.equals(p)) continue;
-            if(integer > priorityForPlayer(wannaBe)) candidate = wannaBe;
+            if(integer < priorityForPlayer(wannaBe)) candidate = wannaBe;
         }
         return candidate;
     }
