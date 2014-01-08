@@ -8,6 +8,7 @@ import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.MapImageRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -231,6 +232,8 @@ public class InventoryBarVotingSession extends VotingSession implements Listener
         if (updateSlot != -1 && updateSlot != slotFor) {
             updateVotable(updateSlot);
         }
+        player.getPlayer().sendMessage(Gearz.getInstance().getFormat("formats.voted-for", false, new String[]{"<map>", v.getName()}));
+        player.getTPlayer().playSound(Sound.ORB_PICKUP);
         updateVotable(slotFor);
     }
 

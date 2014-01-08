@@ -36,7 +36,7 @@ formats:
   blastoff-itemlore: "&e&l<online> &cplayers"
   h2p-book-author: "&aTBNR Server"
   h2p-book-title: "&aHow to play &3<game>&a."
-  map-lag-reminder: "&f&lThe map is still loading. Don't leave the game!"
+  voted-for: "&3You have voted for &a<map>&3."
 game-strings: #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version>
               #<author>, <description>, and <key>
   prefix: "<s>&l[<p><gn><s>&l]&r<s> "
