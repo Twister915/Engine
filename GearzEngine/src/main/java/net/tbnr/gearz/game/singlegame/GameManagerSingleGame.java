@@ -407,10 +407,11 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
     private GearzPlayer candidateForKicking(GearzPlayer p) {
         GearzPlayer candidate = null;
         List<Player> cachedOnlinePlayers = Arrays.asList(Bukkit.getOnlinePlayers().clone());
-
+        Integer integer = priorityForPlayer(p);
         for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
             GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
-            if(priorityForPlayer(p) > priorityForPlayer(wannaBe)) candidate = wannaBe;
+            if (wannaBe.equals(p)) continue;;
+            if(integer > priorityForPlayer(wannaBe)) candidate = wannaBe;
         }
         return candidate;
     }
