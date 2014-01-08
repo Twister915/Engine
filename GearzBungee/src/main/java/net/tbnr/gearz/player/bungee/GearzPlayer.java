@@ -129,23 +129,13 @@ public class GearzPlayer {
                         add("time", new Date()).
                         add("end", end).get();
                 DBObject dbObject = getPlayerDocument();
-                for (String string : dbObject.keySet()) {
-                    ProxyServer.getInstance().getLogger().info(string + ":" + dbObject.get(string));
-                }
+
                 Object bansl = dbObject.get("punishments");
                 if (!(bansl instanceof BasicDBList)) {
-                    if (dbObject.get("punishments") == null) {
-                        ProxyServer.getInstance().getLogger().info("Still null!");
-                    }
                     bansl = new BasicDBList();
                 }
-                ProxyServer.getInstance().getLogger().info("_______________");
-
                 BasicDBList bans = (BasicDBList) bansl;
                 bans.add(ban);
-                for (String string : bans.keySet()) {
-                    ProxyServer.getInstance().getLogger().info(string + ":" + bans.get(string));
-                }
                 dbObject.put("punishments", bans);
                 getCollection().save(dbObject);
             }
@@ -192,9 +182,7 @@ public class GearzPlayer {
         }
         BasicDBList punishment = (BasicDBList) punishmentsl;
         for (Object o : punishment) {
-            ProxyServer.getInstance().getLogger().info("this called");
             if (!(o instanceof BasicDBObject)) continue;
-            ProxyServer.getInstance().getLogger().info("dis this get called");
             BasicDBObject ban = (BasicDBObject) o;
             PunishmentType punishmentType = PunishmentType.valueOf(ban.getString("type"));
             if (punishmentType == PunishmentType.TEMP_BAN && ban.getBoolean("valid")) {
@@ -308,6 +296,11 @@ public class GearzPlayer {
         if (muteData == null) return false;
         if (muteData.isPerm()) return true;
         Date end = muteData.getEnd();
-        return new Date().before(end);
+        if (new Date().before(end)) {
+            return true;
+        } else {
+            muteData = null;
+            return false;
+        }
     }
 }
