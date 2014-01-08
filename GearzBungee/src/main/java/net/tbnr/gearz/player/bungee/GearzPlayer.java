@@ -139,10 +139,10 @@ public class GearzPlayer {
         ProxyServer.getInstance().getLogger().info("_______________");
 
         BasicDBList bans = (BasicDBList) bansl;
+        bans.add(ban);
         for (String string : bans.keySet()) {
             ProxyServer.getInstance().getLogger().info(string + ":" + bans.get(string));
         }
-        bans.add(ban);
         dbObject.put("punishments", bans);
         getCollection().save(dbObject);
         String name = (console ? "CONSOLE" : issuer.getName());
