@@ -142,9 +142,9 @@ public class GearzPlayer {
         for (String string : bans.keySet()) {
             ProxyServer.getInstance().getLogger().info(string + ":" + bans.get(string));
         }
+        bans.add(ban);
         dbObject.put("punishments", bans);
         getCollection().save(dbObject);
-        bans.add(ban);
         save();
         String name = (console ? "CONSOLE" : issuer.getName());
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
