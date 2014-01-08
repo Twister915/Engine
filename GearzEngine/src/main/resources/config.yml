@@ -62,7 +62,7 @@ game-strings: #All strings should use colors <p> and <s>, and has <gname> (longN
   voting-clock-title: "&aCountdown until start."
   death-message: "<p><killer><s> has killed <p><victim><s>!"
   xp-earned: "<p>You have earned <s><xp><p> XP for playing!"
-  xp-earned: "<p>You have earned <s><points><p> points for playing!"
+  points-earned: "<p>You have earned <s><points><p> points for playing!"
   game-void: "&cYour points and XP from this game will not be earned."
   solo-death: "<p><victim><s> has died!"
   not-enough-players: "<s>We still need <p><num><s> more players!"
