@@ -130,6 +130,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
                     personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
                 } else {
                     gearzPlayer.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
+                    return;
                 }
         }
             this.votingSession.addPlayer(gearzPlayer);
@@ -410,7 +411,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         Integer integer = priorityForPlayer(p);
         for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
             GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
-            if (wannaBe.equals(p)) continue;;
+            if (wannaBe.equals(p)) continue;
             if(integer > priorityForPlayer(wannaBe)) candidate = wannaBe;
         }
         return candidate;
