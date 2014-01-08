@@ -393,12 +393,14 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
      * @return GearzPlayer ~ player with lower priority then them
      */
     @NonNull
-    private GearzPlayer candidateForKicking(GearzPlayer p) {
+    private GearzPlayer candidateForKicking(@NonNull GearzPlayer p) {
         GearzPlayer candidate = null;
         List<Player> cachedOnlinePlayers = Arrays.asList(Bukkit.getOnlinePlayers().clone());
         Integer integer = priorityForPlayer(p);
         for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
             GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
+            Gearz.getInstance().getLogger().info("Priority: " + priorityForPlayer(wannaBe) + "<-- WannaBe : Trying to Join ---> " + integer);
+            if (p.equals(wannaBe)) continue;
             if(integer > priorityForPlayer(wannaBe)) candidate = wannaBe;
         }
         return candidate;
