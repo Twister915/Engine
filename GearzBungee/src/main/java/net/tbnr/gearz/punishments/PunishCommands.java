@@ -12,8 +12,12 @@ import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jake on 1/4/14.
@@ -78,7 +82,7 @@ public class PunishCommands implements TCommandHandler {
 
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
-        int duration = parseTime(length);
+        Long duration = parseTime(length);
         Date end = new Date();
         end.setTime(end.getTime() + duration);
         if (type.equals(TCommandSender.Console)) {
@@ -219,7 +223,7 @@ public class PunishCommands implements TCommandHandler {
 
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
-        int duration = parseTime(length);
+        Long duration = parseTime(length);
         Date end = new Date();
         end.setTime(end.getTime() + duration);
         if (type.equals(TCommandSender.Console)) {
@@ -269,49 +273,77 @@ public class PunishCommands implements TCommandHandler {
         return GearzBungee.getInstance().compile(args, min, max);
     }
 
-    private int parseTime(String time) {
-        String[] arr = time.split("");
-        String sdur = "0";
-        for (String c : arr) {
-            try {
-                if (Integer.valueOf(c) != null) sdur += c;
-            } catch (NumberFormatException e) {
-                // ignored
+    private Long parseTime(String time) {
+        long timeReturn;
+        try {
+            timeReturn = parseDateDiff(time, true);
+        } catch (Exception e) {
+            timeReturn = 0;
+        }
+        return timeReturn;
+    }
+
+    public long parseDateDiff(String time, boolean future) throws Exception {
+        Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?", Pattern.CASE_INSENSITIVE);
+        Matcher m = timePattern.matcher(time);
+        int years = 0;
+        int months = 0;
+        int weeks = 0;
+        int days = 0;
+        int hours = 0;
+        int minutes = 0;
+        int seconds = 0;
+        boolean found = false;
+        while (m.find()) {
+            if (m.group() == null || m.group().isEmpty()) {
+                continue;
+            }
+            for (int i = 0; i < m.groupCount(); i++) {
+                if (m.group(i) != null && !m.group(i).isEmpty()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                if (m.group(1) != null && !m.group(1).isEmpty())
+                    years = Integer.parseInt(m.group(1));
+                if (m.group(2) != null && !m.group(2).isEmpty())
+                    months = Integer.parseInt(m.group(2));
+                if (m.group(3) != null && !m.group(3).isEmpty())
+                    weeks = Integer.parseInt(m.group(3));
+                if (m.group(4) != null && !m.group(4).isEmpty())
+                    days = Integer.parseInt(m.group(4));
+                if (m.group(5) != null && !m.group(5).isEmpty())
+                    hours = Integer.parseInt(m.group(5));
+                if (m.group(6) != null && !m.group(6).isEmpty())
+                    minutes = Integer.parseInt(m.group(6));
+                if (m.group(7) != null && !m.group(7).isEmpty())
+                    seconds = Integer.parseInt(m.group(7));
+                break;
             }
         }
-        int duration = Integer.valueOf(sdur);
-        if (duration == 0) {
-            return 0;
-        }
+        if (!found)
+            throw new Exception("Illegal Date");
 
-        if (time.contains("s") || time.contains("second")) {
-            return duration;
-        }
-        if (time.contains("m") || time.contains("minute")) {
-            duration *= 60;
-            return duration * 1000;
-        }
-        if (time.contains("h") || time.contains("hour")) {
-            duration *= 60 * 60;
-            return duration * 1000;
-        }
-        if (time.contains("d") || time.contains("day")) {
-            duration *= 60 * 60 * 24;
-            return duration;
-        }
-        if (time.contains("w") || time.contains("week")) {
-            duration *= 60 * 60 * 24 * 7;
-            return duration * 1000;
-        }
-        if (time.contains("month")) {
-            duration *= 60 * 60 * 24 * 31;
-            return duration * 1000;
-        }
-        if (time.contains("y") || time.contains("year")) {
-            duration *= 60 * 60 * 24 * 365;
-            return duration * 1000;
-        }
-        return 0;
+        if (years > 20)
+            throw new Exception("Illegal Date");
+
+        Calendar c = new GregorianCalendar();
+        if (years > 0)
+            c.add(Calendar.YEAR, years * (future ? 1 : -1));
+        if (months > 0)
+            c.add(Calendar.MONTH, months * (future ? 1 : -1));
+        if (weeks > 0)
+            c.add(Calendar.WEEK_OF_YEAR, weeks * (future ? 1 : -1));
+        if (days > 0)
+            c.add(Calendar.DAY_OF_MONTH, days * (future ? 1 : -1));
+        if (hours > 0)
+            c.add(Calendar.HOUR_OF_DAY, hours * (future ? 1 : -1));
+        if (minutes > 0)
+            c.add(Calendar.MINUTE, minutes * (future ? 1 : -1));
+        if (seconds > 0)
+            c.add(Calendar.SECOND, seconds * (future ? 1 : -1));
+        return c.getTimeInMillis();
     }
 
     public void broadcastPunishment(String server, String issuer, String target, PunishmentType punishmentType) {
