@@ -65,13 +65,9 @@ public class GearzPlayerUtils implements Listener, TCommandHandler {
             usage = "Set XP.")
     @SuppressWarnings("unused")
     public TCommandStatus xp(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
-        if (args.length < 2 || (type == TCommandSender.Console && args.length < 3)) {
-            return TCommandStatus.FEW_ARGS;
-        }
+        if (args.length < 2 || (type == TCommandSender.Console && args.length < 3)) return TCommandStatus.FEW_ARGS;
         Player player = (type == TCommandSender.Console || args.length == 3) ? Bukkit.getPlayer(args[0]) : (Player) sender;
-        if (player == null) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (player == null) return TCommandStatus.INVALID_ARGS;
         GearzPlayer gplayer = GearzPlayer.playerFromTPlayer(Gearz.getInstance().getPlayerManager().getPlayer(player));
         int xp;
         try {
@@ -101,9 +97,7 @@ public class GearzPlayerUtils implements Listener, TCommandHandler {
                 return TCommandStatus.INVALID_ARGS;
         }
         sender.sendMessage(Gearz.getInstance().getFormat("formats.xp-change", true, new String[]{"<action>", (xp >= 0 ? "added" : "removed")}, new String[]{"<target>", (sender.equals(gplayer.getTPlayer().getPlayer()) ? "yourself" : gplayer.getTPlayer().getPlayer().getName())}, new String[]{"<xp>", String.valueOf(Math.abs(xp))}));
-        if (!sender.equals(gplayer.getTPlayer().getPlayer())) {
-            gplayer.getTPlayer().sendMessage(Gearz.getInstance().getFormat("formats.xp-changed", true, new String[]{"<action>", (xp >= 0 ? "added" : "removed")}, new String[]{"<xp>", String.valueOf(xp)}));
-        }
+        if (!sender.equals(gplayer.getTPlayer().getPlayer())) gplayer.getTPlayer().sendMessage(Gearz.getInstance().getFormat("formats.xp-changed", true, new String[]{"<action>", (xp >= 0 ? "added" : "removed")}, new String[]{"<xp>", String.valueOf(xp)}));
         return TCommandStatus.SUCCESSFUL;
     }
 

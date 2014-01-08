@@ -56,9 +56,7 @@ public class GearzNickname implements Listener, TCommandHandler {
                 return TCommandStatus.PERMISSIONS;
             }
             Player target = Bukkit.getPlayer(args[0]);
-            if (target == null) {
-                return TCommandStatus.INVALID_ARGS;
-            }
+            if (target == null) return TCommandStatus.INVALID_ARGS;
             player = Gearz.getInstance().getPlayerManager().getPlayer(target);
             nick = args[1];
             //if (nick.equalsIgnoreCase("off")) nick = player.getPlayer().getName();
@@ -96,20 +94,18 @@ public class GearzNickname implements Listener, TCommandHandler {
         GearzPlayerNickname gearzNickname = new GearzPlayerNickname(null);
         TPlayer player = null;
         String nick = null;
+
+        Object stored = null;
         for (TPlayer tplayer : Gearz.getInstance().getPlayerManager().getPlayers()) {
-            Object stored = tplayer.getStorable(Gearz.getInstance(), gearzNickname);
-            if (stored == null || !(stored instanceof String)) {
-                continue;
-            }
+            stored = tplayer.getStorable(Gearz.getInstance(), gearzNickname);
+            if (stored == null || !(stored instanceof String)) continue;
             if (((String) stored).startsWith(args[0])) {
                 player = tplayer;
                 nick = (String) stored;
                 break;
             }
         }
-        if (player == null) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (player == null) return TCommandStatus.INVALID_ARGS;
         sender.sendMessage(Gearz.getInstance().getFormat("formats.whois", true, new String[]{"<player>", player.getPlayer().getName()}, new String[]{"<nick>", nick}));
         return TCommandStatus.SUCCESSFUL;
     }
@@ -122,9 +118,8 @@ public class GearzNickname implements Listener, TCommandHandler {
         }
 
         String nick = ChatColor.translateAlternateColorCodes('&', (String) storable);
-        if (!player.getPlayer().hasPermission("gearz.nick.color")) {
-            nick = ChatColor.stripColor(nick);
-        }
+        if (!player.getPlayer().hasPermission("gearz.nick.color")) nick = ChatColor.stripColor(nick);
+
         player.getPlayer().setDisplayName(nick);
         player.getPlayer().setCustomName(ChatColor.stripColor(nick));
         ColoredTablist.updateNick(player.getPlayer());
