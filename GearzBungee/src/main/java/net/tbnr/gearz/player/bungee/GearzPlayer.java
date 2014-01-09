@@ -141,12 +141,13 @@ public class GearzPlayer {
             }
         }, 2, TimeUnit.SECONDS);
         String name = (console ? "CONSOLE" : issuer.getName());
+        if (punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) {
+            LoginHandler.MuteData muteData = new LoginHandler.MuteData(end, punishmentType, reason, name);
+            ProxyServer.getInstance().getLogger().info("CALLED");
+            this.setMuteData(muteData);
+        }
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
-        }
-        if (punishmentType == PunishmentType.MUTE) {
-            LoginHandler.MuteData muteData = new LoginHandler.MuteData(end, punishmentType, reason, name);
-            this.setMuteData(muteData);
         }
     }
 
