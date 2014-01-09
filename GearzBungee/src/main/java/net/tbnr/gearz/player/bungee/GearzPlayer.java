@@ -167,7 +167,7 @@ public class GearzPlayer {
 
     public void unMute() {
         getActiveMute().put("valid", false);
-        this.muteData = null;
+        GearzBungee.getInstance().getChat().removeMute(getProxiedPlayer());
         save();
     }
 

@@ -63,6 +63,10 @@ public class Chat {
         return mutes.get(player);
     }
 
+    public void removeMute(ProxiedPlayer proxiedPlayer) {
+        mutes.remove(proxiedPlayer);
+    }
+
     public boolean isPlayerInConversation(ProxiedPlayer proxiedPlayer) {
         return getConversationForPlayer(proxiedPlayer) != null;
     }
