@@ -108,7 +108,7 @@ public class PlayerInfoModule implements TCommandHandler, Listener {
         if (lookupService == null) {
             GearzBungee.getInstance().getLogger().severe("Player Lookup Service not loaded!");
         }
-        sender.sendMessage(formatData("Location", (location == null ? "Error" : location.city + " " + location.countryName)));w
+        sender.sendMessage(formatData("Location", (location == null ? "Error" : location.city + " " + location.countryName)));
         sender.sendMessage(formatData("Weather", (location == null ? "Error" : WeatherUtils.getWeatherConditons(location.city))));
         String timezone = location == null ? null : timeZone.timeZoneByCountryAndRegion(location.countryCode, location.region);
         TimeZone tz = timezone == null ? null : TimeZone.getTimeZone(timezone);

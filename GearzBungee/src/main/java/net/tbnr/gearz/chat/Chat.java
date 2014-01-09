@@ -39,17 +39,13 @@ public class Chat {
     }
 
     public boolean isPlayerMuted(ProxiedPlayer player) {
-        ProxyServer.getInstance().getLogger().info("NULL CHECK");
         if (!mutes.containsKey(player)) return false;
         LoginHandler.MuteData muteData = mutes.get(player);
-        ProxyServer.getInstance().getLogger().info("PERM CHECK");
         if (muteData.isPerm()) return true;
         Date end = muteData.getEnd();
         if (new Date().before(end)) {
-            ProxyServer.getInstance().getLogger().info("DATE CHECK");
             return true;
         } else {
-            ProxyServer.getInstance().getLogger().info("DATE CHECK DOS");
             mutes.remove(player);
             return false;
         }
