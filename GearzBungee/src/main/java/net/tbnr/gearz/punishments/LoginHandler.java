@@ -57,7 +57,7 @@ public class LoginHandler implements Listener {
         }
     }
 
-    public static class MuteData {
+        public static class MuteData {
         Date end;
         PunishmentType punishmentType;
         boolean perm;
