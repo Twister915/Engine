@@ -10,12 +10,15 @@ import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Created by jake on 1/4/14.
  */
 public class LoginHandler implements Listener {
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy mm:ss");
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PreLoginEvent event) {
         GearzPlayer gearzPlayer;
@@ -42,7 +45,13 @@ public class LoginHandler implements Listener {
         }
         String reason = activeBan.getString("reason");
 
-        event.getConnection().disconnect(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}));
+        PunishmentType punishmentType = PunishmentType.valueOf(activeBan.getString("type"));
+        if (punishmentType == PunishmentType.PERMANENT_BAN) {
+            event.getConnection().disconnect(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}));
+        } else if (punishmentType == PunishmentType.TEMP_BAN) {
+            Date end = activeBan.getDate("end");
+            event.getConnection().disconnect(GearzBungee.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", reason}, new String[]{"<date>", longReadable.format(end)}));
+        }
     }
 
     public static class MuteData {

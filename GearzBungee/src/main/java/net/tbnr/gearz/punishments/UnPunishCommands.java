@@ -34,6 +34,29 @@ public class UnPunishCommands implements TCommandHandler {
             return TCommandStatus.INVALID_ARGS;
         }
 
+        if (args[0].matches(".*([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}).*")) {
+            DBObject punishment = GearzBungee.getInstance().getIpBanHandler().getBanObject(args[0]);
+            if (punishment == null) {
+                sender.sendMessage(GearzBungee.getInstance().getFormat("no-punishment", false, false));
+                return TCommandStatus.SUCCESSFUL;
+            }
+            Date date = (Date) punishment.get("time");
+            String issuer;
+            if (punishment.get("issuer") instanceof String) {
+                issuer = "CONSOLE";
+            } else {
+                GearzPlayer staff;
+                try {
+                    staff = GearzPlayer.getById((ObjectId) punishment.get("issuer"));
+                    issuer = staff.getName();
+                } catch (GearzPlayer.PlayerNotFoundException e) {
+                    issuer = "null";
+                }
+            }
+            String action = "ip banned";
+            sender.sendMessage(GearzBungee.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(date)}, new String[]{"<reason>", (String) punishment.get("reason")}, new String[]{"<action>", action}, new String[]{"<issuer>", issuer}));
+        }
+
         GearzPlayer gearzTarget;
         try {
             gearzTarget = new GearzPlayer(args[0]);
@@ -43,7 +66,10 @@ public class UnPunishCommands implements TCommandHandler {
         }
 
         List<BasicDBObject> punishments = gearzTarget.getPunishments();
-
+        if (punishments == null) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("no-punishment", false, false));
+            return TCommandStatus.SUCCESSFUL;
+        }
         sender.sendMessage(GearzBungee.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", gearzTarget.getName()}));
         int x = 0;
         for (BasicDBObject punishment : punishments) {
