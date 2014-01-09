@@ -109,9 +109,9 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
-        GearzPlayer personToKick = candidateForKicking(event.getPlayer());
+        Player personToKick = candidateForKicking(event.getPlayer());
         if(personToKick != null) {
-            personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
+            personToKick.kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
         } else {
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
             event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
