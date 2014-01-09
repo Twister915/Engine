@@ -109,8 +109,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
-        final GearzPlayer gearzPlayer = GearzPlayer.playerFromPlayer(event.getPlayer());
-        GearzPlayer personToKick = candidateForKicking(gearzPlayer);
+        GearzPlayer personToKick = candidateForKicking(event.getPlayer());
         if(personToKick != null) {
             personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
         } else {
@@ -393,12 +392,12 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
      * @return GearzPlayer ~ player with lower priority then them
      */
     @NonNull
-    private GearzPlayer candidateForKicking(@NonNull GearzPlayer p) {
-        GearzPlayer candidate = null;
+    private Player candidateForKicking(@NonNull Player p) {
+        Player candidate = null;
         List<Player> cachedOnlinePlayers = Arrays.asList(Bukkit.getOnlinePlayers().clone());
         Integer integer = priorityForPlayer(p);
         for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
-            GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
+            Player wannaBe = cachedOnlinePlayers.get(i);
             Gearz.getInstance().getLogger().info("Priority: " + priorityForPlayer(wannaBe) + "<-- WannaBe : Trying to Join ---> " + integer);
             if (p.equals(wannaBe)) continue;
             if(integer > priorityForPlayer(wannaBe)) candidate = wannaBe;
@@ -412,12 +411,12 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
      * @return priority of player, -1 default
      */
     @NonNull
-    private Integer priorityForPlayer(GearzPlayer p) {
+    private Integer priorityForPlayer(Player p) {
         Integer priority = -1;
         String permissionPriority;
         for (int x = 0, l = priorities.size(); x < l; x++) {
             permissionPriority = "gearz.priority."+priorities.get(x);
-            if (p.getPlayer().hasPermission(permissionPriority)) {
+            if (p.hasPermission(permissionPriority)) {
                 priority = x;
             }
         }
