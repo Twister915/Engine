@@ -416,7 +416,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
      */
     @NonNull
     private Integer priorityForPlayer(Player p) {
-        Integer priority = priorities.size();
+        Integer priority = -1;
         String permissionPriority;
         for (int x = 0, l = priorities.size(); x < l; x++) {
             permissionPriority = "gearz.priority."+priorities.get(x);
