@@ -59,14 +59,8 @@ public class ChatManager implements Listener, TCommandHandler {
             return;
         }
 
-        GearzPlayer gearzPlayer;
-        try {
-            gearzPlayer = new GearzPlayer(player);
-        } catch (GearzPlayer.PlayerNotFoundException e) {
-            return;
-        }
-        if (gearzPlayer.isMuted()) {
-            LoginHandler.MuteData muteData = gearzPlayer.getMuteData();
+        if (GearzBungee.getInstance().getChat().isPlayerMuted(player)) {
+            LoginHandler.MuteData muteData = GearzBungee.getInstance().getChat().getMute(player);
             player.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
             event.setCancelled(true);
             return;

@@ -35,7 +35,7 @@ public class LoginHandler implements Listener {
             }
             MuteData muteData = gearzPlayer.getActiveMuteData();
             if (muteData != null) {
-                gearzPlayer.setMuteData(muteData);
+                GearzBungee.getInstance().getChat().addMute(gearzPlayer.getProxiedPlayer(), muteData);
             }
             return;
         }

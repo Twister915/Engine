@@ -5,6 +5,7 @@ import lombok.NonNull;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.chat.ChatManager;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishmentType;
 import org.bson.types.ObjectId;
@@ -141,10 +142,10 @@ public class GearzPlayer {
             }
         }, 2, TimeUnit.SECONDS);
         String name = (console ? "CONSOLE" : issuer.getName());
-        if (punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) {
+        if ((punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) && getProxiedPlayer() != null) {
             LoginHandler.MuteData muteData = new LoginHandler.MuteData(end, punishmentType, reason, name);
             ProxyServer.getInstance().getLogger().info("CALLED");
-            this.setMuteData(muteData);
+            GearzBungee.getInstance().getChat().addMute(getProxiedPlayer(), muteData);
         }
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
@@ -259,14 +260,6 @@ public class GearzPlayer {
         return null;
     }
 
-    public LoginHandler.MuteData getMuteData() {
-        return muteData;
-    }
-
-    public void setMuteData(LoginHandler.MuteData muteData) {
-        this.muteData = muteData;
-    }
-
     public List<BasicDBObject> getPunishments() {
         List<BasicDBObject> punishments = new ArrayList<>();
         try {
@@ -295,21 +288,5 @@ public class GearzPlayer {
 
     private void save() {
         getCollection().save(this.playerDocument);
-    }
-
-    public boolean isMuted() {
-        ProxyServer.getInstance().getLogger().info("NULL CHECK");
-        if (muteData == null) return false;
-        ProxyServer.getInstance().getLogger().info("PERM CHECK");
-        if (muteData.isPerm()) return true;
-        Date end = muteData.getEnd();
-        if (new Date().before(end)) {
-            ProxyServer.getInstance().getLogger().info("DATE CHECK");
-            return true;
-        } else {
-            ProxyServer.getInstance().getLogger().info("DATE CHECK DOS");
-            muteData = null;
-            return false;
-        }
     }
 }
