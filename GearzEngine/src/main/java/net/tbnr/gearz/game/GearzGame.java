@@ -201,6 +201,7 @@ public abstract class GearzGame implements Listener {
                 player.addPoints(points);
                 player.addXp(xpForPlaying());
                 player.getTPlayer().sendMessage(getFormat("xp-earned", new String[]{"<xp>", String.valueOf(xpForPlaying())}));
+                player.getTPlayer().sendMessage(getFormat("points-earned", new String[]{"<points>", String.valueOf(points)}));
             }
         } else {
             player.getTPlayer().sendMessage(getFormat("game-void"));
@@ -412,26 +413,6 @@ public abstract class GearzGame implements Listener {
         Integer cPend = this.pendingPoints.containsKey(player) ? this.pendingPoints.get(player) : 0;
         this.pendingPoints.put(player, cPend + points);
         player.getTPlayer().sendMessage(getFormat("points-added", new String[]{"<points>", String.valueOf(points)}));
-        final int pointsToSound = Math.max(20, points);
-        int pointsSounded = 0;
-        while (pointsSounded <= pointsToSound) {
-            Bukkit.getScheduler().runTaskLater(Gearz.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    if (player == null) {
-                        return;
-                    }
-                    if (player.getPlayer() == null) {
-                        return;
-                    }
-                    if (!player.getPlayer().isOnline()) {
-                        return;
-                    }
-                    player.getPlayer().playNote(player.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G));
-                }
-            }, 4L * (pointsSounded + 1));
-            pointsSounded++;
-        }
     }
 
     /**

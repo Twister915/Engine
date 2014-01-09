@@ -36,10 +36,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -110,6 +107,19 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         return TCommandStatus.SUCCESSFUL;
     }
 
+    @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+        if (Bukkit.getOnlinePlayers().length < this.gameMeta.maxPlayers()) return;
+        if (this.runningGame != null && this.runningGame.isRunning()) return;
+        Player personToKick = candidateForKicking(event.getPlayer());
+        if(personToKick != null) {
+            personToKick.kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
+        } else {
+            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+            event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(final TPlayerJoinEvent event) {
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length);
@@ -118,15 +128,6 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
         event.setJoinMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
         spawn(gearzPlayer);
         if (this.runningGame == null) {
-            if (Bukkit.getOnlinePlayers().length > getGameMeta().maxPlayers()) {
-                GearzPlayer personToKick = candidateForKicking(gearzPlayer);
-                if(personToKick != null) {
-                    personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
-                } else {
-                    gearzPlayer.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
-                    return;
-                }
-        }
             this.votingSession.addPlayer(gearzPlayer);
         } else {
             this.runningGame.addPlayer(gearzPlayer);
@@ -393,14 +394,15 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
      * @return GearzPlayer ~ player with lower priority then them
      */
     @NonNull
-    private GearzPlayer candidateForKicking(GearzPlayer p) {
-        GearzPlayer candidate = null;
+    private Player candidateForKicking(@NonNull Player p) {
+        Player candidate = null;
         List<Player> cachedOnlinePlayers = Arrays.asList(Bukkit.getOnlinePlayers().clone());
         Integer integer = priorityForPlayer(p);
         for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
-            GearzPlayer wannaBe = GearzPlayer.playerFromPlayer(cachedOnlinePlayers.get(i));
-            if(wannaBe.equals(p)) continue;
-            if(integer < priorityForPlayer(wannaBe)) candidate = wannaBe;
+            Player wannaBe = cachedOnlinePlayers.get(i);
+            Gearz.getInstance().getLogger().info("Priority: " + priorityForPlayer(wannaBe) + "<-- WannaBe : Trying to Join ---> " + integer);
+            if (p.equals(wannaBe)) continue;
+            if(integer > priorityForPlayer(wannaBe)) candidate = wannaBe;
         }
         return candidate;
     }
@@ -411,12 +413,12 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
      * @return priority of player, -1 default
      */
     @NonNull
-    private Integer priorityForPlayer(GearzPlayer p) {
+    private Integer priorityForPlayer(Player p) {
         Integer priority = -1;
         String permissionPriority;
         for (int x = 0, l = priorities.size(); x < l; x++) {
             permissionPriority = "gearz.priority."+priorities.get(x);
-            if (p.getPlayer().hasPermission(permissionPriority)) {
+            if (p.hasPermission(permissionPriority)) {
                 priority = x;
             }
         }

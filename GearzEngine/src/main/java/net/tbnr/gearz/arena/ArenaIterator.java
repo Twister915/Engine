@@ -67,7 +67,7 @@ public class ArenaIterator<T> implements Iterator<T> {
         if (this.arrayList.size() == 0) {
             return null;
         }
-        if (this.arrayList.size() - 1 == index && this.loop) {
+        if (this.arrayList.size() == index && this.loop) {
             this.index = 0;
         }
         T t = this.arrayList.get(this.index);
