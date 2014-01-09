@@ -28,10 +28,6 @@ public class GearzPlayer {
      * The player document
      */
     private DBObject playerDocument;
-    /**
-     * Date on players mute
-     */
-    private LoginHandler.MuteData muteData;
 
     private GearzPlayer(@NonNull DBObject object) throws PlayerNotFoundException {
         String username1;
@@ -114,7 +110,7 @@ public class GearzPlayer {
         return ProxyServer.getInstance().getPlayer(this.username);
     }
 
-    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy mm:ss");
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy mm:ss zzzz");
     public void punishPlayer(final String reason, final GearzPlayer issuer, final PunishmentType punishmentType, final Date end, final boolean console) {
         if (getPlayerDocument() == null) return;
 

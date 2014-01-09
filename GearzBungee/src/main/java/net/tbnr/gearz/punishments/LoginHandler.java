@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by jake on 1/4/14.
  */
 public class LoginHandler implements Listener {
-    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy mm:ss");
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy mm:ss zzzz");
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PreLoginEvent event) {
