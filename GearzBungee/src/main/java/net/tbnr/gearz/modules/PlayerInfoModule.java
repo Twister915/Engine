@@ -21,6 +21,8 @@ import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
+import net.tbnr.util.bungee.cooldowns.TCooldown;
+import net.tbnr.util.bungee.cooldowns.TCooldownManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -80,6 +82,10 @@ public class PlayerInfoModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public TCommandStatus playerInfo(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 1) return TCommandStatus.FEW_ARGS;
+        if (!TCooldownManager.canContinueLocal("allchat", new TCooldown(7))) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("cooling-down", false, false));
+            return TCommandStatus.SUCCESSFUL;
+        }
         for (String s : args) {
             List<ProxiedPlayer> matchedPlayers = GearzBungee.getInstance().getPlayerManager().getMatchedPlayers(s);
             if (matchedPlayers.size() == 0) continue;
@@ -102,7 +108,7 @@ public class PlayerInfoModule implements TCommandHandler, Listener {
         if (lookupService == null) {
             GearzBungee.getInstance().getLogger().severe("Player Lookup Service not loaded!");
         }
-        sender.sendMessage(formatData("Location", (location == null ? "Error" : location.city + " " + location.countryName)));
+        sender.sendMessage(formatData("Location", (location == null ? "Error" : location.city + " " + location.countryName)));w
         sender.sendMessage(formatData("Weather", (location == null ? "Error" : WeatherUtils.getWeatherConditons(location.city))));
         String timezone = location == null ? null : timeZone.timeZoneByCountryAndRegion(location.countryCode, location.region);
         TimeZone tz = timezone == null ? null : TimeZone.getTimeZone(timezone);

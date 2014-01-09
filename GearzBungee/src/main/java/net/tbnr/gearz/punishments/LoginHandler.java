@@ -3,7 +3,6 @@ package net.tbnr.gearz.punishments;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.event.PlayerHandshakeEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -27,11 +26,13 @@ public class LoginHandler implements Listener {
         }
         BasicDBObject activeBan = gearzPlayer.getActiveBan();
         if (activeBan == null) {
-            DBObject ipBan = GearzBungee.getInstance().getIpBanHandler().getBanObject(event.getConnection().getAddress().getHostName());
+            ProxyServer.getInstance().getLogger().info(event.getConnection().getAddress().getHostString());
+            DBObject ipBan = GearzBungee.getInstance().getIpBanHandler().getBanObject(event.getConnection().getAddress().getHostString());
             if (ipBan != null) {
                 String reason = (String) ipBan.get("reason");
                 String issuer = (String) ipBan.get("issuer");
                 event.getConnection().disconnect(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
+                return;
             }
             MuteData muteData = gearzPlayer.getActiveMuteData();
             if (muteData != null) {
