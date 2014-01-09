@@ -1,6 +1,7 @@
 package net.tbnr.gearz.punishments;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.tbnr.gearz.GearzBungee;
@@ -142,8 +143,9 @@ public class UnPunishCommands implements TCommandHandler {
         }
 
         String ip = args[0];
+        DBObject ipBan = GearzBungee.getInstance().getIpBanHandler().getBanObject(ip);
 
-        if (GearzBungee.getInstance().getIpBanHandler().isBanned(ip)) {
+        if (ipBan != null) {
             GearzBungee.getInstance().getIpBanHandler().remove(ip);
         } else {
             sender.sendMessage(GearzBungee.getInstance().getFormat("not-ipbanned", false, false));
