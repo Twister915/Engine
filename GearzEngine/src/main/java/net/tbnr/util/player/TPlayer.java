@@ -22,10 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
@@ -697,5 +694,23 @@ public class TPlayer {
 
         IPUtils.getPing(getPlayer().getAddress().getAddress(), eventHandler);
 
+    }
+
+    /**
+     * Set's the prefix after the player name
+     * @param prefix
+     */
+    public void setIGPrefix(String prefix) {
+        Team teamPrefix = this.scoreboard.getTeam("prefix") != null ? this.scoreboard.getTeam("prefix") : this.scoreboard.registerNewTeam("prefix");
+        teamPrefix.setPrefix(prefix);
+    }
+
+    /**
+     * Set's the suffix before a players name
+     * @param suffix
+     */
+    public void setIGSuffix(String suffix) {
+        Team teamPrefix = this.scoreboard.getTeam("suffix") != null ? this.scoreboard.getTeam("suffix") : this.scoreboard.registerNewTeam("suffix");
+        teamPrefix.setPrefix(suffix);
     }
 }
