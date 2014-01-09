@@ -110,6 +110,7 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         if (Bukkit.getOnlinePlayers().length < this.gameMeta.maxPlayers()) return;
+        if (this.runningGame != null && this.runningGame.isRunning()) return;
         Player personToKick = candidateForKicking(event.getPlayer());
         if(personToKick != null) {
             personToKick.kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
