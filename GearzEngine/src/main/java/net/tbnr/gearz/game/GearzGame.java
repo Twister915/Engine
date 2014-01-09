@@ -10,9 +10,7 @@ import net.tbnr.gearz.effects.EnderBar;
 import net.tbnr.gearz.event.game.GameEndEvent;
 import net.tbnr.gearz.event.game.GamePreStartEvent;
 import net.tbnr.gearz.event.game.GameStartEvent;
-import net.tbnr.gearz.event.player.PlayerBeginSpectateEvent;
-import net.tbnr.gearz.event.player.PlayerGameEnterEvent;
-import net.tbnr.gearz.event.player.PlayerGameLeaveEvent;
+import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.InventoryGUI;
@@ -616,6 +614,7 @@ public abstract class GearzGame implements Listener {
     protected void fakeDeath(GearzPlayer player) {
         dropItemsFormPlayer(player);
         player.getTPlayer().resetPlayer();
+        PlayerGameDeathEvent event = new PlayerGameDeathEvent(this, player);
         if (!canPlayerRespawn(player)) {
             makeSpectator(player);
             return;
@@ -623,6 +622,8 @@ public abstract class GearzGame implements Listener {
         player.getTPlayer().teleport(playerRespawn(player));
         player.getPlayer().playNote(player.getPlayer().getLocation(), Instrument.PIANO, Note.sharp(1, Note.Tone.F));
         activatePlayer(player);
+        PlayerGameRespawnEvent respawnEvent = new PlayerGameRespawnEvent(player, this);
+        Bukkit.getPluginManager().callEvent(respawnEvent);
     }
 
     protected void makePlayer(GearzPlayer player) {
@@ -904,6 +905,12 @@ public abstract class GearzGame implements Listener {
                     event.setCancelled(true);
                     return;
                 }
+                PlayerGameDamageEvent callingEvent = new PlayerGameDamageEvent(this, target, event.getDamage(), false);
+                Bukkit.getPluginManager().callEvent(callingEvent);
+                if (callingEvent.isCancelled()) {
+                    event.setCancelled(true);
+                    return;
+                }
                 if (target.getPlayer().getHealth() - event.getDamage() <= 0) {
                     playerKilledPlayer(damager, target);
                     event.setCancelled(true);
@@ -911,6 +918,12 @@ public abstract class GearzGame implements Listener {
             }
         } else if (eventDamager instanceof LivingEntity) {
             GearzPlayer target = GearzPlayer.playerFromPlayer((Player) eventTarget);
+            PlayerGameDamageEvent callingEvent = new PlayerGameDamageEvent(this, target, event.getDamage(), false);
+            Bukkit.getPluginManager().callEvent(callingEvent);
+            if (callingEvent.isCancelled()) {
+                event.setCancelled(true);
+                return;
+            }
             if (target.getPlayer().getHealth() - event.getDamage() <= 0) {
                 this.playerKilled(target, (LivingEntity) eventDamager);
                 fakeDeath(target);
@@ -960,6 +973,12 @@ public abstract class GearzGame implements Listener {
             return;
         }
         if (onFallDamage(player, event) && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            event.setCancelled(true);
+            return;
+        }
+        PlayerGameDamageEvent callingEvent = new PlayerGameDamageEvent(this, player, event.getDamage(), false);
+        Bukkit.getPluginManager().callEvent(callingEvent);
+        if (callingEvent.isCancelled()) {
             event.setCancelled(true);
             return;
         }

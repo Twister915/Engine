@@ -239,8 +239,10 @@ public class InventoryBarVotingSession extends VotingSession implements Listener
 
     private Map<Votable, Integer> getVoteCounts() {
         Map<Votable, Integer> voteCounts = new HashMap<>();
-        for (Map.Entry<GearzPlayer, Votable> gearzPlayerVotableEntry : this.votes.entrySet()) {
-            voteCounts.put(gearzPlayerVotableEntry.getValue(), (voteCounts.containsKey(gearzPlayerVotableEntry.getValue())) ? voteCounts.get(gearzPlayerVotableEntry.getValue()) + 1 : 1);
+        for (Map.Entry<GearzPlayer, Votable> entry : this.votes.entrySet()) {
+            PlayerMapVoteEvent event = new PlayerMapVoteEvent(1, entry.getKey(), entry.getValue());
+            Bukkit.getPluginManager().callEvent(event);
+            voteCounts.put(entry.getValue(), (voteCounts.containsKey(entry.getValue())) ? voteCounts.get(entry.getValue()) + event.getNumberOfVotes() : event.getNumberOfVotes());
         }
         return voteCounts;
     }

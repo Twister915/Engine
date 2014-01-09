@@ -1,5 +1,7 @@
 package net.tbnr.gearz.event.player;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -15,7 +17,9 @@ import org.bukkit.event.HandlerList;
 public class PlayerPointChangeEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private GearzPlayer player;
+    @Getter
     private Integer oldPoints;
+    @Getter @Setter
     private Integer newPoints;
     private boolean canceled;
 
@@ -33,20 +37,6 @@ public class PlayerPointChangeEvent extends Event implements Cancellable {
 
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-    @SuppressWarnings("unused")
-    public Integer getNewPoints() {
-        return newPoints;
-    }
-
-    @SuppressWarnings("unused")
-    public Integer getOldPoints() {
-        return oldPoints;
-    }
-
-    public GearzPlayer getPlayer() {
-        return player;
     }
 
     @Override
