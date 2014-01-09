@@ -5,11 +5,11 @@ import lombok.NonNull;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.chat.ChatManager;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishmentType;
 import org.bson.types.ObjectId;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -114,10 +114,12 @@ public class GearzPlayer {
         return ProxyServer.getInstance().getPlayer(this.username);
     }
 
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy mm:ss");
     public void punishPlayer(final String reason, final GearzPlayer issuer, final PunishmentType punishmentType, final Date end, final boolean console) {
         if (getPlayerDocument() == null) return;
 
         ProxyServer.getInstance().getScheduler().schedule(GearzBungee.getInstance(), new Runnable() {
+            @Override
             public void run() {
                 ObjectId objectId = null;
                 if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
@@ -148,6 +150,11 @@ public class GearzPlayer {
             GearzBungee.getInstance().getChat().addMute(getProxiedPlayer(), muteData);
         }
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
+            if (punishmentType == PunishmentType.PERMANENT_BAN) {
+                kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
+            } else if (punishmentType == PunishmentType.TEMP_BAN) {
+                kickPlayer(GearzBungee.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", reason}, new String[]{"<date>", longReadable.format(end)}), name);
+            }
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
         }
     }
@@ -157,6 +164,7 @@ public class GearzPlayer {
     }
 
     public void kickPlayer(String reason, String issuer) {
+        if (this.getProxiedPlayer() == null) return;
         this.getProxiedPlayer().disconnect(GearzBungee.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
     }
 
