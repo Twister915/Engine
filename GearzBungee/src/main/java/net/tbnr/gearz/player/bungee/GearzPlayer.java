@@ -110,7 +110,7 @@ public class GearzPlayer {
         return ProxyServer.getInstance().getPlayer(this.username);
     }
 
-    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy mm:ss zzzz");
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
     public void punishPlayer(final String reason, final GearzPlayer issuer, final PunishmentType punishmentType, final Date end, final boolean console) {
         if (getPlayerDocument() == null) return;
 
