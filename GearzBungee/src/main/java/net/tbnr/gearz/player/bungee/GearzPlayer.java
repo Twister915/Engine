@@ -115,62 +115,48 @@ public class GearzPlayer {
     public void punishPlayer(final String reason, final GearzPlayer issuer, final PunishmentType punishmentType, final Date end, final boolean console) {
         if (getPlayerDocument() == null) return;
 
-        if (punishmentType.isKickable()) {
-            ProxyServer.getInstance().getScheduler().schedule(GearzBungee.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    ObjectId objectId = null;
-                    if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
 
-                    DBObject ban = new BasicDBObjectBuilder().
-                            add("issuer", (console ? "CONSOLE" : objectId)).
-                            add("valid", true).
-                            add("reason", reason).
-                            add("type", punishmentType.toString()).
-                            add("time", new Date()).
-                            add("end", end).get();
-                    DBObject dbObject = getPlayerDocument();
+        ObjectId objectId = null;
+        if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
 
-                    Object bansl = dbObject.get("punishments");
-                    if (!(bansl instanceof BasicDBList)) {
-                        bansl = new BasicDBList();
-                    }
-                    BasicDBList bans = (BasicDBList) bansl;
-                    bans.add(ban);
-                    dbObject.put("punishments", bans);
-                    getCollection().save(dbObject);
-                    save();
-                }
-            }, 1, TimeUnit.SECONDS);
-        } else {
-            ObjectId objectId = null;
-            if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
+        DBObject ban = new BasicDBObjectBuilder().
+                add("issuer", (console ? "CONSOLE" : objectId)).
+                add("valid", true).
+                add("reason", reason).
+                add("type", punishmentType.toString()).
+                add("time", new Date()).
+                add("end", end).get();
+        DBObject dbObject = getPlayerDocument();
 
-            DBObject ban = new BasicDBObjectBuilder().
-                    add("issuer", (console ? "CONSOLE" : objectId)).
-                    add("valid", true).
-                    add("reason", reason).
-                    add("type", punishmentType.toString()).
-                    add("time", new Date()).
-                    add("end", end).get();
-            DBObject dbObject = getPlayerDocument();
-
-            Object bansl = dbObject.get("punishments");
-            if (!(bansl instanceof BasicDBList)) {
-                bansl = new BasicDBList();
-            }
-            BasicDBList bans = (BasicDBList) bansl;
-            bans.add(ban);
-            dbObject.put("punishments", bans);
-            getCollection().save(dbObject);
-            save();
+        Object bansl = dbObject.get("punishments");
+        if (!(bansl instanceof BasicDBList)) {
+            bansl = new BasicDBList();
         }
+        BasicDBList bans = (BasicDBList) bansl;
+        bans.add(ban);
+        dbObject.put("punishments", bans);
+        getCollection().save(dbObject);
+        save();
+
         String name = (console ? "CONSOLE" : issuer.getName());
-        if ((punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) && getProxiedPlayer() != null) {
+        if ((punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) &&
+
+                getProxiedPlayer()
+
+                        != null)
+
+        {
             LoginHandler.MuteData muteData = new LoginHandler.MuteData(end, punishmentType, reason, name);
             GearzBungee.getInstance().getChat().addMute(getProxiedPlayer(), muteData);
         }
-        if (punishmentType.isKickable() && getProxiedPlayer() != null) {
+
+        if (punishmentType.isKickable() &&
+
+                getProxiedPlayer()
+
+                        != null)
+
+        {
             if (punishmentType == PunishmentType.PERMANENT_BAN) {
                 kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
             } else if (punishmentType == PunishmentType.TEMP_BAN) {
@@ -178,6 +164,7 @@ public class GearzPlayer {
             }
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
         }
+
     }
 
     public void punishPlayer(String reason, GearzPlayer issuer, PunishmentType punishmentType, boolean console) {
