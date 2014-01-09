@@ -36,6 +36,7 @@ public class GearzPlayerUtils implements Listener, TCommandHandler {
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onPlayerJoin(final TPlayerJoinEvent event) {
+        if(event.getPlayer() == null) return;
         event.getPlayer().setScoreboardSideTitle(Gearz.getInstance().getFormat("formats.sidebar-title-loading"));
         GearzPlayer.playerFromTPlayer(event.getPlayer()).setupScoreboard();
         Bukkit.getScheduler().runTaskLater(Gearz.getInstance(), new Runnable() {
