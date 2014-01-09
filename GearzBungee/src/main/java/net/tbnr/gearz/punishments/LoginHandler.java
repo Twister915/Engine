@@ -27,7 +27,6 @@ public class LoginHandler implements Listener {
         }
         BasicDBObject activeBan = gearzPlayer.getActiveBan();
         if (activeBan == null) {
-            ProxyServer.getInstance().getLogger().info("not banned");
             DBObject ipBan = GearzBungee.getInstance().getIpBanHandler().getBanObject(event.getConnection().getAddress().getHostName());
             if (ipBan != null) {
                 String reason = (String) ipBan.get("reason");
@@ -40,7 +39,6 @@ public class LoginHandler implements Listener {
             }
             return;
         }
-        ProxyServer.getInstance().getLogger().info("banned");
         String reason = activeBan.getString("reason");
 
         event.getConnection().disconnect(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}));

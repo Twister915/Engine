@@ -297,12 +297,16 @@ public class GearzPlayer {
     }
 
     public boolean isMuted() {
+        ProxyServer.getInstance().getLogger().info("NULL CHECK");
         if (muteData == null) return false;
+        ProxyServer.getInstance().getLogger().info("PERM CHECK");
         if (muteData.isPerm()) return true;
         Date end = muteData.getEnd();
         if (new Date().before(end)) {
+            ProxyServer.getInstance().getLogger().info("DATE CHECK");
             return true;
         } else {
+            ProxyServer.getInstance().getLogger().info("DATE CHECK DOS");
             muteData = null;
             return false;
         }
