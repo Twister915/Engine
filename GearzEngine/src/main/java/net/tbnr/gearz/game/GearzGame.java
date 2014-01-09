@@ -799,7 +799,6 @@ public abstract class GearzGame implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            player.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
             event.setCancelled(true);
             return;
         }
