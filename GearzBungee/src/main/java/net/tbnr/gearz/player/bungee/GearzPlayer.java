@@ -141,7 +141,7 @@ public class GearzPlayer {
                     getCollection().save(dbObject);
                     save();
                 }
-            }, 20, TimeUnit.MILLISECONDS);
+            }, 1, TimeUnit.SECONDS);
         } else {
             ObjectId objectId = null;
             if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
