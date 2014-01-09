@@ -393,7 +393,6 @@ public class GameManagerSingleGame implements GameManager, Listener, VotingHandl
      * Get the person on the server with lower priority then them if no player lower it returns null
      * @return GearzPlayer ~ player with lower priority then them
      */
-    @NonNull
     private Player candidateForKicking(@NonNull Player p) {
         Player candidate = null;
         List<Player> cachedOnlinePlayers = Arrays.asList(Bukkit.getOnlinePlayers().clone());
