@@ -30,7 +30,6 @@ public class LoginHandler implements Listener {
         }
         BasicDBObject activeBan = gearzPlayer.getActiveBan();
         if (activeBan == null) {
-            ProxyServer.getInstance().getLogger().info(event.getConnection().getAddress().getHostString());
             DBObject ipBan = GearzBungee.getInstance().getIpBanHandler().getBanObject(event.getConnection().getAddress().getHostString());
             if (ipBan != null) {
                 String reason = (String) ipBan.get("reason");
@@ -40,15 +39,6 @@ public class LoginHandler implements Listener {
             }
             MuteData muteData = gearzPlayer.getActiveMuteData();
             if (muteData != null) {
-                ProxyServer.getInstance().getLogger().info(muteData.getIssuer());
-                ProxyServer.getInstance().getLogger().info(muteData.getReason());
-                ProxyServer.getInstance().getLogger().info(muteData.isPerm() + "");
-                ProxyServer.getInstance().getLogger().info(muteData.getPunishmentType() + "");
-                if (gearzPlayer.getProxiedPlayer() == null) {
-                    ProxyServer.getInstance().getLogger().info("NULLLL");
-
-                }
-
                 GearzBungee.getInstance().getChat().addMute(event.getConnection().getName(), muteData);
             }
             return;

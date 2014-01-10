@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -141,7 +140,7 @@ public class GearzPlayer {
         String name = (console ? "CONSOLE" : issuer.getName());
         if ((punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) && getProxiedPlayer() != null) {
             LoginHandler.MuteData muteData = new LoginHandler.MuteData(end, punishmentType, reason, name);
-            GearzBungee.getInstance().getChat().addMute(getProxiedPlayer(), muteData);
+            GearzBungee.getInstance().getChat().addMute(getName(), muteData);
         }
 
         if (punishmentType.isKickable() && getProxiedPlayer() != null) {
