@@ -170,7 +170,7 @@ public class GearzPlayer {
 
     public void unMute() {
         getActiveMute().put("valid", false);
-        GearzBungee.getInstance().getChat().removeMute(getProxiedPlayer());
+        GearzBungee.getInstance().getChat().removeMute(getName());
         save();
     }
 
@@ -227,7 +227,7 @@ public class GearzPlayer {
                     return mute;
                 } else if (punishmentType == PunishmentType.TEMP_MUTE) {
                     Date end = mute.getDate("end");
-                    if (new Date().before(end)) return null;
+                    if (!new Date().before(end)) return null;
                     return mute;
                 }
             }

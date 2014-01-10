@@ -38,15 +38,15 @@ public class Chat {
         updateCensor();
     }
 
-    public boolean isPlayerMuted(String player) {
-        if (!mutes.containsKey(player)) return false;
-        LoginHandler.MuteData muteData = mutes.get(player);
+    public boolean isPlayerMuted(String username) {
+        if (!mutes.containsKey(username)) return false;
+        LoginHandler.MuteData muteData = mutes.get(username);
         if (muteData.isPerm()) return true;
         Date end = muteData.getEnd();
         if (new Date().before(end)) {
             return true;
         } else {
-            mutes.remove(player);
+            mutes.remove(username);
             return false;
         }
     }
@@ -55,12 +55,12 @@ public class Chat {
         mutes.put(username, muteData);
     }
 
-    public LoginHandler.MuteData getMute(ProxiedPlayer player) {
-        return mutes.get(player.getName());
+    public LoginHandler.MuteData getMute(String username) {
+        return mutes.get(username);
     }
 
-    public void removeMute(ProxiedPlayer proxiedPlayer) {
-        mutes.remove(proxiedPlayer.getName());
+    public void removeMute(String username) {
+        mutes.remove(username);
     }
 
     public boolean isPlayerInConversation(ProxiedPlayer proxiedPlayer) {

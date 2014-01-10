@@ -61,7 +61,7 @@ public class ChatManager implements Listener, TCommandHandler {
         }
 
         if (GearzBungee.getInstance().getChat().isPlayerMuted(player.getName())) {
-            LoginHandler.MuteData muteData = GearzBungee.getInstance().getChat().getMute(player);
+            LoginHandler.MuteData muteData = GearzBungee.getInstance().getChat().getMute(player.getName());
             if (muteData.getPunishmentType() == PunishmentType.MUTE) {
                 player.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
             } else if (muteData.getPunishmentType() == PunishmentType.TEMP_MUTE) {
