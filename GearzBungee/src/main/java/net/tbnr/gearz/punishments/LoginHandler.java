@@ -38,9 +38,11 @@ public class LoginHandler implements Listener {
                 return;
             }
             MuteData muteData = gearzPlayer.getActiveMuteData();
-            ProxyServer.getInstance().getLogger().info("NULL");
             if (muteData != null) {
-                ProxyServer.getInstance().getLogger().info("NOT NULL");
+                ProxyServer.getInstance().getLogger().info(muteData.getIssuer());
+                ProxyServer.getInstance().getLogger().info(muteData.getReason());
+                ProxyServer.getInstance().getLogger().info(muteData.isPerm() + "");
+                ProxyServer.getInstance().getLogger().info(muteData.getPunishmentType() + "");
 
                 GearzBungee.getInstance().getChat().addMute(gearzPlayer.getProxiedPlayer(), muteData);
             }
@@ -57,7 +59,7 @@ public class LoginHandler implements Listener {
         }
     }
 
-        public static class MuteData {
+    public static class MuteData {
         Date end;
         PunishmentType punishmentType;
         boolean perm;
@@ -86,6 +88,10 @@ public class LoginHandler implements Listener {
 
         public String getIssuer() {
             return issuer;
+        }
+
+        public PunishmentType getPunishmentType() {
+            return punishmentType;
         }
     }
 }

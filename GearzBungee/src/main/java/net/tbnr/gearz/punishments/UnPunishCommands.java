@@ -211,6 +211,10 @@ public class UnPunishCommands implements TCommandHandler {
         }
 
         List<BasicDBObject> punishments = gearzTarget.getPunishments();
+        if (punishments == null) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("null-punishment", false, false));
+            return TCommandStatus.SUCCESSFUL;
+        }
         BasicDBObject toAppeal = punishments.get(id);
         if (toAppeal == null) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("null-punishment", false, false));
