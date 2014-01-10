@@ -139,24 +139,12 @@ public class GearzPlayer {
         save();
 
         String name = (console ? "CONSOLE" : issuer.getName());
-        if ((punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) &&
-
-                getProxiedPlayer()
-
-                        != null)
-
-        {
+        if ((punishmentType == PunishmentType.MUTE || punishmentType == PunishmentType.TEMP_MUTE) && getProxiedPlayer() != null) {
             LoginHandler.MuteData muteData = new LoginHandler.MuteData(end, punishmentType, reason, name);
             GearzBungee.getInstance().getChat().addMute(getProxiedPlayer(), muteData);
         }
 
-        if (punishmentType.isKickable() &&
-
-                getProxiedPlayer()
-
-                        != null)
-
-        {
+        if (punishmentType.isKickable() && getProxiedPlayer() != null) {
             if (punishmentType == PunishmentType.PERMANENT_BAN) {
                 kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
             } else if (punishmentType == PunishmentType.TEMP_BAN) {

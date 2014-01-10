@@ -2,6 +2,7 @@ package net.tbnr.util.player;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -402,6 +403,12 @@ public class TPlayer {
      * Called by the TPlayerManager when the player disconnects. Do not call otherwise
      */
     void disconnected() {
+        Object object = getPlayerObject(getPlayerName()).get("punishments");
+        if (!(object instanceof BasicDBList)) {
+            object = new BasicDBList();
+        }
+        BasicDBList bans = (BasicDBList) object;
+        getPlayerDocument().put("punishments", bans);
         getPlayerDocument().put("online", false);
         Object o = getPlayerDocument().get("time-online");
         if (o == null) o = 0l;
