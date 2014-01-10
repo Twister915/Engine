@@ -251,12 +251,22 @@ public class GearzPlayer {
             BasicDBObject mute = (BasicDBObject) o;
             PunishmentType punishmentType = PunishmentType.valueOf(mute.getString("type"));
             if (mute.getBoolean("valid")) {
+                String issuer = "NULL";
+                if (mute.get("issuer") instanceof String) {
+                    issuer = "CONSOLE";
+                } else if (mute.get("issuer") instanceof ObjectId) {
+                    try {
+                        issuer = getById(mute.getObjectId("issuer")).getName();
+                    } catch (PlayerNotFoundException e) {
+                        issuer = "NULL";
+                    }
+                }
                 if (punishmentType == PunishmentType.MUTE) {
-                    return new LoginHandler.MuteData(new Date(), PunishmentType.MUTE, mute.getString("reason"), mute.getString("issuer"));
+                    return new LoginHandler.MuteData(new Date(), PunishmentType.MUTE, mute.getString("reason"), issuer);
                 } else if (punishmentType == PunishmentType.TEMP_MUTE) {
                     Date end = mute.getDate("end");
                     if (new Date().before(end)) return null;
-                    return new LoginHandler.MuteData(end, PunishmentType.TEMP_MUTE, mute.getString("reason"), mute.getString("issuer"));
+                    return new LoginHandler.MuteData(end, PunishmentType.TEMP_MUTE, mute.getString("reason"), issuer);
                 }
             }
         }
