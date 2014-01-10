@@ -12,6 +12,7 @@ import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -197,6 +198,7 @@ public class PunishCommands implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
     @TCommand(
             aliases = {"gtempmute", "tmute"},
             name = "ggtempmute",
@@ -234,7 +236,7 @@ public class PunishCommands implements TCommandHandler {
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
         if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
-        gearzTarget.getProxiedPlayer().sendMessage(GearzBungee.getInstance().getFormat("muted-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}));
+        gearzTarget.getProxiedPlayer().sendMessage(GearzBungee.getInstance().getFormat("temp-muted-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}, new String[]{"<end>", longReadable.format(end)}));
         return TCommandStatus.SUCCESSFUL;
     }
 

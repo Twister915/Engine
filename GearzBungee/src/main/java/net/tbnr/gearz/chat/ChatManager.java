@@ -11,11 +11,13 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.punishments.LoginHandler;
+import net.tbnr.gearz.punishments.PunishmentType;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +38,8 @@ public class ChatManager implements Listener, TCommandHandler {
     }
 
     private Map<String, SpyType> spies = new HashMap<>();
-
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
@@ -60,7 +63,11 @@ public class ChatManager implements Listener, TCommandHandler {
 
         if (GearzBungee.getInstance().getChat().isPlayerMuted(player)) {
             LoginHandler.MuteData muteData = GearzBungee.getInstance().getChat().getMute(player);
-            player.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
+            if (muteData.getPunishmentType() == PunishmentType.MUTE) {
+                player.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
+            } else if (muteData.getPunishmentType() == PunishmentType.TEMP_MUTE) {
+                player.sendMessage(GearzBungee.getInstance().getFormat("temp-muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}, new String[]{"<end>", longReadable.format(muteData.getEnd())}));
+            }
             event.setCancelled(true);
             return;
         }
