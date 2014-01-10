@@ -45,16 +45,17 @@ import java.util.*;
 @EqualsAndHashCode(of = {"id", "arena", "players"}, doNotUseGetters = true)
 @ToString(of = {"arena", "id", "running", "players", "spectators", "gameMeta"})
 public abstract class GearzGame implements Listener {
-    private Arena arena;
+    private final Arena arena;
     private Set<GearzPlayer> players;
     private Set<GearzPlayer> spectators;
     private Set<GearzPlayer> addedPlayers;
     private Set<GearzPlayer> endedPlayers;
     private InventoryGUI spectatorGui;
-    private GameMeta gameMeta;
-    private GearzPlugin plugin;
-    private Integer id;
+    private final GameMeta gameMeta;
+    private final GearzPlugin plugin;
+    private final Integer id;
     private GearzMetrics metrics;
+    private PvPTracker tracker;
     @Getter
     private boolean running;
     /**
@@ -87,12 +88,12 @@ public abstract class GearzGame implements Listener {
         this.players = new HashSet<>();
         this.addedPlayers = new HashSet<>();
         this.players.addAll(players);
-
         for (GearzPlayer player : players) {
             if (Gearz.getInstance().showDebug()) {
                 Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGame|73>--------< <init> / player loop has been CAUGHT for: " + player.getUsername());
             }
         }
+        this.tracker = new PvPTracker(this);
         this.spectators = new HashSet<>();
         this.pendingPoints = new HashMap<>();
         this.endedPlayers = new HashSet<>();
@@ -127,7 +128,7 @@ public abstract class GearzGame implements Listener {
     /**
      * Starts the game, called publicly to support required logic before telling the game itself that we're starting :D
      */
-    public void startGame() {
+    public final void startGame() {
         //Required Logic stuff :D
         if (this.running) {
             return;
@@ -175,16 +176,17 @@ public abstract class GearzGame implements Listener {
                 e.remove();
             }
         }
+        this.tracker.startGame();
         Bukkit.getPluginManager().callEvent(new GameStartEvent(this));
     }
 
-    public boolean isIngame(GearzPlayer player) {
+    public final boolean isIngame(GearzPlayer player) {
         return this.allPlayers().contains(player);
     }
 
     protected abstract void gameStarting();
 
-    protected void stopGameForPlayer(GearzPlayer player, GameStopCause cause) {
+    protected final void stopGameForPlayer(GearzPlayer player, GameStopCause cause) {
         if (this.endedPlayers.contains(player)) {
             return;
         }
@@ -224,6 +226,7 @@ public abstract class GearzGame implements Listener {
         Bukkit.getPluginManager().callEvent(new GameEndEvent(this));
         HandlerList.unregisterAll(this);
         this.plugin.getGameManager().gameEnded(this);
+        this.tracker.saveKills();
         if (cause == GameStopCause.GAME_END) {
             BasicDBObject pointsEarned = new BasicDBObject();
             for (Map.Entry<GearzPlayer, Integer> entry : this.pendingPoints.entrySet()) {
@@ -235,7 +238,7 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-    public void disable() {
+    public final void disable() {
         if (!this.running) {
             return;
         }
@@ -247,14 +250,14 @@ public abstract class GearzGame implements Listener {
     /**
      * Stop's the current game ~ forcefully
      */
-    public void stopGame() {
+    public final void stopGame() {
         stopGame(GameStopCause.FORCED);
     }
 
     /**
      * Stop the current game ~ normally on finish
      */
-    protected void finishGame() {
+    protected final void finishGame() {
         stopGame(GameStopCause.GAME_END);
     }
 
@@ -370,7 +373,7 @@ public abstract class GearzGame implements Listener {
     }
 
     @EventHandler
-    public void onExplosion(EntityExplodeEvent event) {
+    public final void onExplosion(EntityExplodeEvent event) {
         if (getExplosionType() == Explosion.NO_BLOCK_DAMAGE || getExplosionType() == Explosion.NO_BLOCK_DAMAGE_AND_NO_DROP || getExplosionType() == Explosion.NONE) {
             event.setCancelled(true);
         }
@@ -395,7 +398,7 @@ public abstract class GearzGame implements Listener {
     }
 
     @EventHandler
-    public void onLeafDecay(LeavesDecayEvent event) {
+    public final void onLeafDecay(LeavesDecayEvent event) {
         if (!canLeafsDecay()) {
             event.setCancelled(true);
         }
@@ -407,7 +410,7 @@ public abstract class GearzGame implements Listener {
      * @param player ~ (in GearzPlayer wrapper) the player to add points to
      * @param points ~ the amount of points to add
      */
-    protected void addGPoints(final GearzPlayer player, Integer points) {
+    protected final void addGPoints(final GearzPlayer player, Integer points) {
         Integer cPend = this.pendingPoints.containsKey(player) ? this.pendingPoints.get(player) : 0;
         this.pendingPoints.put(player, cPend + points);
         player.getTPlayer().sendMessage(getFormat("points-added", new String[]{"<points>", String.valueOf(points)}));
@@ -418,7 +421,7 @@ public abstract class GearzGame implements Listener {
      *
      * @return List<GearzPlayer> ~ List of players
      */
-    public HashSet<GearzPlayer> getPlayers() {
+    public final HashSet<GearzPlayer> getPlayers() {
         HashSet<GearzPlayer> players = new HashSet<>();
         players.addAll(this.players);
         return players;
@@ -571,7 +574,7 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-    private  void showForAll(GearzPlayer player) {
+    private void showForAll(GearzPlayer player) {
         for (GearzPlayer player1 : allPlayers()) {
             if (player1.getPlayer() == null) {
                 continue;
@@ -840,7 +843,7 @@ public abstract class GearzGame implements Listener {
     }
 
     @EventHandler
-    public void onHangingDestroy(HangingBreakByEntityEvent event) {
+    public final void onHangingDestroy(HangingBreakByEntityEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
@@ -856,7 +859,7 @@ public abstract class GearzGame implements Listener {
     }
 
     @EventHandler
-    public void onEntityAttack(EntityDamageByEntityEvent event) {
+    public final void onEntityAttack(EntityDamageByEntityEvent event) {
         Entity eventDamager = event.getDamager();
         Entity eventTarget = event.getEntity();
         onDamage(eventDamager, eventTarget, event);
@@ -931,20 +934,15 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-    private void playerKilledPlayer(GearzPlayer damager, GearzPlayer target) {
+    private void playerKilledPlayer(final GearzPlayer damager, final GearzPlayer target) {
         this.playerKilled(target, damager);
-        PlayerList kill_list = PlayerList.loadPlayerList(PlayerListKey.Kills, damager);
-        kill_list.addPlayer(target);
-        damager.getTPlayer().store(Gearz.getInstance(), kill_list);
-        PlayerList death_list = PlayerList.loadPlayerList(PlayerListKey.Deaths, target);
-        death_list.addPlayer(damager);
-        target.getTPlayer().store(Gearz.getInstance(), death_list);
+        this.tracker.trackKill(damager, target);
         fakeDeath(target);
         broadcast(getFormat("death-message", new String[]{"<killer>", damager.getPlayer().getDisplayName()}, new String[]{"<victim>", target.getPlayer().getDisplayName()}));
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
+    public final void onEntityDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
@@ -997,7 +995,7 @@ public abstract class GearzGame implements Listener {
     }
 
     @EventHandler
-    public void onArrow(EntityShootBowEvent event) {
+    public final void onArrow(EntityShootBowEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
@@ -1017,7 +1015,7 @@ public abstract class GearzGame implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
+    public final void onBlockBreak(BlockBreakEvent event) {
         GearzPlayer player = GearzPlayer.playerFromPlayer(event.getPlayer());
         if (!isIngame(player)) {
             return;
@@ -1037,7 +1035,7 @@ public abstract class GearzGame implements Listener {
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public final void onBlockPlace(BlockPlaceEvent event) {
         GearzPlayer player = GearzPlayer.playerFromPlayer(event.getPlayer());
         if (!isIngame(player)) return;
         if (isSpectating(player)) {
@@ -1180,46 +1178,6 @@ public abstract class GearzGame implements Listener {
      */
     protected final GameMeta getGameMeta() {
         return this.gameMeta;
-    }
-
-    @Data
-    @ToString
-    @EqualsAndHashCode
-    @RequiredArgsConstructor
-    public final static class PlayerList implements TPlayerStorable {
-        @NonNull
-        private String key;
-        @NonNull
-        private BasicDBList players;
-
-        public static PlayerList loadPlayerList(PlayerListKey key, GearzPlayer player) {
-            String key_string = (key == PlayerListKey.Kills) ? "kills" : "deaths";
-            Object storable = player.getTPlayer().getStorable(Gearz.getInstance(), key_string);
-            BasicDBList list = new BasicDBList();
-            if (storable != null) {
-                list = (BasicDBList) storable;
-            }
-            return new PlayerList(key_string, list);
-        }
-
-        public void addPlayer(GearzPlayer player) {
-            players.add(player.getTPlayer().getPlayerDocument().get("_id"));
-        }
-
-        @Override
-        public String getName() {
-            return key;
-        }
-
-        @Override
-        public Object getValue() {
-            return players;
-        }
-    }
-
-    public static enum PlayerListKey {
-        Kills,
-        Deaths
     }
 
     @Data
