@@ -148,6 +148,8 @@ public class GearzPlayer {
                 kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
             } else if (punishmentType == PunishmentType.TEMP_BAN) {
                 kickPlayer(GearzBungee.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", reason}, new String[]{"<date>", longReadable.format(end)}), name);
+            } else if (punishmentType == PunishmentType.KICK) {
+                kickPlayer(GearzBungee.getInstance().getFormat("kick-reason", false, true, new String[]{"<reason>", reason}), name);
             }
             kickPlayer(GearzBungee.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", reason}), name);
         }
