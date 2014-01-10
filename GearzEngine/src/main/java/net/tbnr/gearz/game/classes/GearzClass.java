@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class GearzClass {
+public final class GearzClass {
     @Setter(AccessLevel.PACKAGE) @NonNull
     private String name;
     @Setter(AccessLevel.PACKAGE)

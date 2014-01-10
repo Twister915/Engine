@@ -14,7 +14,7 @@ import org.bukkit.World;
  * Time: 1:35 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GameLobby extends Arena {
+public final class GameLobby extends Arena {
 
     @ArenaField(loop = true, longName = "Spawn Points", key = "spawn_points", type = ArenaField.PointType.Player)
     public ArenaIterator<Point> spawnPoints;

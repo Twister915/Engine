@@ -44,7 +44,7 @@ import static net.tbnr.gearz.packets.packetwrapper.WrapperPlayServerWorldParticl
 @SuppressWarnings("UnusedDeclaration")
 @EqualsAndHashCode(of = {"playerName", "timeJoined"}, doNotUseGetters = true)
 @ToString(of = {"playerName", "timeJoined"}, includeFieldNames = true, doNotUseGetters = true)
-public class TPlayer {
+public final class TPlayer {
     /**
      * The variable storing the actual player this represents. R/O
      */

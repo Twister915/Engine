@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  * Time: 2:31 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlayerChangeDonorPointsEvent extends Event {
+public final class PlayerChangeDonorPointsEvent extends Event {
     private Integer oldPoint;
     private Integer newPoint;
     private GearzPlayer player;

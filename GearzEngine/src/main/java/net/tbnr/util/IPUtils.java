@@ -10,7 +10,7 @@ import java.net.InetAddress;
 /**
  * Created by George on 24/12/13.
  */
-public class IPUtils {
+public final class IPUtils {
 
     /**
      * Returns player ping via the eventHandler passed in

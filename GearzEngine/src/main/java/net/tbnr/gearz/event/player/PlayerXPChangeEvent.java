@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  * Time: 5:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlayerXPChangeEvent extends Event {
+public final class PlayerXPChangeEvent extends Event {
     private Integer oldXp;
     private Integer newXp;
     private GearzPlayer player;

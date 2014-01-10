@@ -12,7 +12,7 @@ import org.bukkit.event.HandlerList;
  * Time: 9:03 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GamePreStartEvent extends Event implements Cancellable {
+public final class GamePreStartEvent extends Event implements Cancellable {
     private GearzGame game;
     private boolean cancelled;
     private String reasonCancelled;

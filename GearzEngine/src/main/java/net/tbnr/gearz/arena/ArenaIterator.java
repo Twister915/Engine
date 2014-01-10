@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <T> The type, normally Point.
  */
-public class ArenaIterator<T> implements Iterator<T> {
+public final class ArenaIterator<T> implements Iterator<T> {
     /**
      * This stores the data
      */

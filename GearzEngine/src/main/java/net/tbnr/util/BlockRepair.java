@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class BlockRepair {
+public final class BlockRepair {
 
     public static void performRegen(final List<BlockState> blocks, final Location center, final int blocksPerTime, long delay) {
         new BukkitRunnable() {

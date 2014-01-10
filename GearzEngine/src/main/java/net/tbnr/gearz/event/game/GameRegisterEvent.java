@@ -15,7 +15,7 @@ import org.bukkit.event.HandlerList;
  * Time: 9:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GameRegisterEvent extends Event implements Cancellable {
+public final class GameRegisterEvent extends Event implements Cancellable {
     private Class<? extends Arena> arena;
     private Class<? extends GearzGame> game;
     private GearzPlugin plugin;

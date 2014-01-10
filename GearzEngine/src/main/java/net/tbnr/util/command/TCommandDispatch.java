@@ -16,7 +16,7 @@ import java.util.List;
  * This is the dispatcher for all commands. It will handle commands and dispatch them to the proper methods.
  */
 @SuppressWarnings("UnusedDeclaration")
-public class TCommandDispatch implements CommandExecutor, TabCompleter {
+public final class TCommandDispatch implements CommandExecutor, TabCompleter {
     /**
      * Constructs the dispatcher
      *

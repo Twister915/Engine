@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * Created by Joey on 12/11/13.
  */
-public class InventoryBarVotingSession extends VotingSession implements Listener, GameCountdownHandler {
+public final class InventoryBarVotingSession extends VotingSession implements Listener, GameCountdownHandler {
     @Getter
     private List<Votable> votables;
     @Getter

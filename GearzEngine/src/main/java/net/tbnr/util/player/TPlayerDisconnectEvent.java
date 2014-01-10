@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  * Time: 10:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TPlayerDisconnectEvent extends Event {
+public final class TPlayerDisconnectEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private String quitMessage;
 

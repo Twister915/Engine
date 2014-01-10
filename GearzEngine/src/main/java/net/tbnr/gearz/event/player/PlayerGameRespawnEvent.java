@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
-public class PlayerGameRespawnEvent extends Event {
+public final class PlayerGameRespawnEvent extends Event {
     @Setter(AccessLevel.NONE) private GearzPlayer player;
     @Setter(AccessLevel.NONE) private GearzGame game;
     /*

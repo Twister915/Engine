@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
-public class PlayerMapVoteEvent extends Event {
+public final class PlayerMapVoteEvent extends Event {
     private Integer numberOfVotes;
     @Setter(AccessLevel.PACKAGE)private GearzPlayer player;
     @Setter(AccessLevel.PACKAGE)private Votable votable;

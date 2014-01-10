@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 /**
  *
  */
-public class TPlayerManager implements Listener {
+public final class TPlayerManager implements Listener {
     private HashMap<String, TPlayer> players = new HashMap<>();
     private DBCollection collection = null;
     private DB database = null;

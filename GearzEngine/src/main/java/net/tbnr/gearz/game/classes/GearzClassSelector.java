@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Class Selector
  */
-public class GearzClassSelector implements InventoryGUI.InventoryGUICallback {
+public final class GearzClassSelector implements InventoryGUI.InventoryGUICallback {
     @Getter
     private List<GearzClass> classes = new ArrayList<>();
     private HashMap<String, GearzClass> currentClasses = new HashMap<>();

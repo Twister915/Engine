@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  * Time: 9:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TPlayerJoinEvent extends Event {
+public final class TPlayerJoinEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private String joinMessage;
 

@@ -11,7 +11,7 @@ import java.util.HashMap;
 /**
  * The NetCommand class is used solely to build commands to send. :D
  */
-public class NetCommand {
+public final class NetCommand {
     /**
      * The arguments of the command we're going to send.
      */

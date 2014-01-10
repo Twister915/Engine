@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Stores metrics on the games
  */
-public class GearzMetrics {
+public final class GearzMetrics {
     @Getter @NonNull
     private DBCollection metricsCollection;
     @Getter @NonNull

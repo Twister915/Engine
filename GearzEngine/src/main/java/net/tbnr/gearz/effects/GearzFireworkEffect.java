@@ -15,7 +15,7 @@ import java.util.List;
  * Represents a static firework that you can shoot off in a variant of modes. Reproducible firework effects with ease!
  */
 @SuppressWarnings("unused")
-public class GearzFireworkEffect {
+public final class GearzFireworkEffect {
     /**
      * The location at which the firework is fired
      */

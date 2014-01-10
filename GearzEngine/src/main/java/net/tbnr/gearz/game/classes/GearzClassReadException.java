@@ -7,7 +7,7 @@ import org.json.JSONException;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class GearzClassReadException extends GearzException {
+public final class GearzClassReadException extends GearzException {
     private JSONException jsonException;
 
     public GearzClassReadException(String s) {

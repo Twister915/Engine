@@ -9,7 +9,7 @@ import net.tbnr.util.player.TPlayerStorable;
  * Time: 2:09 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GearzPlayerNickname implements TPlayerStorable {
+public final class GearzPlayerNickname implements TPlayerStorable {
     private String value;
 
     public GearzPlayerNickname(String nick) {

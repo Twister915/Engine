@@ -14,7 +14,7 @@ import org.bukkit.event.HandlerList;
  * Time: 5:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlayerPointChangeEvent extends Event implements Cancellable {
+public final class PlayerPointChangeEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter
     private GearzPlayer player;

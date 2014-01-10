@@ -12,7 +12,7 @@ import org.bukkit.event.HandlerList;
  * Time: 5:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlayerLevelChangeEvent extends Event {
+public final class PlayerLevelChangeEvent extends Event {
     private Integer oldLevel;
     private Integer newLevel;
     private GearzPlayer player;

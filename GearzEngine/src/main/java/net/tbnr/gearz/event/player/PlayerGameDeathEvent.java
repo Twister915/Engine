@@ -12,7 +12,7 @@ import org.bukkit.event.HandlerList;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
-public class PlayerGameDeathEvent extends Event {
+public final class PlayerGameDeathEvent extends Event {
     @Setter(AccessLevel.NONE) private GearzGame game;
     @Setter(AccessLevel.NONE) private GearzPlayer dead;
     /*

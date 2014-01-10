@@ -18,7 +18,7 @@ import java.util.List;
  * Time: 11:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ArenaManager {
+public final class ArenaManager {
     /**
      * Stores all the Arenas for this game
      */

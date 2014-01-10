@@ -51,7 +51,7 @@ import java.util.Map;
 /**
  *
  */
-public class GameManagerSingleGame implements GameManager, Listener, VotingHandler, TCommandHandler {
+public final class GameManagerSingleGame implements GameManager, Listener, VotingHandler, TCommandHandler {
     private final Class<? extends GearzGame> gearzGameClass;
     private GameLobby gameLobby;
     private GameMeta gameMeta;

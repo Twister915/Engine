@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @ToString
 @EqualsAndHashCode
-public class GearzItemMeta {
+public final class GearzItemMeta {
     private String title;
     private List<String> lore;
     private Color color;

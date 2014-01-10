@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Created by Joey on 12/10/13.
  */
-public class EnderBar {
+public final class EnderBar {
     static {
         resetPlayers();
     }

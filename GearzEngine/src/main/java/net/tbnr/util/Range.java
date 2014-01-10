@@ -7,7 +7,7 @@ package net.tbnr.util;
  * Time: 5:25 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Range {
+public final class Range {
     private Integer x;
     private Integer y;
 

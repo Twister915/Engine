@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 /**
  * GearzLabelEntity defines a fake bat, tracks location, packets, meta, etc :D
  */
-public class GearzLabelEntity {
+public final class GearzLabelEntity {
 
     /**
      * Player this is sent to

@@ -23,7 +23,7 @@ import java.util.Map;
 @Data
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class GearzItem {
+public final class GearzItem {
     @Setter(AccessLevel.PACKAGE) @NonNull
     private Material material;
     @Setter(AccessLevel.PACKAGE) @NonNull

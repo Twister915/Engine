@@ -9,17 +9,17 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(of = {"x", "y", "z", "yaw", "pitch"}, doNotUseGetters = false)
 @ToString(of = {"x", "y", "z", "yaw", "pitch"})
-public class Point {
+public final class Point {
     @Getter
-    private double x;
+    private final double x;
     @Getter
-    private double y;
+    private final double y;
     @Getter
-    private double z;
+    private final double z;
     @Getter
-    private float yaw;
+    private final float yaw;
     @Getter
-    private float pitch;
+    private final float pitch;
 
     public Point(double x, double y, double z) {
         this(x, y, z, 0, 0);

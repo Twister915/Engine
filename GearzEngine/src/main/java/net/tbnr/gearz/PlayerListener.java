@@ -13,10 +13,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
  * Date: 10/31/13
  * Time: 11:29 PM
  */
-public class PlayerListener implements Listener {
-
-
-
+public final class PlayerListener implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void tPlayerJoinEvent(TPlayerJoinEvent event) {
@@ -25,7 +22,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void playerJoinEvent(PlayerLoginEvent event) {
-        //If People can join the server then just move on if not kick them WHITELIST STUFF
         if (ServerManager.canJoin()) return;
         event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         event.setKickMessage("You are not permitted to join this server at this time.");

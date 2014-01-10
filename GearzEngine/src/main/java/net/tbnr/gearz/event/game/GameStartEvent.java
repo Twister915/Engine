@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  * Time: 9:03 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GameStartEvent extends Event {
+public final class GameStartEvent extends Event {
     private GearzGame game;
     /*
     Event code

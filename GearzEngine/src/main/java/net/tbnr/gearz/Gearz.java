@@ -35,7 +35,7 @@ import java.util.*;
 /**
  * Gearz Plugin
  */
-public class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, ServerManagerHelper {
+public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, ServerManagerHelper {
     /**
      * The Gearz instance.
      */

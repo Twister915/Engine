@@ -9,7 +9,7 @@ import net.tbnr.gearz.GearzException;
  * Time: 10:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GameStartException extends GearzException {
+public final class GameStartException extends GearzException {
     private GameStartFailureCause cause;
 
     public GameStartException(String s, GameStartFailureCause cause) {

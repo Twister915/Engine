@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 @Data
 @AllArgsConstructor
-public class GearzStatusEffect {
+public final class GearzStatusEffect {
     @Setter(AccessLevel.PACKAGE)
     private PotionEffectType potionEffectType;
     @Setter(AccessLevel.PACKAGE)

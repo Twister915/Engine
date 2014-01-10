@@ -25,7 +25,7 @@ import java.util.HashMap;
  */
 @EqualsAndHashCode(of = {"username"}, doNotUseGetters = true)
 @ToString(exclude = {"hideStats", "game"})
-public class GearzPlayer {
+public final class GearzPlayer {
     private TPlayer player;
     private String username;
     private boolean hideStats;

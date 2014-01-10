@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
  * Countdown Class, create an instance of this, and implement the GameCountdownHandler to utilize this.
  * You will recieve calls every second notifying you of a time update.
  */
-public class GameCountdown implements Runnable {
+public final class GameCountdown implements Runnable {
     /**
      * Number of seconds to countdown from.
      */

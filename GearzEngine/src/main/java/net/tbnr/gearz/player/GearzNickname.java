@@ -26,7 +26,7 @@ import org.bukkit.event.Listener;
  * Time: 2:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GearzNickname implements Listener, TCommandHandler {
+public final class GearzNickname implements Listener, TCommandHandler {
     @EventHandler(priority = EventPriority.MONITOR)
     @SuppressWarnings("unused")
     public void onPlayerJoin(TPlayerJoinEvent event) {
