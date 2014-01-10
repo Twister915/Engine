@@ -7,8 +7,8 @@ depend: [ProtocolLib, Vault]
 commands:
   nick:
     description: Nickname.
-  whois:
-    description: Whois.
+  realname:
+    description: Checks a player's real name.
   xp:
     description: Xp
 permissions:

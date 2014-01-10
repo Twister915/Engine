@@ -82,12 +82,12 @@ public final class GearzNickname implements Listener, TCommandHandler {
     }
 
     @TCommand(
-            name = "whois",
-            usage = "Whois command!",
+            name = "realname",
+            usage = "/realname <player>",
             permission = "gearz.whois",
             senders = {TCommandSender.Player})
     @SuppressWarnings("unused")
-    public TCommandStatus who(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+    public TCommandStatus realname(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length < 1) {
             return TCommandStatus.FEW_ARGS;
         }
@@ -95,7 +95,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
         TPlayer player = null;
         String nick = null;
 
-        Object stored = null;
+        Object stored;
         for (TPlayer tplayer : Gearz.getInstance().getPlayerManager().getPlayers()) {
             stored = tplayer.getStorable(Gearz.getInstance(), gearzNickname);
             if (stored == null || !(stored instanceof String)) continue;
@@ -106,7 +106,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
             }
         }
         if (player == null) return TCommandStatus.INVALID_ARGS;
-        sender.sendMessage(Gearz.getInstance().getFormat("formats.whois", true, new String[]{"<player>", player.getPlayer().getName()}, new String[]{"<nick>", nick}));
+        sender.sendMessage(Gearz.getInstance().getFormat("formats.realname", true, new String[]{"<player>", player.getPlayer().getName()}, new String[]{"<nick>", nick}));
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -123,12 +123,6 @@ public final class GearzNickname implements Listener, TCommandHandler {
         player.getPlayer().setDisplayName(nick);
         player.getPlayer().setCustomName(ChatColor.stripColor(nick));
         ColoredTablist.updateNick(player.getPlayer());
-        /*if(!((String) storable).equalsIgnoreCase(player.getPlayer().getName())){
-            player.getPlayer().setPlayerListName(nick);
-            // TagAPI.refreshPlayer(player.getPlayer());
-        } else {
-            ColoredTablist.updateNick(player.getPlayer());
-        }*/
         return nick;
     }
 
@@ -136,11 +130,4 @@ public final class GearzNickname implements Listener, TCommandHandler {
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         Gearz.getInstance().handleCommandStatus(status, sender, senderType);
     }
-    /**
-     @EventHandler(priority = EventPriority.LOWEST)
-     @SuppressWarnings("unused")
-     public void onNametag(PlayerReceiveNameTagEvent event) {
-     event.setTag(event.getNamedPlayer().getPlayerListName());
-     }
-     */
 }

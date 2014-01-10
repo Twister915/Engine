@@ -13,7 +13,7 @@ formats:
   update-nickname: "&aYour nickname is now &c<name>&a."
   update-nickname-other: "&aYou have changed &c<player>&a's nickname to &c<name>&a."
   nickname-taken: "&aThis nickname has been &ctaken&a!"
-  whois: "&c<nick>&a is &c<player>&a."
+  realname: "&c<nick>&a is &c<player>&a."
   level-up: "&aYou have leveled up to level &c<level>&a."
   xp-change: "&aYou have &c<action> <xp> XP to/from <target>&a."
   xp-changed: "&aYou've had &c<xp> XP <action>&a."
