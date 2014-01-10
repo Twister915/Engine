@@ -21,9 +21,8 @@ import java.util.List;
  */
 public class UnPunishCommands implements TCommandHandler {
     public SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
-
     @TCommand(
-            aliases = {"l"},
+            aliases = {"l", "search", "check"},
             name = "lookup",
             usage = "/lookup <player>",
             senders = {TCommandSender.Player, TCommandSender.Console},
@@ -126,8 +125,8 @@ public class UnPunishCommands implements TCommandHandler {
 
     @TCommand(
             aliases = {"gunmute"},
-            name = "umute",
-            usage = "/umute <player>",
+            name = "unmute",
+            usage = "/unmute <player>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.unmute")
     @SuppressWarnings("unused")
@@ -157,7 +156,7 @@ public class UnPunishCommands implements TCommandHandler {
     }
 
     @TCommand(
-            aliases = {"ipunban"},
+            aliases = {"ipunban", "unipban"},
             name = "unbanip",
             usage = "/unbanip <ip>",
             senders = {TCommandSender.Player, TCommandSender.Console},
