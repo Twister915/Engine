@@ -29,7 +29,7 @@ public class Chat {
 
     @Getter Map<ProxiedPlayer, String> lastMessages = Maps.newHashMap();
 
-    @Getter Map<ProxiedPlayer, LoginHandler.MuteData> mutes = Maps.newHashMap();
+    @Getter Map<String, LoginHandler.MuteData> mutes = Maps.newHashMap();
 
     public Chat() {
         setMuted(false);
@@ -39,28 +39,28 @@ public class Chat {
     }
 
     public boolean isPlayerMuted(ProxiedPlayer player) {
-        if (!mutes.containsKey(player)) return false;
-        LoginHandler.MuteData muteData = mutes.get(player);
+        if (!mutes.containsKey(player.getName())) return false;
+        LoginHandler.MuteData muteData = mutes.get(player.getName());
         if (muteData.isPerm()) return true;
         Date end = muteData.getEnd();
         if (new Date().before(end)) {
             return true;
         } else {
-            mutes.remove(player);
+            mutes.remove(player.getName());
             return false;
         }
     }
 
-    public void addMute(ProxiedPlayer proxiedPlayer, LoginHandler.MuteData muteData) {
-        mutes.put(proxiedPlayer, muteData);
+    public void addMute(String username, LoginHandler.MuteData muteData) {
+        mutes.put(username, muteData);
     }
 
     public LoginHandler.MuteData getMute(ProxiedPlayer player) {
-        return mutes.get(player);
+        return mutes.get(player.getName());
     }
 
     public void removeMute(ProxiedPlayer proxiedPlayer) {
-        mutes.remove(proxiedPlayer);
+        mutes.remove(proxiedPlayer.getName());
     }
 
     public boolean isPlayerInConversation(ProxiedPlayer proxiedPlayer) {

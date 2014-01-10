@@ -20,6 +20,7 @@ public class LoginHandler implements Listener {
     public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @EventHandler(priority = EventPriority.HIGH)
+    @SuppressWarnings("unused")
     public void onPlayerLogin(PreLoginEvent event) {
         GearzPlayer gearzPlayer;
         try {
@@ -48,7 +49,7 @@ public class LoginHandler implements Listener {
 
                 }
 
-                GearzBungee.getInstance().getChat().addMute(gearzPlayer.getProxiedPlayer(), muteData);
+                GearzBungee.getInstance().getChat().addMute(event.getConnection().getName(), muteData);
             }
             return;
         }
