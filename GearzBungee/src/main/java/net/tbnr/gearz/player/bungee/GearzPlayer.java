@@ -252,11 +252,11 @@ public class GearzPlayer {
             PunishmentType punishmentType = PunishmentType.valueOf(mute.getString("type"));
             if (mute.getBoolean("valid")) {
                 if (punishmentType == PunishmentType.MUTE) {
-                    return new LoginHandler.MuteData(new Date(), PunishmentType.MUTE, mute.getString("issuer"), mute.getString("reason"));
+                    return new LoginHandler.MuteData(new Date(), PunishmentType.MUTE, mute.getString("reason"), mute.getString("issuer"));
                 } else if (punishmentType == PunishmentType.TEMP_MUTE) {
                     Date end = mute.getDate("end");
                     if (new Date().before(end)) return null;
-                    return new LoginHandler.MuteData(end, PunishmentType.TEMP_MUTE, mute.getString("issuer"), mute.getString("reason"));
+                    return new LoginHandler.MuteData(end, PunishmentType.TEMP_MUTE, mute.getString("reason"), mute.getString("issuer"));
                 }
             }
         }
