@@ -43,6 +43,10 @@ public class LoginHandler implements Listener {
                 ProxyServer.getInstance().getLogger().info(muteData.getReason());
                 ProxyServer.getInstance().getLogger().info(muteData.isPerm() + "");
                 ProxyServer.getInstance().getLogger().info(muteData.getPunishmentType() + "");
+                if (gearzPlayer.getProxiedPlayer() == null) {
+                    ProxyServer.getInstance().getLogger().info("NULLLL");
+
+                }
 
                 GearzBungee.getInstance().getChat().addMute(gearzPlayer.getProxiedPlayer(), muteData);
             }
