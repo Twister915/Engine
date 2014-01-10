@@ -144,7 +144,7 @@ public class UnPunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        if (gearzPlayer.getActiveMute() == null) {
+        if (!GearzBungee.getInstance().getChat().isPlayerMuted(gearzPlayer.getName())) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("not-muted", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
