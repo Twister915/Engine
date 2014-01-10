@@ -65,7 +65,6 @@ public class GearzPlayerManager implements Listener {
             if (aHubServer == null) {
                 return;
             }
-            GearzBungee.getInstance().getLogger().info(aHubServer.toString());
             event.setTarget(aHubServer);
         }
     }
