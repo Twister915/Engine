@@ -488,6 +488,7 @@ public abstract class GearzGame implements Listener {
         player.getTPlayer().sendMessage(getFormat("begin-spectating"));
         player.getPlayer().setAllowFlight(true);
         player.getPlayer().setFlying(true);
+        player.getPlayer().setGameMode(GameMode.ADVENTURE);
         //player.getTPlayer().addPotionEffect(PotionEffectType.INVISIBILITY);
         hideFromAll(player);
         player.getTPlayer().playSound(Sound.FIZZ);
@@ -668,7 +669,7 @@ public abstract class GearzGame implements Listener {
 
     public final void playerLeft(GearzPlayer player) {
         if (!this.isRunning()) {
-            return;
+            //return;
         }
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());

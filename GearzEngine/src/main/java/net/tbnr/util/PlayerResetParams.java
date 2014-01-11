@@ -3,6 +3,7 @@ package net.tbnr.util;
 import lombok.Getter;
 import lombok.Setter;
 import net.tbnr.util.player.TPlayer;
+import org.bukkit.GameMode;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -35,4 +36,6 @@ public class PlayerResetParams {
     private boolean restoreSpeeds = true;
     @SuppressWarnings("unused") @Getter @Setter
     private boolean resetInventory = true;
+    @SuppressWarnings("unused") @Getter @Setter
+    private GameMode resetGamemode = GameMode.SURVIVAL;
 }
