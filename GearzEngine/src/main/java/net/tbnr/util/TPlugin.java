@@ -161,7 +161,7 @@ public abstract class TPlugin extends JavaPlugin {
      */
     public String getFormat(String formatPath, boolean color, String[]... data) {
         if (!this.getConfig().contains(formatPath)) {
-            return null;
+            return formatPath;
         }
         String string = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(formatPath));
         if (data != null) {

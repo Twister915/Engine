@@ -182,7 +182,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Override
     public void handleCommandStatus(TCommandStatus status, org.bukkit.command.CommandSender sender, TCommandSender senderType) {
         if (status == TCommandStatus.SUCCESSFUL) return;
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&6TBNR&7] &cThe command returned an error: &4" + status.toString()));
+        sender.sendMessage(getFormat("formats.command-status", true, new String[]{"<status>", status.toString()}));
     }
 
     @Override

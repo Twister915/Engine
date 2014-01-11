@@ -13,7 +13,7 @@ formats:
   update-nickname: "&aYour nickname is now &c<name>&a."
   update-nickname-other: "&aYou have changed &c<player>&a's nickname to &c<name>&a."
   nickname-taken: "&aThis nickname has been &ctaken&a!"
-  whois: "&c<nick>&a is &c<player>&a."
+  realname: "&c<nick>&a is &c<player>&a."
   level-up: "&aYou have leveled up to level &c<level>&a."
   xp-change: "&aYou have &c<action> <xp> XP to/from <target>&a."
   xp-changed: "&aYou've had &c<xp> XP <action>&a."
@@ -37,12 +37,14 @@ formats:
   h2p-book-author: "&aTBNR Server"
   h2p-book-title: "&aHow to play &3<game>&a."
   voted-for: "&3You have voted for &a<map>&3."
+  command-status: "&7[&6TBNR&7] &cThe command returned an error: &4<status>"
 game-strings: #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version>
               #<author>, <description>, and <key>
   prefix: "<s>&l«<p><gn><s>&l»&r<s> "
   game-cancelled: "<p><gname><s> will not begin because <p><reason><s>." #passed "<reason>" from the event
   game-start: "<s>A new game of <p><gname><s> is starting now!"
   begin-spectating: "<s>You are now <p>spectator<s>, no one can see you, but you can see them :)."
+  spectating-chat: "&cYou are spectating and cannot talk!"
   not-allowed-spectator: "<p>You can't do that!"
   no-pvp-allowed: "<s>PvP is disabled in <p><gname><s>."
   no-pvp: "<s>You can't PvP <p><player><s>!"
