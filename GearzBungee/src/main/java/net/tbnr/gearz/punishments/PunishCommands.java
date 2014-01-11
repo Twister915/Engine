@@ -304,6 +304,7 @@ public class PunishCommands implements TCommandHandler {
         int seconds = 0;
         boolean found = false;
         if (!m.find()) {
+            ProxyServer.getInstance().getLogger().info("not found");
             return 0;
         }
         while (m.find()) {
