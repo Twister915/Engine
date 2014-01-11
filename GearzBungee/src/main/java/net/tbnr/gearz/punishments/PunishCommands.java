@@ -84,6 +84,9 @@ public class PunishCommands implements TCommandHandler {
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
         Long duration = parseTime(length);
+        if (duration == 0) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
+        }
         Date end = new Date();
         end.setTime(duration);
         if (type.equals(TCommandSender.Console)) {
@@ -199,6 +202,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+
     @TCommand(
             aliases = {"gtempmute", "tmute"},
             name = "ggtempmute",
@@ -226,6 +230,9 @@ public class PunishCommands implements TCommandHandler {
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
         Long duration = parseTime(length);
+        if (duration == 0) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
+        }
         Date end = new Date();
         end.setTime(duration);
         if (type.equals(TCommandSender.Console)) {
@@ -296,6 +303,9 @@ public class PunishCommands implements TCommandHandler {
         int minutes = 0;
         int seconds = 0;
         boolean found = false;
+        if (!m.find()) {
+            return 0;
+        }
         while (m.find()) {
             if (m.group() == null || m.group().isEmpty()) {
                 continue;
@@ -346,10 +356,8 @@ public class PunishCommands implements TCommandHandler {
     }
 
     public void broadcastPunishment(String server, String issuer, String target, PunishmentType punishmentType) {
-        synchronized (GearzBungee.getInstance().getListModule().getStaff()) {
-            for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
-                proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", server}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}));
-            }
+        for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+            proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", server}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}));
         }
     }
 }
