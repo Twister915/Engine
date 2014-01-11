@@ -305,12 +305,6 @@ public class PunishCommands implements TCommandHandler {
         int minutes = 0;
         int seconds = 0;
         boolean found = false;
-        if (!m.find()) {
-            ProxyServer.getInstance().getLogger().info("not found");
-            return 0;
-        } else {
-            ProxyServer.getInstance().getLogger().info("found");
-        }
         while (m.find()) {
             if (m.group() == null || m.group().isEmpty()) {
                 continue;
@@ -359,8 +353,8 @@ public class PunishCommands implements TCommandHandler {
                 break;
             }
         }
-        if (!found)
-            throw new Exception("Illegal Date");
+
+        if (!found) throw new Exception("Illegal Date");
 
         Calendar c = new GregorianCalendar();
         if (years > 0)
