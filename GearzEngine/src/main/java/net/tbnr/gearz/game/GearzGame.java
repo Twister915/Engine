@@ -1,6 +1,5 @@
 package net.tbnr.gearz.game;
 
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import lombok.*;
 import net.tbnr.gearz.Gearz;
