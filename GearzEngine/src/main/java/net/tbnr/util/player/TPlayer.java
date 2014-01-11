@@ -151,6 +151,7 @@ public final class TPlayer {
      * @param pitch  The pitch.
      */
     public void playSound(Sound sound, int volume, int pitch) {
+        if(!this.isOnline()) return;
         this.getPlayer().playSound(getPlayer().getLocation(), sound, volume, pitch);
     }
 

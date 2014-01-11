@@ -663,7 +663,7 @@ public abstract class GearzGame implements Listener {
 
     public final void playerLeft(GearzPlayer player) {
         if (!this.isRunning()) {
-            return;
+            //return;
         }
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());
