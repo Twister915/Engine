@@ -317,20 +317,40 @@ public class PunishCommands implements TCommandHandler {
                 }
             }
             if (found) {
-                if (m.group(1) != null && !m.group(1).isEmpty())
+                if (m.group(1) != null && !m.group(1).isEmpty()) {
+                    ProxyServer.getInstance().getLogger().info(m.group(1));
                     years = Integer.parseInt(m.group(1));
-                if (m.group(2) != null && !m.group(2).isEmpty())
+                }
+                if (m.group(2) != null && !m.group(2).isEmpty()) {
+                    ProxyServer.getInstance().getLogger().info(m.group(2));
+
                     months = Integer.parseInt(m.group(2));
-                if (m.group(3) != null && !m.group(3).isEmpty())
+                }
+                if (m.group(3) != null && !m.group(3).isEmpty()) {
+                    ProxyServer.getInstance().getLogger().info(m.group(3));
+
                     weeks = Integer.parseInt(m.group(3));
-                if (m.group(4) != null && !m.group(4).isEmpty())
+                }
+                if (m.group(4) != null && !m.group(4).isEmpty()) {
+                    ProxyServer.getInstance().getLogger().info(m.group(4));
+
                     days = Integer.parseInt(m.group(4));
-                if (m.group(5) != null && !m.group(5).isEmpty())
+                }
+                if (m.group(5) != null && !m.group(5).isEmpty()) {
+                    ProxyServer.getInstance().getLogger().info(m.group(4));
+
                     hours = Integer.parseInt(m.group(5));
-                if (m.group(6) != null && !m.group(6).isEmpty())
+                }
+                if (m.group(6) != null && !m.group(6).isEmpty()) {
+
+                    ProxyServer.getInstance().getLogger().info(m.group(6));
                     minutes = Integer.parseInt(m.group(6));
-                if (m.group(7) != null && !m.group(7).isEmpty())
+                }
+                if (m.group(7) != null && !m.group(7).isEmpty()) {
+                    ProxyServer.getInstance().getLogger().info(m.group(7));
+
                     seconds = Integer.parseInt(m.group(7));
+                }
                 break;
             }
         }
