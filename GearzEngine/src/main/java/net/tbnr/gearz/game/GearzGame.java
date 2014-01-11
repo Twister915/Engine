@@ -1152,7 +1152,7 @@ public abstract class GearzGame implements Listener {
         GearzPlayer gearzPlayer = GearzPlayer.playerFromPlayer(event.getPlayer());
         if (isSpectating(gearzPlayer)) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(Gearz.getInstance().getFormat("are-spectating", true));
+            event.getPlayer().sendMessage(getFormat("spectating-chat"));
         }
     }
 

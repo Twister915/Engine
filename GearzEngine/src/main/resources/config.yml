@@ -44,7 +44,7 @@ game-strings: #All strings should use colors <p> and <s>, and has <gname> (longN
   game-cancelled: "<p><gname><s> will not begin because <p><reason><s>." #passed "<reason>" from the event
   game-start: "<s>A new game of <p><gname><s> is starting now!"
   begin-spectating: "<s>You are now <p>spectator<s>, no one can see you, but you can see them :)."
-  are-spectating: "&cYou are spectating and cannot talk!"
+  spectating-chat: "&cYou are spectating and cannot talk!"
   not-allowed-spectator: "<p>You can't do that!"
   no-pvp-allowed: "<s>PvP is disabled in <p><gname><s>."
   no-pvp: "<s>You can't PvP <p><player><s>!"
