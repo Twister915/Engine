@@ -284,7 +284,7 @@ public class PunishCommands implements TCommandHandler {
         return GearzBungee.getInstance().compile(args, min, max);
     }
 
-    private Long parseTime(String time) {
+    public long parseTime(String time) {
         long timeReturn;
         try {
             timeReturn = parseDateDiff(time, true);
@@ -294,7 +294,7 @@ public class PunishCommands implements TCommandHandler {
         return timeReturn;
     }
 
-    public long parseDateDiff(String time, boolean future) throws Exception {
+    public static long parseDateDiff(String time, boolean future) throws Exception {
         Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?", Pattern.CASE_INSENSITIVE);
         Matcher m = timePattern.matcher(time);
         int years = 0;
@@ -316,45 +316,28 @@ public class PunishCommands implements TCommandHandler {
                 }
             }
             if (found) {
-                if (m.group(1) != null && !m.group(1).isEmpty()) {
-                    ProxyServer.getInstance().getLogger().info(m.group(1));
+                if (m.group(1) != null && !m.group(1).isEmpty())
                     years = Integer.parseInt(m.group(1));
-                }
-                if (m.group(2) != null && !m.group(2).isEmpty()) {
-                    ProxyServer.getInstance().getLogger().info(m.group(2));
-
+                if (m.group(2) != null && !m.group(2).isEmpty())
                     months = Integer.parseInt(m.group(2));
-                }
-                if (m.group(3) != null && !m.group(3).isEmpty()) {
-                    ProxyServer.getInstance().getLogger().info(m.group(3));
-
+                if (m.group(3) != null && !m.group(3).isEmpty())
                     weeks = Integer.parseInt(m.group(3));
-                }
-                if (m.group(4) != null && !m.group(4).isEmpty()) {
-                    ProxyServer.getInstance().getLogger().info(m.group(4));
-
+                if (m.group(4) != null && !m.group(4).isEmpty())
                     days = Integer.parseInt(m.group(4));
-                }
-                if (m.group(5) != null && !m.group(5).isEmpty()) {
-                    ProxyServer.getInstance().getLogger().info(m.group(4));
-
+                if (m.group(5) != null && !m.group(5).isEmpty())
                     hours = Integer.parseInt(m.group(5));
-                }
-                if (m.group(6) != null && !m.group(6).isEmpty()) {
-
-                    ProxyServer.getInstance().getLogger().info(m.group(6));
+                if (m.group(6) != null && !m.group(6).isEmpty())
                     minutes = Integer.parseInt(m.group(6));
-                }
-                if (m.group(7) != null && !m.group(7).isEmpty()) {
-                    ProxyServer.getInstance().getLogger().info(m.group(7));
-
+                if (m.group(7) != null && !m.group(7).isEmpty())
                     seconds = Integer.parseInt(m.group(7));
-                }
                 break;
             }
         }
+        if (!found)
+            throw new Exception("Illegal Date");
 
-        if (!found) throw new Exception("Illegal Date");
+        if (years > 20)
+            throw new Exception("Illegal Date");
 
         Calendar c = new GregorianCalendar();
         if (years > 0)
