@@ -83,9 +83,10 @@ public class PunishCommands implements TCommandHandler {
 
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
+        Date checkAgainst = new Date();
         Long duration = parseTime(length);
         ProxyServer.getInstance().getLogger().info(duration + "");
-        if (duration == 0) {
+        if (duration <= checkAgainst.getTime()) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
@@ -231,8 +232,10 @@ public class PunishCommands implements TCommandHandler {
 
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
+        Date checkAgainst = new Date();
         Long duration = parseTime(length);
-        if (duration == 0) {
+        ProxyServer.getInstance().getLogger().info(duration + "");
+        if (duration <= checkAgainst.getTime()) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
