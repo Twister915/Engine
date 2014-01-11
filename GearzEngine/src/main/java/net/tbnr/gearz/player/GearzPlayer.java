@@ -309,6 +309,6 @@ public final class GearzPlayer {
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzPlayer|279>--------< isValid has been CAUGHT for: " + this.username + " and it returned: " + this.player.getPlayer());
         }
-        return this.player.getPlayer() != null;
+        return this.player.getPlayer() != null && this.player.isOnline();
     }
 }

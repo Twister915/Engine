@@ -87,7 +87,10 @@ public abstract class GearzGame implements Listener {
         this.spectators = new ArrayList<>();*/
         this.players = new HashSet<>();
         this.addedPlayers = new HashSet<>();
-        this.players.addAll(players);
+        for (GearzPlayer player : players) {
+            if (player.isValid()) this.players.add(player);
+        }
+
         for (GearzPlayer player : players) {
             if (Gearz.getInstance().showDebug()) {
                 Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGame|73>--------< <init> / player loop has been CAUGHT for: " + player.getUsername());
