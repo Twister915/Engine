@@ -86,6 +86,7 @@ public class PunishCommands implements TCommandHandler {
         Date checkAgainst = new Date();
         Long duration = parseTime(length);
         ProxyServer.getInstance().getLogger().info(duration + "");
+        ProxyServer.getInstance().getLogger().info(checkAgainst.getTime() + "");
         if (duration <= checkAgainst.getTime()) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
             return TCommandStatus.SUCCESSFUL;
