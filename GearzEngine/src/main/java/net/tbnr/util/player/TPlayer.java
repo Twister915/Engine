@@ -14,10 +14,7 @@ import net.tbnr.gearz.packets.packetwrapper.WrapperPlayServerWorldParticles;
 import net.tbnr.util.IPUtils;
 import net.tbnr.util.PlayerResetParams;
 import net.tbnr.util.TPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -578,6 +575,7 @@ public final class TPlayer {
             getPlayer().setFoodLevel(20);
             getPlayer().setExhaustion(0);
         }
+        getPlayer().setGameMode(params.getResetGamemode());
         getPlayer().setSneaking(false);
         if (!params.isResetFlight()) {
             return;
