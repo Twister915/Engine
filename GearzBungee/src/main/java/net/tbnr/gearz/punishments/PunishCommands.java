@@ -86,6 +86,7 @@ public class PunishCommands implements TCommandHandler {
         Long duration = parseTime(length);
         if (duration == 0) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
+            return TCommandStatus.SUCCESSFUL;
         }
         Date end = new Date();
         end.setTime(duration);
@@ -232,6 +233,7 @@ public class PunishCommands implements TCommandHandler {
         Long duration = parseTime(length);
         if (duration == 0) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
+            return TCommandStatus.SUCCESSFUL;
         }
         Date end = new Date();
         end.setTime(duration);
