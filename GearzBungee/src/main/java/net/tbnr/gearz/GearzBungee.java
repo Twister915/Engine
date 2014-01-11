@@ -267,6 +267,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     }
 
     public String getFormat(String key, boolean prefix, boolean color, String[]... datas) {
+        if (this.strings.getProperty(key) == null) {
+            return key;
+        }
         String property = this.strings.getProperty(key);
         if (prefix)
             property = ChatColor.translateAlternateColorCodes('&', this.strings.getProperty("prefix")) + property;

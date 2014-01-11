@@ -6,6 +6,7 @@ import com.maxmind.geoip.timeZone;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -96,28 +97,33 @@ public class PlayerInfoModule implements TCommandHandler, Listener {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    private void provideInformation(ProxiedPlayer player, CommandSender sender) {
-        sender.sendMessage(GearzBungee.getInstance().getFormat("playerinfo-header", false, false, new String[]{"<target>", player.getName()}));
-        sender.sendMessage(formatData("IP", player.getAddress().getHostString()));
-        sender.sendMessage(formatData("UUID", player.getUUID()));
-        Server serverForBungee = getServerForBungee(player.getServer().getInfo());
-        sender.sendMessage(formatData("Server", serverForBungee.getGame() + serverForBungee.getNumber()));
-        sender.sendMessage(formatData("Server State", serverForBungee.getStatusString()));
-        sender.sendMessage(formatData("Server Players Count", String.valueOf(serverForBungee.getPlayerCount())));
-        Location location = lookupService == null ? null : lookupService.getLocation(player.getAddress().getAddress());
-        if (lookupService == null) {
-            GearzBungee.getInstance().getLogger().severe("Player Lookup Service not loaded!");
-        }
-        sender.sendMessage(formatData("Location", (location == null ? "Error" : location.city + " " + location.countryName)));
-        sender.sendMessage(formatData("Weather", (location == null ? "Error" : WeatherUtils.getWeatherConditons(location.city))));
-        String timezone = location == null ? null : timeZone.timeZoneByCountryAndRegion(location.countryCode, location.region);
-        TimeZone tz = timezone == null ? null : TimeZone.getTimeZone(timezone);
-        DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
-        dateFormatter.setTimeZone(tz);
-        sender.sendMessage(formatData("Timezone", timezone == null ? "Error" : timezone));
-        sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
-        GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
-        sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
+    private void provideInformation(final ProxiedPlayer player, final CommandSender sender) {
+        ProxyServer.getInstance().getScheduler().runAsync(GearzBungee.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                sender.sendMessage(GearzBungee.getInstance().getFormat("playerinfo-header", false, false, new String[]{"<target>", player.getName()}));
+                sender.sendMessage(formatData("IP", player.getAddress().getHostString()));
+                sender.sendMessage(formatData("UUID", player.getUUID()));
+                Server serverForBungee = getServerForBungee(player.getServer().getInfo());
+                sender.sendMessage(formatData("Server", serverForBungee.getGame() + serverForBungee.getNumber()));
+                sender.sendMessage(formatData("Server State", serverForBungee.getStatusString()));
+                sender.sendMessage(formatData("Server Players Count", String.valueOf(serverForBungee.getPlayerCount())));
+                Location location = lookupService == null ? null : lookupService.getLocation(player.getAddress().getAddress());
+                if (lookupService == null) {
+                    GearzBungee.getInstance().getLogger().severe("Player Lookup Service not loaded!");
+                }
+                sender.sendMessage(formatData("Location", (location == null ? "Error" : location.city + " " + location.countryName)));
+                sender.sendMessage(formatData("Weather", (location == null ? "Error" : WeatherUtils.getWeatherConditons(location.city))));
+                String timezone = location == null ? null : timeZone.timeZoneByCountryAndRegion(location.countryCode, location.region);
+                TimeZone tz = timezone == null ? null : TimeZone.getTimeZone(timezone);
+                DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+                dateFormatter.setTimeZone(tz);
+                sender.sendMessage(formatData("Timezone", timezone == null ? "Error" : timezone));
+                sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
+                GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
+                sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
+            }
+        });
     }
 
     public static Server getServerForBungee(ServerInfo info) {
