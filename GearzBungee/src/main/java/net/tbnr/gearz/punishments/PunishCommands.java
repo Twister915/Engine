@@ -84,6 +84,7 @@ public class PunishCommands implements TCommandHandler {
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
         Long duration = parseTime(length);
+        ProxyServer.getInstance().getLogger().info(duration + "");
         if (duration == 0) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
             return TCommandStatus.SUCCESSFUL;
