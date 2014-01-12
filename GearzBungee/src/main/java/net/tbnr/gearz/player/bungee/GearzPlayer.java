@@ -114,7 +114,6 @@ public class GearzPlayer {
     public void punishPlayer(final String reason, final GearzPlayer issuer, final PunishmentType punishmentType, final Date end, final boolean console) {
         if (getPlayerDocument() == null) return;
 
-
         ObjectId objectId = null;
         if (!console) objectId = (ObjectId) issuer.getPlayerDocument().get("_id");
 

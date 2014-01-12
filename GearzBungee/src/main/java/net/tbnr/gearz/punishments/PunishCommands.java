@@ -48,7 +48,7 @@ public class PunishCommands implements TCommandHandler {
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.PERMANENT_BAN, true);
         } else {
-            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.PERMANENT_BAN, true);
+            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.PERMANENT_BAN, false);
         }
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
@@ -94,7 +94,7 @@ public class PunishCommands implements TCommandHandler {
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.TEMP_BAN, end, true);
         } else {
-            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.TEMP_BAN, end, true);
+            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.TEMP_BAN, end, false);
         }
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
