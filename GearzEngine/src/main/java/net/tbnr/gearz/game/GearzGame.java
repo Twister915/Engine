@@ -949,6 +949,8 @@ public abstract class GearzGame implements Listener {
         this.playerKilled(target, damager);
         this.tracker.trackKill(damager, target);
         fakeDeath(target);
+        PlayerGameKillEvent event = new PlayerGameKillEvent(this, target, damager);
+        Bukkit.getPluginManager().callEvent(event);
         broadcast(getFormat("death-message", new String[]{"<killer>", damager.getPlayer().getDisplayName()}, new String[]{"<victim>", target.getPlayer().getDisplayName()}));
     }
 

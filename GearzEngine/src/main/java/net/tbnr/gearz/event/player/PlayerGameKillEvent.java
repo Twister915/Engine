@@ -1,24 +1,23 @@
 package net.tbnr.gearz.event.player;
 
 import lombok.Getter;
-import lombok.NonNull;
+import net.tbnr.gearz.game.GearzGame;
 import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.event.HandlerList;
 
 /**
  * Created by Joey on 1/12/14.
  */
-public final class PlayerGameDamageByPlayerEvent extends PlayerGameDamageEvent {
-    @NonNull @Getter private GearzPlayer damager;
-
-    public PlayerGameDamageByPlayerEvent(PlayerGameDamageEvent event, GearzPlayer damager) {
-        super(event.getGame(), event.getPlayer(), event.getDamage(), event.isCancelled());
-        this.damager = damager;
+public final class PlayerGameKillEvent extends PlayerGameDeathEvent {
+    @Getter
+    private GearzPlayer killer;
+    public PlayerGameKillEvent(GearzGame game, GearzPlayer dead, GearzPlayer killer) {
+        super(game, dead);
+        this.killer = killer;
     }
-
     /*
-        Event code
-        */
+      Event code
+      */
     private static final HandlerList handlers = new HandlerList();
     @Override
     public HandlerList getHandlers() {
