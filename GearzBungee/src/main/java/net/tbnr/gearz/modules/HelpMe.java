@@ -66,20 +66,22 @@ public class HelpMe implements TCommandHandler, Listener {
                     this.activeResponders.put(sender1.getName(), false);
                     conversation.startConvo();
                     return TCommandStatus.SUCCESSFUL;
+                default:
+                    if (this.getConvoFor(sender1) != null) {
+                        sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-waiting", false));
+                        return TCommandStatus.SUCCESSFUL;
+                    }
+                    String q = GearzBungee.getInstance().compile(args, 0, args.length);
+                    Conversation convo = new Conversation(sender1, q);
+                    this.conversations.add(convo);
+                    remindAllStaff();
+                    sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-starting", false));
+                    return TCommandStatus.SUCCESSFUL;
             }
         } else {
-            if (getConvoFor(sender1) != null) {
-                sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-waiting", false));
-                return TCommandStatus.SUCCESSFUL;
-            }
-
-            Conversation convo = new Conversation(sender1);
-            this.conversations.add(convo);
-            remindAllStaff();
-            sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-starting", false));
+            sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-usage", false));
             return TCommandStatus.SUCCESSFUL;
         }
-        return TCommandStatus.INVALID_ARGS;
     }
 
     public void registerReminderTask(Integer seconds) {
@@ -187,7 +189,7 @@ public class HelpMe implements TCommandHandler, Listener {
     private void setDuty(ProxiedPlayer sender1, boolean duty) {
         String name = sender1.getName();
         if (duty) {
-            activeResponders.put(name, true);
+            activeResponders.put(name, Boolean.TRUE);
             sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-onduty", false));
         } else {
             activeResponders.remove(name);
@@ -207,9 +209,12 @@ public class HelpMe implements TCommandHandler, Listener {
         private boolean active = false;
         @Getter
         private List<String> messages = new ArrayList<>();
+        @NonNull
+        private String question;
 
         public void startConvo() {
             staffMember.sendMessage(GearzBungee.getInstance().getFormat("helpme-start", false, true, new String[]{"<player>", player.getName()}));
+            staffMember.sendMessage(GearzBungee.getInstance().getFormat("helpme-question", false, true, new String[]{"<question>", question}));
             player.sendMessage(GearzBungee.getInstance().getFormat("helpme-start", false, true, new String[]{"<player>", staffMember.getName()}));
             sendMessage(GearzBungee.getInstance().getFormat("helpme-remind-done", false));
             this.active = true;

@@ -108,6 +108,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private ListModule listModule;
 
+    @Getter
+    private Hub hub;
+
     /**
      * Gets the current instance of the GearzBungee plugin.
      *
@@ -141,7 +144,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         registerCommandHandler(new Messaging());
         registerEvents(this.chatUtils);
         registerCommandHandler(this.chatUtils);
-        Hub hub = new Hub();
+        hub = new Hub();
         registerEvents(hub);
         registerCommandHandler(hub);
         registerCommandHandler(new UtilCommands());

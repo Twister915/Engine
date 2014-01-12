@@ -269,10 +269,24 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
             e.printStackTrace();
             return false;
         }
-        if (this.arena.equals(GameLobby.class)) {
+        /*if (this.arena.equals(GameLobby.class)) {
             DBObject object = ArenaManager.objectFromArena(arena);
             object.put("game", this.meta.key());
             GearzSetup.getInstance().getMongoDB().getCollection("game_lobbys_v2").insert(object);
+            return true;
+        }*/
+        ArenaCollection collection = this.arena.getAnnotation(ArenaCollection.class);
+        if (collection != null) {
+            DBObject object = ArenaManager.objectFromArena(arena);
+            ArenaMeta meta = this.arena.getAnnotation(ArenaMeta.class);
+            if (meta != null) {
+                for (String s : meta.meta()) {
+                    String[] split = s.split(":");
+                    if (split.length != 2) continue;
+                    object.put(split[0], split[1].replaceAll("%key", this.meta.key()));
+                }
+            }
+            GearzSetup.getInstance().getMongoDB().getCollection(collection.collection()).insert(object);
             return true;
         }
         try {

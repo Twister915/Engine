@@ -212,9 +212,10 @@ public final class TPlayer {
      */
     public void removeAllPotionEffects(PotionEffectType... exclusions) {
         List<PotionEffectType> doNotRemove = Arrays.asList(exclusions);
-        for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
+        Player player = this.getPlayer();
+        for (PotionEffect effect : player.getActivePotionEffects()) {
             if (doNotRemove.contains(effect.getType())) continue;
-            this.getPlayer().removePotionEffect(effect.getType());
+            player.removePotionEffect(effect.getType());
         }
     }
 
@@ -265,6 +266,7 @@ public final class TPlayer {
      * @param slot       The slot to put the item in
      */
     public ItemStack giveItem(Material type, int quantity, short data_value, String title, String[] lore, int slot) {
+        Player player = this.getPlayer();
         if (type == null || quantity < 1) return null;
 
         ItemStack itemStack = new ItemStack(type, quantity);
@@ -279,11 +281,11 @@ public final class TPlayer {
             int toGive = quantity;
             while (toGive > 0) {
                 itemStack.setAmount(Math.min(itemStack.getMaxStackSize(), toGive));
-                this.getPlayer().getInventory().addItem(itemStack);
+                player.getInventory().addItem(itemStack);
                 toGive = toGive - itemStack.getAmount();
             }
         } else {
-            this.getPlayer().getInventory().setItem(slot - 1, itemStack);
+            player.getInventory().setItem(slot - 1, itemStack);
         }
         return itemStack;
     }
@@ -628,9 +630,10 @@ public final class TPlayer {
 
         Score score = this.sidebar.getScore(Bukkit.getOfflinePlayer(key.substring(0, Math.min(key.length(), 15))));
         score.setScore(value);
-        if (getPlayer() == null) return;
-        if (!getPlayer().isOnline()) return;
-        getPlayer().setScoreboard(this.scoreboard);
+        Player player = getPlayer();
+        if (player == null) return;
+        if (!player.isOnline()) return;
+        player.setScoreboard(this.scoreboard);
     }
 
     public void removeScoreboardSide(String key) {
@@ -670,18 +673,20 @@ public final class TPlayer {
     }
 
     public void sendPacket(PacketContainer packet) {
+        Player player = getPlayer();
         try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(getPlayer(), packet);
+            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
         } catch (InvocationTargetException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Cannot send " + packet + " to " + getPlayer(), e);
+            Bukkit.getLogger().log(Level.WARNING, "Cannot send " + packet + " to " + player, e);
         }
     }
 
     public void sendClientPacket(PacketContainer packet) {
+        Player player = getPlayer();
         try {
-            ProtocolLibrary.getProtocolManager().recieveClientPacket(getPlayer(), packet);
+            ProtocolLibrary.getProtocolManager().recieveClientPacket(player, packet);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Cannot send " + packet + " to " + getPlayer(), e);
+            Bukkit.getLogger().log(Level.WARNING, "Cannot send " + packet + " to " + player, e);
         }
     }
 
