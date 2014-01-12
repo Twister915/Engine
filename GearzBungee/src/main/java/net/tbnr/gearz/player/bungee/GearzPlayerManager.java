@@ -61,7 +61,7 @@ public class GearzPlayerManager implements Listener {
     public void playerLoginEvent(ServerConnectEvent event) {
         if (!this.playersAlreadyConnected.contains(event.getPlayer())) {
             this.playersAlreadyConnected.add(event.getPlayer());
-            ServerInfo aHubServer = Hub.getAHubServer();
+            ServerInfo aHubServer = GearzBungee.getInstance().getHub().getAHubServer();
             if (aHubServer == null) {
                 return;
             }
