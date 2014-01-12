@@ -61,7 +61,7 @@ public class MotdHandler implements Listener, TCommandHandler {
         else {
             while (motd == null) {
                 index++;
-                if (index == motds.length) {
+                if (index >= motds.length-1) {
                     index = 0;
                 }
                 Object motd1 = motds[index];

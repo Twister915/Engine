@@ -486,9 +486,9 @@ public abstract class GearzGame implements Listener {
         this.spectators.add(player);
         Bukkit.getPluginManager().callEvent(new PlayerBeginSpectateEvent(player, this));
         player.getTPlayer().sendMessage(getFormat("begin-spectating"));
+        player.getPlayer().setGameMode(GameMode.ADVENTURE);
         player.getPlayer().setAllowFlight(true);
         player.getPlayer().setFlying(true);
-        player.getPlayer().setGameMode(GameMode.ADVENTURE);
         //player.getTPlayer().addPotionEffect(PotionEffectType.INVISIBILITY);
         hideFromAll(player);
         player.getTPlayer().playSound(Sound.FIZZ);
@@ -694,7 +694,7 @@ public abstract class GearzGame implements Listener {
         for (String[] element : array) {
             finalS = finalS.replaceAll(element[0], element[1]);
         }
-        return finalS;
+        return (finalS == null ? string : finalS);
     }
 
     public final String getFormat(String format, String[]... args) {
@@ -728,7 +728,7 @@ public abstract class GearzGame implements Listener {
         if (prefix) {
             format1 = getFormatBase("prefix") + format1;
         }
-        return format1;
+        return (format1 == null ? format : format1);
     }
 
     public final String getPluginFormat(String format) {
