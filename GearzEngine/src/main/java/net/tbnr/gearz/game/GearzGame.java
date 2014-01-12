@@ -916,6 +916,14 @@ public abstract class GearzGame implements Listener {
                     event.setCancelled(true);
                     return;
                 }
+                event.setDamage(callingEvent.getDamage());
+                PlayerGameDamageByPlayerEvent callingEvent2 = new PlayerGameDamageByPlayerEvent(callingEvent, damager);
+                Bukkit.getPluginManager().callEvent(callingEvent2);
+                if (callingEvent2.isCancelled()) {
+                    event.setCancelled(true);
+                    return;
+                }
+                event.setDamage(callingEvent2.getDamage());
                 if (target.getPlayer().getHealth() - event.getDamage() <= 0) {
                     playerKilledPlayer(damager, target);
                     event.setCancelled(true);
