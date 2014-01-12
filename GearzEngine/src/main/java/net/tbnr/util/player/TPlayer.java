@@ -553,31 +553,33 @@ public final class TPlayer {
      * Used to reset everything about the player, can be fine tuned the reset params.
      */
     public void resetPlayer(PlayerResetParams params) {
+        final Player player = getPlayer();
+        player.getInventory().setHeldItemSlot(0);
         if (!isOnline()) return;
         if (params == null) params = new PlayerResetParams();
 
         if (params.isClearXP()) {
-            getPlayer().setExp(0);
-            getPlayer().setLevel(0);
-            getPlayer().setTotalExperience(0);
+            player.setExp(0);
+            player.setLevel(0);
+            player.setTotalExperience(0);
         }
         if (params.isClearPotions()) removeAllPotionEffects();
         if (params.isResetInventory()) clearInventory();
         if (params.isRestoreHealth()) {
-            getPlayer().setHealth(getPlayer().getMaxHealth());
-            getPlayer().setRemainingAir(20);
+            player.setHealth(player.getMaxHealth());
+            player.setRemainingAir(20);
         }
         Bukkit.getScheduler().runTaskLater(Gearz.getInstance(), new Runnable() {
             @Override
             public void run() {
-                getPlayer().setFireTicks(0);
+                player.setFireTicks(0);
             }
         }, 2L);
         if (params.isRestoreFood()) {
-            getPlayer().setFoodLevel(20);
-            getPlayer().setExhaustion(0);
+            player.setFoodLevel(20);
+            player.setExhaustion(0);
         }
-        getPlayer().setSneaking(false);
+        player.setSneaking(false);
         if (!params.isResetFlight()) {
             return;
         }
@@ -590,9 +592,9 @@ public final class TPlayer {
                 getPlayer().teleport(block.getLocation());
             }
         }*/
-        getPlayer().setVelocity(new Vector(0, 0, 0));
-        getPlayer().setFallDistance(0F);
-        getPlayer().setAllowFlight(false);
+        player.setVelocity(new Vector(0, 0, 0));
+        player.setFallDistance(0F);
+        player.setAllowFlight(false);
     }
 
     /**
