@@ -100,7 +100,7 @@ public class InventoryGUI implements Listener {
     }
 
     private int determineSize() {
-        if (items == null) {
+        /*if (items == null) {
             return 9;
         }
         if (items.size() <= 9) {
@@ -111,7 +111,23 @@ public class InventoryGUI implements Listener {
             return 27;
         } else {
             return 36;
+        }*/
+        int rowSize = 9;
+        if (items == null || items.size() == 0) {
+            return rowSize;
         }
+        float i = items.size() % rowSize; //Remainder of items over 9
+        float v = i / rowSize; //Convert to a decimal
+        return (int) (Math.floor(items.size() / rowSize) /* Gives how many rows we need */ + Math.ceil(v) /* If we need an extra row */) * rowSize /*Times number of items per row */;
+    }
+
+    /**
+     * Updates the size of the GUI
+     */
+    public void updateSize(){
+        if(this.inventory.getSize() == determineSize()) return;
+        this.inventory = Bukkit.createInventory(null, determineSize(), title);
+        updateContents(items);
     }
 
     /**
