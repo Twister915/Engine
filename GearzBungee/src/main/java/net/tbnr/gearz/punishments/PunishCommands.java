@@ -1,7 +1,7 @@
 package net.tbnr.gearz.punishments;
 
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.modules.PlayerInfoModule;
@@ -48,12 +48,12 @@ public class PunishCommands implements TCommandHandler {
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.PERMANENT_BAN, true);
         } else {
-            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.PERMANENT_BAN, true);
+            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.PERMANENT_BAN, false);
         }
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
         if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
-        broadcastPunishment(PlayerInfoModule.getServerForBungee(gearzTarget.getProxiedPlayer().getServer().getInfo()).getGame(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.PERMANENT_BAN);
+        broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.PERMANENT_BAN, reason);
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -83,18 +83,23 @@ public class PunishCommands implements TCommandHandler {
 
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
+        Date checkAgainst = new Date();
         Long duration = parseTime(length);
+        if (duration - checkAgainst.getTime() == 1000) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
+            return TCommandStatus.SUCCESSFUL;
+        }
         Date end = new Date();
         end.setTime(duration);
         if (type.equals(TCommandSender.Console)) {
             gearzTarget.punishPlayer(reason, null, PunishmentType.TEMP_BAN, end, true);
         } else {
-            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.TEMP_BAN, end, true);
+            gearzTarget.punishPlayer(reason, GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender), PunishmentType.TEMP_BAN, end, false);
         }
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
         if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
-        broadcastPunishment(PlayerInfoModule.getServerForBungee(gearzTarget.getProxiedPlayer().getServer().getInfo()).getGame(), sender.getName(), gearzTarget.getName(), PunishmentType.TEMP_BAN);
+        broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getName(), PunishmentType.TEMP_BAN, reason);
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -125,7 +130,7 @@ public class PunishCommands implements TCommandHandler {
         }
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("kicked-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", target.getName()}));
-        broadcastPunishment(PlayerInfoModule.getServerForBungee(target.getServer().getInfo()).getGame(), sender.getName(), target.getName(), PunishmentType.KICK);
+        broadcastPunishment(target.getServer().getInfo(), sender.getName(), target.getName(), PunishmentType.KICK, reason);
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -157,6 +162,7 @@ public class PunishCommands implements TCommandHandler {
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("warned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
         if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
+        broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.WARN, reason);
         gearzTarget.getProxiedPlayer().sendMessage(GearzBungee.getInstance().getFormat("warned-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}));
         return TCommandStatus.SUCCESSFUL;
     }
@@ -194,11 +200,13 @@ public class PunishCommands implements TCommandHandler {
 
         sender.sendMessage(GearzBungee.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
         if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
+        broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.MUTE, reason);
         gearzTarget.getProxiedPlayer().sendMessage(GearzBungee.getInstance().getFormat("muted-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}));
         return TCommandStatus.SUCCESSFUL;
     }
 
     public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+
     @TCommand(
             aliases = {"gtempmute", "tmute"},
             name = "ggtempmute",
@@ -225,7 +233,12 @@ public class PunishCommands implements TCommandHandler {
 
         String reason = compile(args, 2, args.length).trim();
         String length = args[1];
+        Date checkAgainst = new Date();
         Long duration = parseTime(length);
+        if (duration - checkAgainst.getTime() == 1000) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("bad-timestamp", false, false));
+            return TCommandStatus.SUCCESSFUL;
+        }
         Date end = new Date();
         end.setTime(duration);
         if (type.equals(TCommandSender.Console)) {
@@ -237,6 +250,7 @@ public class PunishCommands implements TCommandHandler {
         sender.sendMessage(GearzBungee.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
         if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
         gearzTarget.getProxiedPlayer().sendMessage(GearzBungee.getInstance().getFormat("temp-muted-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}, new String[]{"<end>", longReadable.format(end)}));
+        broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.TEMP_MUTE, reason);
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -275,7 +289,7 @@ public class PunishCommands implements TCommandHandler {
         return GearzBungee.getInstance().compile(args, min, max);
     }
 
-    private Long parseTime(String time) {
+    public long parseTime(String time) {
         long timeReturn;
         try {
             timeReturn = parseDateDiff(time, true);
@@ -285,7 +299,7 @@ public class PunishCommands implements TCommandHandler {
         return timeReturn;
     }
 
-    public long parseDateDiff(String time, boolean future) throws Exception {
+    public static long parseDateDiff(String time, boolean future) throws Exception {
         Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?", Pattern.CASE_INSENSITIVE);
         Matcher m = timePattern.matcher(time);
         int years = 0;
@@ -327,6 +341,9 @@ public class PunishCommands implements TCommandHandler {
         if (!found)
             throw new Exception("Illegal Date");
 
+        if (years > 20)
+            throw new Exception("Illegal Date");
+
         Calendar c = new GregorianCalendar();
         if (years > 0)
             c.add(Calendar.YEAR, years * (future ? 1 : -1));
@@ -345,11 +362,9 @@ public class PunishCommands implements TCommandHandler {
         return c.getTimeInMillis();
     }
 
-    public void broadcastPunishment(String server, String issuer, String target, PunishmentType punishmentType) {
-        synchronized (GearzBungee.getInstance().getListModule().getStaff()) {
-            for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
-                proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", server}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}));
-            }
+    public void broadcastPunishment(ServerInfo server, String issuer, String target, PunishmentType punishmentType, String reason) {
+        for (ProxiedPlayer proxiedPlayer : server.getPlayers()) {
+            proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", PlayerInfoModule.getServerForBungee(server).getGame()}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}, new String[]{"<reason>", reason}));
         }
     }
 }

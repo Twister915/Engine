@@ -1,6 +1,5 @@
 package net.tbnr.gearz.game;
 
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import lombok.*;
 import net.tbnr.gearz.Gearz;
@@ -487,6 +486,7 @@ public abstract class GearzGame implements Listener {
         this.spectators.add(player);
         Bukkit.getPluginManager().callEvent(new PlayerBeginSpectateEvent(player, this));
         player.getTPlayer().sendMessage(getFormat("begin-spectating"));
+        player.getPlayer().setGameMode(GameMode.ADVENTURE);
         player.getPlayer().setAllowFlight(true);
         player.getPlayer().setFlying(true);
         //player.getTPlayer().addPotionEffect(PotionEffectType.INVISIBILITY);
@@ -669,7 +669,7 @@ public abstract class GearzGame implements Listener {
 
     public final void playerLeft(GearzPlayer player) {
         if (!this.isRunning()) {
-            return;
+            //return;
         }
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());
@@ -694,7 +694,7 @@ public abstract class GearzGame implements Listener {
         for (String[] element : array) {
             finalS = finalS.replaceAll(element[0], element[1]);
         }
-        return finalS;
+        return (finalS == null ? string : finalS);
     }
 
     public final String getFormat(String format, String[]... args) {
@@ -728,7 +728,7 @@ public abstract class GearzGame implements Listener {
         if (prefix) {
             format1 = getFormatBase("prefix") + format1;
         }
-        return format1;
+        return (format1 == null ? format : format1);
     }
 
     public final String getPluginFormat(String format) {
