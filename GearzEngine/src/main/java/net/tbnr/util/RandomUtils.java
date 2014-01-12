@@ -1,12 +1,10 @@
 package net.tbnr.util;
 
 import net.tbnr.gearz.Gearz;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.material.Wool;
 
 import java.lang.reflect.Array;
 import java.math.BigInteger;
@@ -24,6 +22,11 @@ public class RandomUtils {
             item.setItemMeta(meta);
         }
         return item;
+    }
+
+    public static ItemStack colorizeWool(DyeColor color){
+        Wool wool = new Wool(color);
+        return wool.toItemStack();
     }
 
     public static String getRandomString(Integer length) {
