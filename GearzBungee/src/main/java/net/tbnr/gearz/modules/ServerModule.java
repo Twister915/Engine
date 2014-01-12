@@ -127,8 +127,10 @@ public class ServerModule implements TCommandHandler, Listener {
                     ProxyServer.getInstance().getLogger().info(server.toString());
                     ProxyServer.getInstance().getServers().put(server.getBungee_name(), ProxyServer.getInstance().constructServerInfo(server.getBungee_name(), new InetSocketAddress(server.getAddress(), server.getPort()), GearzBungee.getInstance().getFormat("default-motd", false), false));
                 }
-
             }
+            Hub hub = GearzBungee.getInstance().getHub();
+            Hub.HubServerReloadTask task = new Hub.HubServerReloadTask(hub);
+            task.run();
         }
     }
 }

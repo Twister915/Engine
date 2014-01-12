@@ -1,23 +1,23 @@
 package net.tbnr.gearz.event.player;
 
-import lombok.*;
+import lombok.Getter;
 import net.tbnr.gearz.game.GearzGame;
 import net.tbnr.gearz.player.GearzPlayer;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Called when someone is killed in a game
+ * Created by Joey on 1/12/14.
  */
-@EqualsAndHashCode(callSuper = false)
-@Data
-@AllArgsConstructor
-public class PlayerGameDeathEvent extends Event {
-    @Setter(AccessLevel.NONE) private GearzGame game;
-    @Setter(AccessLevel.NONE) private GearzPlayer dead;
+public final class PlayerGameKillEvent extends PlayerGameDeathEvent {
+    @Getter
+    private GearzPlayer killer;
+    public PlayerGameKillEvent(GearzGame game, GearzPlayer dead, GearzPlayer killer) {
+        super(game, dead);
+        this.killer = killer;
+    }
     /*
-  Event code
-   */
+      Event code
+      */
     private static final HandlerList handlers = new HandlerList();
     @Override
     public HandlerList getHandlers() {

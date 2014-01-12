@@ -13,7 +13,7 @@ import org.bukkit.event.HandlerList;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
-public final class PlayerGameDamageEvent extends Event implements Cancellable {
+public class PlayerGameDamageEvent extends Event implements Cancellable {
     @Setter(AccessLevel.NONE) private GearzGame game;
     @Setter(AccessLevel.NONE) private GearzPlayer player;
     @Setter(AccessLevel.NONE) private double damage;

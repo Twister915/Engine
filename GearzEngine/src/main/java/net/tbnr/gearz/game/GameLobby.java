@@ -1,10 +1,7 @@
 package net.tbnr.gearz.game;
 
 
-import net.tbnr.gearz.arena.Arena;
-import net.tbnr.gearz.arena.ArenaField;
-import net.tbnr.gearz.arena.ArenaIterator;
-import net.tbnr.gearz.arena.Point;
+import net.tbnr.gearz.arena.*;
 import org.bukkit.World;
 
 /**
@@ -14,6 +11,8 @@ import org.bukkit.World;
  * Time: 1:35 PM
  * To change this template use File | Settings | File Templates.
  */
+@ArenaCollection(collection = "game_lobbys_v2")
+@ArenaMeta(meta = {"game:%key"})
 public final class GameLobby extends Arena {
 
     @ArenaField(loop = true, longName = "Spawn Points", key = "spawn_points", type = ArenaField.PointType.Player)

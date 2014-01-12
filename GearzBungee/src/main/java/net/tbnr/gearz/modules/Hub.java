@@ -1,5 +1,8 @@
 package net.tbnr.gearz.modules;
 
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -15,6 +18,7 @@ import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +29,9 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Hub implements TCommandHandler, Listener {
+
+    private List<Server> hubServers;
+
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         GearzBungee.handleCommandStatus(status, sender);
@@ -34,21 +41,23 @@ public class Hub implements TCommandHandler, Listener {
         return ServerManager.getServersWithGame("lobby");
     }
 
-    public static ServerInfo getAHubServer() {
-        List<Server> hubServers = getHubServers();
+    public ServerInfo getAHubServer() {
         if (hubServers.size() < 1) return null;
         int x = 0;
+        List<Integer> attempts = new ArrayList<>();
         ServerInfo info = null;
-        while (info == null && x < hubServers.size()) {
+        while (info == null && attempts.size() < hubServers.size()) {
             info = ProxyServer.getInstance().getServerInfo(hubServers.get(x).getBungee_name());
-            x++;
+            attempts.add(x);
+            while (attempts.contains(x)) {
+                x = GearzBungee.getRandom().nextInt(hubServers.size());
+            }
         }
         return info;
     }
 
     public static boolean isHubServer(ServerInfo info) {
-        List<Server> hubServers = getHubServers();
-        for (Server s : hubServers) {
+        for (Server s : GearzBungee.getInstance().getHub().hubServers) {
             if (s.getBungee_name().equals(info.getName())) return true;
         }
         return false;
@@ -75,5 +84,17 @@ public class Hub implements TCommandHandler, Listener {
         event.setCancelServer(getAHubServer());
         event.setCancelled(true);
         event.getPlayer().sendMessage(GearzBungee.getInstance().getFormat("server-kick", true, true, new String[]{"<reason>", event.getKickReason()}));
+    }
+
+    @Data
+    @RequiredArgsConstructor
+    static class HubServerReloadTask implements Runnable {
+
+        @NonNull private Hub hubManager;
+
+        @Override
+        public void run() {
+            this.hubManager.hubServers = getHubServers();
+        }
     }
 }
