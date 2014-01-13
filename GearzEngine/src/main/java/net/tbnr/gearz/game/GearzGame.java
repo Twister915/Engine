@@ -1193,6 +1193,10 @@ public abstract class GearzGame implements Listener {
         return this.endedPlayers.contains(player);
     }
 
+    public final void registerExternalListeners() {
+        getPlugin().registerEvents(this);
+    }
+
     /**
      * Get's the games meta
      *
