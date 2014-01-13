@@ -9,6 +9,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
@@ -46,7 +47,7 @@ import java.util.logging.Level;
  * - Stream chat to a site for viewing by staff
  */
 @SuppressWarnings("NullArgumentToVariableArgMethod")
-public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
+public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee, TabExecutor {
     /**
      * Gearz Instance
      */
@@ -394,5 +395,18 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             builder.append(" ");
         }
         return builder.toString();
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        return getUserNames();
+    }
+
+    public List<String> getUserNames() {
+        List<String> users = new ArrayList<>();
+        for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+            users.add(proxiedPlayer.getName());
+        }
+        return users;
     }
 }
