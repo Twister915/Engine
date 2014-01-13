@@ -174,29 +174,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
-    private List<AnnouncerModule.Announcement> loadAnnouncements() {
-        List<AnnouncerModule.Announcement> announcements = Lists.newArrayList();
-        BasicDBList objects = (BasicDBList) getBungeeConfig().get("announcements");
-        if (objects == null) {
-            return announcements;
-        }
-
-        for (Object object : objects) {
-            String string = (String) object;
-            AnnouncerModule.Announcement announcement = new AnnouncerModule.Announcement(string);
-            announcements.add(announcement);
-        }
-        return announcements;
-    }
-
-    private int getInterval() {
-        Integer interval = (Integer) getBungeeConfig().get("announcements_interval");
-        if (interval == null) {
-            return 60;
-        }
-        return interval;
-    }
-
     private void reloadStrings() {
         try {
             this.strings.load(getResourceAsStream("strings.properties"));
