@@ -1,0 +1,9 @@
+name: GearzMapDev
+version: 1.0
+authors: [Jake0oo0]
+description: Gearz Map Development Plugin
+main: net.tbnr.gearz.GearzMapDev
+depend: [Gearz]
+commands:
+  done:
+    description: Marks your setup session as done.
