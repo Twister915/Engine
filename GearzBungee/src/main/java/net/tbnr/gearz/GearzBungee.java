@@ -1,9 +1,7 @@
 package net.tbnr.gearz;
 
-import com.google.common.collect.Lists;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -32,11 +30,9 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 /**
  * - Whitelist support
- * - Kickall support
  * - Announcer
  * - Reconnect attempts
  * - Register on Site TODO
