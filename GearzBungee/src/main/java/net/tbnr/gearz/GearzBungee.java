@@ -36,7 +36,6 @@ import java.util.concurrent.TimeUnit;
  * - Announcer
  * - Reconnect attempts
  * - Register on Site TODO
- * - Minigame quick-join using /server
  * - Help command
  * - Report command
  * - Chat logger
@@ -168,6 +167,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.shuffleModule = new ShuffleModule();
         registerEvents(this.shuffleModule);
         registerCommandHandler(this.shuffleModule);
+        ReportModule.ReportManager reportManager = new ReportModule.ReportManager(getMongoDB().getCollection("reports"));
+        ReportModule reportModule = new ReportModule(reportManager);
+        registerCommandHandler(reportModule);
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 

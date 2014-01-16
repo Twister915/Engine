@@ -1,5 +1,6 @@
 game_mode: SINGLE
 network_interface: eth1
+message-ping: false
 database:
   host: one.tbnr.pw
   port: 27017
