@@ -157,18 +157,25 @@ public class MotdHandler implements Listener, TCommandHandler {
         sendMotd(event.getPlayer());
     }
 
-    private void sendMotd(CommandSender player) {
-        List<String> headImage = ImageToChatBungeeUtil.getHeadImage(player.getName(), true);
-        player.sendMessage(" ");
-        for (int x = 0; x < Math.max(headImage.size(), this.motd.size()); x++) {
-            String headText = "";
-            String motdText = "";
-            if (x < headImage.size()) headText = headImage.get(x);
-            if (x < this.motd.size()) motdText = this.motd.get(x);
-            player.sendMessage(" " + headText + (headText.equals("") ? "" : " ") + ChatColor.RESET +
-                    motdText.replaceAll("%player%", player.getName()).
-                            replaceAll("%online%", String.valueOf(ProxyServer.getInstance().getOnlineCount() + 1)));
-        }
-        player.sendMessage(" ");
+    private void sendMotd(final CommandSender player) {
+        ProxyServer.getInstance().getScheduler().runAsync(GearzBungee.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                List<String> headImage = ImageToChatBungeeUtil.getHeadImage(player.getName(), true);
+                player.sendMessage(" ");
+                for (int x = 0; x < Math.max(headImage.size(), motd.size()); x++) {
+                    String headText = "";
+                    String motdText = "";
+                    if (x < headImage.size()) headText = headImage.get(x);
+                    if (x < motd.size()) motdText = motd.get(x);
+                    player.sendMessage(" " + headText + (headText.equals("") ? "" : " ") + ChatColor.RESET +
+                            motdText.replaceAll("%player%", player.getName()).
+                                    replaceAll("%online%", String.valueOf(ProxyServer.getInstance().getOnlineCount() + 1)));
+                }
+                player.sendMessage(" ");
+            }
+        });
+
+
     }
 }

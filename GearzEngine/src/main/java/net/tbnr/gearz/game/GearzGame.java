@@ -1007,6 +1007,11 @@ public abstract class GearzGame implements Listener {
         }
     }
 
+
+    protected final void displayWinners(GearzPlayer... players) {
+        
+    }
+
     @EventHandler
     public final void onArrow(EntityShootBowEvent event) {
         if (!(event.getEntity() instanceof Player)) {
