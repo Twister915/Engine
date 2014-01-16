@@ -2,6 +2,7 @@ package net.tbnr.gearz;
 
 import com.mongodb.BasicDBList;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -32,12 +33,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * - Whitelist support
  * - Announcer
  * - Reconnect attempts
  * - Register on Site TODO
  * - Help command
- * - Report command
  * - Chat logger
  * - Stream chat to a site for viewing by staff
  */
@@ -107,6 +106,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private Hub hub;
 
+    @Getter @Setter
+    private boolean whitelisted;
+
     /**
      * Gets the current instance of the GearzBungee plugin.
      *
@@ -170,6 +172,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         ReportModule.ReportManager reportManager = new ReportModule.ReportManager(getMongoDB().getCollection("reports"));
         ReportModule reportModule = new ReportModule(reportManager);
         registerCommandHandler(reportModule);
+        WhitelistModule whitelistModule = new WhitelistModule();
+        registerEvents(whitelistModule);
+        registerCommandHandler(whitelistModule);
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
