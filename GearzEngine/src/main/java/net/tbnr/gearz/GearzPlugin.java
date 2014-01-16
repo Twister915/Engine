@@ -63,6 +63,8 @@ public abstract class GearzPlugin extends TPlugin {
         //If the game mod is single then register it as a single game
         if (game_mode.equalsIgnoreCase("SINGLE")) {
             this.gameManager = new GameManagerSingleGame(game, this);
+            GameManagerSingleGame temp = (GameManagerSingleGame) this.gameManager;
+            registerCommands(temp);
         } else {
             throw new GearzException("Invalid defined game mode");
         }
@@ -76,6 +78,7 @@ public abstract class GearzPlugin extends TPlugin {
         //Register the game and events
         Gearz.getInstance().registerGame(this);
         registerEvents(this.gameManager);
+
     }
 
     @Override
