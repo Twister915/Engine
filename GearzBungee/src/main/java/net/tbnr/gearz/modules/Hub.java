@@ -47,11 +47,11 @@ public class Hub implements TCommandHandler, Listener {
         List<Integer> attempts = new ArrayList<>();
         ServerInfo info = null;
         while (info == null && attempts.size() < hubServers.size()) {
-            info = ProxyServer.getInstance().getServerInfo(hubServers.get(x).getBungee_name());
-            attempts.add(x);
             while (attempts.contains(x)) {
                 x = GearzBungee.getRandom().nextInt(hubServers.size());
             }
+            info = ProxyServer.getInstance().getServerInfo(hubServers.get(x).getBungee_name());
+            attempts.add(x);
         }
         return info;
     }
