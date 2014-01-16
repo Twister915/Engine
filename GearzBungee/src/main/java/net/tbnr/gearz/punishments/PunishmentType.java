@@ -21,6 +21,7 @@ public enum PunishmentType {
     @Getter
     private String action = "invalid";
 
+    @Getter
     private boolean kickable = false;
 
     PunishmentType(String action) {
@@ -30,9 +31,5 @@ public enum PunishmentType {
     PunishmentType(String action, boolean kickable) {
         this.action = action;
         this.kickable = kickable;
-    }
-
-    public boolean isKickable() {
-        return this.kickable;
     }
 }

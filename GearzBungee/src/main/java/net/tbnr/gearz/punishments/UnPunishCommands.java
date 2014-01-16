@@ -29,9 +29,7 @@ public class UnPunishCommands implements TCommandHandler {
             permission = "gearz.punish.lookup")
     @SuppressWarnings("unused")
     public TCommandStatus lookup(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
-        if (args.length != 1) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (args.length != 1) return TCommandStatus.INVALID_ARGS;
 
         if (args[0].matches(".*([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}).*")) {
             DBObject punishment = GearzBungee.getInstance().getIpBanHandler().getBanObject(args[0]);
@@ -100,9 +98,7 @@ public class UnPunishCommands implements TCommandHandler {
             permission = "gearz.punish.unban")
     @SuppressWarnings("unused")
     public TCommandStatus unban(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
-        if (args.length != 1) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (args.length != 1) return TCommandStatus.INVALID_ARGS;
 
         String target = args[0];
         GearzPlayer gearzPlayer;
@@ -190,9 +186,7 @@ public class UnPunishCommands implements TCommandHandler {
             permission = "gearz.punish.appeal")
     @SuppressWarnings("unused")
     public TCommandStatus appeal(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
-        if (args.length != 2) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (args.length != 2) return TCommandStatus.INVALID_ARGS;
 
         String target = args[0];
         Integer id;
