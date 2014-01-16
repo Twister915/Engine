@@ -104,6 +104,28 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             permission = "",
             name = "game")
     public TCommandStatus gameCommand(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        if (args.length < 1) {
+            return TCommandStatus.INVALID_ARGS;
+        }
+
+        switch (args[0]) {
+            case "start":
+                if (this.runningGame != null) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                try {
+                    this.beginGame(0);
+                } catch (GameStartException e){
+                    break;
+                }
+                break;
+            case "end":
+                if (this.runningGame == null) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                this.runningGame.stopGame();
+                break;
+        }
         return TCommandStatus.SUCCESSFUL;
     }
 
