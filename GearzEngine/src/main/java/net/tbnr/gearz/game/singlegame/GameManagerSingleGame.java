@@ -99,9 +99,9 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     }
 
     @TCommand(
-            usage = "",
+            usage = "/game <arg>",
             senders = {TCommandSender.Player, TCommandSender.Console},
-            permission = "",
+            permission = "gearz.game",
             name = "game")
     public TCommandStatus gameCommand(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length < 1) {
