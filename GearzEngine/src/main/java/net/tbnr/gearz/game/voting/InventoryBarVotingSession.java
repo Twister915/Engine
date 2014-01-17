@@ -67,11 +67,13 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
 
     @Override
     public void onCountdownChange(Integer seconds, Integer max, GameCountdown countdown) {
+        Gearz.getInstance().getLogger().info("Seconds: " + seconds);
         updateWatch(seconds);
     }
 
     @Override
     public void onCountdownComplete(GameCountdown countdown) {
+        Gearz.getInstance().getLogger().info("Countdown complete for voting.");
         this.handler.onVotingDone(getVoteCounts(), this);
     }
 
