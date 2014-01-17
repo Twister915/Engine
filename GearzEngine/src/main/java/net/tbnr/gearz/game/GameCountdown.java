@@ -87,6 +87,7 @@ public final class GameCountdown implements Runnable {
         try {
             handler.onCountdownChange(seconds - passed, seconds, this);
             if (passed.equals(seconds)) {
+                this.done = true;
                 handler.onCountdownComplete(this);
             } else {
                 schedule();
