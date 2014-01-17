@@ -294,12 +294,15 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
 
     @Override
     public void onVotingDone(Map<Votable, Integer> data, VotingSession ses) {
+        onVotingDone(data, ses, false);
+    }
+    public void onVotingDone(Map<Votable, Integer> data, VotingSession ses, boolean override) {
         if (!(ses instanceof InventoryBarVotingSession)) {
             return;
         }
         InventoryBarVotingSession session = (InventoryBarVotingSession) ses;
         int length = Bukkit.getOnlinePlayers().length;
-        if (!(this.gameMeta.maxPlayers() >= length && length >= this.gameMeta.minPlayers())) {
+        if (!(this.gameMeta.maxPlayers() >= length && length >= this.gameMeta.minPlayers()) && !override) {
             Bukkit.broadcastMessage(GearzGame.formatUsingMeta(this.gameMeta, Gearz.getInstance().getFormat("game-strings.not-enough-players", true, new String[]{"<num>", String.valueOf(this.gameMeta.minPlayers() - length)})));
             session.extendSession(60);
             return;
