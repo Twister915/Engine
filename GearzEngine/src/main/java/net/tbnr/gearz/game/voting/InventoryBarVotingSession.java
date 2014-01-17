@@ -43,6 +43,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
     private boolean voting;
     private VotingHandler handler;
     private GameManager gameManager;
+    private GameCountdown countdown;
 
     public InventoryBarVotingSession(List<GearzPlayer> players, List votables, VotingHandler handler, GameManager manager) {
         this.players = players;
@@ -75,11 +76,14 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
     }
 
     public void extendSession(Integer seconds) {
-        GameCountdown countdown = new GameCountdown(seconds, this, this.gameManager.getPlugin());
+        countdown = new GameCountdown(seconds, this, this.gameManager.getPlugin());
         countdown.start();
     }
 
     public void endSession() {
+        if (this.countdown.isStarted()) {
+            this.countdown.stop();
+        }
         this.voting = false;
     }
 

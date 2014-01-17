@@ -1,5 +1,6 @@
 package net.tbnr.gearz.game;
 
+import lombok.Getter;
 import net.tbnr.gearz.GearzPlugin;
 import org.bukkit.Bukkit;
 
@@ -27,6 +28,7 @@ public final class GameCountdown implements Runnable {
     /**
      * Stores if the timer has started or not.
      */
+    @Getter
     private boolean started;
 
     /**
@@ -76,11 +78,13 @@ public final class GameCountdown implements Runnable {
      * This is for implementing a Runnable for Bukkit :D
      */
     public void run() {
+        if (!this.started) return;
         passed++;
         try {
             handler.onCountdownChange(seconds - passed, seconds, this);
             if (passed.equals(seconds)) {
                 handler.onCountdownComplete(this);
+                this.started = true;
             } else {
                 schedule();
             }
@@ -124,5 +128,13 @@ public final class GameCountdown implements Runnable {
     @SuppressWarnings("unused")
     public Integer getSeconds() {
         return seconds;
+    }
+
+    /**
+     * Stop the countdown
+     */
+    public void stop() {
+        this.started = false;
+        this.handler.onCountdownComplete(this);
     }
 }
