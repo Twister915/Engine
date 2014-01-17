@@ -241,7 +241,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
         updateVotable(slotFor);
     }
 
-    private Map<Votable, Integer> getVoteCounts() {
+    public Map<Votable, Integer> getVoteCounts() {
         Map<Votable, Integer> voteCounts = new HashMap<>();
         for (Map.Entry<GearzPlayer, Votable> entry : this.votes.entrySet()) {
             PlayerMapVoteEvent event = new PlayerMapVoteEvent(1, entry.getKey(), entry.getValue());
