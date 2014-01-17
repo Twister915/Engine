@@ -20,6 +20,7 @@
         <module>GearzBungee</module>
         <module>GearzSetup</module>
         <module>GearzMapDev</module>
+        <module>GearzBootstrap</module>
     </modules>
 
     <properties>
