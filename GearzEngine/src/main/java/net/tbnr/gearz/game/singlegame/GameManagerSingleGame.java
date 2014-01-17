@@ -113,6 +113,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
                 if (this.runningGame != null) {
                     return TCommandStatus.INVALID_ARGS;
                 }
+                votingSession.endSession();
                 onVotingDone(votingSession.getVoteCounts(), votingSession);
                 break;
             case "end":
