@@ -134,6 +134,7 @@ public class HelpMe implements TCommandHandler, Listener {
             }
             if (convoFor.getPlayer().equals(event.getPlayer())) {
                 convoFor.getStaffMember().sendMessage(GearzBungee.getInstance().getFormat("helpme-disconnected", false));
+                this.activeResponders.put(convoFor.getStaffMember().getName(), Boolean.TRUE);
                 remindStaff(event.getPlayer());
             }
             this.conversations.remove(convoFor);
