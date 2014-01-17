@@ -1,14 +1,14 @@
 package net.tbnr.gearz;
 
-import com.google.common.collect.Lists;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
-import net.craftminecraft.bungee.bungeeyaml.bukkitapi.InvalidConfigurationException;
+import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
@@ -31,22 +31,17 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 /**
- * - Whitelist support
- * - Kickall support
  * - Announcer
  * - Reconnect attempts
  * - Register on Site TODO
- * - Minigame quick-join using /server
  * - Help command
- * - Report command
  * - Chat logger
  * - Stream chat to a site for viewing by staff
  */
 @SuppressWarnings("NullArgumentToVariableArgMethod")
-public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
+public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee, TabExecutor {
     /**
      * Gearz Instance
      */
@@ -111,6 +106,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private Hub hub;
 
+    @Getter @Setter
+    private boolean whitelisted;
+
     /**
      * Gets the current instance of the GearzBungee plugin.
      *
@@ -171,30 +169,13 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.shuffleModule = new ShuffleModule();
         registerEvents(this.shuffleModule);
         registerCommandHandler(this.shuffleModule);
+        ReportModule.ReportManager reportManager = new ReportModule.ReportManager(getMongoDB().getCollection("reports"));
+        ReportModule reportModule = new ReportModule(reportManager);
+        registerCommandHandler(reportModule);
+        WhitelistModule whitelistModule = new WhitelistModule();
+        registerEvents(whitelistModule);
+        registerCommandHandler(whitelistModule);
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
-    }
-
-    private List<AnnouncerModule.Announcement> loadAnnouncements() {
-        List<AnnouncerModule.Announcement> announcements = Lists.newArrayList();
-        BasicDBList objects = (BasicDBList) getBungeeConfig().get("announcements");
-        if (objects == null) {
-            return announcements;
-        }
-
-        for (Object object : objects) {
-            String string = (String) object;
-            AnnouncerModule.Announcement announcement = new AnnouncerModule.Announcement(string);
-            announcements.add(announcement);
-        }
-        return announcements;
-    }
-
-    private int getInterval() {
-        Integer interval = (Integer) getBungeeConfig().get("announcements_interval");
-        if (interval == null) {
-            return 60;
-        }
-        return interval;
     }
 
     private void reloadStrings() {
@@ -417,5 +398,18 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             builder.append(" ");
         }
         return builder.toString();
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        return getUserNames();
+    }
+
+    public List<String> getUserNames() {
+        List<String> users = new ArrayList<>();
+        for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+            users.add(proxiedPlayer.getName());
+        }
+        return users;
     }
 }

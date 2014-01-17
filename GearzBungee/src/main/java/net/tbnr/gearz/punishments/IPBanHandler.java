@@ -23,9 +23,7 @@ public class IPBanHandler {
     public void remove(String ip) {
         BasicDBObject query = new BasicDBObject("ip", ip);
         DBCursor dbCursor = dbCollection.find(query);
-        if (dbCursor.hasNext()) {
-            dbCollection.remove(query);
-        }
+        if (dbCursor.hasNext()) dbCollection.remove(query);
     }
 
     public boolean isBanned(String ip) {
@@ -37,9 +35,7 @@ public class IPBanHandler {
     public DBObject getBanObject(String ip) {
         BasicDBObject query = new BasicDBObject("ip", ip);
         DBCursor dbCursor = dbCollection.find(query);
-        if (dbCursor.hasNext()) {
-            return dbCursor.next();
-        }
+        if (dbCursor.hasNext()) return dbCursor.next();
         return null;
     }
 }

@@ -2,6 +2,7 @@ package net.tbnr.gearz.punishments;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -55,10 +56,19 @@ public class LoginHandler implements Listener {
     }
 
     public static class MuteData {
+        @Getter
         Date end;
+
+        @Getter
         PunishmentType punishmentType;
+
+        @Getter
         boolean perm;
+
+        @Getter
         String reason;
+
+        @Getter
         String issuer;
 
         public MuteData(Date end, PunishmentType punishmentType, String reason, String issuer) {
@@ -67,26 +77,6 @@ public class LoginHandler implements Listener {
             this.perm = (punishmentType == PunishmentType.MUTE);
             this.reason = reason;
             this.issuer = issuer;
-        }
-
-        public Date getEnd() {
-            return end;
-        }
-
-        public boolean isPerm() {
-            return perm;
-        }
-
-        public String getReason() {
-            return reason;
-        }
-
-        public String getIssuer() {
-            return issuer;
-        }
-
-        public PunishmentType getPunishmentType() {
-            return punishmentType;
         }
     }
 }

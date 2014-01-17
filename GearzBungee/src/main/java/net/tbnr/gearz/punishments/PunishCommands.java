@@ -172,9 +172,8 @@ public class PunishCommands implements TCommandHandler {
             permission = "gearz.punish.mute")
     @SuppressWarnings("unused")
     public TCommandStatus mute(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
-        if (args.length < 2) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (args.length < 2) return TCommandStatus.INVALID_ARGS;
+
         GearzPlayer gearzTarget;
         try {
             gearzTarget = new GearzPlayer(args[0]);
@@ -212,9 +211,8 @@ public class PunishCommands implements TCommandHandler {
             permission = "gearz.punish.mute")
     @SuppressWarnings("unused")
     public TCommandStatus tempMute(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
-        if (args.length < 3) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (args.length < 3) return TCommandStatus.INVALID_ARGS;
+
         GearzPlayer gearzTarget;
         try {
             gearzTarget = new GearzPlayer(args[0]);
@@ -258,9 +256,7 @@ public class PunishCommands implements TCommandHandler {
             permission = "gearz.punish.ipban")
     @SuppressWarnings("unused")
     public TCommandStatus ipban(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
-        if (args.length < 2) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (args.length < 2) return TCommandStatus.INVALID_ARGS;
 
         String ip = args[0];
         String reason = compile(args, 1, args.length).trim();

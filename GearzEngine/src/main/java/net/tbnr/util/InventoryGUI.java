@@ -91,9 +91,7 @@ public class InventoryGUI implements Listener {
         }
         for (int i = 0; i < items.size(); i++) {
             InventoryGUIItem item = items.get(i);
-            if (item == null) {
-                continue;
-            }
+            if (item == null) continue;
             item.setSlot(i);
             inventory.setItem(i, item.getItem());
         }

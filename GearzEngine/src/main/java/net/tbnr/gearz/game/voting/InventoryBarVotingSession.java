@@ -43,6 +43,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
     private boolean voting;
     private VotingHandler handler;
     private GameManager gameManager;
+    private GameCountdown countdown;
 
     public InventoryBarVotingSession(List<GearzPlayer> players, List votables, VotingHandler handler, GameManager manager) {
         this.players = players;
@@ -66,20 +67,25 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
 
     @Override
     public void onCountdownChange(Integer seconds, Integer max, GameCountdown countdown) {
+        Gearz.getInstance().getLogger().info("Seconds: " + seconds);
         updateWatch(seconds);
     }
 
     @Override
     public void onCountdownComplete(GameCountdown countdown) {
+        Gearz.getInstance().getLogger().info("Countdown complete for voting.");
         this.handler.onVotingDone(getVoteCounts(), this);
     }
 
     public void extendSession(Integer seconds) {
-        GameCountdown countdown = new GameCountdown(seconds, this, this.gameManager.getPlugin());
+        countdown = new GameCountdown(seconds, this, this.gameManager.getPlugin());
         countdown.start();
     }
 
     public void endSession() {
+        if (!this.countdown.isDone()) {
+            this.countdown.stop();
+        }
         this.voting = false;
     }
 
@@ -237,7 +243,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
         updateVotable(slotFor);
     }
 
-    private Map<Votable, Integer> getVoteCounts() {
+    public Map<Votable, Integer> getVoteCounts() {
         Map<Votable, Integer> voteCounts = new HashMap<>();
         for (Map.Entry<GearzPlayer, Votable> entry : this.votes.entrySet()) {
             PlayerMapVoteEvent event = new PlayerMapVoteEvent(1, entry.getKey(), entry.getValue());

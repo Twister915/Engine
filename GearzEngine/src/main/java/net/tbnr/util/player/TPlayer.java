@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import net.tbnr.gearz.Gearz;
-import net.tbnr.gearz.packets.packetwrapper.WrapperPlayServerWorldParticles;
+import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
 import net.tbnr.util.IPUtils;
 import net.tbnr.util.PlayerResetParams;
 import net.tbnr.util.TPlugin;
@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 
-import static net.tbnr.gearz.packets.packetwrapper.WrapperPlayServerWorldParticles.ParticleEffect;
+import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.ParticleEffect;
 
 /**
  * TPlayer is a representation of the player in Bukkit that can store more data about the player, and also execute methods

@@ -1008,6 +1008,11 @@ public abstract class GearzGame implements Listener {
         }
     }
 
+
+    protected final void displayWinners(GearzPlayer... players) {
+        
+    }
+
     @EventHandler
     public final void onArrow(EntityShootBowEvent event) {
         if (!(event.getEntity() instanceof Player)) {
@@ -1192,6 +1197,10 @@ public abstract class GearzGame implements Listener {
 
     public final boolean hasEnded(GearzPlayer player) {
         return this.endedPlayers.contains(player);
+    }
+
+    public final void registerExternalListeners() {
+        getPlugin().registerEvents(this);
     }
 
     /**

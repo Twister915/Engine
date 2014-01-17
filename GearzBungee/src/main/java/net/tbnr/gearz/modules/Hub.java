@@ -47,11 +47,11 @@ public class Hub implements TCommandHandler, Listener {
         List<Integer> attempts = new ArrayList<>();
         ServerInfo info = null;
         while (info == null && attempts.size() < hubServers.size()) {
-            info = ProxyServer.getInstance().getServerInfo(hubServers.get(x).getBungee_name());
-            attempts.add(x);
             while (attempts.contains(x)) {
                 x = GearzBungee.getRandom().nextInt(hubServers.size());
             }
+            info = ProxyServer.getInstance().getServerInfo(hubServers.get(x).getBungee_name());
+            attempts.add(x);
         }
         return info;
     }
@@ -63,7 +63,7 @@ public class Hub implements TCommandHandler, Listener {
         return false;
     }
 
-    @TCommand(aliases = {}, usage = "/hub", senders = {TCommandSender.Player}, permission = "gearz.hub", name = "hub")
+    @TCommand(aliases = {"leave", "done", "back"}, usage = "/hub", senders = {TCommandSender.Player}, permission = "gearz.hub", name = "hub")
     @SuppressWarnings("unused")
     public TCommandStatus hubCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;

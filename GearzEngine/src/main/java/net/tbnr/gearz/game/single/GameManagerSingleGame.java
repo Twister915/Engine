@@ -1,4 +1,4 @@
-package net.tbnr.gearz.game.singlegame;
+package net.tbnr.gearz.game.single;
 
 import com.mongodb.BasicDBObject;
 import lombok.NonNull;
@@ -99,11 +99,53 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     }
 
     @TCommand(
-            usage = "",
+            usage = "/game <arg>",
             senders = {TCommandSender.Player, TCommandSender.Console},
-            permission = "",
+            permission = "gearz.game",
             name = "game")
     public TCommandStatus gameCommand(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        if (args.length < 1) {
+            return TCommandStatus.INVALID_ARGS;
+        }
+
+        switch (args[0]) {
+            case "start":
+                if (this.runningGame != null) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                votingSession.endSession();
+                onVotingDone(votingSession.getVoteCounts(), votingSession, true);
+                break;
+            case "end":
+                if (this.runningGame == null) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                this.runningGame.stopGame();
+                break;
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
+
+    @TCommand(
+            usage = "/map",
+            senders = {TCommandSender.Player, TCommandSender.Console},
+            permission = "gearz.map",
+            name = "map")
+    public TCommandStatus mapCommand(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        if (args.length != 0) {
+            sender.sendMessage(meta.usage());
+            return TCommandStatus.INVALID_ARGS;
+        }
+
+        if (this.runningGame == null) {
+            sender.sendMessage(Gearz.getInstance().getFormat("not-running", false));
+            return TCommandStatus.SUCCESSFUL;
+        }
+
+        sender.sendMessage(Gearz.getInstance().getFormat("map-title", false, new String[]{"<name>", this.runningGame.getArena().getName()}));
+        sender.sendMessage(Gearz.getInstance().getFormat("map-lore-author", false, new String[]{"<author>", this.runningGame.getArena().getAuthors()}));
+        sender.sendMessage(Gearz.getInstance().getFormat("map-lore-description", false, new String[]{"<description>", this.runningGame.getArena().getDescription()}));
+
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -272,12 +314,15 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
 
     @Override
     public void onVotingDone(Map<Votable, Integer> data, VotingSession ses) {
+        onVotingDone(data, ses, false);
+    }
+    public void onVotingDone(Map<Votable, Integer> data, VotingSession ses, boolean override) {
         if (!(ses instanceof InventoryBarVotingSession)) {
             return;
         }
         InventoryBarVotingSession session = (InventoryBarVotingSession) ses;
         int length = Bukkit.getOnlinePlayers().length;
-        if (!(this.gameMeta.maxPlayers() >= length && length >= this.gameMeta.minPlayers())) {
+        if (!(this.gameMeta.maxPlayers() >= length && length >= this.gameMeta.minPlayers()) && !override) {
             Bukkit.broadcastMessage(GearzGame.formatUsingMeta(this.gameMeta, Gearz.getInstance().getFormat("game-strings.not-enough-players", true, new String[]{"<num>", String.valueOf(this.gameMeta.minPlayers() - length)})));
             session.extendSession(60);
             return;

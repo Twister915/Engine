@@ -1,5 +1,6 @@
 game_mode: SINGLE
 network_interface: eth1
+message-ping: false
 database:
   host: one.tbnr.pw
   port: 27017
@@ -73,6 +74,7 @@ game-strings: #All strings should use colors <p> and <s>, and has <gname> (longN
   spectator-ingame: "<s>&lYou are still in the game. Don't disconnect, you may be added back in!"
   no-bow: "<s>You cannot use your bow now!"
   no-potion: "<s>You can't throw that now!"
+  not-running: "&cNo arena is currently loaded."
 priorities:
 - staff
 - tbnr

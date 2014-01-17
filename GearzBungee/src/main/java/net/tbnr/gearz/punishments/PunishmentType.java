@@ -1,37 +1,35 @@
 package net.tbnr.gearz.punishments;
 
+import lombok.Getter;
+
 /**
  * Created by jake on 1/4/14.
+ *
+ * Purpose Of File: Enum For Punishment's
+ *
+ * Latest Change: Changed how the action and isKickable was got
  */
 public enum PunishmentType {
-    PERMANENT_BAN,
-    TEMP_BAN,
-    MUTE,
-    TEMP_MUTE,
-    WARN,
-    IP_BAN,
-    KICK;
+    PERMANENT_BAN("banned"),
+    TEMP_BAN("temp banned"),
+    MUTE("muted"),
+    TEMP_MUTE("temp muted"),
+    WARN("warned"),
+    IP_BAN("ip banned"),
+    KICK("kicked", true);
 
-    public String getAction() {
-        if (this.equals(PERMANENT_BAN)) return "banned";
-        else if (this.equals(TEMP_BAN)) return "temp banned";
-        else if (this.equals(MUTE)) return "muted";
-        else if (this.equals(TEMP_MUTE)) return "temp muted";
-        else if (this.equals(WARN)) return "warned";
-        else if (this.equals(IP_BAN)) return "ip banned";
-        else if (this.equals(KICK)) return "kicked";
-        return "invalid";
+    @Getter
+    private String action = "invalid";
+
+    @Getter
+    private boolean kickable = false;
+
+    PunishmentType(String action) {
+        this.action = action;
     }
 
-    public boolean isKickable() {
-        switch (this) {
-            case PERMANENT_BAN:
-            case IP_BAN:
-            case TEMP_BAN:
-            case KICK:
-                return true;
-            default:
-                return false;
-        }
+    PunishmentType(String action, boolean kickable) {
+        this.action = action;
+        this.kickable = kickable;
     }
 }
