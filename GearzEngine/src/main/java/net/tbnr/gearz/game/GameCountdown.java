@@ -63,9 +63,10 @@ public final class GameCountdown implements Runnable {
      * Starts the timer.
      */
     public void start() {
-        if (this.done) {
+        if (this.started) {
             return;
         }
+        this.done = false;
         this.started = true;
         try {
             this.handler.onCountdownStart(this.seconds, this);
@@ -81,6 +82,7 @@ public final class GameCountdown implements Runnable {
      */
     public void run() {
         if (!this.started) return;
+        if (this.done) return;
         passed++;
         try {
             handler.onCountdownChange(seconds - passed, seconds, this);
