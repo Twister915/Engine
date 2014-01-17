@@ -1,4 +1,4 @@
-package net.tbnr.gearz.game.singlegame;
+package net.tbnr.gearz.game.single;
 
 import com.mongodb.BasicDBObject;
 import lombok.NonNull;

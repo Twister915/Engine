@@ -6,7 +6,7 @@ import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.gearz.game.GearzGame;
-import net.tbnr.gearz.game.singlegame.GameManagerSingleGame;
+import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.util.TPlugin;
 import net.tbnr.util.command.TCommandHandler;
 import org.bukkit.Bukkit;
