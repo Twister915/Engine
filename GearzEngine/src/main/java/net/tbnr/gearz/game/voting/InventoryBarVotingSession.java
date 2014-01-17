@@ -81,7 +81,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
     }
 
     public void endSession() {
-        if (this.countdown.isStarted()) {
+        if (!this.countdown.isDone()) {
             this.countdown.stop();
         }
         this.voting = false;

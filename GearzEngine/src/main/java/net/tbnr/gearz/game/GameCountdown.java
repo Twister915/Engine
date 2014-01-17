@@ -30,6 +30,8 @@ public final class GameCountdown implements Runnable {
      */
     @Getter
     private boolean started;
+    @Getter
+    private boolean done;
 
     /**
      * The game countdown constructor. Pass seconds, handler, and a plugin.
@@ -61,7 +63,7 @@ public final class GameCountdown implements Runnable {
      * Starts the timer.
      */
     public void start() {
-        if (this.started) {
+        if (this.done) {
             return;
         }
         this.started = true;
@@ -84,7 +86,7 @@ public final class GameCountdown implements Runnable {
             handler.onCountdownChange(seconds - passed, seconds, this);
             if (passed.equals(seconds)) {
                 handler.onCountdownComplete(this);
-                this.started = false;
+                this.started = true;
             } else {
                 schedule();
             }
@@ -135,6 +137,7 @@ public final class GameCountdown implements Runnable {
      */
     public void stop() {
         this.started = false;
+        this.done = true;
         this.handler.onCountdownComplete(this);
     }
 }
