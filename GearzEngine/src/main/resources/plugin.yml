@@ -11,6 +11,8 @@ commands:
     description: Checks a player's real name.
   xp:
     description: Xp
+  game:
+    description: Game manager command
 permissions:
   gearz.test:
     default: op
