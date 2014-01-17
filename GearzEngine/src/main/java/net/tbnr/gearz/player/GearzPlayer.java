@@ -27,7 +27,7 @@ import java.util.HashMap;
 @ToString(exclude = {"hideStats", "game"})
 public final class GearzPlayer {
     private TPlayer player;
-    private String username;
+    private final String username;
     private boolean hideStats;
     private static final Integer magic_number = 7;
     private GearzGame game;

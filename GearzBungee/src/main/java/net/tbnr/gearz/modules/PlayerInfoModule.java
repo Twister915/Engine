@@ -39,7 +39,7 @@ import java.util.TimeZone;
 /**
  * Responsible for stalking our player base. #NoPrivacyPolicy
  */
-public class PlayerInfoModule implements TCommandHandler, Listener {
+public final class PlayerInfoModule implements TCommandHandler, Listener {
     private LookupService lookupService = null;
 
     public PlayerInfoModule() {

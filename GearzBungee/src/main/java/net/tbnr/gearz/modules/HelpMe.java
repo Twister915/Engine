@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Joey on 12/17/13.
  */
+@SuppressWarnings({"UnusedDeclaration", "deprecation"})
 public class HelpMe implements TCommandHandler, Listener {
     private HashMap<String, Boolean> activeResponders = new HashMap<>();
     private ArrayList<Conversation> conversations = new ArrayList<>();
@@ -197,6 +198,7 @@ public class HelpMe implements TCommandHandler, Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Data
     @EqualsAndHashCode
     @ToString

@@ -14,7 +14,7 @@ import net.tbnr.gearz.activerecord.GModel;
 @Data
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class Server extends GModel {
+public final class Server extends GModel {
     @BasicField
     private String game;
     @BasicField

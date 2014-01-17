@@ -21,7 +21,7 @@ import java.util.List;
  * Time: 11:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GearzPlayerManager implements Listener {
+public final class GearzPlayerManager implements Listener {
     private HashMap<String, GearzPlayer> players = new HashMap<>();
     private static GearzPlayerManager instance;
     private List<ProxiedPlayer> playersAlreadyConnected;

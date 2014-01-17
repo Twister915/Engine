@@ -46,7 +46,7 @@ public final class TPlayer {
      * The variable storing the actual player this represents. R/O
      */
     @Getter
-    private String playerName;
+    private final String playerName;
     /**
      * The database document representing the player.
      */
@@ -55,7 +55,7 @@ public final class TPlayer {
      * The time the player joined.
      */
     @Getter
-    private long timeJoined;
+    private final long timeJoined;
     /**
      * The time the player has spent online.
      */
@@ -83,6 +83,8 @@ public final class TPlayer {
         this.playerName = player.getName();
         this.timeJoined = Calendar.getInstance().getTimeInMillis();
 
+        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+
         if (TPlayerManager.getInstance().getCollection() == null) return;
         
         this.playerDocument = TPlayer.getPlayerObject(player.getName());
@@ -90,12 +92,13 @@ public final class TPlayer {
             this.playerDocument = new BasicDBObject("username", player.getName()); //So we didn't find it, create our own, and set the username var.
             this.playerDocument.put("time-online", 0l); //Sets the online time to 0 so this var is present (long).
             this.firstJoin = true;
+        } else {
+            this.firstJoin = false;
         }
         this.playerDocument.put("last-seen", Calendar.getInstance().getTimeInMillis()); //Update last-seen
         this.playerDocument.put("online", true); //Update the online variable
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
-        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         //this.getPlayer().setScoreboard(this.scoreboard);
     }
 
@@ -644,7 +647,7 @@ public final class TPlayer {
         getPlayer().setScoreboard(this.scoreboard);
     }
 
-    public static class TParticleEffect {
+    public static final class TParticleEffect {
         @Getter
         private Location location;
         @Getter
