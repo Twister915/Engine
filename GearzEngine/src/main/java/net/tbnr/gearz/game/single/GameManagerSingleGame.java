@@ -67,7 +67,9 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             throw new GearzException("Invalid Game Class");
         }
         this.gameMeta = gameMeta1;
-        this.gameLobby = (GameLobby) ArenaManager.arenaFromDBObject(GameLobby.class, Gearz.getInstance().getMongoDB().getCollection("game_lobbys_v2").findOne(new BasicDBObject("game", gameMeta.key())));
+        Arena arena = ArenaManager.arenaFromDBObject(GameLobby.class, Gearz.getInstance().getMongoDB().getCollection("game_lobbys_v2").findOne(new BasicDBObject("game", gameMeta.key())));
+        if (arena == null) throw new GearzException("No lobby found!");
+        this.gameLobby = (GameLobby)arena ;
         this.plugin = plugin;
         try {
             this.gameLobby.loadWorld();

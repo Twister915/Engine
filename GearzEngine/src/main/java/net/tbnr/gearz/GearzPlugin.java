@@ -44,7 +44,7 @@ public abstract class GearzPlugin extends TPlugin {
         this.meta = meta;
 
 
-        ///REGISTERATION
+        ///REGISTRATION
         Gearz.getInstance().getLogger().info("Game starting registration! " + meta.longName() + " v" + meta.version() + " by " + meta.author() + "[" + meta.shortName() + "]");
 
         //Create a new arena and assign it
@@ -58,6 +58,7 @@ public abstract class GearzPlugin extends TPlugin {
             Gearz.getInstance().getLogger().info("Game will not setup, plugin blocking this.");
             return;
         }
+        if (this.arenaManager.getArenas().size() == 0) throw new GearzException("No Arenas Defined for this gamemode.");
         String game_mode = Gearz.getInstance().getConfig().getString("game_mode");
 
         //If the game mod is single then register it as a single game

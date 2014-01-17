@@ -145,11 +145,6 @@ public abstract class TPlugin extends JavaPlugin {
         return location.getWorld().getName() + TPlugin.divider + location.getX() + TPlugin.divider + location.getY() + TPlugin.divider + location.getZ() + TPlugin.divider + location.getPitch() + TPlugin.divider + location.getYaw();
     }
 
-    /**
-     * Get the BungeeCord API Handler
-     * @return The global Bungee API handler
-     */
-
 
     /**
      * Get a String format from the config.

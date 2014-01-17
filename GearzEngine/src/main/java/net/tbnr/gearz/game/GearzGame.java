@@ -57,6 +57,41 @@ public abstract class GearzGame implements Listener {
     private PvPTracker tracker;
     @Getter
     private boolean running;
+    private final static ChatColor[] progressiveWinColors =
+            {ChatColor.DARK_GREEN, ChatColor.GREEN,
+                    ChatColor.DARK_AQUA, ChatColor.AQUA,
+                    ChatColor.DARK_BLUE, ChatColor.BLUE,
+                    ChatColor.DARK_RED, ChatColor.RED,
+                    ChatColor.DARK_PURPLE, ChatColor.LIGHT_PURPLE,
+                    ChatColor.DARK_GRAY, ChatColor.GRAY};
+    private static enum NumberSuffixes {
+        ONE('1', "st"),
+        TWO('2', "nd"),
+        OTHER('*', "rd");
+
+        private String suffix;
+        private char numberCharacter;
+
+        NumberSuffixes(char numberCharacter, String suffix) {
+            this.suffix = suffix;
+            this.numberCharacter = numberCharacter;
+        }
+        public static NumberSuffixes valueOf(char chat) {
+            for (NumberSuffixes numberSuffixes : NumberSuffixes.values()) {
+                if (numberSuffixes.getChar() == chat) return numberSuffixes;
+            }
+            return NumberSuffixes.OTHER;
+        }
+        public char getChar() {
+            return this.numberCharacter;
+        }
+        public String getSuffix() {
+            return this.suffix;
+        }
+        public static NumberSuffixes getForString(String string) {
+            return valueOf(string.charAt(string.length()-1));
+        }
+    }
     /**
      * You only get points if you leave on good terms
      */
@@ -1008,9 +1043,29 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-
+    //NOTICE Static Strings!
     protected final void displayWinners(GearzPlayer... players) {
-        
+        List<String> strings = new ArrayList<>();
+        char[] emptyStrings = new char[64];
+        Arrays.fill(emptyStrings, ' ');
+        String line = ChatColor.STRIKETHROUGH + (new String(emptyStrings));
+        strings.add(line);
+        for (int x = 0, l = progressiveWinColors.length; x < players.length; x++) {
+            float percentage = x == 0 ? 0f : (float)x/players.length;
+            int index = Double.valueOf(Math.floor(l * percentage)).intValue();
+            ChatColor color = progressiveWinColors[index];
+            strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(x) + NumberSuffixes.getForString(String.valueOf(x)) + " place.");
+        }
+        while (strings.size() < 9) {
+            strings.add(" ");
+        }
+        strings.add(line);
+        for (GearzPlayer player : allPlayers()) {
+            TPlayer tPlayer = player.getTPlayer();
+            for (String s : strings) {
+                tPlayer.sendMessage(s);
+            }
+        }
     }
 
     @EventHandler
