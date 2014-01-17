@@ -13,6 +13,9 @@ import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
 import net.tbnr.gearz.chat.Messaging;
+import net.tbnr.gearz.chat.channels.ChannelCommand;
+import net.tbnr.gearz.chat.channels.ChannelManager;
+import net.tbnr.gearz.chat.channels.ChannelsListener;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
@@ -106,8 +109,12 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private Hub hub;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean whitelisted;
+
+    @Getter
+    private ChannelManager channelManager;
 
     /**
      * Gets the current instance of the GearzBungee plugin.
@@ -175,6 +182,12 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         WhitelistModule whitelistModule = new WhitelistModule();
         registerEvents(whitelistModule);
         registerCommandHandler(whitelistModule);
+        if (getConfig().getBoolean("channels.enabled")) {
+            registerEvents(new ChannelsListener());
+            channelManager = new ChannelManager();
+            channelManager.registerChannels();
+            registerCommandHandler(new ChannelCommand());
+        }
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -207,7 +220,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         if (censoredWords == null || !(censoredWords instanceof BasicDBList)) {
             return new String[0];
         }
-        BasicDBList dbListCensored = (BasicDBList)censoredWords;
+        BasicDBList dbListCensored = (BasicDBList) censoredWords;
         return dbListCensored.toArray(new String[dbListCensored.size()]);
     }
 
