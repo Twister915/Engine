@@ -71,6 +71,11 @@ public class Hub implements TCommandHandler, Listener {
             player.sendMessage(GearzBungee.getInstance().getFormat("already-in-hub", true));
             return TCommandStatus.SUCCESSFUL;
         }
+        if (!ServerModule.getServerForBungee(player.getServer().getInfo()).isCanJoin()) {
+            player.sendMessage(GearzBungee.getInstance().getFormat("server-cannot-disconnect", true));
+            return TCommandStatus.SUCCESSFUL;
+        }
+        player.getServer().getInfo();
         player.connect(getAHubServer());
         sender.sendMessage(GearzBungee.getInstance().getFormat("send-to-hub", true));
         return TCommandStatus.SUCCESSFUL;

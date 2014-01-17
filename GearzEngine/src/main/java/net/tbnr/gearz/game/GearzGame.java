@@ -143,7 +143,7 @@ public abstract class GearzGame implements Listener {
             public void onItemSelect(InventoryGUI gui, InventoryGUI.InventoryGUIItem item, Player player) {
                 Player target = Bukkit.getServer().getPlayer(item.getName());
                 if (target == null) return;
-                player.getPlayer().teleport(target.getLocation());
+                player.teleport(target.getLocation());
                 player.closeInventory();
                 player.sendMessage(getFormat("spectator-tp", new String[]{"<player>", target.getName()}));
                 GearzPlayer.playerFromPlayer(player).getTPlayer().playSound(Sound.ENDERMAN_TELEPORT);
@@ -704,9 +704,6 @@ public abstract class GearzGame implements Listener {
     }
 
     public final void playerLeft(GearzPlayer player) {
-        if (!this.isRunning()) {
-            //return;
-        }
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());
         }
@@ -1043,7 +1040,7 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-    //NOTICE Static Strings!
+        //NOTICE Static Strings!
     protected final void displayWinners(GearzPlayer... players) {
         List<String> strings = new ArrayList<>();
         char[] emptyStrings = new char[64];
