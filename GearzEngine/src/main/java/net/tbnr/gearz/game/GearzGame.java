@@ -54,9 +54,8 @@ public abstract class GearzGame implements Listener {
     private final GearzPlugin plugin;
     private final Integer id;
     private GearzMetrics metrics;
-    private PvPTracker tracker;
-    @Getter
-    private boolean running;
+    @Getter(AccessLevel.PROTECTED) private PvPTracker tracker;
+    @Getter private boolean running;
     private final static ChatColor[] progressiveWinColors =
             {ChatColor.DARK_GREEN, ChatColor.GREEN,
                     ChatColor.DARK_AQUA, ChatColor.AQUA,
@@ -1045,13 +1044,13 @@ public abstract class GearzGame implements Listener {
         List<String> strings = new ArrayList<>();
         char[] emptyStrings = new char[64];
         Arrays.fill(emptyStrings, ' ');
-        String line = ChatColor.STRIKETHROUGH + (new String(emptyStrings));
+        String line = String.valueOf(ChatColor.STRIKETHROUGH) + ChatColor.BLACK + new String(emptyStrings);
         strings.add(line);
         for (int x = 0, l = progressiveWinColors.length; x < players.length; x++) {
             float percentage = x == 0 ? 0f : (float)x/players.length;
             int index = Double.valueOf(Math.floor(l * percentage)).intValue();
             ChatColor color = progressiveWinColors[index];
-            strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(x) + NumberSuffixes.getForString(String.valueOf(x)) + " place.");
+            strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(x) + NumberSuffixes.getForString(String.valueOf(x)).getSuffix() + " place.");
         }
         while (strings.size() < 9) {
             strings.add(" ");

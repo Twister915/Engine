@@ -119,7 +119,7 @@ public class HelpMe implements TCommandHandler, Listener {
     @EventHandler
     public void onPlayerJoin(PostLoginEvent event) {
         if (!event.getPlayer().hasPermission("gearz.helpme.staff")) return;
-        event.getPlayer().sendMessage(GearzBungee.getInstance().getFormat("helpme-login-staff", false));
+        setDuty(event.getPlayer(), true);
     }
 
     @EventHandler
