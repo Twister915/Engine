@@ -349,7 +349,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         try {
             this.beginGame(0, highestVotes);
         } catch (GameStartException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             session.extendSession(60);
         }
     }

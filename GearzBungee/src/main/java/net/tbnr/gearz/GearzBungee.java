@@ -218,7 +218,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     public int getMaxPlayers() {
         Object maxPlayers = bungeeConfigGet("max-players");
         if (maxPlayers == null || !(maxPlayers instanceof Integer)) return 1;
-        return (Integer) maxPlayers;  //To change body of created methods use File | Settings | File Templates.
+        return (Integer) maxPlayers;
     }
 
     @SuppressWarnings("unused")
@@ -286,7 +286,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             if (!newFile) return null;
             getData(file);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             return null;
         }
         BufferedReader stream;
@@ -303,7 +303,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
                 lines.add(ChatColor.translateAlternateColorCodes('&', line));
             }
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             return null;
         }
         return lines;
