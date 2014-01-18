@@ -54,7 +54,7 @@ public final class ArenaIterator<T> implements Iterator<T> {
      */
     @Override
     public boolean hasNext() {
-        return (loop || this.arrayList.size() > index);  //To change body of implemented methods use File | Settings | File Templates.
+        return (loop || this.arrayList.size() > index);
     }
 
     /**

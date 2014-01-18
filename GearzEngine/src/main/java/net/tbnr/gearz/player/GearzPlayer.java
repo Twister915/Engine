@@ -235,7 +235,7 @@ public final class GearzPlayer {
 
         @Override
         public Object getValue() {
-            return xp;  //To change body of implemented methods use File | Settings | File Templates.
+            return xp;
         }
     }
 
@@ -253,7 +253,7 @@ public final class GearzPlayer {
 
         @Override
         public Object getValue() {
-            return level;  //To change body of implemented methods use File | Settings | File Templates.
+            return level;
         }
     }
 
@@ -271,7 +271,7 @@ public final class GearzPlayer {
 
         @Override
         public Object getValue() {
-            return points;  //To change body of implemented methods use File | Settings | File Templates.
+            return points;
         }
     }
 
@@ -292,12 +292,12 @@ public final class GearzPlayer {
 
         @Override
         public String getName() {
-            return "gearz-dpoints";  //To change body of implemented methods use File | Settings | File Templates.
+            return "gearz-dpoints";
         }
 
         @Override
         public Object getValue() {
-            return points;  //To change body of implemented methods use File | Settings | File Templates.
+            return points;
         }
     }
 

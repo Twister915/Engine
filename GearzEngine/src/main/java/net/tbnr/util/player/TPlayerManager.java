@@ -49,7 +49,7 @@ public final class TPlayerManager implements Listener {
             databaseClient = details.getClient();
             logger.info("Attempting a connection to the MongoDB!");
         } catch (UnknownHostException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             logger.severe("Failed to connect!");
             return;
         }

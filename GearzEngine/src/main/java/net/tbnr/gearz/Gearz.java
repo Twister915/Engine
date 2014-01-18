@@ -179,7 +179,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public String getStorablePrefix() {
-        return "gearz";  //To change body of implemented methods use File | Settings | File Templates.
+        return "gearz";
     }
 
     @Override

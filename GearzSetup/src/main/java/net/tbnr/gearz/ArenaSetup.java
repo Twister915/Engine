@@ -235,7 +235,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
                     try {
                         this.points = new ArenaIterator<>();
                     } catch (GearzException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        e.printStackTrace();
                         return;
                     }
                 }
@@ -249,7 +249,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         try {
             arena = this.arena.getConstructor(String.class, String.class, String.class, World.class).newInstance(this.name, this.author, this.description, this.world);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             return false;
         }
         for (Field field : arena.getClass().getFields()) {
@@ -259,7 +259,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
             try {
                 field.set(arena, arenaIterator);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
                 return false;
             }
         }
@@ -292,7 +292,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         try {
             this.manager.addArena(arena);
         } catch (GearzException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             return false;
         }
         return true;
