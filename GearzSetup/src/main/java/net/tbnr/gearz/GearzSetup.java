@@ -32,6 +32,6 @@ public class GearzSetup extends TPlugin {
 
     @Override
     public String getStorablePrefix() {
-        return "setup";  //To change body of implemented methods use File | Settings | File Templates.
+        return "setup";
     }
 }

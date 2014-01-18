@@ -232,17 +232,17 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Override
     public String database() {
-        return getConfig().getString("database");  //To change body of implemented methods use File | Settings | File Templates.
+        return getConfig().getString("database");
     }
 
     @Override
     public String host() {
-        return getConfig().getString("host");  //To change body of implemented methods use File | Settings | File Templates.
+        return getConfig().getString("host");
     }
 
     @Override
     public int port() {
-        return getConfig().getInt("port");  //To change body of implemented methods use File | Settings | File Templates.
+        return getConfig().getInt("port");
     }
 
     @SuppressWarnings("unused")
