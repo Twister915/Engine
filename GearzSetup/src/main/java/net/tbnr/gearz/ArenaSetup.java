@@ -283,7 +283,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
                 for (String s : meta.meta()) {
                     String[] split = s.split(":");
                     if (split.length != 2) continue;
-                    object.put(split[0], split[1].replaceAll("%key", this.meta.key()));
+                    object.put(split[0], split[1].replaceAll("%key", this.meta == null ? "" : this.meta.key()));
                 }
             }
             GearzSetup.getInstance().getMongoDB().getCollection(collection.collection()).insert(object);

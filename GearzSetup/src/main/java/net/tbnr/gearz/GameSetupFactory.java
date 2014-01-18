@@ -1,6 +1,7 @@
 package net.tbnr.gearz;
 
 import net.tbnr.gearz.arena.Arena;
+import net.tbnr.gearz.arena.ArenaCollection;
 import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameLobby;
@@ -55,6 +56,17 @@ public class GameSetupFactory implements Listener, TCommandHandler {
             name = "setup")
     @SuppressWarnings("unused")
     public TCommandStatus setup(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        if (args.length == 1) {
+            Class<?> aClass;
+            try {
+                aClass = Class.forName(args[0]);
+            } catch (ClassNotFoundException e) {
+                return TCommandStatus.INVALID_ARGS;
+            }
+            if (!(aClass.isAssignableFrom(Arena.class))) return TCommandStatus.INVALID_ARGS;
+            if (!(aClass.isAnnotationPresent(ArenaCollection.class))) return TCommandStatus.INVALID_ARGS;
+            ArenaSetup setup = new ArenaSetup(null, (Class<? extends Arena>) aClass, null, GearzSetup.getInstance().getPlayerManager().getPlayer((Player) sender));
+        }
         if (args.length < 2) return TCommandStatus.HELP;
         boolean setupLobby;
         switch (args[1]) {
