@@ -66,6 +66,8 @@ public class GameSetupFactory implements Listener, TCommandHandler {
             if (!(aClass.isAssignableFrom(Arena.class))) return TCommandStatus.INVALID_ARGS;
             if (!(aClass.isAnnotationPresent(ArenaCollection.class))) return TCommandStatus.INVALID_ARGS;
             ArenaSetup setup = new ArenaSetup(null, (Class<? extends Arena>) aClass, null, GearzSetup.getInstance().getPlayerManager().getPlayer((Player) sender));
+            setup.startSetup();
+            return TCommandStatus.SUCCESSFUL;
         }
         if (args.length < 2) return TCommandStatus.HELP;
         boolean setupLobby;
