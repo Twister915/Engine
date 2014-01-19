@@ -93,7 +93,7 @@ public class ShuffleModule implements TCommandHandler, Listener {
         private boolean started = false;
         private Integer attemptsToFindServer = 0;
         private List<String> attemptedGames;
-        private static Integer secondDelay = 3;
+        private static Integer secondDelay = 5;
         private ScheduledTask task;
 
         public void start() {
