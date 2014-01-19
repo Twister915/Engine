@@ -1046,7 +1046,7 @@ public abstract class GearzGame implements Listener {
         List<String> strings = new ArrayList<>();
         //char[] emptyStrings = new char[64];
         //Arrays.fill(emptyStrings, ' ');
-        String line = String.valueOf(ChatColor.STRIKETHROUGH) + ChatColor.BLACK + StringUtils.repeat(" ", 64);
+        String line = ChatColor.GOLD.toString() + ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64);
         strings.add(line);
         for (int x = 0, l = progressiveWinColors.length; x < players.length; x++) {
             int place = x+1;
