@@ -16,6 +16,7 @@ import net.tbnr.util.InventoryGUI;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -66,10 +67,11 @@ public abstract class GearzGame implements Listener {
     private static enum NumberSuffixes {
         ONE('1', "st"),
         TWO('2', "nd"),
-        OTHER('*', "rd");
+        THREE('3', "rd"),
+        OTHER('*', "th");
 
-        private String suffix;
         private char numberCharacter;
+        private String suffix;
 
         NumberSuffixes(char numberCharacter, String suffix) {
             this.suffix = suffix;
@@ -1042,15 +1044,16 @@ public abstract class GearzGame implements Listener {
         //NOTICE Static Strings!
     protected final void displayWinners(GearzPlayer... players) {
         List<String> strings = new ArrayList<>();
-        char[] emptyStrings = new char[64];
-        Arrays.fill(emptyStrings, ' ');
-        String line = String.valueOf(ChatColor.STRIKETHROUGH) + ChatColor.BLACK + new String(emptyStrings);
+        //char[] emptyStrings = new char[64];
+        //Arrays.fill(emptyStrings, ' ');
+        String line = String.valueOf(ChatColor.STRIKETHROUGH) + ChatColor.BLACK + StringUtils.repeat(" ", 64);
         strings.add(line);
         for (int x = 0, l = progressiveWinColors.length; x < players.length; x++) {
+            int place = x+1;
             float percentage = x == 0 ? 0f : (float)x/players.length;
             int index = Double.valueOf(Math.floor(l * percentage)).intValue();
             ChatColor color = progressiveWinColors[index];
-            strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(x) + NumberSuffixes.getForString(String.valueOf(x)).getSuffix() + " place.");
+            strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(place) + NumberSuffixes.getForString(String.valueOf(place)).getSuffix() + " place.");
         }
         while (strings.size() < 9) {
             strings.add(" ");
