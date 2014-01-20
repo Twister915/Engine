@@ -8,7 +8,6 @@ import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.modules.Hub;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +54,10 @@ public final class GearzPlayerManager implements Listener {
     public void removePlayer(PlayerDisconnectEvent event) {
         this.players.remove(event.getPlayer().getName());
         this.playersAlreadyConnected.remove(event.getPlayer());
+        if (GearzBungee.getInstance().getConfig().getBoolean("channels.enabled")) {
+            GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(event.getPlayer());
+            gearzPlayer.setChannel(null);
+        }
     }
 
     @EventHandler
@@ -66,6 +69,10 @@ public final class GearzPlayerManager implements Listener {
                 return;
             }
             event.setTarget(aHubServer);
+            if (GearzBungee.getInstance().getConfig().getBoolean("channels.enabled")) {
+                GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(event.getPlayer());
+                gearzPlayer.setChannel(GearzBungee.getInstance().getChannelManager().getDefaultChannel());
+            }
         }
     }
 

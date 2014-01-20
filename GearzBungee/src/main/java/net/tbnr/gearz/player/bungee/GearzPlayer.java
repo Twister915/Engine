@@ -5,6 +5,7 @@ import lombok.NonNull;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.chat.channels.Channel;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishmentType;
 import org.bson.types.ObjectId;
@@ -27,6 +28,8 @@ public final class GearzPlayer {
      * The player document
      */
     private DBObject playerDocument;
+
+    private Channel channel;
 
     private GearzPlayer(@NonNull DBObject object) throws PlayerNotFoundException {
         String username1;
@@ -75,6 +78,24 @@ public final class GearzPlayer {
         } else {
             throw new PlayerNotFoundException("Player not found yet!");
         }
+    }
+
+    public Channel getChannel() {
+        return this.channel;
+    }
+
+    public void setChannel(Channel channel) {
+        if (this.channel != null) {
+            this.channel.removeMember(this.getProxiedPlayer());
+        }
+
+        if (channel == null) {
+            this.channel = null;
+            return;
+        }
+
+        this.channel = channel;
+        this.channel.addMember(this.getProxiedPlayer());
     }
 
     /**
