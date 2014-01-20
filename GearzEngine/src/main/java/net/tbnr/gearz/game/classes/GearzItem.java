@@ -2,6 +2,7 @@ package net.tbnr.gearz.game.classes;
 
 import com.comphenix.protocol.utility.MinecraftReflection;
 import lombok.*;
+import net.tbnr.gearz.Gearz;
 import net.tbnr.util.RandomUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -76,6 +77,7 @@ public final class GearzItem {
                         throw new GearzClassReadException("Invalid Enchantment " + x + " " + enchant_name + " " + level);
                     }
                     enchantmentMap.put(e, level);
+                    Gearz.getInstance().getLogger().info("Added enchant " + x + " " + e.getName() + ":" + level);
                 } catch (JSONException e) {
                     throw GearzClass.exceptionFromJSON("Could not read enchantment " + x, e);
                 }
@@ -122,6 +124,7 @@ public final class GearzItem {
         if (this.enchantments != null) {
             for (Map.Entry<Enchantment, Integer> enchantmentIntegerEntry : this.enchantments.entrySet()) {
                 stack.addUnsafeEnchantment(enchantmentIntegerEntry.getKey(), enchantmentIntegerEntry.getValue());
+                Gearz.getInstance().getLogger().info("Assigned enchant " + enchantmentIntegerEntry.getKey().getName() + ":" + enchantmentIntegerEntry.getValue());
             }
         }
         ItemMeta itemMeta1 = stack.getItemMeta();
@@ -131,10 +134,10 @@ public final class GearzItem {
         if (this.itemMeta.getLore() != null) {
             itemMeta1.setLore(RandomUtils.colorStringList(this.itemMeta.getLore()));
         }
-        if (this.itemMeta.getOwner() != null && stack instanceof SkullMeta) {
+        if (this.itemMeta.getOwner() != null && itemMeta1 instanceof SkullMeta) {
             ((SkullMeta) stack).setOwner(this.itemMeta.getOwner());
         }
-        if (this.itemMeta.getColor() != null && stack instanceof LeatherArmorMeta) {
+        if (this.itemMeta.getColor() != null && itemMeta1 instanceof LeatherArmorMeta) {
             ((LeatherArmorMeta) stack).setColor(this.itemMeta.getColor());
         }
         stack.setItemMeta(itemMeta1);
