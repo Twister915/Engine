@@ -135,10 +135,10 @@ public final class GearzItem {
             itemMeta1.setLore(RandomUtils.colorStringList(this.itemMeta.getLore()));
         }
         if (this.itemMeta.getOwner() != null && itemMeta1 instanceof SkullMeta) {
-            ((SkullMeta) stack).setOwner(this.itemMeta.getOwner());
+            ((SkullMeta) itemMeta1).setOwner(this.itemMeta.getOwner());
         }
         if (this.itemMeta.getColor() != null && itemMeta1 instanceof LeatherArmorMeta) {
-            ((LeatherArmorMeta) stack).setColor(this.itemMeta.getColor());
+            ((LeatherArmorMeta) itemMeta1).setColor(this.itemMeta.getColor());
         }
         stack.setItemMeta(itemMeta1);
         if (this.data != null) {
