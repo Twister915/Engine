@@ -147,8 +147,9 @@ public abstract class GearzGame implements Listener {
                 player.teleport(target.getLocation());
                 player.closeInventory();
                 player.sendMessage(getFormat("spectator-tp", new String[]{"<player>", target.getName()}));
-                GearzPlayer.playerFromPlayer(player).getTPlayer().playSound(Sound.ENDERMAN_TELEPORT);
-                GearzPlayer.playerFromPlayer(player).getTPlayer().playSound(Sound.ARROW_HIT);
+                TPlayer tPlayer = GearzPlayer.playerFromPlayer(player).getTPlayer();
+                tPlayer.playSound(Sound.ENDERMAN_TELEPORT);
+                tPlayer.playSound(Sound.ARROW_HIT);
             }
 
             @Override
