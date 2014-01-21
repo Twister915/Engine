@@ -69,7 +69,7 @@ public final class GearzItem {
             enchantmentMap = new HashMap<>();
             for (int x = 0; x < enchants.length(); x++) {
                 try {
-                    JSONObject enchantObject = enchants.getJSONObject(0);
+                    JSONObject enchantObject = enchants.getJSONObject(x);
                     String enchant_name = enchantObject.getString("name");
                     int level = enchantObject.getInt("level");
                     Enchantment e = Enchantment.getByName(enchant_name);
