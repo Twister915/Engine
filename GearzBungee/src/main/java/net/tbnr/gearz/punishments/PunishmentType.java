@@ -10,8 +10,8 @@ import lombok.Getter;
  * Latest Change: Changed how the action and isKickable was got
  */
 public enum PunishmentType {
-    PERMANENT_BAN("banned"),
-    TEMP_BAN("temp banned"),
+    PERMANENT_BAN("banned", true),
+    TEMP_BAN("temp banned", true),
     MUTE("muted"),
     TEMP_MUTE("temp muted"),
     WARN("warned"),
