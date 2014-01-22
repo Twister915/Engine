@@ -73,7 +73,7 @@ public class ReportModule implements TCommandHandler {
         }
 
         for (Report report : this.reportManager.getRecentReports(amount, null)) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("reports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getName()}, new String[]{"<reporter>", report.reported.getName()}, new String[]{"<time>", readable.format(report.getTime())}));
+            sender.sendMessage(GearzBungee.getInstance().getFormat("reports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getName()}, new String[]{"<reported>", report.getReported().getName()}, new String[]{"<time>", readable.format(report.getTime())}));
         }
         return TCommandStatus.SUCCESSFUL;
     }
