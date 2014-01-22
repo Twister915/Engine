@@ -13,6 +13,7 @@ import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,54 +38,56 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         this.interval_seconds = interval;
     }
 
+    public AnnouncerModule(boolean start) {
+        this.interval_seconds = GearzBungee.getInstance().getInterval();
+        Object[] announceList = GearzBungee.getInstance().getAnnouncements();
+        List<Announcement> finalAnnouncements = new ArrayList<>();
+        for (Object a : announceList) {
+            if (!(a instanceof String)) continue;
+            String ann = (String) a;
+            finalAnnouncements.add(new Announcement((String) a));
+        }
+        this.announcements = finalAnnouncements;
+        if (start) {
+            start();
+        }
+    }
+
     @TCommand(aliases = {"announcer"}, usage = "/announcer", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.announcer", name = "announcer")
     @SuppressWarnings("unused")
     public TCommandStatus announcer(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length == 0) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-help"));
-            return TCommandStatus.INVALID_ARGS;
+            return TCommandStatus.SUCCESSFUL;
         }
+        Object[] list = GearzBungee.getInstance().getAnnouncements();
         if (args[0].equalsIgnoreCase("list")) {
             for (int x = 0; x < announcements.size(); x++) {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-list", false, false, new String[]{"<num>", x + ""}, new String[]{"<announcement>", announcements.get(x).getColoredText()}));
             }
             return TCommandStatus.SUCCESSFUL;
-        } else if (args[0].equalsIgnoreCase("add")) {
+        }
+        List<String> strings = new ArrayList<>();
+        for (Object o : list) {
+            if (o instanceof String) strings.add((String) o);
+        }
+        if (args[0].equalsIgnoreCase("add")) {
             if (args.length < 2) {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-badargs"));
                 return TCommandStatus.INVALID_ARGS;
             }
-
-            BasicDBList basicDBList = (BasicDBList) GearzBungee.getInstance().getBungeeConfig().get("announcements");
-            if (basicDBList == null) {
-                basicDBList = new BasicDBList();
-            }
-            basicDBList.add(compile(args, 1, args.length));
-            announcements.add(new Announcement(compile(args, 1, args.length)));
-
-            GearzBungee.getInstance().getBungeeConfig().put("announcements", basicDBList);
+            String s = GearzBungee.getInstance().compile(args, 1, args.length);
+            strings.add(s);
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-add"));
         } else if (args[0].equalsIgnoreCase("remove")) {
-            int num;
-            try {
-                num = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-notanum"));
-                return TCommandStatus.INVALID_ARGS;
+            Integer toRemove = Integer.parseInt(args[1]);
+            if (toRemove < 1 || toRemove > list.length) {
+                sender.sendMessage(GearzBungee.getInstance().getFormat("index-out-of-range", false));
+                return TCommandStatus.SUCCESSFUL;
             }
-
-            BasicDBList basicDBList = (BasicDBList) GearzBungee.getInstance().getBungeeConfig().get("announcements");
-            if (basicDBList == null) {
-                basicDBList = new BasicDBList();
-            } else {
-                basicDBList.remove(num);
-            }
-
-            announcements.remove(num);
-            GearzBungee.getInstance().getBungeeConfig().put("announcements", basicDBList);
-            sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-remove", false, false, new String[]{"<num>", num + ""}));
-
-            return TCommandStatus.SUCCESSFUL;
+            String s = strings.get(toRemove - 1);
+            strings.remove(toRemove - 1);
+            sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-remove", false, false, new String[]{"<num>", toRemove + ""}));
         } else if (args[0].equalsIgnoreCase("interval")) {
             if (args[1] != null) {
                 int num;
@@ -94,19 +97,9 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
                     sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-notanum"));
                     return TCommandStatus.INVALID_ARGS;
                 }
-
-                GearzBungee.getInstance().getBungeeConfig().put("announcements_interval", num);
-
-                interval_seconds = num;
-
+                GearzBungee.getInstance().setInterval(num);
+                this.interval_seconds = num;
                 sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-interval-set", false, false, new String[]{"<num>", num + ""}));
-                return TCommandStatus.SUCCESSFUL;
-            } else {
-                Integer seconds = (Integer) GearzBungee.getInstance().getBungeeConfig().get("announcements_interval");
-
-                sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-interval-get", false, false, new String[]{"<num>", seconds + ""}));
-                return TCommandStatus.SUCCESSFUL;
-
             }
         } else if (args[0].equalsIgnoreCase("help")) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-help"));
@@ -114,26 +107,25 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         } else if (args[0].equalsIgnoreCase("restart") || args[0].equalsIgnoreCase("start")) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-restart"));
             reschedule();
+            return TCommandStatus.SUCCESSFUL;
         } else if (args[0].equalsIgnoreCase("stop")) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-stop"));
             cancel();
+            return TCommandStatus.SUCCESSFUL;
         }
-
+        BasicDBList basicDBList = new BasicDBList();
+        basicDBList.addAll(strings);
+        List<Announcement> finalAnnouncements = new ArrayList<>();
+        for (String string : strings) {
+            finalAnnouncements.add(new Announcement(string));
+        }
+        this.announcements = finalAnnouncements;
+        GearzBungee.getInstance().setAnnouncements(basicDBList);
         return TCommandStatus.SUCCESSFUL;
     }
 
-    public static String compile(String[] args, int min, int max) {
-
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = min; i < args.length; i++) {
-            builder.append(args[i]);
-            if (i == max) return builder.toString();
-            builder.append(" ");
-        }
-
-        return builder.toString();
-
+    public String compile(String[] args, int min, int max) {
+        return GearzBungee.getInstance().compile(args, min, max);
     }
 
     @Override
@@ -158,7 +150,7 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
     }
 
     public void start() {
-        this.thisSchedule = ProxyServer.getInstance().getScheduler().schedule(GearzBungee.getInstance(), this, interval_seconds, TimeUnit.SECONDS);
+        this.thisSchedule = ProxyServer.getInstance().getScheduler().schedule(GearzBungee.getInstance(), this, interval_seconds, interval_seconds, TimeUnit.SECONDS);
     }
 
     @Override
@@ -166,6 +158,8 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
             announce(proxiedPlayer);
         }
+        this.current++;
+        if (this.current == announcements.size()) this.current = 0;
     }
 
     private void reschedule() {
@@ -174,14 +168,10 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
     }
 
     private void cancel() {
-        if (this.thisSchedule != null) ProxyServer.getInstance().getScheduler().cancel(thisSchedule);
-
+        if (this.thisSchedule != null) this.thisSchedule.cancel();
     }
-
 
     public void announce(ProxiedPlayer proxiedPlayer) {
         proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("prefix", false, true) + ChatColor.translateAlternateColorCodes('&', announcements.get(this.current).getStringFor(proxiedPlayer)));
-        this.current++;
-        if (this.current == announcements.size() - 1) this.current = 0;
     }
 }

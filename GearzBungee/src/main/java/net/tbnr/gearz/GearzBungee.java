@@ -33,7 +33,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * - Announcer
  * - Reconnect attempts
  * - Register on Site TODO
  * - Help command
@@ -75,12 +74,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
      */
     @Getter
     private Chat chat;
-
-    /**
-     * Announcer module
-     */
-    @Getter
-    private AnnouncerModule announcerModule;
 
     /**
      * Has our NetCommandDispatch for registration.
@@ -175,6 +168,8 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         WhitelistModule whitelistModule = new WhitelistModule();
         registerEvents(whitelistModule);
         registerCommandHandler(whitelistModule);
+        AnnouncerModule announcerModule = new AnnouncerModule(true);
+        registerCommandHandler(announcerModule);
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -200,6 +195,26 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             return dbList.toArray();
         }
         return ((BasicDBList) motd).toArray();
+    }
+
+    public Object[] getAnnouncements() {
+        Object announcements = getBungeeConfig().get("announcements");
+        if (announcements == null || !(announcements instanceof BasicDBList)) {
+            BasicDBList dbList = new BasicDBList();
+            dbList.add("Another Gearz Server - Test Announcement");
+            getBungeeConfig().put("announcements", dbList);
+            return dbList.toArray();
+        }
+        return ((BasicDBList) announcements).toArray();
+    }
+
+    public Integer getInterval() {
+        Object interval = getBungeeConfig().get("interval");
+        if (interval == null || !(interval instanceof Integer)) {
+            getBungeeConfig().put("interval", 60);
+            return 60;
+        }
+        return (Integer) interval;
     }
 
     public String[] getCensoredWords() {
@@ -228,6 +243,14 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     public void setMotds(BasicDBList motds) {
         bungeeConfigSet("motds", motds);
+    }
+
+    public void setAnnouncements(BasicDBList announcements) {
+        bungeeConfigSet("announcements", announcements);
+    }
+
+    public void setInterval(Integer interval) {
+        bungeeConfigSet("interval", interval);
     }
 
     @Override
