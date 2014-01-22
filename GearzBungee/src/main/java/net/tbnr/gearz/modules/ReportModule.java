@@ -47,7 +47,7 @@ public class ReportModule implements TCommandHandler {
         } catch (GearzPlayer.PlayerNotFoundException e) {
             return TCommandStatus.INVALID_ARGS;
         }
-        String reason = GearzBungee.getInstance().compile(args, 1, args.length);
+        String reason = GearzBungee.getInstance().compile(args, 1, args.length).trim();
         Date time = new Date();
         String bungeeServer = target.getServer().getInfo().getName();
         Report report = new Report(gearzReporter, gearzTarget, reason, bungeeServer, time);
