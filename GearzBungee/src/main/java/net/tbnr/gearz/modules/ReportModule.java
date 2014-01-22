@@ -183,7 +183,7 @@ public class ReportModule implements TCommandHandler {
                 } catch (GearzPlayer.PlayerNotFoundException e) {
                     continue;
                 }
-                String reason = (String) report.get("reason");
+                String reason = (String) report.get("message");
                 Date date = (Date) report.get("time");
                 String server = (String) report.get("server");
                 Report returned = new Report(reporter, reported, reason, server, date);
