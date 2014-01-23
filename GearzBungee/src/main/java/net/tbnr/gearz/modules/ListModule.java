@@ -41,7 +41,7 @@ public class ListModule implements TCommandHandler, Listener {
         if (staff.contains(event.getPlayer())) staff.remove(event.getPlayer());
     }
 
-    @TCommand(aliases = {"who", "w", "ls", "players"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")
+    @TCommand(aliases = {"who", "w", "ls", "players", "online"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")
     @SuppressWarnings("unused")
     public TCommandStatus list(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         List<String> multiMessage = new ArrayList<>();

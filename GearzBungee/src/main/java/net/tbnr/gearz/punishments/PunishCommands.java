@@ -251,6 +251,7 @@ public class PunishCommands implements TCommandHandler {
 
     @TCommand(
             name = "gipban",
+            aliases = {"gbanip"},
             usage = "/ipban <ip> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.ipban")
