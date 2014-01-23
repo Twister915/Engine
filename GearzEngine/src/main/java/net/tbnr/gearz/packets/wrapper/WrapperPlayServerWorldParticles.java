@@ -1,4 +1,4 @@
-package net.tbnr.gearz.packets.packetwrapper;
+package net.tbnr.gearz.packets.wrapper;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;

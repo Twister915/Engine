@@ -20,19 +20,19 @@ public final class PvPTracker {
     private final GearzGame game;
     private HashMap<GearzPlayer, PvPPlayer> playerTrackers;
 
-    public void startGame() {
+    void startGame() {
         this.playerTrackers = new HashMap<>();
         for (GearzPlayer player : game.getPlayers()) {
             this.playerTrackers.put(player, new PvPPlayer(player));
         }
     }
 
-    public void trackKill(GearzPlayer killer, GearzPlayer dead) {
+    void trackKill(GearzPlayer killer, GearzPlayer dead) {
         this.playerTrackers.get(killer).logKill(dead);
         this.playerTrackers.get(dead).logDeath(killer);
     }
 
-    public void saveKills() {
+    void saveKills() {
         for (final Map.Entry<GearzPlayer, PvPPlayer> entry : playerTrackers.entrySet()) {
             final GearzPlayer player = entry.getKey();
             final PvPPlayer playerTracker = entry.getValue();
@@ -50,6 +50,10 @@ public final class PvPTracker {
         }
     }
 
+    public Integer getKillstreakFor(GearzPlayer player) {
+        return this.playerTrackers.get(player).getSequencedKills();
+    }
+
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @RequiredArgsConstructor
     @EqualsAndHashCode
@@ -58,7 +62,7 @@ public final class PvPTracker {
         @NonNull private GearzPlayer player;
         @Getter private List<GearzPlayer> kills = new ArrayList<>();
         @Getter private List<GearzPlayer> deaths = new ArrayList<>();
-        private Integer sequencedKills = 0;
+        @Getter private Integer sequencedKills = 0;
         public void logKill(GearzPlayer killed) {
             this.sequencedKills++;
             this.kills.add(killed);
@@ -67,7 +71,7 @@ public final class PvPTracker {
             this.sequencedKills = 0;
             this.deaths.add(killer);
         }
-        public void truncate() {
+        void truncate() {
             this.kills = new ArrayList<>();
             this.deaths = new ArrayList<>();
         }

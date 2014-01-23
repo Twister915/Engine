@@ -18,11 +18,11 @@ import java.util.List;
 /**
  * Used to access the database, disconnect, etc.
  */
-public class GearzPlayer {
+public final class GearzPlayer {
     /**
      * The player's username
      */
-    private String username;
+    private final String username;
     /**
      * The player document
      */

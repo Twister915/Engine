@@ -15,7 +15,6 @@ import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
 import java.net.InetSocketAddress;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,12 +22,14 @@ import java.util.Map;
 /**
  * Created by Joey on 12/18/13.
  */
+@SuppressWarnings("deprecation")
 public class ServerModule implements TCommandHandler, Listener {
     /*
     /server - shows current server and lists games
     /server [game] - shows a list of minigame servers for specified game
     /server [game] [number] - connects you to said server
      */
+    @SuppressWarnings("UnusedParameters")
     @TCommand(name = "server", aliases = {"servers", "join"}, permission = "gearz.server", senders = {TCommandSender.Player}, usage = "/server")
     public TCommandStatus server(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;
@@ -113,6 +114,16 @@ public class ServerModule implements TCommandHandler, Listener {
         return TCommandStatus.SUCCESSFUL;
     }
 
+    public static Server getServerForBungee(ServerInfo info) {
+        return getServerForBungee(info.getName());
+    }
+    public static Server getServerForBungee(String name) {
+        for (Server s: ServerManager.getAllServers()) {
+            if (s.getBungee_name().equals(name)) return s;
+        }
+        return null;
+    }
+
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         GearzBungee.handleCommandStatus(status, sender);
@@ -125,6 +136,7 @@ public class ServerModule implements TCommandHandler, Listener {
                 for (Server server : ServerManager.getAllServers()) {
                     if (ProxyServer.getInstance().getServerInfo(server.getBungee_name()) != null) continue;
                     ProxyServer.getInstance().getLogger().info(server.toString());
+                    if (server.getAddress() == null || server.getPort() == null || server.getNumber() == null) continue;
                     ProxyServer.getInstance().getServers().put(server.getBungee_name(), ProxyServer.getInstance().constructServerInfo(server.getBungee_name(), new InetSocketAddress(server.getAddress(), server.getPort()), GearzBungee.getInstance().getFormat("default-motd", false), false));
                 }
             }

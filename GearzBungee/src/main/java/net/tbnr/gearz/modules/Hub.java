@@ -63,7 +63,7 @@ public class Hub implements TCommandHandler, Listener {
         return false;
     }
 
-    @TCommand(aliases = {}, usage = "/hub", senders = {TCommandSender.Player}, permission = "gearz.hub", name = "hub")
+    @TCommand(aliases = {"leave", "done", "back"}, usage = "/hub", senders = {TCommandSender.Player}, permission = "gearz.hub", name = "hub")
     @SuppressWarnings("unused")
     public TCommandStatus hubCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;
@@ -71,6 +71,11 @@ public class Hub implements TCommandHandler, Listener {
             player.sendMessage(GearzBungee.getInstance().getFormat("already-in-hub", true));
             return TCommandStatus.SUCCESSFUL;
         }
+        if (!ServerModule.getServerForBungee(player.getServer().getInfo()).isCanJoin()) {
+            player.sendMessage(GearzBungee.getInstance().getFormat("server-cannot-disconnect", true));
+            return TCommandStatus.SUCCESSFUL;
+        }
+        player.getServer().getInfo();
         player.connect(getAHubServer());
         sender.sendMessage(GearzBungee.getInstance().getFormat("send-to-hub", true));
         return TCommandStatus.SUCCESSFUL;

@@ -7,6 +7,7 @@ import net.milkbowl.vault.permission.Permission;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
+import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.gearz.player.GearzNickname;
 import net.tbnr.gearz.player.GearzPlayerUtils;
@@ -19,7 +20,6 @@ import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -130,6 +130,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         this.inventoryRefresher = new InventoryRefresher();
         GModel.setDefaultDatabase(this.getMongoDB());
         Gearz.getInstance().getConfig().set("bg.name", RandomUtils.getRandomString(16));
+
         Bukkit.getScheduler().runTaskLater(Gearz.getInstance(), new Runnable() {
             @Override
             public void run() {
@@ -142,6 +143,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
                     }
                     thisServer.setPort(Bukkit.getPort());
                     thisServer.save();
+                    GameManagerSingleGame temp = (GameManagerSingleGame) getGamePlugins().get(0).getGameManager();
+                    registerCommands(temp);
                 }
                 Gearz.getInstance().getLogger().info("Server linked and in the database");
             }
@@ -176,7 +179,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public String getStorablePrefix() {
-        return "gearz";  //To change body of implemented methods use File | Settings | File Templates.
+        return "gearz";
     }
 
     @Override

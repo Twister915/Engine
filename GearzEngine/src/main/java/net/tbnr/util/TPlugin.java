@@ -35,7 +35,7 @@ public abstract class TPlugin extends JavaPlugin {
      *
      * @param listener The listener that you're registering
      */
-    public void registerEvents(Listener listener) {
+    public final void registerEvents(Listener listener) {
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<TPlugin|37>--------< registerEvents has been called for" + listener);
         }
@@ -47,7 +47,7 @@ public abstract class TPlugin extends JavaPlugin {
      *
      * @param handler The handler to register.
      */
-    public void registerCommands(TCommandHandler handler) {
+    public final void registerCommands(TCommandHandler handler) {
         this.getCommandDispatch().registerHandler(handler);
     }
 
@@ -55,7 +55,7 @@ public abstract class TPlugin extends JavaPlugin {
      * The enable method, as specified by bukkit.
      */
     @Override
-    public void onEnable() {
+    public final void onEnable() {
         try {
             this.saveDefaultConfig(); //save the config
             this.commandDispatch = new TCommandDispatch(this); //Create a new command dispatch
@@ -79,7 +79,7 @@ public abstract class TPlugin extends JavaPlugin {
      * I mean to access the newest config.
      */
     @Override
-    public void onDisable() {
+    public final void onDisable() {
         this.reloadConfig();
         this.disable();
         this.commandDispatch = null;
@@ -145,11 +145,6 @@ public abstract class TPlugin extends JavaPlugin {
         return location.getWorld().getName() + TPlugin.divider + location.getX() + TPlugin.divider + location.getY() + TPlugin.divider + location.getZ() + TPlugin.divider + location.getPitch() + TPlugin.divider + location.getYaw();
     }
 
-    /**
-     * Get the BungeeCord API Handler
-     * @return The global Bungee API handler
-     */
-
 
     /**
      * Get a String format from the config.
@@ -159,7 +154,7 @@ public abstract class TPlugin extends JavaPlugin {
      * @param data       The data arrays. Used to insert variables into the config string. Associates Key to Value.
      * @return The formatted String
      */
-    public String getFormat(String formatPath, boolean color, String[]... data) {
+    public final String getFormat(String formatPath, boolean color, String[]... data) {
         if (!this.getConfig().contains(formatPath)) {
             return formatPath;
         }
@@ -183,7 +178,7 @@ public abstract class TPlugin extends JavaPlugin {
      * @param formatPath The path to the format!
      * @return The formatted message.
      */
-    public String getFormat(String formatPath) {
+    public final String getFormat(String formatPath) {
         return this.getFormat(formatPath, true);
     }
 
@@ -194,13 +189,17 @@ public abstract class TPlugin extends JavaPlugin {
      * @param color      Include colors in the passed args?
      * @return The formatted message.
      */
-    public String getFormat(String formatPath, boolean color) {
+    public final String getFormat(String formatPath, boolean color) {
         return this.getFormat(formatPath, color, null);
     }
 
     public abstract String getStorablePrefix();
 
-    public DB getMongoDB() {
+    public final DB getMongoDB() {
         return this.getPlayerManager().getDatabase();
+    }
+
+    public void sendConsoleCommand(String command) {
+        getServer().dispatchCommand(getServer().getConsoleSender(), command);
     }
 }

@@ -16,6 +16,7 @@ import net.tbnr.util.InventoryGUI;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -54,9 +55,44 @@ public abstract class GearzGame implements Listener {
     private final GearzPlugin plugin;
     private final Integer id;
     private GearzMetrics metrics;
-    private PvPTracker tracker;
-    @Getter
-    private boolean running;
+    @Getter(AccessLevel.PROTECTED) private PvPTracker tracker;
+    @Getter private boolean running;
+    private final static ChatColor[] progressiveWinColors =
+            {ChatColor.DARK_GREEN, ChatColor.GREEN,
+                    ChatColor.DARK_AQUA, ChatColor.AQUA,
+                    ChatColor.DARK_BLUE, ChatColor.BLUE,
+                    ChatColor.DARK_RED, ChatColor.RED,
+                    ChatColor.DARK_PURPLE, ChatColor.LIGHT_PURPLE,
+                    ChatColor.DARK_GRAY, ChatColor.GRAY};
+    private static enum NumberSuffixes {
+        ONE('1', "st"),
+        TWO('2', "nd"),
+        THREE('3', "rd"),
+        OTHER('*', "th");
+
+        private char numberCharacter;
+        private String suffix;
+
+        NumberSuffixes(char numberCharacter, String suffix) {
+            this.suffix = suffix;
+            this.numberCharacter = numberCharacter;
+        }
+        public static NumberSuffixes valueOf(char chat) {
+            for (NumberSuffixes numberSuffixes : NumberSuffixes.values()) {
+                if (numberSuffixes.getChar() == chat) return numberSuffixes;
+            }
+            return NumberSuffixes.OTHER;
+        }
+        public char getChar() {
+            return this.numberCharacter;
+        }
+        public String getSuffix() {
+            return this.suffix;
+        }
+        public static NumberSuffixes getForString(String string) {
+            return valueOf(string.charAt(string.length()-1));
+        }
+    }
     /**
      * You only get points if you leave on good terms
      */
@@ -108,11 +144,12 @@ public abstract class GearzGame implements Listener {
             public void onItemSelect(InventoryGUI gui, InventoryGUI.InventoryGUIItem item, Player player) {
                 Player target = Bukkit.getServer().getPlayer(item.getName());
                 if (target == null) return;
-                player.getPlayer().teleport(target.getLocation());
+                player.teleport(target.getLocation());
                 player.closeInventory();
                 player.sendMessage(getFormat("spectator-tp", new String[]{"<player>", target.getName()}));
-                GearzPlayer.playerFromPlayer(player).getTPlayer().playSound(Sound.ENDERMAN_TELEPORT);
-                GearzPlayer.playerFromPlayer(player).getTPlayer().playSound(Sound.ARROW_HIT);
+                TPlayer tPlayer = GearzPlayer.playerFromPlayer(player).getTPlayer();
+                tPlayer.playSound(Sound.ENDERMAN_TELEPORT);
+                tPlayer.playSound(Sound.ARROW_HIT);
             }
 
             @Override
@@ -621,6 +658,7 @@ public abstract class GearzGame implements Listener {
         dropItemsFormPlayer(player);
         player.getTPlayer().resetPlayer();
         PlayerGameDeathEvent event = new PlayerGameDeathEvent(this, player);
+        Bukkit.getPluginManager().callEvent(event);
         if (!canPlayerRespawn(player)) {
             makeSpectator(player);
             return;
@@ -668,9 +706,6 @@ public abstract class GearzGame implements Listener {
     }
 
     public final void playerLeft(GearzPlayer player) {
-        if (!this.isRunning()) {
-            //return;
-        }
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());
         }
@@ -1004,6 +1039,32 @@ public abstract class GearzGame implements Listener {
             fakeDeath(player);
             event.setCancelled(true);
             broadcast(getFormat("solo-death", new String[]{"<victim>", player.getPlayer().getDisplayName()}));
+        }
+    }
+
+        //NOTICE Static Strings!
+    protected final void displayWinners(GearzPlayer... players) {
+        List<String> strings = new ArrayList<>();
+        //char[] emptyStrings = new char[64];
+        //Arrays.fill(emptyStrings, ' ');
+        String line = ChatColor.GOLD.toString() + ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64);
+        strings.add(line);
+        for (int x = 0, l = progressiveWinColors.length; x < players.length; x++) {
+            int place = x+1;
+            float percentage = x == 0 ? 0f : (float)x/players.length;
+            int index = Double.valueOf(Math.floor(l * percentage)).intValue();
+            ChatColor color = progressiveWinColors[index];
+            strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(place) + NumberSuffixes.getForString(String.valueOf(place)).getSuffix() + " place.");
+        }
+        while (strings.size() < 9) {
+            strings.add(" ");
+        }
+        strings.add(line);
+        for (GearzPlayer player : allPlayers()) {
+            TPlayer tPlayer = player.getTPlayer();
+            for (String s : strings) {
+                tPlayer.sendMessage(s);
+            }
         }
     }
 

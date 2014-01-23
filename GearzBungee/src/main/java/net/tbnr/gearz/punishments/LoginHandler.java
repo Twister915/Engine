@@ -56,6 +56,7 @@ public class LoginHandler implements Listener {
     }
 
     public static class MuteData {
+        @Getter
         Date end;
 
         @Getter

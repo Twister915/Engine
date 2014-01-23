@@ -235,7 +235,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
                     try {
                         this.points = new ArenaIterator<>();
                     } catch (GearzException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        e.printStackTrace();
                         return;
                     }
                 }
@@ -249,7 +249,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         try {
             arena = this.arena.getConstructor(String.class, String.class, String.class, World.class).newInstance(this.name, this.author, this.description, this.world);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             return false;
         }
         for (Field field : arena.getClass().getFields()) {
@@ -259,7 +259,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
             try {
                 field.set(arena, arenaIterator);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
                 return false;
             }
         }
@@ -283,7 +283,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
                 for (String s : meta.meta()) {
                     String[] split = s.split(":");
                     if (split.length != 2) continue;
-                    object.put(split[0], split[1].replaceAll("%key", this.meta.key()));
+                    object.put(split[0], split[1].replaceAll("%key", this.meta == null ? "" : this.meta.key()));
                 }
             }
             GearzSetup.getInstance().getMongoDB().getCollection(collection.collection()).insert(object);
@@ -292,7 +292,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         try {
             this.manager.addArena(arena);
         } catch (GearzException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             return false;
         }
         return true;

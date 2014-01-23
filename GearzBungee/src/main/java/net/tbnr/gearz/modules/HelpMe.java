@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Joey on 12/17/13.
  */
+@SuppressWarnings({"UnusedDeclaration", "deprecation"})
 public class HelpMe implements TCommandHandler, Listener {
     private HashMap<String, Boolean> activeResponders = new HashMap<>();
     private ArrayList<Conversation> conversations = new ArrayList<>();
@@ -118,7 +119,7 @@ public class HelpMe implements TCommandHandler, Listener {
     @EventHandler
     public void onPlayerJoin(PostLoginEvent event) {
         if (!event.getPlayer().hasPermission("gearz.helpme.staff")) return;
-        event.getPlayer().sendMessage(GearzBungee.getInstance().getFormat("helpme-login-staff", false));
+        setDuty(event.getPlayer(), true);
     }
 
     @EventHandler
@@ -134,6 +135,7 @@ public class HelpMe implements TCommandHandler, Listener {
             }
             if (convoFor.getPlayer().equals(event.getPlayer())) {
                 convoFor.getStaffMember().sendMessage(GearzBungee.getInstance().getFormat("helpme-disconnected", false));
+                this.activeResponders.put(convoFor.getStaffMember().getName(), Boolean.TRUE);
                 remindStaff(event.getPlayer());
             }
             this.conversations.remove(convoFor);
@@ -197,6 +199,7 @@ public class HelpMe implements TCommandHandler, Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Data
     @EqualsAndHashCode
     @ToString

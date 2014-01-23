@@ -6,7 +6,7 @@ import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.gearz.game.GearzGame;
-import net.tbnr.gearz.game.singlegame.GameManagerSingleGame;
+import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.util.TPlugin;
 import net.tbnr.util.command.TCommandHandler;
 import org.bukkit.Bukkit;
@@ -44,7 +44,7 @@ public abstract class GearzPlugin extends TPlugin {
         this.meta = meta;
 
 
-        ///REGISTERATION
+        ///REGISTRATION
         Gearz.getInstance().getLogger().info("Game starting registration! " + meta.longName() + " v" + meta.version() + " by " + meta.author() + "[" + meta.shortName() + "]");
 
         //Create a new arena and assign it
@@ -58,6 +58,7 @@ public abstract class GearzPlugin extends TPlugin {
             Gearz.getInstance().getLogger().info("Game will not setup, plugin blocking this.");
             return;
         }
+        if (this.arenaManager.getArenas().size() == 0) throw new GearzException("No Arenas Defined for this gamemode.");
         String game_mode = Gearz.getInstance().getConfig().getString("game_mode");
 
         //If the game mod is single then register it as a single game
@@ -76,6 +77,7 @@ public abstract class GearzPlugin extends TPlugin {
         //Register the game and events
         Gearz.getInstance().registerGame(this);
         registerEvents(this.gameManager);
+
     }
 
     @Override

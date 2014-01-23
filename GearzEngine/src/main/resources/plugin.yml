@@ -1,7 +1,7 @@
 name: Gearz
 version: 1.1
 authors: [Twister915, xIGBClutchIx, Thecraftgod, pokuit]
-description: o, dem gearz
+description: Gearz Engine
 main: net.tbnr.gearz.Gearz
 depend: [ProtocolLib, Vault]
 commands:
@@ -11,6 +11,10 @@ commands:
     description: Checks a player's real name.
   xp:
     description: Xp
+  game:
+    description: Game manager command
+  map:
+    description: Gives info about the map
 permissions:
   gearz.test:
     default: op
