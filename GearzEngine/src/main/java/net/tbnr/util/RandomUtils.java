@@ -1,33 +1,13 @@
 package net.tbnr.util;
 
 import net.tbnr.gearz.Gearz;
-import org.bukkit.*;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.material.Wool;
+import org.bukkit.Location;
 
 import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class RandomUtils {
-
-    public static ItemStack colorizeLeather(Material material, Color color) {
-        ItemStack item = new ItemStack(material);
-        if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_LEGGINGS || material == Material.LEATHER_CHESTPLATE || material == Material.LEATHER_HELMET) {
-            LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-            meta.setColor(color);
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
-    public static ItemStack colorizeWool(DyeColor color){
-        Wool wool = new Wool(color);
-        return wool.toItemStack();
-    }
 
     public static String getRandomString(Integer length) {
         return (new BigInteger(130, Gearz.getRandom()).toString(length));
@@ -61,13 +41,5 @@ public class RandomUtils {
         System.arraycopy(B, 0, C, aLen, bLen);
 
         return C;
-    }
-
-    public static List<String> colorStringList(List<String> strings) {
-        ArrayList<String> string = new ArrayList<>();
-        for (String s : strings) {
-            string.add(ChatColor.translateAlternateColorCodes('&', s));
-        }
-        return string;
     }
 }

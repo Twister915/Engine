@@ -198,4 +198,8 @@ public abstract class TPlugin extends JavaPlugin {
     public final DB getMongoDB() {
         return this.getPlayerManager().getDatabase();
     }
+
+    public void sendConsoleCommand(String command) {
+        getServer().dispatchCommand(getServer().getConsoleSender(), command);
+    }
 }

@@ -1,10 +1,9 @@
 package net.tbnr.util.player;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.player.cooldowns.TCooldownManager;
+import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +27,15 @@ public final class TPlayerManager implements Listener {
     private DBCollection collection = null;
     private DB database = null;
     private static TPlayerManager instance;
+
+    public static String getUsernameForID(ObjectId id) {
+        DBCollection collection1 = instance.collection;
+        DBObject id1 = collection1.findOne(new BasicDBObject("_id", id));
+        if (id1 == null) return null;
+        Object username = id1.get("username");
+        if (!(username instanceof String)) return null;
+        return (String)username;
+    }
 
     public TPlayerManager(AuthenticationDetails details) {
         if (Gearz.getInstance().showDebug()) {

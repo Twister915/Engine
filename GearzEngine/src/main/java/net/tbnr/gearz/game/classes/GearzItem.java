@@ -132,7 +132,7 @@ public final class GearzItem {
             itemMeta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.itemMeta.getTitle()));
         }
         if (this.itemMeta.getLore() != null) {
-            itemMeta1.setLore(RandomUtils.colorStringList(this.itemMeta.getLore()));
+            itemMeta1.setLore(ColoringUtils.colorStringList(this.itemMeta.getLore()));
         }
         if (this.itemMeta.getOwner() != null && itemMeta1 instanceof SkullMeta) {
             ((SkullMeta) itemMeta1).setOwner(this.itemMeta.getOwner());
