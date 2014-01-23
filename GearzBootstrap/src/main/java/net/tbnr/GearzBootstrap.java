@@ -46,8 +46,11 @@ public class GearzBootstrap {
 
     private void registerDefaultCommands() {
         CommandExecutor defaultExecutor = new DefaultCommandExecutor();
+        CommandExecutor seerverExecutor = new ServerCommandsExecutor();
         registerCommand("exit").setExecutor(defaultExecutor);
         registerCommand("about").setExecutor(defaultExecutor);
+        registerCommand("deploy").setExecutor(seerverExecutor);
+        registerCommand("attach").setExecutor(seerverExecutor);
     }
 
     public void processInput(String input) {

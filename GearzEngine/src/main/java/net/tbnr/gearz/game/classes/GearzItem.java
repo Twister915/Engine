@@ -2,7 +2,7 @@ package net.tbnr.gearz.game.classes;
 
 import com.comphenix.protocol.utility.MinecraftReflection;
 import lombok.*;
-import net.tbnr.util.RandomUtils;
+import net.tbnr.util.ColoringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -129,7 +129,7 @@ public final class GearzItem {
             itemMeta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.itemMeta.getTitle()));
         }
         if (this.itemMeta.getLore() != null) {
-            itemMeta1.setLore(RandomUtils.colorStringList(this.itemMeta.getLore()));
+            itemMeta1.setLore(ColoringUtils.colorStringList(this.itemMeta.getLore()));
         }
         if (this.itemMeta.getOwner() != null && stack instanceof SkullMeta) {
             ((SkullMeta) stack).setOwner(this.itemMeta.getOwner());
