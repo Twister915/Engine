@@ -76,6 +76,25 @@ public class ImageToChatBukkitUtil {
         return strings;
     }
 
+    /**
+     * Get text (usuing a certain character) from an image
+     * @param urlText    The the url where the image is
+     * @param character  The character you want to use
+     * @return the text from an image
+     */
+    public static List<String> getTextImage(String urlText, char character) {
+        BufferedImage i = getImageFromURL(urlText);
+        List<String> strings = new ArrayList<>();
+        for (int y = 0; y < i.getHeight(); y++) {
+            StringBuilder builder = new StringBuilder();
+            for (int x = 0; x < i.getWidth(); x++) {
+                builder.append(getColorFor(getColor(i, x, y))).append(character);
+            }
+            strings.add(builder.toString());
+        }
+        return strings;
+    }
+
     public static Color getColor(BufferedImage image, int x, int y) {
         if (x < 0 || x >= image.getWidth(null)) {
             throw new IndexOutOfBoundsException("x must be between 0 and " + (image.getWidth(null) - 1));
@@ -105,9 +124,7 @@ public class ImageToChatBukkitUtil {
     }
 
     private static ColorExBukkit findClosestColor(ColorExBukkit c, ColorExBukkit[] palette) {
-        if (c.isTransparent()) {
-            return ColorExBukkit.WHITE;
-        }
+        if (c.isTransparent()) return ColorExBukkit.WHITE;
 
         double delta = 1.7976931348623157E+308D;
         int result = -1;

@@ -186,7 +186,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             if (gameMeta.description().length() < y) {
                 y = gameMeta.description().length();
             }
-            String substring = gameMeta.description().substring(x, y - 1);
+            String substring = gameMeta.description().substring(x, y);
             bookMeta.addPage(substring);
             x += 256;
         }

@@ -234,6 +234,9 @@ public abstract class GModel {
         if (o instanceof List) {
             o = processList(f, dbKey, (List) o);
         }
+        if (o instanceof Enum) {
+            o = "_ENUM:" + ((Enum) o).getDeclaringClass().getName() + "_" + ((Enum) o).name();
+        }
         return o;
     }
 
@@ -257,6 +260,29 @@ public abstract class GModel {
      */
     private Object readObjectFromDB(Object o) {
         if (o == null) return null;
+        if (o instanceof String) {
+            String o1 = (String) o;
+            if (o1.startsWith("_ENUM")) {
+                String s;
+                try {
+                    s = o1.split(":")[1];
+                } catch (IndexOutOfBoundsException ex) {
+                    return null;
+                }
+                String[] split = s.split("_");
+                if (split.length < 2) return null;
+                Class<Enum> aClass;
+                try {
+                    aClass = (Class<Enum>) Class.forName(split[0]);
+                } catch (ClassNotFoundException e) {
+                    return null;
+                } catch (ClassCastException e) {
+                    e.printStackTrace(); //TODO Remove
+                    return null;
+                }
+                return Enum.valueOf(aClass, split[1]);
+            }
+        }
         if (o instanceof DBObject) {
             if (o instanceof BasicDBList) {
                 BasicDBList l = (BasicDBList) o;
