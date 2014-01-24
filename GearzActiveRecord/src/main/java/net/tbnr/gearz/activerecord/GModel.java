@@ -150,7 +150,7 @@ public abstract class GModel {
      */
     public void save() {
         DBObject objectValue = this.getObjectValue();
-        // WriteResult save = this.collection.save(objectValue); never used
+        WriteResult save = this.collection.save(objectValue);
         this.objectId = (ObjectId) objectValue.get("_id");
     }
 
