@@ -576,8 +576,12 @@ public abstract class GearzGame implements Listener {
                 ItemMeta itemMeta = stack.getItemMeta();
                 String name = player.getPlayer().getName();
                 itemMeta.setDisplayName(getGameMeta().mainColor() + name);
-                List<String> headImage = ImageToChatBukkitUtil.getHeadImage(name, true);
-                itemMeta.setLore(headImage);
+                try {
+                    List<String> headImage = ImageToChatBukkitUtil.getHeadImage(name, true);
+                    itemMeta.setLore(headImage);
+                } catch (RuntimeException ex) {
+                    System.err.println("Could not get head for " + name);
+                }
                 stack.setItemMeta(itemMeta);
                 //stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 32);
                 items.add(new InventoryGUI.InventoryGUIItem(stack, player.getUsername()));
