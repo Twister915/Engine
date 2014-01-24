@@ -40,11 +40,11 @@ public abstract class Arena implements Votable {
     @Getter @Setter
     private String gameId;
     @Getter
-    private String name;
+    private final String name;
     @Getter
-    private String authors;
+    private final String authors;
     @Getter
-    private String description;
+    private final String description;
     @Getter
     private String worldId;
     @Getter

@@ -5,6 +5,10 @@ import net.tbnr.util.TPlugin;
 
 /**
  * Created by Jake on 1/12/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class GearzMapDev extends TPlugin {
     private static GearzMapDev instance;

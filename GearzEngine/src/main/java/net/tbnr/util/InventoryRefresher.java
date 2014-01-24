@@ -11,6 +11,10 @@ import java.util.List;
 
 /**
  * Created by jake on 12/28/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class InventoryRefresher implements Runnable {
     final List<ServerSelector> serverSelectors = new ArrayList<>();

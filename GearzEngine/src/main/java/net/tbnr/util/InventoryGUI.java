@@ -22,6 +22,10 @@ import java.util.List;
 
 /**
  * Created by rigor789 on 2013.12.23..
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class InventoryGUI implements Listener {
     @Getter

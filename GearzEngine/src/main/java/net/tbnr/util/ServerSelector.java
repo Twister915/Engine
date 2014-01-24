@@ -20,6 +20,10 @@ import java.util.List;
 
 /**
  * Created by jake on 12/27/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ServerSelector implements Listener {
     /**

@@ -7,6 +7,10 @@ import org.bukkit.event.HandlerList;
 
 /**
  * Created by Joey on 1/9/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 @EqualsAndHashCode(callSuper = false)
 @Data

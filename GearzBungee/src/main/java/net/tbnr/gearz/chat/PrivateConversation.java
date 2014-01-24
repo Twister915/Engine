@@ -13,6 +13,10 @@ import net.tbnr.gearz.GearzBungee;
 
 /**
  * Created by jake on 12/29/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class PrivateConversation implements Listener {
     Conversation conversation;

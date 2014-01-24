@@ -10,6 +10,10 @@ import java.util.List;
 
 /**
  * Created by Joey on 12/19/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 @RequiredArgsConstructor()
 @EqualsAndHashCode

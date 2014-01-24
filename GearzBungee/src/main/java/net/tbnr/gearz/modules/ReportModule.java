@@ -19,6 +19,10 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/15/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ReportModule implements TCommandHandler {
     public SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");

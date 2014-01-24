@@ -9,6 +9,10 @@ import java.util.List;
 
 /**
  * Created by Joey on 12/17/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ServerManager {
     private static Server server;

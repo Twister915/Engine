@@ -6,6 +6,10 @@ import java.net.URL;
 
 /**
  * Created by Jake on 1/23/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class FileUtil {
 

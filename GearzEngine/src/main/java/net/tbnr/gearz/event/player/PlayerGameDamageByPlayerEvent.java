@@ -7,6 +7,10 @@ import org.bukkit.event.HandlerList;
 
 /**
  * Created by Joey on 1/12/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public final class PlayerGameDamageByPlayerEvent extends PlayerGameDamageEvent {
     @NonNull @Getter private GearzPlayer damager;

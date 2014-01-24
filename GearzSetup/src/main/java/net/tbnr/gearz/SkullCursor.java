@@ -6,6 +6,10 @@ import lombok.ToString;
 
 /**
  * Created by Joey on 12/19/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 @RequiredArgsConstructor
 @ToString

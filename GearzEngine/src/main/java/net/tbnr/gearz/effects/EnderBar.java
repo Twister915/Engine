@@ -16,6 +16,10 @@ import java.util.Map;
 
 /**
  * Created by Joey on 12/10/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public final class EnderBar {
     static {

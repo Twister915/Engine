@@ -5,6 +5,10 @@ import org.bukkit.util.Vector;
 
 /**
  * Created by Joey on 12/19/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class LocationUtil {
     public static Location getMinimum(Location l1, Location l2) {

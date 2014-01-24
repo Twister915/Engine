@@ -24,6 +24,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Joey on 12/17/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 @SuppressWarnings({"UnusedDeclaration", "deprecation"})
 public class HelpMe implements TCommandHandler, Listener {

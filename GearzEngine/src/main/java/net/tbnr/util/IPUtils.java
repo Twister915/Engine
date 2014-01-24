@@ -9,6 +9,10 @@ import java.net.InetAddress;
 
 /**
  * Created by George on 24/12/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public final class IPUtils {
 

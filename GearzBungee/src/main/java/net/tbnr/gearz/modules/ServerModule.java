@@ -21,6 +21,10 @@ import java.util.Map;
 
 /**
  * Created by Joey on 12/18/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 @SuppressWarnings("deprecation")
 public class ServerModule implements TCommandHandler, Listener {

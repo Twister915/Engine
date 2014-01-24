@@ -13,6 +13,10 @@ import java.util.List;
 
 /**
  * Created by rigor789 on 2014.01.23..
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ColoringUtils {
 

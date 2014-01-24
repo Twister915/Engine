@@ -9,6 +9,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Created by rigor789 on 2013.12.29..
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ColoredTablist implements Listener {
 

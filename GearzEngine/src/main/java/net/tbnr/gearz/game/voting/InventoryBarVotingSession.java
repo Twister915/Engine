@@ -29,6 +29,10 @@ import java.util.Map;
 
 /**
  * Created by Joey on 12/11/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public final class InventoryBarVotingSession extends VotingSession implements Listener, GameCountdownHandler {
     @Getter

@@ -12,6 +12,10 @@ import java.io.File;
 
 /**
  * Created by Jake on 1/23/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class InstallCommands implements TCommandHandler {
 

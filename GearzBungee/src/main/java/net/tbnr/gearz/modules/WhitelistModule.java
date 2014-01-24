@@ -17,6 +17,10 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/15/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class WhitelistModule implements TCommandHandler, Listener {
     @TCommand(name = "gwhitelist", permission = "gearz.gwhitelist", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/gwhitelist <argument>")

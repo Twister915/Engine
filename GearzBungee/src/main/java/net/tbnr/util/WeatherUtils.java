@@ -10,6 +10,10 @@ import java.nio.charset.Charset;
 
 /**
  * Created by jake on 12/30/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class WeatherUtils {
     public static String getWeatherConditons(String place) {

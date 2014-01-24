@@ -14,6 +14,10 @@ import org.bukkit.entity.Player;
 
 /**
  * Created by rigor789 on 2013.12.23..
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ClearChat implements TCommandHandler {
 

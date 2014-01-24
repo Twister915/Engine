@@ -15,6 +15,10 @@ import java.util.Date;
 
 /**
  * Created by jake on 1/4/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class LoginHandler implements Listener {
     public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");

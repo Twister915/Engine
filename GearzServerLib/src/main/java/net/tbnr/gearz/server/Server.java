@@ -10,6 +10,10 @@ import net.tbnr.gearz.activerecord.GModel;
 
 /**
  * Created by Joey on 12/17/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 @Data
 @ToString
