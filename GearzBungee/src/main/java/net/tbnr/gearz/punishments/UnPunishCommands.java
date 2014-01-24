@@ -23,7 +23,6 @@ import java.util.List;
  *
  * Latest Change:
  */
-@SuppressWarnings("deprecation")
 public class UnPunishCommands implements TCommandHandler {
     public final SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
     @TCommand(

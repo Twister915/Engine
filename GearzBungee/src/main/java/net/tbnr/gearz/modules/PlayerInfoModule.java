@@ -39,7 +39,6 @@ import java.util.TimeZone;
 /**
  * Responsible for stalking our player base. #NoPrivacyPolicy
  */
-@SuppressWarnings("deprecation")
 public final class PlayerInfoModule implements TCommandHandler, Listener {
     private LookupService lookupService = null;
 

@@ -30,7 +30,6 @@ import java.util.List;
  * Time: 6:29 PM
  * To change this template use File | Settings | File Templates.
  */
-@SuppressWarnings("deprecation")
 public class MotdHandler implements Listener, TCommandHandler {
     private List<String> motd;
     private Integer index;

@@ -16,7 +16,6 @@ import net.tbnr.util.bungee.command.TCommandStatus;
  * Date: 05/01/13
  * Time: 11:20 AM
  */
-@SuppressWarnings("deprecation")
 public class UtilCommands implements TCommandHandler, Listener {
 
     @TCommand(name = "about", permission = "gearz.about", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "", aliases = {"plugins", "version", "pl", "?"})

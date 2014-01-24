@@ -20,7 +20,6 @@ import java.util.Date;
  *
  * Latest Change:
  */
-@SuppressWarnings("deprecation")
 public class LoginHandler implements Listener {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 

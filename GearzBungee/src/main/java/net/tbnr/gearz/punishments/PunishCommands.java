@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
  *
  * Latest Change:
  */
-@SuppressWarnings("deprecation")
 public class PunishCommands implements TCommandHandler {
     @TCommand(
             aliases = {"gban"},
@@ -301,14 +300,13 @@ public class PunishCommands implements TCommandHandler {
     public static long parseDateDiff(String time, boolean future) throws Exception {
         Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?", Pattern.CASE_INSENSITIVE);
         Matcher m = timePattern.matcher(time);
-        int years = 0,
-            months = 0,
-            weeks = 0,
-            days = 0,
-            hours = 0,
-            minutes = 0,
-            seconds = 0;
-
+        int years = 0;
+        int months = 0;
+        int weeks = 0;
+        int days = 0;
+        int hours = 0;
+        int minutes = 0;
+        int seconds = 0;
         boolean found = false;
         while (m.find()) {
             if (m.group() == null || m.group().isEmpty()) {

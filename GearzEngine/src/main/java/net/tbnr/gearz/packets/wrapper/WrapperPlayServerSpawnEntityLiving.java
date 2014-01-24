@@ -96,7 +96,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
      *
      * @return The current Type
      */
-    @SuppressWarnings("deprecation")
     public EntityType getType() {
         return EntityType.fromId(handle.getIntegers().read(1));
     }
@@ -106,7 +105,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
      *
      * @param value - new value.
      */
-    @SuppressWarnings("deprecation")
     public void setType(EntityType value) {
         handle.getIntegers().write(1, (int) value.getTypeId());
     }

@@ -30,7 +30,6 @@ import java.util.Map;
  * Time: 12:08 AM
  * To change this template use File | Settings | File Templates.
  */
-@SuppressWarnings("deprecation")
 public class ChatManager implements Listener, TCommandHandler {
     public static enum SpyType {
         Chat,

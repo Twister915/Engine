@@ -42,7 +42,7 @@ public class ListModule implements TCommandHandler, Listener {
     }
 
     @TCommand(aliases = {"who", "w", "ls", "players", "online"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")
-    @SuppressWarnings({"unused", "deprecation"})
+    @SuppressWarnings("unused")
     public TCommandStatus list(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         List<String> multiMessage = new ArrayList<>();
         multiMessage.add(GearzBungee.getInstance().getFormat("list-online", false, false, new String[]{"<online>", String.valueOf(ProxyServer.getInstance().getOnlineCount())}, new String[]{"<max>", String.valueOf(GearzBungee.getInstance().getMaxPlayers())}));
@@ -67,7 +67,7 @@ public class ListModule implements TCommandHandler, Listener {
     }
 
     @TCommand(name = "where", permission = "gearz.where", senders = {TCommandSender.Console, TCommandSender.Player}, usage = "/where <name>", aliases = {"find", "search", "seen"})
-    @SuppressWarnings({"unused", "deprecation"})
+    @SuppressWarnings("unused")
     public TCommandStatus where(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 1) return TCommandStatus.FEW_ARGS;
         List<String> messages = new ArrayList<>();

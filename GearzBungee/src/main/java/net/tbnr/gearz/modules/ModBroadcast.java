@@ -67,7 +67,6 @@ public class ModBroadcast implements TCommandHandler, Listener {
         GearzBungee.handleCommandStatus(status, sender);
     }
 
-	@SuppressWarnings("deprecation")
     public void sendModBroadcast(String sender, String s) {
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
             if (!proxiedPlayer.hasPermission("gearz.modbroadcast")) continue;

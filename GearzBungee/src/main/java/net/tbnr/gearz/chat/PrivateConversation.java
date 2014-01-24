@@ -18,7 +18,6 @@ import net.tbnr.gearz.GearzBungee;
  *
  * Latest Change:
  */
-@SuppressWarnings("deprecation")
 public class PrivateConversation implements Listener {
     final Conversation conversation;
 

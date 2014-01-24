@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 11:53 AM
  * To change this template use File | Settings | File Templates.
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings("unused")
 public class AnnouncerModule implements Runnable, TCommandHandler {
     @Getter
     private List<Announcement> announcements;

@@ -12,7 +12,6 @@ import net.tbnr.gearz.Gearz;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-@SuppressWarnings("deprecation")
 public class EnchantmentEffect {
 
     /**
