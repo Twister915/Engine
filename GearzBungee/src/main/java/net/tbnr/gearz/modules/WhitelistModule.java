@@ -72,7 +72,7 @@ public class WhitelistModule implements TCommandHandler, Listener {
         return whitelisted.contains(proxiedPlayer.getName());
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "deprecation"})
     @EventHandler
     public void onPostLogin(PostLoginEvent event) {
         if (GearzBungee.getInstance().isWhitelisted() && !isWhitelisted(event.getPlayer()) && !event.getPlayer().hasPermission("gearz.whitelist.bypass")) {

@@ -159,6 +159,7 @@ public final class GearzPlayer {
         punishPlayer(reason, issuer, punishmentType, new Date(), console);
     }
 
+	@SuppressWarnings("deprecation")
     public void kickPlayer(String reason, String issuer) {
         if (this.getProxiedPlayer() == null) return;
         this.getProxiedPlayer().disconnect(GearzBungee.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));

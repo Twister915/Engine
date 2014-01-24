@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
  * - Chat logger
  * - Stream chat to a site for viewing by staff
  */
-@SuppressWarnings("NullArgumentToVariableArgMethod")
+@SuppressWarnings({"NullArgumentToVariableArgMethod", "deprecation"})
 public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee, TabExecutor {
     /**
      * Gearz Instance

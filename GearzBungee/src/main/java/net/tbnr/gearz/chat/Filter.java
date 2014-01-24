@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * <p/>
  * Chat filtering
  */
+@SuppressWarnings("deprecation")
 public class Filter {
 
     public static FilterData filter(String message, ProxiedPlayer player) {

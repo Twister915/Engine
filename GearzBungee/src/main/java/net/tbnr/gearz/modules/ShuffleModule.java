@@ -114,6 +114,7 @@ public class ShuffleModule implements TCommandHandler, Listener {
             playerDisconnected();
         }
 
+	    @SuppressWarnings("deprecation")
         public void sendMessage(String message) {
             player.sendMessage(message);
         }

@@ -151,6 +151,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
         updateWatch(1);
     }
 
+	@SuppressWarnings("deprecation")
     private ItemStack getItemStackFor(Votable v) {
 
         MapView mapView = Bukkit.getServer().createMap(Bukkit.getWorlds().get(0));

@@ -28,6 +28,7 @@ import java.util.List;
  * Time: 3:37 PM
  * To change this template use File | Settings | File Templates.
  */
+@SuppressWarnings("deprecation")
 public class Hub implements TCommandHandler, Listener {
 
     private List<Server> hubServers;

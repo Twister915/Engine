@@ -16,7 +16,7 @@ import java.util.HashMap;
 /**
  * This is the dispatcher for all commands. It will handle commands and dispatch them to the proper methods.
  */
-@SuppressWarnings("UnusedDeclaration")
+@SuppressWarnings({"UnusedDeclaration", "deprecation"})
 public class TCommandDispatch {
     /**
      * Constructs the dispatcher

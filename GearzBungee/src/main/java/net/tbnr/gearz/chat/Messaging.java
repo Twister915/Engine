@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 public class Messaging implements TCommandHandler {
     final Map<String, String> lastReplies = new HashMap<>();
 

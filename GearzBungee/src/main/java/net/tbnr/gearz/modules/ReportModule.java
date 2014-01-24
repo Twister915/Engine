@@ -143,6 +143,7 @@ public class ReportModule implements TCommandHandler {
             return time;
         }
 
+	    @SuppressWarnings("deprecation")
         public void broadcast() {
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                 if (player.hasPermission("gearz.reports.recieve")) {

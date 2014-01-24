@@ -22,6 +22,7 @@ public class IPBanHandler {
         this.dbCollection = dbCollection;
     }
 
+	@SuppressWarnings("deprecation")
     public void add(String ip, String reason, String issuer) {
         BasicDBObject insert = new BasicDBObject("ip", ip).append("reason", reason).append("issuer", issuer);
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
