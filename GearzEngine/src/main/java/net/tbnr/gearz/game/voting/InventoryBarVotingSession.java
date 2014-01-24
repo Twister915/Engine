@@ -36,17 +36,17 @@ import java.util.Map;
  */
 public final class InventoryBarVotingSession extends VotingSession implements Listener, GameCountdownHandler {
     @Getter
-    private List<Votable> votables;
+    private final List<Votable> votables;
     @Getter
-    private List<GearzPlayer> players;
+    private final List<GearzPlayer> players;
     @Getter
-    private HashMap<Integer, Votable> slots;
+    private final HashMap<Integer, Votable> slots;
     @Getter
-    private HashMap<GearzPlayer, Votable> votes;
+    private final HashMap<GearzPlayer, Votable> votes;
     @Getter
     private boolean voting;
-    private VotingHandler handler;
-    private GameManager gameManager;
+    private final VotingHandler handler;
+    private final GameManager gameManager;
     private GameCountdown countdown;
 
     public InventoryBarVotingSession(List<GearzPlayer> players, List votables, VotingHandler handler, GameManager manager) {

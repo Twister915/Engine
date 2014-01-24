@@ -16,7 +16,7 @@ public final class GearzLabelEntity {
      * Player this is sent to
      */
     @Getter
-    private Player player;
+    private final Player player;
 
     /**
      * The current title of the bat
@@ -28,7 +28,7 @@ public final class GearzLabelEntity {
      * The location the bat is at
      */
     @Getter @Setter
-    private Location location;
+    private final Location location;
 
     /**
      * The bat object, stored to track the entity ID mostly, and use the DataWatcher, which is a vanilla thing.

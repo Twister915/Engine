@@ -12,7 +12,7 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class TCooldownManager {
-    private static HashMap<String, TCooldown> cooldowns = new HashMap<>();
+    private static final HashMap<String, TCooldown> cooldowns = new HashMap<>();
     public static DB database = null;
 
     public static boolean canContinue(String key, TCooldown cooldown) {

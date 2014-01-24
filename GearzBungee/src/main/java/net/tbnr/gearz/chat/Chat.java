@@ -22,13 +22,14 @@ public class Chat {
     public boolean muted;
 
     @Getter
-    public List<CensoredWord> censoredWords;
+    public final List<CensoredWord> censoredWords;
 
     @Getter List<PrivateConversation.Conversation> conversations = new ArrayList<>();
 
     @Getter Map<ProxiedPlayer, String> lastMessages = Maps.newHashMap();
 
-    @Getter Map<String, LoginHandler.MuteData> mutes = Maps.newHashMap();
+    @Getter
+    final Map<String, LoginHandler.MuteData> mutes = Maps.newHashMap();
 
     public Chat() {
         setMuted(false);

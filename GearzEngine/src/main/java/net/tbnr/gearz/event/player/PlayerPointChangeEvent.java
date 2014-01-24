@@ -17,11 +17,11 @@ import org.bukkit.event.HandlerList;
 public final class PlayerPointChangeEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private GearzPlayer player;
+    private final GearzPlayer player;
     @Getter
-    private Integer oldPoints;
+    private final Integer oldPoints;
     @Getter @Setter
-    private Integer newPoints;
+    private final Integer newPoints;
     private boolean canceled;
 
     public PlayerPointChangeEvent(GearzPlayer player, Integer oldPoints, Integer newPoints) {

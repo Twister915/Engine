@@ -21,9 +21,9 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public final class GearzPlayerManager implements Listener {
-    private HashMap<String, GearzPlayer> players = new HashMap<>();
+    private final HashMap<String, GearzPlayer> players = new HashMap<>();
     private static GearzPlayerManager instance;
-    private List<ProxiedPlayer> playersAlreadyConnected;
+    private final List<ProxiedPlayer> playersAlreadyConnected;
 
     public static GearzPlayerManager getInstance() {
         return GearzPlayerManager.instance;

@@ -15,9 +15,9 @@ import java.util.Map;
 
 public class ImageToChatBungeeUtil {
 
-    private static ColorExBungee[] colors = {new ColorExBungee(Color.decode("#000000")), new ColorExBungee(Color.decode("#0000AA")), new ColorExBungee(Color.decode("#00AA00")), new ColorExBungee(Color.decode("#00AAAA")), new ColorExBungee(Color.decode("#AA0000")), new ColorExBungee(Color.decode("#AA00AA")), new ColorExBungee(Color.decode("#FFAA00")), new ColorExBungee(Color.decode("#AAAAAA")), new ColorExBungee(Color.decode("#555555")), new ColorExBungee(Color.decode("#5555FF")), new ColorExBungee(Color.decode("#55FF55")), new ColorExBungee(Color.decode("#55FFFF")), new ColorExBungee(Color.decode("#FF5555")), new ColorExBungee(Color.decode("#FF55FF")), new ColorExBungee(Color.decode("#FF5555")), new ColorExBungee(Color.decode("#FFFFFF"))};
+    private static final ColorExBungee[] colors = {new ColorExBungee(Color.decode("#000000")), new ColorExBungee(Color.decode("#0000AA")), new ColorExBungee(Color.decode("#00AA00")), new ColorExBungee(Color.decode("#00AAAA")), new ColorExBungee(Color.decode("#AA0000")), new ColorExBungee(Color.decode("#AA00AA")), new ColorExBungee(Color.decode("#FFAA00")), new ColorExBungee(Color.decode("#AAAAAA")), new ColorExBungee(Color.decode("#555555")), new ColorExBungee(Color.decode("#5555FF")), new ColorExBungee(Color.decode("#55FF55")), new ColorExBungee(Color.decode("#55FFFF")), new ColorExBungee(Color.decode("#FF5555")), new ColorExBungee(Color.decode("#FF55FF")), new ColorExBungee(Color.decode("#FF5555")), new ColorExBungee(Color.decode("#FFFFFF"))};
 
-    private static Map<String, ChatColor> colorHexMap;
+    private static final Map<String, ChatColor> colorHexMap;
 
     static {
         colorHexMap = Maps.newHashMap();

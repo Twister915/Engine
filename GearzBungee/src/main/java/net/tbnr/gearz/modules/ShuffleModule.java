@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ShuffleModule implements TCommandHandler, Listener {
 
-    private HashMap<ProxiedPlayer, ShuffleSession> shuffleSessionHashMap = new HashMap<>();
+    private final HashMap<ProxiedPlayer, ShuffleSession> shuffleSessionHashMap = new HashMap<>();
 
     @TCommand(name = "shuffle", aliases = {"sh"}, permission = "gearz.shuffle", senders = {TCommandSender.Player}, usage = "/shuffle")
     public TCommandStatus shuffle(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
@@ -86,14 +86,14 @@ public class ShuffleModule implements TCommandHandler, Listener {
     @RequiredArgsConstructor()
     public static class ShuffleSession implements Listener {
         @NonNull
-        private ProxiedPlayer player;
+        private final ProxiedPlayer player;
         private Server nextServer = null;
         private List<Server> serversPlayed;
         private boolean playingCurrently = false;
         private boolean started = false;
         private Integer attemptsToFindServer = 0;
         private List<String> attemptedGames;
-        private static Integer secondDelay = 5;
+        private static final Integer secondDelay = 5;
         private ScheduledTask task;
 
         public void start() {
@@ -225,7 +225,7 @@ public class ShuffleModule implements TCommandHandler, Listener {
     public static class ShuffleStateChanger implements Runnable {
 
         @Getter @NonNull
-        private ShuffleSession shuffleSession;
+        private final ShuffleSession shuffleSession;
 
         @Override
         public void run() {

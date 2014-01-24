@@ -19,11 +19,11 @@ public final class GearzFireworkEffect {
     /**
      * The location at which the firework is fired
      */
-    private Location location;
+    private final Location location;
     /**
      * The effects being used by this FireworkEffect
      */
-    private List<FireworkEffect> fireworkEffects;
+    private final List<FireworkEffect> fireworkEffects;
     /**
      * Stores the index for all modes to allow sequencing.
      */

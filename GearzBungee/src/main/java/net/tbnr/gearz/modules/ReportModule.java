@@ -25,8 +25,8 @@ import java.util.List;
  * Latest Change:
  */
 public class ReportModule implements TCommandHandler {
-    public SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
-    ReportManager reportManager;
+    public final SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
+    final ReportManager reportManager;
     public ReportModule(ReportManager reportManager) {
         this.reportManager = reportManager;
     }
@@ -109,11 +109,11 @@ public class ReportModule implements TCommandHandler {
     }
 
     public static class Report {
-        GearzPlayer reporter;
-        GearzPlayer reported;
-        String message;
-        String bungeeServer;
-        Date time;
+        final GearzPlayer reporter;
+        final GearzPlayer reported;
+        final String message;
+        final String bungeeServer;
+        final Date time;
 
         public Report(GearzPlayer reporter, GearzPlayer reported, String message, String bungeeServer, Date time) {
             this.reporter = reporter;
@@ -164,7 +164,7 @@ public class ReportModule implements TCommandHandler {
     }
 
     public static class ReportManager {
-        DBCollection reportCollection;
+        final DBCollection reportCollection;
         public ReportManager(DBCollection collection) {
             this.reportCollection = collection;
         }

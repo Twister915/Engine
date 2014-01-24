@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  *
  */
 public final class TPlayerManager implements Listener {
-    private HashMap<String, TPlayer> players = new HashMap<>();
+    private final HashMap<String, TPlayer> players = new HashMap<>();
     private DBCollection collection = null;
     private DB database = null;
     private static TPlayerManager instance;
@@ -136,10 +136,10 @@ public final class TPlayerManager implements Listener {
     }
 
     public static class AuthenticationDetails {
-        private String host;
-        private int port;
-        private String database;
-        private String playerCollection;
+        private final String host;
+        private final int port;
+        private final String database;
+        private final String playerCollection;
 
         public AuthenticationDetails(String host, int port, String database, String playerCollection) {
             this.host = host;

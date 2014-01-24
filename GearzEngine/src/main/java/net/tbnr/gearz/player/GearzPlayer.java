@@ -26,7 +26,7 @@ import java.util.HashMap;
 @EqualsAndHashCode(of = {"username"}, doNotUseGetters = true)
 @ToString(exclude = {"hideStats", "game"})
 public final class GearzPlayer {
-    private TPlayer player;
+    private final TPlayer player;
     private final String username;
     private boolean hideStats;
     private static final Integer magic_number = 7;
@@ -222,7 +222,7 @@ public final class GearzPlayer {
     }
 
     public static class GPlayerXP implements TPlayerStorable {
-        private Integer xp;
+        private final Integer xp;
 
         public GPlayerXP(Integer xp) {
             this.xp = xp;
@@ -240,7 +240,7 @@ public final class GearzPlayer {
     }
 
     public static class GPlayerLevel implements TPlayerStorable {
-        private Integer level;
+        private final Integer level;
 
         public GPlayerLevel(Integer level) {
             this.level = level;
@@ -258,7 +258,7 @@ public final class GearzPlayer {
     }
 
     public static class GPlayerPoints implements TPlayerStorable {
-        private Integer points;
+        private final Integer points;
 
         public GPlayerPoints(Integer points) {
             this.points = points;
@@ -284,7 +284,7 @@ public final class GearzPlayer {
     }
 
     public static class GPlayerDonorPoints implements TPlayerStorable {
-        private Integer points;
+        private final Integer points;
 
         public GPlayerDonorPoints(Integer newPoint) {
             points = newPoint;

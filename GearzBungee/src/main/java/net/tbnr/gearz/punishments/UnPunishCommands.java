@@ -24,7 +24,7 @@ import java.util.List;
  * Latest Change:
  */
 public class UnPunishCommands implements TCommandHandler {
-    public SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
+    public final SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
     @TCommand(
             aliases = {"l", "search", "check"},
             name = "lookup",

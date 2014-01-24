@@ -15,13 +15,13 @@ import lombok.ToString;
 @ToString
 public class SkullCursor {
     @NonNull
-    private Integer minimum;
+    private final Integer minimum;
     @NonNull
-    private Integer maximum;
+    private final Integer maximum;
     private Integer cursor = -1;
     private Integer thisSession = 0;
     @NonNull
-    private Integer maxSession;
+    private final Integer maxSession;
 
     public boolean shouldContinue() {
         return (thisSession < maxSession && cursor + minimum <= maximum);

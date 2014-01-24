@@ -21,7 +21,7 @@ import java.util.Date;
  * Latest Change:
  */
 public class LoginHandler implements Listener {
-    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+    public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @EventHandler(priority = EventPriority.HIGH)
     @SuppressWarnings("unused")
@@ -60,18 +60,23 @@ public class LoginHandler implements Listener {
 
     public static class MuteData {
         @Getter
+        final
         Date end;
 
         @Getter
+        final
         PunishmentType punishmentType;
 
         @Getter
+        final
         boolean perm;
 
         @Getter
+        final
         String reason;
 
         @Getter
+        final
         String issuer;
 
         public MuteData(Date end, PunishmentType punishmentType, String reason, String issuer) {

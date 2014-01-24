@@ -83,9 +83,9 @@ public final class PvPTracker {
     @RequiredArgsConstructor
     public final static class PlayerList implements TPlayerStorable {
         @NonNull
-        private String key;
+        private final String key;
         @NonNull
-        private BasicDBList players;
+        private final BasicDBList players;
 
         public static PlayerList loadPlayerList(PlayerListKey key, GearzPlayer player) {
             String key_string = (key == PlayerListKey.Kills) ? "kills" : "deaths";

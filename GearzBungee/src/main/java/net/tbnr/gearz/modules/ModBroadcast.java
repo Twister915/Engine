@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class ModBroadcast implements TCommandHandler, Listener {
 
-    ArrayList<String> modBroadcast = new ArrayList<>();
+    final ArrayList<String> modBroadcast = new ArrayList<>();
 
     @TCommand(name = "mb", permission = "gearz.modbroadcast", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/mb <args>")
     @SuppressWarnings({"unused", "deprecation"})

@@ -8,8 +8,8 @@ package net.tbnr.util;
  * To change this template use File | Settings | File Templates.
  */
 public final class Range {
-    private Integer x;
-    private Integer y;
+    private final Integer x;
+    private final Integer y;
 
     private static enum RangeMode {
         XY,

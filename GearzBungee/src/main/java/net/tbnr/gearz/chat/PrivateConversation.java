@@ -19,7 +19,7 @@ import net.tbnr.gearz.GearzBungee;
  * Latest Change:
  */
 public class PrivateConversation implements Listener {
-    Conversation conversation;
+    final Conversation conversation;
 
     public PrivateConversation(ProxiedPlayer sender, ProxiedPlayer target) {
         this.conversation = new Conversation(sender, target);
@@ -54,8 +54,8 @@ public class PrivateConversation implements Listener {
     @Data
     @EqualsAndHashCode
     public class Conversation {
-        private ProxiedPlayer sender;
-        private ProxiedPlayer target;
+        private final ProxiedPlayer sender;
+        private final ProxiedPlayer target;
 
         public void sendMessage(String message) {
             String sendToSender = GearzBungee.getInstance().getFormat("messaging-message", false, false, new String[]{"<sender>", target.getName()}, new String[]{"<message>", message}, new String[]{"<direction>", "to"});

@@ -46,16 +46,16 @@ import java.util.*;
 @ToString(of = {"arena", "id", "running", "players", "spectators", "gameMeta"})
 public abstract class GearzGame implements Listener {
     private final Arena arena;
-    private Set<GearzPlayer> players;
-    private Set<GearzPlayer> spectators;
-    private Set<GearzPlayer> addedPlayers;
-    private Set<GearzPlayer> endedPlayers;
-    private InventoryGUI spectatorGui;
+    private final Set<GearzPlayer> players;
+    private final Set<GearzPlayer> spectators;
+    private final Set<GearzPlayer> addedPlayers;
+    private final Set<GearzPlayer> endedPlayers;
+    private final InventoryGUI spectatorGui;
     private final GameMeta gameMeta;
     private final GearzPlugin plugin;
     private final Integer id;
-    private GearzMetrics metrics;
-    @Getter(AccessLevel.PROTECTED) private PvPTracker tracker;
+    private final GearzMetrics metrics;
+    @Getter(AccessLevel.PROTECTED) private final PvPTracker tracker;
     @Getter private boolean running;
     private final static ChatColor[] progressiveWinColors =
             {ChatColor.DARK_GREEN, ChatColor.GREEN,
@@ -70,8 +70,8 @@ public abstract class GearzGame implements Listener {
         THREE('3', "rd"),
         OTHER('*', "th");
 
-        private char numberCharacter;
-        private String suffix;
+        private final char numberCharacter;
+        private final String suffix;
 
         NumberSuffixes(char numberCharacter, String suffix) {
             this.suffix = suffix;
@@ -96,7 +96,7 @@ public abstract class GearzGame implements Listener {
     /**
      * You only get points if you leave on good terms
      */
-    private HashMap<GearzPlayer, Integer> pendingPoints;
+    private final HashMap<GearzPlayer, Integer> pendingPoints;
 
     public enum Explosion {
         NORMAL,
@@ -1273,7 +1273,7 @@ public abstract class GearzGame implements Listener {
     @RequiredArgsConstructor
     private final static class GameWins implements TPlayerStorable {
         @NonNull
-        private GearzGame game;
+        private final GearzGame game;
         private Integer wins;
 
         @Override
@@ -1293,7 +1293,7 @@ public abstract class GearzGame implements Listener {
     private final static class SpectatorReminder implements Runnable {
 
         @NonNull
-        private GearzGame game;
+        private final GearzGame game;
 
         @Override
         public void run() {

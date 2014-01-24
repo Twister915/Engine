@@ -10,8 +10,8 @@ public class MapImageRenderer extends MapRenderer {
     private boolean hasRendered;
     private Thread renderImageThread;
 
-    private BufferedImage image;
-    private String text;
+    private final BufferedImage image;
+    private final String text;
 
     public MapImageRenderer(BufferedImage image, String text) {
         hasRendered = false;

@@ -95,7 +95,7 @@ public class Hub implements TCommandHandler, Listener {
     @RequiredArgsConstructor
     static class HubServerReloadTask implements Runnable {
 
-        @NonNull private Hub hubManager;
+        @NonNull private final Hub hubManager;
 
         @Override
         public void run() {

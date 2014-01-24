@@ -31,8 +31,8 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings({"UnusedDeclaration", "deprecation"})
 public class HelpMe implements TCommandHandler, Listener {
-    private HashMap<String, Boolean> activeResponders = new HashMap<>();
-    private ArrayList<Conversation> conversations = new ArrayList<>();
+    private final HashMap<String, Boolean> activeResponders = new HashMap<>();
+    private final ArrayList<Conversation> conversations = new ArrayList<>();
 
     @SuppressWarnings("UnusedParameters")
     @TCommand(name = "helpme", aliases = {"modreq", "staff"}, permission = "gearz.helpme", senders = {TCommandSender.Player}, usage = "/helpme <args>")
@@ -211,13 +211,13 @@ public class HelpMe implements TCommandHandler, Listener {
     public static class Conversation {
         private ProxiedPlayer staffMember;
         @NonNull
-        private ProxiedPlayer player;
+        private final ProxiedPlayer player;
         @Getter
         private boolean active = false;
         @Getter
-        private List<String> messages = new ArrayList<>();
+        private final List<String> messages = new ArrayList<>();
         @NonNull
-        private String question;
+        private final String question;
 
         public void startConvo() {
             staffMember.sendMessage(GearzBungee.getInstance().getFormat("helpme-start", false, true, new String[]{"<player>", player.getName()}));
@@ -247,7 +247,7 @@ public class HelpMe implements TCommandHandler, Listener {
     @RequiredArgsConstructor
     public static class RemindTask implements Runnable {
         @NonNull
-        private HelpMe module;
+        private final HelpMe module;
 
         @Override
         public void run() {

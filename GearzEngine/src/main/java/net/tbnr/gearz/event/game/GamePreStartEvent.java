@@ -13,7 +13,7 @@ import org.bukkit.event.HandlerList;
  * To change this template use File | Settings | File Templates.
  */
 public final class GamePreStartEvent extends Event implements Cancellable {
-    private GearzGame game;
+    private final GearzGame game;
     private boolean cancelled;
     private String reasonCancelled;
     /*

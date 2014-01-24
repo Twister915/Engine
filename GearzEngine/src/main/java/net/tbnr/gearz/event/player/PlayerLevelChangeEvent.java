@@ -13,9 +13,9 @@ import org.bukkit.event.HandlerList;
  * To change this template use File | Settings | File Templates.
  */
 public final class PlayerLevelChangeEvent extends Event {
-    private Integer oldLevel;
-    private Integer newLevel;
-    private GearzPlayer player;
+    private final Integer oldLevel;
+    private final Integer newLevel;
+    private final GearzPlayer player;
     private static final HandlerList handlers = new HandlerList();
 
     public PlayerLevelChangeEvent(Integer oldLevel, Integer newLevel, GearzPlayer player) {

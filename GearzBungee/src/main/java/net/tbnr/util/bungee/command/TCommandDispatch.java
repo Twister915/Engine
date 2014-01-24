@@ -30,23 +30,23 @@ public class TCommandDispatch {
     /**
      * The local copy of the plugin
      */
-    private TPluginBungee plugin;
+    private final TPluginBungee plugin;
     /**
      * Associates commands to their respective handlers. One handler per command, obviously.
      */
-    private HashMap<String, TCommandHandler> handlers = new HashMap<>();
+    private final HashMap<String, TCommandHandler> handlers = new HashMap<>();
     /**
      * Associates the commands to their respective methods.
      */
-    private HashMap<String, Method> methods = new HashMap<>();
+    private final HashMap<String, Method> methods = new HashMap<>();
     /**
      * Associates commands with their metadata. This is easily done without this array, but if you get a variable, best store it.
      */
-    private HashMap<String, TCommand> metas = new HashMap<>();
+    private final HashMap<String, TCommand> metas = new HashMap<>();
     /**
      * Stores the delegates between Bungee and TCommand handler for all commands, since they each need to be their own class e_e
      */
-    private HashMap<String, BungeeCommandDelegate> delegates = new HashMap<>();
+    private final HashMap<String, BungeeCommandDelegate> delegates = new HashMap<>();
     /**
      * This is used as a utility to store the order of arguments, and their type for the executor method validation.
      */
@@ -217,8 +217,8 @@ public class TCommandDispatch {
             this.commandDispatch = dispatch;
         }
 
-        private TCommandDispatch commandDispatch;
-        private TCommand command;
+        private final TCommandDispatch commandDispatch;
+        private final TCommand command;
 
         @Override
         public void execute(CommandSender commandSender, String[] strings) {

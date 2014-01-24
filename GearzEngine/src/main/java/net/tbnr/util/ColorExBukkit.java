@@ -4,10 +4,10 @@ import java.awt.*;
 
 public class ColorExBukkit {
     public static final ColorExBukkit WHITE = new ColorExBukkit(Color.decode("#000000"));
-    private int m_r;
-    private int m_g;
-    private int m_b;
-    private int m_a;
+    private final int m_r;
+    private final int m_g;
+    private final int m_b;
+    private final int m_a;
 
     public ColorExBukkit(int c) {
         this(new Color(c, true));

@@ -12,9 +12,9 @@ import org.bukkit.event.HandlerList;
  * To change this template use File | Settings | File Templates.
  */
 public final class PlayerChangeDonorPointsEvent extends Event {
-    private Integer oldPoint;
-    private Integer newPoint;
-    private GearzPlayer player;
+    private final Integer oldPoint;
+    private final Integer newPoint;
+    private final GearzPlayer player;
 
     public PlayerChangeDonorPointsEvent(Integer current_points, Integer newPoint, GearzPlayer player) {
         this.oldPoint = current_points;

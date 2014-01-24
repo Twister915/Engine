@@ -23,7 +23,7 @@ import java.util.List;
  */
 public final class GearzClassSelector implements InventoryGUI.InventoryGUICallback {
     @Getter
-    private List<GearzClass> classes = new ArrayList<>();
+    private final List<GearzClass> classes = new ArrayList<>();
     private HashMap<String, GearzClass> currentClasses = new HashMap<>();
     private HashSet<GearzPlayer> needsNewClass = new HashSet<>();
     private InventoryGUI inventoryGUI;

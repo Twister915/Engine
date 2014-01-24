@@ -649,16 +649,16 @@ public final class TPlayer {
 
     public static final class TParticleEffect {
         @Getter
-        private Location location;
+        private final Location location;
         @Getter
-        private float height;
+        private final float height;
         @Getter
-        private float offset;
+        private final float offset;
         @Getter
-        private int count;
+        private final int count;
         @Getter
-        private float speed;
-        private List<ParticleEffect> particleEffectTypes;
+        private final float speed;
+        private final List<ParticleEffect> particleEffectTypes;
 
         public TParticleEffect(Location location, float height, float offset, int count, float speed, ParticleEffect... particleEffectType) {
             this.location = location;

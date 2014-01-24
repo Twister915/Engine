@@ -16,12 +16,12 @@ public class NetCommand {
      * The arguments of the command we're going to send.
      */
     @Getter
-    private HashMap<String, Object> args;
+    private final HashMap<String, Object> args;
     /**
      * The name of the command.
      */
     @Getter
-    private String name;
+    private final String name;
 
     /**
      * Private constructor

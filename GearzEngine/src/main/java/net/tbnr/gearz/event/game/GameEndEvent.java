@@ -12,7 +12,7 @@ import org.bukkit.event.HandlerList;
  * To change this template use File | Settings | File Templates.
  */
 public final class GameEndEvent extends Event {
-    private GearzGame game;
+    private final GearzGame game;
     /*
     Event code
      */

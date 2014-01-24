@@ -16,7 +16,7 @@ import net.tbnr.gearz.GearzBungee;
  * Latest Change:
  */
 public class IPBanHandler {
-    DBCollection dbCollection;
+    final DBCollection dbCollection;
 
     public IPBanHandler(DBCollection dbCollection) {
         this.dbCollection = dbCollection;

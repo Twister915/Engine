@@ -32,17 +32,17 @@ public class InventoryGUI implements Listener {
     /**
      * And ArrayList of all the items displayed on the GUI
      */
-    private ArrayList<InventoryGUIItem> items;
+    private final ArrayList<InventoryGUIItem> items;
     @Getter
     /**
      * The title of the GUI
      */
-    private String title;
+    private final String title;
     @Getter
     /**
      * The callback of the GUI
      */
-    private InventoryGUICallback callback;
+    private final InventoryGUICallback callback;
     @Getter
     /**
      * The inventory which is used to display the GUI
@@ -52,7 +52,7 @@ public class InventoryGUI implements Listener {
     /**
      * Whether the GUI should apply effects to the player when opened.
      */
-    private boolean effects;
+    private final boolean effects;
 
     /**
      * An InventoryGUI with callbacks and effects on
@@ -209,12 +209,12 @@ public class InventoryGUI implements Listener {
         /**
          * The ItemStack of the item
          */
-        private ItemStack item;
+        private final ItemStack item;
         @Getter
         /**
          * The name of the item (No chatcolors)
          */
-        private String name;
+        private final String name;
 
         @Getter @Setter
         /**

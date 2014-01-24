@@ -15,7 +15,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public class Messaging implements TCommandHandler {
-    Map<String, String> lastReplies = new HashMap<>();
+    final Map<String, String> lastReplies = new HashMap<>();
 
     @TCommand(senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/msg <player>", permission = "gearz.message", name = "msg", aliases = {"m", "w", "whisper", "tell", "t"})
     @SuppressWarnings("unused")

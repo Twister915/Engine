@@ -16,11 +16,11 @@ import org.bukkit.event.HandlerList;
  * To change this template use File | Settings | File Templates.
  */
 public final class GameRegisterEvent extends Event implements Cancellable {
-    private Class<? extends Arena> arena;
-    private Class<? extends GearzGame> game;
-    private GearzPlugin plugin;
+    private final Class<? extends Arena> arena;
+    private final Class<? extends GearzGame> game;
+    private final GearzPlugin plugin;
     private boolean cancelled;
-    private GameMeta meta;
+    private final GameMeta meta;
 
     /*
     Event code

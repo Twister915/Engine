@@ -37,8 +37,8 @@ public class ChatManager implements Listener, TCommandHandler {
         All
     }
 
-    private Map<String, SpyType> spies = new HashMap<>();
-    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+    private final Map<String, SpyType> spies = new HashMap<>();
+    public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")

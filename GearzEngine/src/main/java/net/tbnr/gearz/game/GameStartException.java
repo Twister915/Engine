@@ -10,7 +10,7 @@ import net.tbnr.gearz.GearzException;
  * To change this template use File | Settings | File Templates.
  */
 public final class GameStartException extends GearzException {
-    private GameStartFailureCause cause;
+    private final GameStartFailureCause cause;
 
     public GameStartException(String s, GameStartFailureCause cause) {
         super(s);

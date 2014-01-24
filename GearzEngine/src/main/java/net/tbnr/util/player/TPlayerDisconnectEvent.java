@@ -23,7 +23,7 @@ public final class TPlayerDisconnectEvent extends Event {
         return handlers;
     }
 
-    private TPlayer player;
+    private final TPlayer player;
 
     public TPlayerDisconnectEvent(TPlayer player) {
         this.player = player;

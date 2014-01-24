@@ -26,15 +26,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public final class GearzItem {
     @Setter(AccessLevel.PACKAGE) @NonNull
-    private Material material;
+    private final Material material;
     @Setter(AccessLevel.PACKAGE) @NonNull
-    private Integer quantity;
+    private final Integer quantity;
     @Setter(AccessLevel.PACKAGE)
     private Short data;
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") @Setter(AccessLevel.PACKAGE)
     private Map<Enchantment, Integer> enchantments;
     @NonNull
-    private GearzItemMeta itemMeta;
+    private final GearzItemMeta itemMeta;
     private Integer slot;
 
     static GearzItem fromJsonObject(JSONObject object) throws GearzClassReadException {

@@ -14,7 +14,7 @@ import org.bukkit.event.HandlerList;
  */
 public final class PlayerGameKillEvent extends PlayerGameDeathEvent {
     @Getter
-    private GearzPlayer killer;
+    private final GearzPlayer killer;
     public PlayerGameKillEvent(GearzGame game, GearzPlayer dead, GearzPlayer killer) {
         super(game, dead);
         this.killer = killer;

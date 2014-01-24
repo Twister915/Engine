@@ -74,23 +74,23 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         Completed
     }
 
-    private Class<? extends Arena> arena;
-    private GameMeta meta;
-    private TPlayer player;
+    private final Class<? extends Arena> arena;
+    private final GameMeta meta;
+    private final TPlayer player;
     private String name;
     private String author;
     private String description;
     private Location l1 = null;
     private Location l2 = null;
-    private HashMap<ArenaField, ArenaIterator> fields;
+    private final HashMap<ArenaField, ArenaIterator> fields;
     private ArenaField fieldIndex;
-    private ArenaManager manager;
-    private Iterator<ArenaField> iterator;
+    private final ArenaManager manager;
+    private final Iterator<ArenaField> iterator;
     private ArenaIterator<Point> points;
     private boolean complete = false;
-    private ArrayList<ReplacementBlock> blocksToReplace = new ArrayList<>();
+    private final ArrayList<ReplacementBlock> blocksToReplace = new ArrayList<>();
     private boolean waitingForAsync = false;
-    private World world;
+    private final World world;
 
     public ArenaSetup(ArenaManager manager, Class<? extends Arena> arena, GameMeta meta, TPlayer player) {
         this.manager = manager;

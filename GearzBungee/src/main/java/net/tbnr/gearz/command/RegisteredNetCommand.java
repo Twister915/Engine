@@ -17,16 +17,16 @@ public class RegisteredNetCommand {
      * The arguments that this command accepts
      */
     @Getter
-    private List<String> args;
+    private final List<String> args;
     /**
      * Represents the name of the command
      */
     @Getter
-    private String name;
+    private final String name;
     /**
      * Associates handlers to their methods.
      */
-    private Map<Object, Method> handlers;
+    private final Map<Object, Method> handlers;
 
     /**
      * Creates a RegisteredNetCommand

@@ -10,8 +10,8 @@ import java.util.Calendar;
  * To change this template use File | Settings | File Templates.
  */
 public class TCooldown {
-    private long time_stored;
-    private long length;
+    private final long time_stored;
+    private final long length;
 
     public boolean canContinue() {
         return time_stored + length <= Calendar.getInstance().getTimeInMillis();

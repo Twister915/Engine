@@ -205,7 +205,7 @@ public class PunishCommands implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    public SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+    public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @TCommand(
             aliases = {"gtempmute", "tmute"},

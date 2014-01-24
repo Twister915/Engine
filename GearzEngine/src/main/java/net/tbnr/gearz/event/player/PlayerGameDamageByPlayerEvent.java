@@ -13,7 +13,7 @@ import org.bukkit.event.HandlerList;
  * Latest Change:
  */
 public final class PlayerGameDamageByPlayerEvent extends PlayerGameDamageEvent {
-    @NonNull @Getter private GearzPlayer damager;
+    @NonNull @Getter private final GearzPlayer damager;
 
     public PlayerGameDamageByPlayerEvent(PlayerGameDamageEvent event, GearzPlayer damager) {
         super(event.getGame(), event.getPlayer(), event.getDamage(), event.isCancelled());

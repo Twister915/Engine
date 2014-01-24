@@ -29,19 +29,19 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
     /**
      * The local copy of the plugin
      */
-    private TPlugin plugin;
+    private final TPlugin plugin;
     /**
      * Associates commands to their respective handlers. One handler per command, obviously.
      */
-    private HashMap<Command, TCommandHandler> handlers = new HashMap<>();
+    private final HashMap<Command, TCommandHandler> handlers = new HashMap<>();
     /**
      * Associates the commands to their respective methods.
      */
-    private HashMap<Command, Method> methods = new HashMap<>();
+    private final HashMap<Command, Method> methods = new HashMap<>();
     /**
      * Associates commands with their metadata. This is easily done without this array, but if you get a variable, best store it.
      */
-    private HashMap<Command, TCommand> metas = new HashMap<>();
+    private final HashMap<Command, TCommand> metas = new HashMap<>();
     /**
      * This is used as a utility to store the order of arguments, and their type for the executor method validation.
      */

@@ -12,7 +12,7 @@ public final class GameCountdown implements Runnable {
     /**
      * Number of seconds to countdown from.
      */
-    private Integer seconds;
+    private final Integer seconds;
     /**
      * Number of seconds passed.
      */
@@ -20,11 +20,11 @@ public final class GameCountdown implements Runnable {
     /**
      * Handler storage. This will get calls.
      */
-    private GameCountdownHandler handler;
+    private final GameCountdownHandler handler;
     /**
      * Plugin to schedule the event against.
      */
-    private GearzPlugin plugin;
+    private final GearzPlugin plugin;
     /**
      * Stores if the timer has started or not.
      */

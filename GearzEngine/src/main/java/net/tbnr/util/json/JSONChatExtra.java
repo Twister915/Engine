@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 import java.util.List;
 
 public class JSONChatExtra {
-    private JSONObject chatExtra;
+    private final JSONObject chatExtra;
 
     public JSONChatExtra(String text, JSONChatColor color, List<JSONChatFormat> formats) {
         chatExtra = new JSONObject();

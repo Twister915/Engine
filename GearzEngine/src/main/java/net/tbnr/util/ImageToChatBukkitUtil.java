@@ -15,9 +15,9 @@ import java.util.Map;
 
 public class ImageToChatBukkitUtil {
 
-    private static ColorExBukkit[] colors = {new ColorExBukkit(Color.decode("#000000")), new ColorExBukkit(Color.decode("#0000AA")), new ColorExBukkit(Color.decode("#00AA00")), new ColorExBukkit(Color.decode("#00AAAA")), new ColorExBukkit(Color.decode("#AA0000")), new ColorExBukkit(Color.decode("#AA00AA")), new ColorExBukkit(Color.decode("#FFAA00")), new ColorExBukkit(Color.decode("#AAAAAA")), new ColorExBukkit(Color.decode("#555555")), new ColorExBukkit(Color.decode("#5555FF")), new ColorExBukkit(Color.decode("#55FF55")), new ColorExBukkit(Color.decode("#55FFFF")), new ColorExBukkit(Color.decode("#FF5555")), new ColorExBukkit(Color.decode("#FF55FF")), new ColorExBukkit(Color.decode("#FF5555")), new ColorExBukkit(Color.decode("#FFFFFF"))};
+    private static final ColorExBukkit[] colors = {new ColorExBukkit(Color.decode("#000000")), new ColorExBukkit(Color.decode("#0000AA")), new ColorExBukkit(Color.decode("#00AA00")), new ColorExBukkit(Color.decode("#00AAAA")), new ColorExBukkit(Color.decode("#AA0000")), new ColorExBukkit(Color.decode("#AA00AA")), new ColorExBukkit(Color.decode("#FFAA00")), new ColorExBukkit(Color.decode("#AAAAAA")), new ColorExBukkit(Color.decode("#555555")), new ColorExBukkit(Color.decode("#5555FF")), new ColorExBukkit(Color.decode("#55FF55")), new ColorExBukkit(Color.decode("#55FFFF")), new ColorExBukkit(Color.decode("#FF5555")), new ColorExBukkit(Color.decode("#FF55FF")), new ColorExBukkit(Color.decode("#FF5555")), new ColorExBukkit(Color.decode("#FFFFFF"))};
 
-    private static Map<String, ChatColor> colorHexMap;
+    private static final Map<String, ChatColor> colorHexMap;
 
     static {
         colorHexMap = Maps.newHashMap();

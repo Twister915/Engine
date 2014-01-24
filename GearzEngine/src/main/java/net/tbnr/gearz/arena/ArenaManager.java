@@ -26,12 +26,12 @@ public final class ArenaManager {
     /**
      * The collection where the arenas are stored.
      */
-    private DBCollection collection;
+    private final DBCollection collection;
 
     /**
      * The arena class
      */
-    private Class<? extends Arena> arenaClass;
+    private final Class<? extends Arena> arenaClass;
 
     /**
      * Creates an ArenaManager based off a game identifier

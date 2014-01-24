@@ -12,7 +12,7 @@ import lombok.Getter;
 public class UnitTester {
 
     @Getter
-    public UnitTesterConfig config = new UnitTesterConfig();
+    public final UnitTesterConfig config = new UnitTesterConfig();
 
     public UnitTester(String title) {
         config.setTitle(title);

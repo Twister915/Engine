@@ -22,22 +22,22 @@ import java.util.List;
 public class SkullTask implements Runnable {
 
     @NonNull
-    private World world;
+    private final World world;
     @NonNull
-    private SkullType skullType;
+    private final SkullType skullType;
     @NonNull
-    private Integer numberOfBlocksEach;
+    private final Integer numberOfBlocksEach;
     @NonNull
-    private Location minimum;
+    private final Location minimum;
     @NonNull
-    private Location maximum;
+    private final Location maximum;
     @NonNull
-    private SkullDelegate delegate;
+    private final SkullDelegate delegate;
 
     private SkullCursor x;
 
     @Getter
-    private List<Block> blocksFound = new ArrayList<>();
+    private final List<Block> blocksFound = new ArrayList<>();
 
     public void setup() {
         this.x = new SkullCursor(minimum.getBlockX(), maximum.getBlockX(), numberOfBlocksEach);

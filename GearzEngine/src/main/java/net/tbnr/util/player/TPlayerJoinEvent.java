@@ -27,7 +27,7 @@ public final class TPlayerJoinEvent extends Event {
      * In it's own section because yolo copy paste.
      */
 
-    private TPlayer player;
+    private final TPlayer player;
 
     public TPlayerJoinEvent(TPlayer player) {
         this.player = player;

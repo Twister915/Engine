@@ -20,16 +20,16 @@ public class FakeEntity {
     private static int NEXT_ID = 6000;
 
     @Getter
-    public int id = NEXT_ID++;
+    public final int id = NEXT_ID++;
     @Getter
     public String customName;
     @Getter
     public boolean created;
 
     @Getter
-    public Player player;
+    public final Player player;
     @Getter
-    public EntityType type;
+    public final EntityType type;
     @Getter
     public int health;
     @Getter
@@ -37,7 +37,7 @@ public class FakeEntity {
     @Getter
     public EntityFlags flag;
 
-    private WrappedDataWatcher watcher;
+    private final WrappedDataWatcher watcher;
 
     public enum EntityFlags {
         ON_FIRE, CROUCHED, SPRINTING, EATING_DRINKING_BLOCKING, INVISIBLE, NONE

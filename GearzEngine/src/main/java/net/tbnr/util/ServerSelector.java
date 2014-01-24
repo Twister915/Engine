@@ -30,27 +30,29 @@ public class ServerSelector implements Listener {
      * And ArrayList of all the items displayed on the GUI
      */
     @Getter
-    private ArrayList<InventoryGUI.InventoryGUIItem> items;
+    private final ArrayList<InventoryGUI.InventoryGUIItem> items;
     /**
      * The title of the GUI
      */
     @Getter
-    private String title;
+    private final String title;
     /**
      * The callback of the GUI
      */
     @Getter
-    private SelectorCallback callback;
+    private final SelectorCallback callback;
 
     /**
      * The inventory which is used to display the GUI
      */
     @Getter
-    private Inventory inventory;
+    private final Inventory inventory;
 
-    @Getter String gameType;
+    @Getter
+    final String gameType;
 
-    @Getter @Setter List<Server> servers;
+    @Getter @Setter
+    final List<Server> servers;
 
     public ServerSelector(String gameType, SelectorCallback selectorCallback) {
         Bukkit.getServer().getPluginManager().registerEvents(this, Gearz.getInstance());

@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class ListModule implements TCommandHandler, Listener {
     @Getter
-    public Collection<ProxiedPlayer> staff = new ArrayList<>(); //Cache this for efficiency, don't for loop it every tie someone types /list staff lol
+    public final Collection<ProxiedPlayer> staff = new ArrayList<>(); //Cache this for efficiency, don't for loop it every tie someone types /list staff lol
 
     @EventHandler
     @SuppressWarnings("unused")

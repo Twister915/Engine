@@ -28,9 +28,9 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GameSetupFactory implements Listener, TCommandHandler {
-    private HashMap<GameMeta, GearzPlugin> plugins;
-    private HashMap<GameMeta, Class<? extends Arena>> arenas;
-    private List<GameMeta> metas;
+    private final HashMap<GameMeta, GearzPlugin> plugins;
+    private final HashMap<GameMeta, Class<? extends Arena>> arenas;
+    private final List<GameMeta> metas;
 
     public GameSetupFactory() {
         this.arenas = new HashMap<>();

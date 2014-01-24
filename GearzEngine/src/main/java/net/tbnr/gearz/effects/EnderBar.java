@@ -27,7 +27,7 @@ public final class EnderBar {
     }
 
     private static Map<GearzPlayer, EnderBar> playerEnderBarMap;
-    private FakeEntity enderDragon;
+    private final FakeEntity enderDragon;
 
     private EnderBar(GearzPlayer player) {
         this.enderDragon = new FakeEntity(player.getPlayer(), EntityType.ENDER_DRAGON, 200, player.getPlayer().getLocation().clone().subtract(0, 100, 0), FakeEntity.EntityFlags.INVISIBLE);

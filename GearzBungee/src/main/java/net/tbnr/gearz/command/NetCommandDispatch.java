@@ -18,15 +18,15 @@ public class NetCommandDispatch {
     /**
      * The delegate thread.
      */
-    private Thread delegateThread;
+    private final Thread delegateThread;
     /**
      * This field holds a cached value. Check inline comment
      */
-    private Map<String, NetCommandHandler> nameToAnnotationMap; //This is for caching the what would be for loop statement for finding what the command is based on a name.
+    private final Map<String, NetCommandHandler> nameToAnnotationMap; //This is for caching the what would be for loop statement for finding what the command is based on a name.
     /**
      * This field holds the net commands to their respective annotations.
      */
-    private Map<NetCommandHandler, RegisteredNetCommand> netCommands;
+    private final Map<NetCommandHandler, RegisteredNetCommand> netCommands;
 
     /**
      * This creates a new NetCommandDispatch. Nothing special about this, move along :).

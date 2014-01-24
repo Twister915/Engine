@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class JSONChatMessage {
-    private JSONObject chatObject;
+    private final JSONObject chatObject;
 
     public JSONChatMessage(String text, JSONChatColor color, List<JSONChatFormat> formats) {
         chatObject = new JSONObject();

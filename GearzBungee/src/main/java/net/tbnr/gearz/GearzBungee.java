@@ -59,7 +59,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     /**
      * Random number generator
      */
-    private static Random random = new Random();
+    private static final Random random = new Random();
     /**
      * Stores the player manager.
      */

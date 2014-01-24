@@ -12,9 +12,9 @@ import org.bukkit.event.HandlerList;
  * To change this template use File | Settings | File Templates.
  */
 public final class PlayerXPChangeEvent extends Event {
-    private Integer oldXp;
-    private Integer newXp;
-    private GearzPlayer player;
+    private final Integer oldXp;
+    private final Integer newXp;
+    private final GearzPlayer player;
     private static final HandlerList handlers = new HandlerList();
 
     public PlayerXPChangeEvent(Integer oldXp, Integer newXp, GearzPlayer player) {

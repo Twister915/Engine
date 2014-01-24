@@ -10,7 +10,7 @@ class CensoredWord {
     /**
      * Stores the compiled pattern for the string
      */
-    private Pattern pattern;
+    private final Pattern pattern;
 
     /**
      * Generates the compiled pattern for the string

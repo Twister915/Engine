@@ -10,7 +10,7 @@ import net.tbnr.util.player.TPlayerStorable;
  * To change this template use File | Settings | File Templates.
  */
 public final class GearzPlayerNickname implements TPlayerStorable {
-    private String value;
+    private final String value;
 
     public GearzPlayerNickname(String nick) {
         this.value = nick;

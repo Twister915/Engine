@@ -134,7 +134,7 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
     }
 
     public static class Announcement {
-        private String rawText;
+        private final String rawText;
 
         public Announcement(String text) {
             this.rawText = text;
