@@ -44,7 +44,7 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         List<Announcement> finalAnnouncements = new ArrayList<>();
         for (Object a : announceList) {
             if (!(a instanceof String)) continue;
-            String ann = (String) a;
+            // String ann = (String) a; never used
             finalAnnouncements.add(new Announcement((String) a));
         }
         this.announcements = finalAnnouncements;
@@ -85,7 +85,7 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("index-out-of-range", false));
                 return TCommandStatus.SUCCESSFUL;
             }
-            String s = strings.get(toRemove - 1);
+            //String s = strings.get(toRemove - 1); never used
             strings.remove(toRemove - 1);
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-remove", false, false, new String[]{"<num>", toRemove + ""}));
         } else if (args[0].equalsIgnoreCase("interval")) {

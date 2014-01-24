@@ -5,7 +5,6 @@ import org.bukkit.Location;
 
 import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.Random;
 
 public class RandomUtils {
 
@@ -14,22 +13,22 @@ public class RandomUtils {
     }
 
     /**
-     * IDK Someone WHO HAS IDEA FINISH IT :P
-     * xD
-     * lol
+     * Get's the spread location
      *
-     * @param location
-     * @return
+     * @param location the location to test
+     * @return the spread location
+     * @deprecated Not finishied
      */
     public static Location getSpreadedLocation(Location location) {
-        Random random = new Random();
+       /* Random random = new Random();
         int xRangeMin = 0;
         int xRangeMax = 0;
         int zRangeMin = 0;
         int zRangeMax = 0;
         double x = xRangeMin >= xRangeMax ? xRangeMin : random.nextDouble() * (xRangeMax - xRangeMin) + xRangeMin;
         double z = zRangeMin >= zRangeMax ? zRangeMin : random.nextDouble() * (zRangeMax - zRangeMin) + zRangeMin;
-        return new Location(location.getWorld(), x, location.getY(), z, location.getYaw(), location.getPitch());
+        return new Location(location.getWorld(), x, location.getY(), z, location.getYaw(), location.getPitch());*/
+	    return null;
     }
 
     public static <T> T[] concatenate(T[] A, T[] B) {

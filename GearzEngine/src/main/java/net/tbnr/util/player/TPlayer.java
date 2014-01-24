@@ -712,8 +712,8 @@ public final class TPlayer {
     }
 
     /**
-     * Set's the prefix after the player name
-     * @param prefix
+     * Set's the prefix after the player name (In Game)
+     * @param prefix The prefix to set
      */
     public void setPrefix(String prefix) {
         Team teamPrefix = this.scoreboard.getTeam("prefix") != null ? this.scoreboard.getTeam("prefix") : this.scoreboard.registerNewTeam("prefix");
@@ -721,8 +721,8 @@ public final class TPlayer {
     }
 
     /**
-     * Set's the suffix before a players name
-     * @param suffix
+     * Set's the suffix before a players name (In Game)
+     * @param suffix The suffix to set
      */
     public void setSuffix(String suffix) {
         Team teamPrefix = this.scoreboard.getTeam("suffix") != null ? this.scoreboard.getTeam("suffix") : this.scoreboard.registerNewTeam("suffix");

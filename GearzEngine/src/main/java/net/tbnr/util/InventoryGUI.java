@@ -86,7 +86,7 @@ public class InventoryGUI implements Listener {
     /**
      * Updates the items in the inventory
      *
-     * @param items
+     * @param items the items to update
      */
     public void updateContents(ArrayList<InventoryGUIItem> items) {
         inventory.clear();
@@ -225,8 +225,8 @@ public class InventoryGUI implements Listener {
         /**
          * An item without lore
          *
-         * @param item
-         * @param name
+         * @param item  the {@link org.bukkit.inventory.ItemStack} to use
+         * @param name the name of the item
          */
         public InventoryGUIItem(ItemStack item, String name) {
             this(item, name, null);

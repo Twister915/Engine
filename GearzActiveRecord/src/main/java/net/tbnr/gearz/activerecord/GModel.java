@@ -10,7 +10,6 @@ import org.bson.types.ObjectId;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +99,7 @@ public abstract class GModel {
     }
 
     private void setupEmptyField(Field f) {
-        Type type = f.getGenericType();
+        //Type type = f.getGenericType(); never used
         Object setTo = null;
         if (List.class.isAssignableFrom(f.getType())) {
             setTo = new ArrayList<>();
@@ -151,7 +150,7 @@ public abstract class GModel {
      */
     public void save() {
         DBObject objectValue = this.getObjectValue();
-        WriteResult save = this.collection.save(objectValue);
+        // WriteResult save = this.collection.save(objectValue); never used
         this.objectId = (ObjectId) objectValue.get("_id");
     }
 
