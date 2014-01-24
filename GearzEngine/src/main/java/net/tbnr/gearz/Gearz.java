@@ -158,7 +158,15 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             getLogger().info("Vault cannot be found, disabling!");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        chat = chatProvider.getProvider();
+	    if (chatProvider != null) {
+		    chat = chatProvider.getProvider();
+	    } else {
+		    try {
+			    throw new GearzException("Chat Cannot be set up");
+		    } catch (GearzException e) {
+			    e.printStackTrace();
+		    }
+	    }
     }
 
     private void setupPermission() {
@@ -167,7 +175,15 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             getLogger().info("Vault cannot be found, disabling!");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        permission = permissionProvider.getProvider();
+	    if(permissionProvider != null) {
+            permission = permissionProvider.getProvider();
+	    } else {
+			try {
+				throw new GearzException("Chat Cannot be set up");
+			} catch (GearzException e) {
+				e.printStackTrace();
+			}
+		}
     }
 
     @Override
