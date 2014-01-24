@@ -1,6 +1,6 @@
 ci-url: http://dev.tbnr.net:8080/job/%network%/lastSuccessfulBuild/artifact/%plugin%/target/%plugin%.jar
 formats:
-  installed: &cYou have successfully installed &4<plugin>!
-  fail-installed: &cFailed to install &4<plugin>!
-  un-installed: &cYou have successfully uninstalled &4<plugin>!
-  fail-uninstall: &cFailed to uninstall &4<plugin>!
+  installed: "&cYou have successfully installed &4<plugin>!"
+  fail-installed: "&cFailed to install &4<plugin>!"
+  un-installed: "&cYou have successfully uninstalled &4<plugin>!"
+  fail-uninstall: "&cFailed to uninstall &4<plugin>!"
