@@ -59,7 +59,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
         private final String name;
 
         // Fast lookup of effects
-        private final volatile static Map<String, ParticleEffect> LOOKUP = generateLookup();
+        private volatile static Map<String, ParticleEffect> LOOKUP = generateLookup();
 
         /**
          * Generate a fast string lookup of every particle effect.

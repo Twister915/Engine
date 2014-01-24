@@ -53,7 +53,7 @@ public abstract class Arena implements Votable {
     @Getter
     private World world = null;
 
-    private static final GridFS bucket = null;
+    private static GridFS bucket = null;
 
     static {
         if (Arena.bucket == null) {
