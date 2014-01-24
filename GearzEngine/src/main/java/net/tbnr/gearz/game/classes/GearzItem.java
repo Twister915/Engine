@@ -26,9 +26,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public final class GearzItem {
     @Setter(AccessLevel.PACKAGE) @NonNull
-    private final Material material;
+    private Material material;
     @Setter(AccessLevel.PACKAGE) @NonNull
-    private final Integer quantity;
+    private Integer quantity;
     @Setter(AccessLevel.PACKAGE)
     private Short data;
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") @Setter(AccessLevel.PACKAGE)

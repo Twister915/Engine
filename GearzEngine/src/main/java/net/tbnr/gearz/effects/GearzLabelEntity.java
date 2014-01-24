@@ -28,7 +28,7 @@ public final class GearzLabelEntity {
      * The location the bat is at
      */
     @Getter @Setter
-    private final Location location;
+    private Location location;
 
     /**
      * The bat object, stored to track the entity ID mostly, and use the DataWatcher, which is a vanilla thing.

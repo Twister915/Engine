@@ -13,13 +13,13 @@ import org.json.JSONObject;
 @AllArgsConstructor
 public final class GearzStatusEffect {
     @Setter(AccessLevel.PACKAGE)
-    private final PotionEffectType potionEffectType;
+    private PotionEffectType potionEffectType;
     @Setter(AccessLevel.PACKAGE)
-    private final Integer amplification;
+    private Integer amplification;
     @Setter(AccessLevel.PACKAGE)
-    private final Integer length;
+    private Integer length;
     @Setter(AccessLevel.PACKAGE)
-    private final boolean ambient;
+    private boolean ambient;
 
     static GearzStatusEffect fromJSONResource(JSONObject object) throws GearzClassReadException {
         String name;

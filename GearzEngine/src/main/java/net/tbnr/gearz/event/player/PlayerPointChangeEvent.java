@@ -21,7 +21,7 @@ public final class PlayerPointChangeEvent extends Event implements Cancellable {
     @Getter
     private final Integer oldPoints;
     @Getter @Setter
-    private final Integer newPoints;
+    private Integer newPoints;
     private boolean canceled;
 
     public PlayerPointChangeEvent(GearzPlayer player, Integer oldPoints, Integer newPoints) {

@@ -52,7 +52,7 @@ public class ServerSelector implements Listener {
     final String gameType;
 
     @Getter @Setter
-    final List<Server> servers;
+    List<Server> servers;
 
     public ServerSelector(String gameType, SelectorCallback selectorCallback) {
         Bukkit.getServer().getPluginManager().registerEvents(this, Gearz.getInstance());
