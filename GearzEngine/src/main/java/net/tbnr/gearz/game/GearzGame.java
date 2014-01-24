@@ -12,6 +12,7 @@ import net.tbnr.gearz.event.game.GameStartEvent;
 import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
+import net.tbnr.util.ImageToChatBukkitUtil;
 import net.tbnr.util.InventoryGUI;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
@@ -573,7 +574,10 @@ public abstract class GearzGame implements Listener {
 
                 ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
                 ItemMeta itemMeta = stack.getItemMeta();
-                itemMeta.setDisplayName(getGameMeta().mainColor() + player.getPlayer().getName());
+                String name = player.getPlayer().getName();
+                itemMeta.setDisplayName(getGameMeta().mainColor() + name);
+                List<String> headImage = ImageToChatBukkitUtil.getHeadImage(name, false);
+                itemMeta.setLore(headImage);
                 stack.setItemMeta(itemMeta);
                 //stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 32);
                 items.add(new InventoryGUI.InventoryGUIItem(stack, player.getUsername()));
