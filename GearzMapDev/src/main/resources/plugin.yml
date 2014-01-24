@@ -1,9 +1,11 @@
 name: GearzMapDev
 version: 1.0
 authors: [Jake0oo0]
-description: Gearz Map Development Plugin
+description: Gearz Map Development Plugin - Eases map setup and various other tasks
 main: net.tbnr.gearz.GearzMapDev
 depend: [Gearz]
 commands:
-  done:
-    description: Marks your setup session as done.
+  install:
+    description: Installs the specified plugin
+  remove:
+    description: Removes the specified plugin
