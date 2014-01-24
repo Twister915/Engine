@@ -20,6 +20,7 @@
         <module>GearzBungee</module>
         <module>GearzSetup</module>
         <module>GearzMapDev</module>
+        <module>GearzPermissions</module>
     </modules>
 
     <properties>
