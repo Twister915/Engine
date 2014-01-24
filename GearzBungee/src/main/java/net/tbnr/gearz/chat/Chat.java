@@ -3,7 +3,6 @@ package net.tbnr.gearz.chat;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.punishments.LoginHandler;

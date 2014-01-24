@@ -3,7 +3,6 @@ package net.tbnr.gearz.punishments;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import lombok.Getter;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;

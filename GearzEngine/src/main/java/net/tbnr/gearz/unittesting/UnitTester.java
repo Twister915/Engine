@@ -1,6 +1,5 @@
 package net.tbnr.gearz.unittesting;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**

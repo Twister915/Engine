@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.player.bungee.GearzPlayer;
-import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.util.bungee.cooldowns.TCooldown;
 import net.tbnr.util.bungee.cooldowns.TCooldownManager;
 

@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.ToString;
 import net.lingala.zip4j.exception.ZipException;
 import net.tbnr.gearz.arena.*;
-import net.tbnr.gearz.game.GameLobby;
 import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
