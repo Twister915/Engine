@@ -72,11 +72,30 @@ public abstract class GearzPermissions {
      */
     public abstract void updatePlayerNameColor(String player, String name_color);
 
+    /**
+     * Sets a players suffix
+     *
+     * @param player player to update
+     * @param suffix new suffix
+     */
     public abstract void updatePlayerSuffix(String player, String suffix);
 
+    /**
+     * Set a player's prefix
+     *
+     * @param player player to update
+     * @param prefix new prefix
+     */
     public abstract void updatePlayerPrefix(String player, String prefix);
 
+    /**
+     * Sets a players tab color
+     *
+     * @param player    player to update
+     * @param tab_color new tab color
+     */
     public abstract void updatePlayerTabColor(String player, String tab_color);
+
     /**
      * Reloads all the data from the database
      */
@@ -150,9 +169,9 @@ public abstract class GearzPermissions {
     /**
      * Sets a permission
      *
-     * @param player
-     * @param perm
-     * @param perm
+     * @param player Player to upadate
+     * @param perm permission to add
+     * @param value whether or not the permission is active
      */
     @SuppressWarnings("unused")
     public void givePermToPlayer(String player, String perm, boolean value) {
@@ -160,20 +179,21 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Sets a permission
+     * Sets a permission for a group
      *
-     * @param player
-     * @param perm
+     * @param group Group to update
+     * @param perm  Permission to give to group
+     * @param value whether or not the permission is active
      */
-    public void givePermToGroup(String player, String perm, boolean value) {
-        this.groups.get(player).addPermission(perm, value);
+    public void givePermToGroup(String group, String perm, boolean value) {
+        this.groups.get(group).addPermission(perm, value);
     }
 
     /**
      * Unsets a permission
      *
-     * @param player
-     * @param perm
+     * @param player player to update
+     * @param perm permission to remove
      */
     @SuppressWarnings("unused")
     public void unsetPlayerPerm(String player, String perm) {
@@ -186,8 +206,8 @@ public abstract class GearzPermissions {
     /**
      * Unsets a permission
      *
-     * @param group
-     * @param perm
+     * @param group group to update
+     * @param perm permission to remove
      */
     public void unsetGroupPerm(String group, String perm) {
         PermGroup group1 = this.groups.get(group);
@@ -197,7 +217,10 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Sets a group
+     * Sets the player to the group
+     *
+     * @param player player to update
+     * @param group group to add the player to
      */
     @SuppressWarnings("unused")
     public void setGroup(String player, String group) {
@@ -242,6 +265,12 @@ public abstract class GearzPermissions {
         this.updatePlayerDisplays(player, prefix, name_color, tab_color);
     }
 
+    /**
+     * Creats a PermGroup
+     *
+     * @param name name of group
+     * @return group that was created
+     */
     public PermGroup createGroup(String name) {
         PermGroup group = new PermGroup(this.database);
         group.name = name;
@@ -249,6 +278,11 @@ public abstract class GearzPermissions {
         return group;
     }
 
+    /**
+     * Deletes a Permgroup
+     *
+     * @param name name of the group to delete
+     */
     public void deleteGroup(String name) {
         PermGroup group = getGroup(name);
         if (group == null) return;
@@ -263,6 +297,12 @@ public abstract class GearzPermissions {
         group.remove();
     }
 
+    /**
+     * Gets the prefix of a player
+     *
+     * @param player player to get the prefix of
+     * @return the prefix of the player
+     */
     public String getPrefix(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
@@ -271,6 +311,12 @@ public abstract class GearzPermissions {
         return prefix;
     }
 
+    /**
+     * Gets the suffix of a player
+     *
+     * @param player player to get the suffix of
+     * @return the suffix of the player
+     */
     public String getSuffix(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
@@ -279,6 +325,12 @@ public abstract class GearzPermissions {
         return prefix;
     }
 
+    /**
+     * Gets the name color of a player
+     *
+     * @param player player to get the name color of
+     * @return the name color of the player
+     */
     public String getNameColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
@@ -287,6 +339,12 @@ public abstract class GearzPermissions {
         return name_color;
     }
 
+    /**
+     * Gets the tab color of a player
+     *
+     * @param player player to get the tab color of
+     * @return the tab color of the player
+     */
     public String getTabColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
