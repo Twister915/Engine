@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class PermGroup extends GModel {
     @Getter @BasicField public String suffix;
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
-    @Getter @BasicField private Map<String, Boolean> permissions = new HashMap<>();
+    @Getter @BasicField private List<String> permissions = new ArrayList<>();
     @Getter @BasicField public boolean isDefault;
 
     public PermGroup() {
@@ -35,7 +36,8 @@ public class PermGroup extends GModel {
     }
 
     public void addPermission(String perm, boolean value) {
-        this.permissions.put(perm, value);
+        String permission = perm + "," + value;
+        this.permissions.add(permission);
     }
 
     public void removePermission(String perm) {

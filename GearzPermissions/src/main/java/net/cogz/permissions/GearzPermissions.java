@@ -243,12 +243,15 @@ public abstract class GearzPermissions {
         PermPlayer thisPlayer = this.players.get(player);
         if (thisPlayer == null) return;
         Map<String, Boolean> perms = new HashMap<>();
-        for (Map.Entry<String, Boolean> stringBooleanEntry : thisPlayer.getPermissions().entrySet()) {
+        for (String entry : thisPlayer.getPermissions()) {
             perms.put(stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
-        }
+    }
         for (PermGroup group : thisPlayer.getGroups()) {
-            for (Map.Entry<String, Boolean> stringBooleanEntry : group.getPermissions().entrySet()) {
-                perms.put(stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
+            for (String entry : group.getPermissions()) {
+                String[] s = entry.split(",");
+                String permission = s[0];
+                boolean value = Boolean.valueOf(s[1]);
+                perms.put(permission, value);
             }
         }
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
@@ -332,9 +335,9 @@ public abstract class GearzPermissions {
     public String getNameColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String name_color = group.getNameColor();
-        if (player.getNameColor() != null) name_color = player.getNameColor();
-        return name_color;
+        String nameColor = group.getNameColor();
+        if (player.getNameColor() != null) nameColor = player.getNameColor();
+        return nameColor;
     }
 
     /**
@@ -346,8 +349,8 @@ public abstract class GearzPermissions {
     public String getTabColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String name_color = group.getTabColor();
-        if (player.getTabColor() != null) name_color = player.getTabColor();
-        return name_color;
+        String tabColor = group.getTabColor();
+        if (player.getTabColor() != null) tabColor = player.getTabColor();
+        return tabColor;
     }
 }

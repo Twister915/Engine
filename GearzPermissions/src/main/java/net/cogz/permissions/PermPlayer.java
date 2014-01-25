@@ -19,7 +19,7 @@ public class PermPlayer extends GModel {
     @Getter @BasicField public String tabColor;
     @Getter @BasicField private String name;
     @Getter @BasicField private List<PermGroup> groups;
-    @Getter @BasicField private Map<String, Boolean> permissions;
+    @Getter @BasicField private List<String> permissions;
 
     public PermPlayer() {
         super();
@@ -51,7 +51,8 @@ public class PermPlayer extends GModel {
     }
 
     public void addPermission(String perm, boolean value) {
-        this.permissions.put(perm, value);
+        String permission = perm + "," + value;
+        this.permissions.add(permission);
     }
 
     public void removePermission(String perm) {
@@ -59,6 +60,9 @@ public class PermPlayer extends GModel {
     }
 
     public boolean hasPermission(String perm) {
-        return this.permissions.containsKey(perm);
+        for (String string : this.permissions) {
+            if (string.startsWith(perm)) return true;
+        }
+        return false;
     }
 }
