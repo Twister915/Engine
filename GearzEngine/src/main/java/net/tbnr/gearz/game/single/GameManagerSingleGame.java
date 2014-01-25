@@ -175,6 +175,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             this.votingSession.addPlayer(gearzPlayer);
         } else {
             this.runningGame.addPlayer(gearzPlayer);
+			if(this.runningGame.isHideStream()) event.setJoinMessage(null);
         }
         ItemStack stack = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) stack.getItemMeta();
@@ -205,6 +206,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         GearzPlayer player = GearzPlayer.playerFromTPlayer(event.getPlayer());
         if (this.runningGame != null) {
             this.runningGame.playerLeft(player);
+			if(this.runningGame.isHideStream()) event.setQuitMessage(null);
         } else {
             if (this.votingSession.isVoting()) {
                 votingSession.removePlayer(GearzPlayer.playerFromTPlayer(event.getPlayer()));

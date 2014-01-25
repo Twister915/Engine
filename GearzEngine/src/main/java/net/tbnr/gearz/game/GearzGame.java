@@ -12,7 +12,6 @@ import net.tbnr.gearz.event.game.GameStartEvent;
 import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
-import net.tbnr.util.ImageToChatBukkitUtil;
 import net.tbnr.util.InventoryGUI;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
@@ -58,6 +57,7 @@ public abstract class GearzGame implements Listener {
     private final GearzMetrics metrics;
     @Getter(AccessLevel.PROTECTED) private final PvPTracker tracker;
     @Getter private boolean running;
+	@Getter private boolean hideStream;
     private final static ChatColor[] progressiveWinColors =
             {ChatColor.DARK_GREEN, ChatColor.GREEN,
                     ChatColor.DARK_AQUA, ChatColor.AQUA,
@@ -139,6 +139,7 @@ public abstract class GearzGame implements Listener {
         this.plugin = plugin;
         this.gameMeta = meta;
         this.id = id;
+		this.hideStream = false;
         this.metrics = GearzMetrics.beginTracking(this);
         this.spectatorGui = new InventoryGUI(getPlayersForMenu(), ChatColor.RED + "Spectator menu.", new InventoryGUI.InventoryGUICallback() {
             @Override
@@ -298,8 +299,17 @@ public abstract class GearzGame implements Listener {
      * Stop the current game ~ normally on finish
      */
     protected final void finishGame() {
-        stopGame(GameStopCause.GAME_END);
+        this.finishGame(false);
     }
+
+	/**
+	 * Stop the current game ~ normally on finish
+	 * @param hideStream whether or not to hide the join/leave stream
+	 */
+	protected final void finishGame(boolean hideStream) {
+		this.hideStream = hideStream;
+		stopGame(GameStopCause.GAME_END);
+	}
 
     protected abstract void gameEnding();
 
@@ -1064,9 +1074,9 @@ public abstract class GearzGame implements Listener {
             ChatColor color = progressiveWinColors[index];
             strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(place) + NumberSuffixes.getForString(String.valueOf(place)).getSuffix() + " place.");
         }
-        while (strings.size() < 9) {
+        /*while (strings.size() < 9) {
             strings.add(" ");
-        }
+        }*/
         strings.add(line);
         for (GearzPlayer player : allPlayers()) {
             TPlayer tPlayer = player.getTPlayer();
