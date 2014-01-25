@@ -46,11 +46,19 @@ public class PermPlayer extends GModel {
         this.groups.remove(group);
     }
 
+    public boolean isPlayerInGroup(PermGroup group) {
+        return this.groups.contains(group);
+    }
+
     public void addPermission(String perm, boolean value) {
         this.permissions.put(perm, value);
     }
 
     public void removePermission(String perm) {
         this.permissions.remove(perm);
+    }
+
+    public boolean hasPermission(String perm) {
+        return this.permissions.containsKey(perm);
     }
 }

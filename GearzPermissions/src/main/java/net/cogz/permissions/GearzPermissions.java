@@ -159,10 +159,10 @@ public abstract class GearzPermissions {
     /**
      * Get a group by name
      *
-     * @param player The name of the player
+     * @param group The name of the player
      */
-    public PermGroup getGroup(String player) {
-        return this.groups.get(player);
+    public PermGroup getGroup(String group) {
+        return this.groups.get(group);
     }
 
     /**

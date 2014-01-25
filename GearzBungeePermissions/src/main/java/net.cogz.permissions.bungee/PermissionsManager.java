@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/24/14.
+ *
+ * Many of these methods are not used bungee side
  */
 public class PermissionsManager extends GearzPermissions implements Listener {
 
