@@ -173,11 +173,10 @@ public abstract class GearzPermissions {
     /**
      * Sets a permission
      *
-     * @param player Player to upadate
+     * @param player Player to update
      * @param perm   permission to add
      * @param value  whether or not the permission is active
      */
-    @SuppressWarnings("unused")
     public void givePermToPlayer(String player, String perm, boolean value) {
         this.players.get(player).addPermission(perm, value);
     }
@@ -213,7 +212,7 @@ public abstract class GearzPermissions {
      * @param group group to update
      * @param perm  permission to remove
      */
-    public void unsetGroupPerm(String group, String perm) {
+    public void removeGroupPerm(String group, String perm) {
         PermGroup group1 = this.groups.get(group);
         group1.removePermission(perm);
         group1.save();
