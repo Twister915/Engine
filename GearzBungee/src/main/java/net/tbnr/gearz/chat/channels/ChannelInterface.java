@@ -38,6 +38,10 @@ public interface ChannelInterface {
 
     public void setFiltered(boolean filtered);
 
+    public void setLogged(boolean logged);
+
+    public boolean isLogged();
+
     public void sendMessage(String message, ProxiedPlayer sender);
 
     public List<ProxiedPlayer> getMembers();

@@ -32,6 +32,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -115,6 +116,10 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     private ChannelManager channelManager;
+
+    @Getter
+    public SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+
 
     /**
      * Gets the current instance of the GearzBungee plugin.

@@ -20,6 +20,7 @@ public class Channel implements ChannelInterface {
     boolean crossServer;
     boolean ircLinked;
     boolean filtered;
+    boolean logged;
     List<ProxiedPlayer> members;
 
     public Channel(String name, String format, String permission) {
@@ -103,6 +104,16 @@ public class Channel implements ChannelInterface {
     @Override
     public void setFiltered(boolean filtered) {
         this.filtered = filtered;
+    }
+
+    @Override
+    public void setLogged(boolean logged) {
+        this.logged = logged;
+    }
+
+    @Override
+    public boolean isLogged() {
+        return this.logged;
     }
 
     @Override

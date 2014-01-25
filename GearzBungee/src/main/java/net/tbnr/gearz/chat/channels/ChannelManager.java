@@ -14,8 +14,11 @@ import net.tbnr.gearz.modules.PlayerInfoModule;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,8 +70,12 @@ public class ChannelManager {
             List<String> channels = new ArrayList<>();
             boolean crossServer = false;
             boolean filter = true;
+            boolean logged = false;
             if (config.isBoolean("formatting." + chanName + ".default")) {
                 main = config.getBoolean("formatting." + chanName + ".default");
+            }
+            if (config.isBoolean("formatting." + chanName + ".logged")) {
+                logged = config.getBoolean("formatting." + chanName + ".logged");
             }
             if (config.isBoolean("formatting." + chanName + ".irc.enabled")) {
                 ircLinked = config.getBoolean("formatting." + chanName + ".irc.enabled");
@@ -148,13 +155,29 @@ public class ChannelManager {
             }
             message = filterData.getMessage();
         }
-        if (channel.isIRCLinked() && ircEnabled && ircConnection != null) {
+        if (channel.isIRCLinked() || channel.isLogged()) {
             final String toSend = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', GearzBungee.getInstance().getConfig().getString("irc.format").replace("%server%", PlayerInfoModule.getServerForBungee(sender.getServer().getInfo()).getGame()).replace("%message%", message).replace("%sender%", sender.getName())));
             ProxyServer.getInstance().getScheduler().runAsync(GearzBungee.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    for (String chan : channel.getIRCChannels()) {
-                        ircConnection.raw("PRIVMSG " + chan + " :" + toSend);
+                    if (channel.isIRCLinked() && ircEnabled && ircConnection != null) {
+                        for (String chan : channel.getIRCChannels()) {
+                            ircConnection.raw("PRIVMSG " + chan + " :" + toSend);
+                        }
+                    }
+                    if (channel.isLogged()) {
+                        FileWriter fWriter;
+                        BufferedWriter writer;
+                        String file = channel.getName() + ".txt";
+                        try {
+                            fWriter = new FileWriter(file);
+                            writer = new BufferedWriter(fWriter);
+                            String timeStamp = GearzBungee.getInstance().getReadable().format(new Date());
+                            writer.write(timeStamp + toSend);
+                            writer.close();
+                        } catch (Exception e) {
+                            //ignore
+                        }
                     }
                 }
             });
