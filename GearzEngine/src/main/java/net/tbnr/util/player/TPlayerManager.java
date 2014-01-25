@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -84,7 +85,7 @@ public final class TPlayerManager implements Listener {
     @SuppressWarnings("unused")
     public void onLogin(PlayerJoinEvent event) {
         if(event.getPlayer() == null) return;
-        TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.addPlayer(event.getPlayer()));
+        TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.getPlayer(event.getPlayer()));
         Bukkit.getPluginManager().callEvent(tPlayerJoinEvent);
         event.setJoinMessage(tPlayerJoinEvent.getJoinMessage());
     }
@@ -100,6 +101,11 @@ public final class TPlayerManager implements Listener {
         event.setQuitMessage(tPlayerDisconnectEvent.getQuitMessage());
         players.get(event.getPlayer().getName()).disconnected();
         players.remove(event.getPlayer().getName());
+    }
+
+    @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+        this.addPlayer(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

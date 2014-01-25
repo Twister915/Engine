@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -201,5 +202,10 @@ public abstract class TPlugin extends JavaPlugin {
 
     public void sendConsoleCommand(String command) {
         getServer().dispatchCommand(getServer().getConsoleSender(), command);
+    }
+
+    public <T extends Event> T callEvent(T event) {
+        getServer().getPluginManager().callEvent(event);
+        return event;
     }
 }

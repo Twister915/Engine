@@ -8,6 +8,7 @@ import net.tbnr.gearz.GearzException;
 import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
+import net.tbnr.gearz.event.player.PlayerPriorityDetermineEvent;
 import net.tbnr.gearz.game.*;
 import net.tbnr.gearz.game.voting.InventoryBarVotingSession;
 import net.tbnr.gearz.game.voting.Votable;
@@ -19,8 +20,10 @@ import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
+import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerJoinEvent;
+import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
@@ -43,10 +46,7 @@ import org.bukkit.inventory.meta.BookMeta;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -155,9 +155,9 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     public void onLogin(PlayerLoginEvent event) {
         if (Bukkit.getOnlinePlayers().length < this.gameMeta.maxPlayers()) return;
         if (this.runningGame != null && this.runningGame.isRunning()) return;
-        Player personToKick = candidateForKicking(event.getPlayer());
+        GearzPlayer personToKick = candidateForKicking(GearzPlayer.playerFromPlayer(event.getPlayer()));
         if(personToKick != null) {
-            personToKick.kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
+            personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
         } else {
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
             event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
@@ -440,12 +440,16 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
      * Get the person on the server with lower priority then them if no player lower it returns null
      * @return GearzPlayer ~ player with lower priority then them
      */
-    private Player candidateForKicking(@NonNull Player p) {
-        Player candidate = null;
-        List<Player> cachedOnlinePlayers = Arrays.asList(Bukkit.getOnlinePlayers().clone());
+    private GearzPlayer candidateForKicking(@NonNull GearzPlayer p) {
+        GearzPlayer candidate = null;
+        ArrayList<TPlayer> players = new ArrayList<>();
+        players.addAll(TPlayerManager.getInstance().getPlayers());
         Integer integer = priorityForPlayer(p);
-        for(int i = cachedOnlinePlayers.size()-1; i >= 0; i--) {
-            Player wannaBe = cachedOnlinePlayers.get(i);
+        PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(p);
+        event = Gearz.getInstance().callEvent(event);
+        if (event.isCancelled()) return null;
+        for(int i = players.size()-1; i >= 0; i--) {
+            GearzPlayer wannaBe = GearzPlayer.playerFromTPlayer(players.get(i));
             if (p.equals(wannaBe)) continue;
             if(integer < priorityForPlayer(wannaBe)) {
                 candidate = wannaBe;
@@ -461,12 +465,13 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
      * @return priority of player, -1 default
      */
     @NonNull
-    private Integer priorityForPlayer(Player p) {
+    private Integer priorityForPlayer(GearzPlayer p) {
         Integer priority = priorities.size();
         String permissionPriority;
+        Player player = p.getPlayer();
         for (int x = 0, l = priorities.size(); x < l; x++) {
             permissionPriority = "gearz.priority."+priorities.get(x);
-            if (p.hasPermission(permissionPriority)) {
+            if (player.hasPermission(permissionPriority)) {
                 priority = x;
             }
         }
