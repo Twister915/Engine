@@ -4,6 +4,10 @@ import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +15,7 @@ import java.util.List;
 /**
  * Created by Jake on 1/24/14.
  */
-public class PermissionsManager extends GearzPermissions {
+public class PermissionsManager extends GearzPermissions implements Listener {
     @Override
     public List<String> onlinePlayers() {
         List<String> players = new ArrayList<>();
@@ -34,7 +38,7 @@ public class PermissionsManager extends GearzPermissions {
     }
 
     @Override
-    public void updatePlayerDisplays(String player, String prefix, String name_color, String tab_color) {
+    public void updatePlayerDisplays(String player, String prefix, String nameColor, String tabColor) {
 
     }
 
@@ -56,5 +60,17 @@ public class PermissionsManager extends GearzPermissions {
     @Override
     public void updatePlayerTabColor(String player, String tab_color) {
 
+    }
+
+    @EventHandler
+    @SuppressWarnings("unused")
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        onJoin(event.getPlayer().getName());
+    }
+
+    @EventHandler
+    @SuppressWarnings("unused")
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        onQuit(event.getPlayer().getName());
     }
 }

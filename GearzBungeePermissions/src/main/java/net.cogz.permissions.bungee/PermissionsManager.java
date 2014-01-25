@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by Jake on 1/24/14.
  */
-public class PermissionsManager extends GearzPermissions {
+public class PermissionsManager extends GearzPermissions implements Listener {
 
     @Override
     public List<String> onlinePlayers() {

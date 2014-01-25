@@ -16,6 +16,7 @@ public class GearzBukkitPerimssions extends TPlugin {
     public void enable() {
         GearzBukkitPerimssions.instance = this;
         this.permsManager = new PermissionsManager();
+        registerEvents(this.permsManager);
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
