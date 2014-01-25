@@ -11,6 +11,7 @@ formats:
   check-player-perm-invalid: &4<player>&6 does not have &4<permission>&6.
   added-player-group: &6Added &4<player>&6 to &4<group>&6.
   reload: &6Reloading all permissions...
+  player-deleted: &6Player deleted.
   null-group: &6That group does not exist.
   null-player: &6That player does not exist.
   set-name-color: &6Set name color to &4<color>&6.
