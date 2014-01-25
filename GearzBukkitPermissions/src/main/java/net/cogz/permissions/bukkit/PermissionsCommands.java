@@ -1,5 +1,6 @@
 package net.cogz.permissions.bukkit;
 
+import net.cogz.permissions.PermGroup;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
@@ -14,6 +15,44 @@ import org.bukkit.entity.Player;
  * Created by Jake on 1/24/14.
  */
 public class PermissionsCommands implements TCommandHandler {
+
+    /**
+     * group admin create <default>
+     */
+    @TCommand(
+            name = "group",
+            usage = "/group <args...>",
+            permission = "gearz.permissions.group",
+            senders = {TCommandSender.Player, TCommandSender.Console})
+    @SuppressWarnings("unused")
+    public TCommandStatus group(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        if (args.length < 1) {
+            return TCommandStatus.INVALID_ARGS;
+        }
+        PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
+        PermGroup group = permsManager.getGroup(args[0]);
+        switch (args[1]) {
+            case "create":
+                if (args.length < 2 || args.length > 3) return TCommandStatus.INVALID_ARGS;
+                boolean defau = false;
+                if (args.length == 3) {
+                    defau = Boolean.parseBoolean(args[2]);
+                }
+                permsManager.createGroup(args[0], defau);
+
+                break;
+            case "delete":
+                break;
+            case "set":
+                break;
+            case "remove":
+                break;
+            case "check":
+                break;
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
+
     @TCommand(
             name = "permissions",
             usage = "/permissions <args...>",
@@ -81,7 +120,7 @@ public class PermissionsCommands implements TCommandHandler {
                         GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).removePlayerFromGroup(GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[3]));
                         break;
                     case "check":
-                        sender.sendMessage( GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).isPlayerInGroup(GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[3])) + "");
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).isPlayerInGroup(GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[3])) + "");
                 }
                 break;
         }

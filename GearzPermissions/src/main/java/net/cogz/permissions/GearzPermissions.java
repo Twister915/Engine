@@ -286,8 +286,19 @@ public abstract class GearzPermissions {
      * @return group that was created
      */
     public PermGroup createGroup(String name) {
+        return createGroup(name, false);
+    }
+
+    /**
+     * Creats a PermGroup
+     *
+     * @param name name of group
+     * @return group that was created
+     */
+    public PermGroup createGroup(String name, boolean defau) {
         PermGroup group = new PermGroup(this.database);
         group.name = name;
+        group.isDefault = defau;
         group.save();
         return group;
     }
