@@ -112,7 +112,7 @@ public abstract class GearzPermissions {
             this.groups.put(group.getName(), group);
         }
         if (getDefaultGroup() == null) {
-            PermGroup group = createGroup("Default");
+            PermGroup group = createGroup("default");
             group.isDefault = true;
             defaultGroup = group;
             group.save();
@@ -130,6 +130,14 @@ public abstract class GearzPermissions {
      * @param s Player who joined
      */
     public void onJoin(String s) {
+        reloadPlayer(s);
+    }
+
+    /**
+     * Call this in the login handler manager
+     *
+     */
+    public void onHandlerJoin(String s) {
         GModel one = new PermPlayer(this.database, s).findOne();
         if (one == null) {
             one = new PermPlayer(this.database, s);
@@ -138,7 +146,6 @@ public abstract class GearzPermissions {
         }
         if (!(one instanceof PermPlayer)) return;
         this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
-        reloadPlayer(s);
     }
 
     /**
@@ -196,11 +203,10 @@ public abstract class GearzPermissions {
      * @param player player to update
      * @param perm   permission to remove
      */
-    @SuppressWarnings("unused")
-    public void unsetPlayerPerm(String player, String perm) {
-        PermPlayer PermPlayer = this.players.get(player);
-        PermPlayer.removePermission(perm);
-        PermPlayer.save();
+    public void removePlayerPerm(String player, String perm) {
+        PermPlayer permPlayer = this.players.get(player);
+        permPlayer.removePermission(perm);
+        permPlayer.save();
         reload();
     }
 
@@ -224,17 +230,17 @@ public abstract class GearzPermissions {
      * @param group  group to add the player to
      */
     public void setGroup(String player, String group) {
-        PermPlayer PermPlayer = (PermPlayer) new PermPlayer(this.database, player).findOne();
-        if (PermPlayer == null) {
-            PermPlayer = new PermPlayer(this.database, player);
+        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, player).findOne();
+        if (permPlayer == null) {
+            onJoin(player);
         }
-        for (String g : PermPlayer.getGroups()) {
+        for (String g : permPlayer.getGroups()) {
             PermGroup permGroup = getGroup(g);
-            PermPlayer.removePlayerFromGroup(permGroup);
+            permPlayer.removePlayerFromGroup(permGroup);
         }
         PermGroup group1 = getGroup(group);
-        PermPlayer.addPlayerToGroup(group1);
-        PermPlayer.save();
+        permPlayer.addPlayerToGroup(group1);
+        permPlayer.save();
     }
 
     /**
