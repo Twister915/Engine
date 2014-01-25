@@ -7,7 +7,6 @@ import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Jake on 1/24/14.
