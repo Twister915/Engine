@@ -15,8 +15,8 @@ import java.util.Map;
 public class PermPlayer extends GModel {
     @Getter @BasicField public String prefix;
     @Getter @BasicField public String suffix;
-    @Getter @BasicField public String name_color;
-    @Getter @BasicField public String tab_color;
+    @Getter @BasicField public String nameColor;
+    @Getter @BasicField public String tabColor;
     @Getter @BasicField private String name;
     @Getter @BasicField private List<PermGroup> groups;
     @Getter @BasicField private Map<String, Boolean> permissions;

@@ -257,8 +257,8 @@ public abstract class GearzPermissions {
         PermGroup permGroup = thisPlayer.getGroups().get(0);
         if (permGroup == null) return;
         String prefix = thisPlayer.getPrefix() == null ? permGroup.getPrefix() : thisPlayer.getPrefix();
-        String tab_color = thisPlayer.getTab_color() == null ? permGroup.getTab_color() : thisPlayer.getTab_color();
-        String name_color = thisPlayer.getName_color() == null ? permGroup.getName_color() : thisPlayer.getName_color();
+        String tab_color = thisPlayer.getTabColor() == null ? permGroup.getTabColor() : thisPlayer.getTabColor();
+        String name_color = thisPlayer.getNameColor() == null ? permGroup.getNameColor() : thisPlayer.getNameColor();
         if (tab_color == null) tab_color = name_color;
         this.updatePlayerDisplays(player, prefix, name_color, tab_color);
     }
@@ -332,8 +332,8 @@ public abstract class GearzPermissions {
     public String getNameColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String name_color = group.getName_color();
-        if (player.getName_color() != null) name_color = player.getName_color();
+        String name_color = group.getNameColor();
+        if (player.getNameColor() != null) name_color = player.getNameColor();
         return name_color;
     }
 
@@ -346,8 +346,8 @@ public abstract class GearzPermissions {
     public String getTabColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String name_color = group.getTab_color();
-        if (player.getTab_color() != null) name_color = player.getTab_color();
+        String name_color = group.getTabColor();
+        if (player.getTabColor() != null) name_color = player.getTabColor();
         return name_color;
     }
 }

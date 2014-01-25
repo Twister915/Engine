@@ -17,8 +17,8 @@ public class PermGroup extends GModel {
     @Getter @BasicField public String name;
     @Getter @BasicField public String prefix;
     @Getter @BasicField public String suffix;
-    @Getter @BasicField public String name_color;
-    @Getter @BasicField public String tab_color;
+    @Getter @BasicField public String nameColor;
+    @Getter @BasicField public String tabColor;
     @Getter @BasicField private Map<String, Boolean> permissions = new HashMap<>();
     @Getter @BasicField public boolean isDefault;
 
