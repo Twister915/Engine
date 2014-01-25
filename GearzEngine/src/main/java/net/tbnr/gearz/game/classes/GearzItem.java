@@ -3,7 +3,7 @@ package net.tbnr.gearz.game.classes;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import lombok.*;
 import net.tbnr.gearz.Gearz;
-import net.tbnr.util.RandomUtils;
+import net.tbnr.util.ColoringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
