@@ -170,19 +170,21 @@ public final class GearzPlayer {
         }
         this.player.getPlayer().setLevel(level);
         this.player.getPlayer().setExp(this.getProgressTowardsLevel(xp));
-        this.player.setScoreboardSideTitle(Gearz.getInstance().getFormat("formats.sidebar-title"));
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.xp-sidebar"), getXP());
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.donor-points-sidebar"), getDonorPoints());
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.points-sidebar"), getPoints());
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.level-sidebar"), getLevel());
+        Gearz instance = Gearz.getInstance();
+        this.player.setScoreboardSideTitle(instance.getFormat("formats.sidebar-title"));
+        this.player.setScoreBoardSide(instance.getFormat("formats.xp-sidebar"), getXP());
+        this.player.setScoreBoardSide(instance.getFormat("formats.donor-points-sidebar"), getDonorPoints());
+        this.player.setScoreBoardSide(instance.getFormat("formats.points-sidebar"), getPoints());
+        this.player.setScoreBoardSide(instance.getFormat("formats.level-sidebar"), getLevel());
     }
 
     public void setupScoreboard() {
-        this.player.setScoreboardSideTitle(Gearz.getInstance().getFormat("formats.sidebar-title-loading"));
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.xp-sidebar"), -1);
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.donor-points-sidebar"), -2);
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.points-sidebar"), -3);
-        this.player.setScoreBoardSide(Gearz.getInstance().getFormat("formats.level-sidebar"), -4);
+        Gearz instance = Gearz.getInstance();
+        this.player.setScoreboardSideTitle(instance.getFormat("formats.sidebar-title-loading"));
+        this.player.setScoreBoardSide(instance.getFormat("formats.xp-sidebar"), -1);
+        this.player.setScoreBoardSide(instance.getFormat("formats.donor-points-sidebar"), -2);
+        this.player.setScoreBoardSide(instance.getFormat("formats.points-sidebar"), -3);
+        this.player.setScoreBoardSide(instance.getFormat("formats.level-sidebar"), -4);
     }
 
     private Integer getLevelFromXP(int xp) {
