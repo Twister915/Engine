@@ -201,7 +201,26 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Override
     public void handleCommandStatus(TCommandStatus status, org.bukkit.command.CommandSender sender, TCommandSender senderType) {
         if (status == TCommandStatus.SUCCESSFUL) return;
-        sender.sendMessage(getFormat("formats.command-status", true, new String[]{"<status>", status.toString()}));
+        String msgFormat = null;
+        switch (status) {
+            case PERMISSIONS:
+                msgFormat = "formats.no-permission";
+                break;
+            case INVALID_ARGS:
+                msgFormat = "formats.bad-args";
+                break;
+            case FEW_ARGS:
+                msgFormat = "formats.few-args";
+                break;
+            case MANY_ARGS:
+                msgFormat = "formats.many-args";
+                break;
+            case WRONG_TARGET:
+                msgFormat = "formats.wrong-target";
+                break;
+        }
+        if (msgFormat == null) return;
+        sender.sendMessage(Gearz.getInstance().getFormat(msgFormat, true));
     }
 
     @Override
@@ -270,5 +289,16 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             }
         }
         return fin == null ? null : fin.getHostAddress();
+    }
+
+    public String compile(String[] args, int min, int max) {
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = min; i < args.length; i++) {
+            builder.append(args[i]);
+            if (i == max) return builder.toString();
+            builder.append(" ");
+        }
+        return builder.toString();
     }
 }

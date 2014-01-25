@@ -1,0 +1,13 @@
+name: BukkitPermissions
+version: 1.0
+authors: [Jake0oo0]
+description: Bukkit Permissions Manager
+main: net.cogz.permissions.bukkit.GearzBukkitPermissions
+depend: [Gearz]
+commands:
+  permissions:
+    description: Permissions command.
+  group:
+    description: Group management command.
+  player:
+    description: Player management command.

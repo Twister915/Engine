@@ -1,0 +1,5 @@
+name: BungeePermissions
+version: 1.0
+author: Jake0oo0
+main: net.cogz.permissions.bungee.GearzBungeePermissions
+depends: ['GearzBungee']

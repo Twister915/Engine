@@ -11,6 +11,12 @@ redis:
   host: one.tbnr.pw
   port: 6379
 formats:
+  no-permission: "&cYou don't have permission for this command!"
+  many-args: "&cYou have supplied too many arguments!"
+  few-args: "&cYou have supplied too few arguments!"
+  bad-args: "&cYou have supplied invalid arguments for this command!"
+  wrong-target: "&cYou can't execute this command!"
+  blocked-command: "&cThis command has been blocked! :o"
   update-nickname: "&aYour nickname is now &c<name>&a."
   update-nickname-other: "&aYou have changed &c<player>&a's nickname to &c<name>&a."
   nickname-taken: "&aThis nickname has been &ctaken&a!"

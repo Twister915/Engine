@@ -319,16 +319,45 @@ public abstract class GModel {
         return o;
     }
 
+    DBObject getObjectValue() {
+        return getObjectValue(true);
+    }
+
     /**
      * Turns this into a DBObject
      *
      * @return DBObject
      */
-    DBObject getObjectValue() {
+    DBObject getObjectValue(boolean includeNulls) {
         updateObjects();
-        return basicDBObjectBuilder.get();
+        DBObject dbObject = basicDBObjectBuilder.get();
+        if (includeNulls) return dbObject;
+        DBObject object2 = cloneObject(dbObject);
+        for (String s : dbObject.keySet()) {
+            Object o = dbObject.get(s);
+            if (o == null) {
+                object2.removeField(s);
+                continue;
+            }
+            if (o instanceof BasicDBObject && ((BasicDBObject) o).size() == 0) {
+                object2.removeField(s);
+                continue;
+            }
+            if (o instanceof BasicDBList && ((BasicDBList) o).size() == 0) {
+                object2.removeField(s);
+            }
+        }
+        return object2;
     }
 
+    private BasicDBObject cloneObject(DBObject object) {
+        BasicDBObject basicDBObject = new BasicDBObject();
+        for (String s : object.keySet()) {
+            basicDBObject.put(s, object.get(s));
+        }
+        return basicDBObject;
+
+    }
     /**
      * Validates the type.
      *
@@ -370,12 +399,17 @@ public abstract class GModel {
      * @return one.
      */
     public GModel findOne() {
-        DBObject objectValue = this.getObjectValue();
+        DBObject objectValue = this.getObjectValue(false);
+        for (String s : objectValue.keySet()) {
+            System.err.println(s + ":" + objectValue.get(s).toString());
+        }
         DBObject one = this.collection.findOne(objectValue);
         if (one == null) return null;
+        System.err.println("Found one of the model! " + one.toMap().toString());
         GModel gModel = modelFromOne(this.getClass(), one, this.database);
         gModel.database = this.database;
         gModel.updateObjects();
+        System.err.println(gModel.basicDBObjectBuilder.get().toMap().toString());
         return gModel;
     }
 
@@ -386,7 +420,7 @@ public abstract class GModel {
      */
     public List<GModel> findMany() {
         ArrayList<GModel> models = new ArrayList<>();
-        DBCursor dbObjects = this.collection.find(this.getObjectValue());
+        DBCursor dbObjects = this.collection.find(this.getObjectValue(false));
         for (DBObject o : dbObjects) {
             GModel m = modelFromOne(this.getClass(), o, this.database);
             models.add(m);
