@@ -130,22 +130,19 @@ public abstract class GearzPermissions {
      * @param s Player who joined
      */
     public void onJoin(String s) {
-        reloadPlayer(s);
-    }
-
-    /**
-     * Call this in the login handler manager
-     *
-     */
-    public void onHandlerJoin(String s) {
         GModel one = new PermPlayer(this.database, s).findOne();
+        System.out.println("possibly found");
         if (one == null) {
+            System.out.println("nope null");
             one = new PermPlayer(this.database, s);
             ((PermPlayer) one).addPlayerToGroup(getDefaultGroup());
             one.save();
         }
+        System.out.println("possibly instanceof");
         if (!(one instanceof PermPlayer)) return;
+        System.out.println("nope I lied");
         this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
+        reloadPlayer(s);
     }
 
     /**
