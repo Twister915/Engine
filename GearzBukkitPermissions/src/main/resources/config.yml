@@ -1,20 +1,20 @@
 formats:
-  created-group: &6Group created &4<group>&6, default: &4<default>.
-  deleted-group: &6Deleted group: &4<group>&6.
-  set-group-perm: &6Set &4<permission>&6 for &4<group>&6 to &4<value>&6.
-  remove-group-perm: &6Removed &4<permission>&6 for &4<group>&6.
-  check-group-perm-value: &4<group>&6 has &4<permission>&6 with value &4<value>&6.
-  check-group-perm-invalid: &4<group>&6 does not have &4<permission>&6.
-  set-player-perm: &6Set &4<permission>&6 for &4<player>&6 to &4<value>&6.
-  remove-player-perm: &6Removed &4<permission>&6 for &4<player>&6.
-  check-player-perm-value: &4<player>&6 has &4<permission>&6 with value &4<value>&6.
-  check-player-perm-invalid: &4<player>&6 does not have &4<permission>&6.
-  added-player-group: &6Added &4<player>&6 to &4<group>&6.
-  reload: &6Reloading all permissions...
-  player-deleted: &6Player deleted.
-  null-group: &6That group does not exist.
-  null-player: &6That player does not exist.
-  set-name-color: &6Set name color to &4<color>&6.
-  set-tab-color: &6Set tab color to &4<color>&6.
-  set-suffix: &6Set suffix to &4<suffix>&6.
-  set-prefix: &6Set prefix to &4<prefix>&6.
+  created-group: "&6Group created &4<group>&6, default: &4<default>."
+  deleted-group: "&6Deleted group: &4<group>&6."
+  set-group-perm: "&6Set &4<permission>&6 for &4<group>&6 to &4<value>&6."
+  remove-group-perm: "&6Removed &4<permission>&6 for &4<group>&6."
+  check-group-perm-value: "&4<group>&6 has &4<permission>&6 with value &4<value>&6."
+  check-group-perm-invalid: "&4<group>&6 does not have &4<permission>&6."
+  set-player-perm: "&6Set &4<permission>&6 for &4<player>&6 to &4<value>&6."
+  remove-player-perm: "&6Removed &4<permission>&6 for &4<player>&6."
+  check-player-perm-value: "&4<player>&6 has &4<permission>&6 with value &4<value>&6."
+  check-player-perm-invalid: "&4<player>&6 does not have &4<permission>&6."
+  added-player-group: "&6Added &4<player>&6 to &4<group>&6."
+  reload: "&6Reloading all permissions..."
+  player-deleted: "&6Player deleted."
+  null-group: "&6That group does not exist."
+  null-player: "&6That player does not exist."
+  set-name-color: "&6Set name color to &4<color>&6."
+  set-tab-color: "&6Set tab color to &4<color>&6."
+  set-suffix: "&6Set suffix to &4<suffix>&6."
+  set-prefix: "&6Set prefix to &4<prefix>&6."
