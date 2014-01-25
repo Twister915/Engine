@@ -1,4 +1,4 @@
-package net.gogz.permissions.bukkit;
+package net.cogz.permissions.bukkit;
 
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.command.TCommand;

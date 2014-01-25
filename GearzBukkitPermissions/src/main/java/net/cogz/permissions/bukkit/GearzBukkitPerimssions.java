@@ -1,4 +1,4 @@
-package net.gogz.permissions.bukkit;
+package net.cogz.permissions.bukkit;
 
 import lombok.Getter;
 import net.tbnr.util.TPlugin;

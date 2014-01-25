@@ -1,4 +1,4 @@
-package net.gogz.permissions.bukkit;
+package net.cogz.permissions.bukkit;
 
 import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
