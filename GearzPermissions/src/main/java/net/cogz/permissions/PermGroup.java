@@ -38,10 +38,12 @@ public class PermGroup extends GModel {
     public void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
         this.permissions.add(permission);
+        save();
     }
 
     public void removePermission(String perm) {
         this.permissions.remove(perm);
+        save();
     }
 
     public boolean hasPermission(String perm) {
