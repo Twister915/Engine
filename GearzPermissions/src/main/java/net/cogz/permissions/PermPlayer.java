@@ -17,7 +17,7 @@ public class PermPlayer extends GModel {
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
     @Getter @BasicField private String name;
-    @Getter @BasicField private List<PermGroup> groups;
+    @Getter @BasicField private List<String> groups;
     @Getter @BasicField private List<String> permissions;
 
     public PermPlayer() {
@@ -38,7 +38,7 @@ public class PermPlayer extends GModel {
     }
 
     public void addPlayerToGroup(PermGroup group) {
-        this.groups.add(group);
+        this.groups.add(group.getName());
         save();
     }
 

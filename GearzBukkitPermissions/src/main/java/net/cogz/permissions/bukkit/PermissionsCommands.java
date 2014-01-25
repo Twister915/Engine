@@ -259,7 +259,7 @@ public class PermissionsCommands implements TCommandHandler {
             return TCommandStatus.INVALID_ARGS;
         }
         if (args[0].equalsIgnoreCase("reload")) {
-            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("reload"));
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.reload"));
             GearzBukkitPermissions.getInstance().getPermsManager().reload();
             return TCommandStatus.SUCCESSFUL;
         }
