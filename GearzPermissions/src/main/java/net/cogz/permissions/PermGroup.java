@@ -2,9 +2,11 @@ package net.cogz.permissions;
 
 import com.mongodb.DB;
 import com.mongodb.DBObject;
+import lombok.Getter;
 import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +14,13 @@ import java.util.Map;
  * Created by Jake on 1/24/14.
  */
 public class PermGroup extends GModel {
-    @BasicField public String name;
-    @BasicField public String prefix;
-    @BasicField public String suffix;
-    @BasicField public String name_color;
-    @BasicField public String tab_color;
-    @BasicField private Map<String, Boolean> permissions;
-    @BasicField public boolean isDefault;
+    @Getter @BasicField public String name;
+    @Getter @BasicField public String prefix;
+    @Getter @BasicField public String suffix;
+    @Getter @BasicField public String name_color;
+    @Getter @BasicField public String tab_color;
+    @Getter @BasicField private Map<String, Boolean> permissions = new HashMap<>();
+    @Getter @BasicField public boolean isDefault;
 
     public PermGroup() {
         super();
@@ -39,9 +41,4 @@ public class PermGroup extends GModel {
     public void removePermission(String perm) {
         this.permissions.remove(perm);
     }
-
-    public Map<String, Boolean> getPermissions() {
-        return permissions;
-    }
-
 }

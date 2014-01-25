@@ -32,6 +32,5 @@ public class GearzBungeePermissions extends TPluginBungee {
 
     @Override
     protected void stop() {
-
     }
 }

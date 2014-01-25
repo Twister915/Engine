@@ -23,8 +23,7 @@ public abstract class GearzPermissions {
     /**
      * Default group
      */
-    @Getter
-    private PermGroup defaultGroup;
+    @Getter private PermGroup defaultGroup;
 
     /**
      * Get currently online players
@@ -104,17 +103,17 @@ public abstract class GearzPermissions {
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         this.groups = new HashMap<>();
         defaultGroup = null;
-        PermGroup PermGroup = new PermGroup(this.database);
-        List<GModel> many = PermGroup.findAll();
+        PermGroup permGroup = new PermGroup(this.database);
+        List<GModel> many = permGroup.findAll();
         for (GModel m : many) {
             if (!(m instanceof PermGroup)) continue;
-            System.out.println(((PermGroup) m).name); //TODO remove lel
+            System.out.println(((PermGroup) m).getName()); //TODO remove debug
             PermGroup group = (PermGroup) m;
-            if (group.isDefault) defaultGroup = group;
-            this.groups.put(group.name, group);
+            if (group.isDefault()) defaultGroup = group;
+            this.groups.put(group.getName(), group);
         }
-        if (defaultGroup == null) {
-            throw new UnsupportedOperationException("Invalid default group! The dhsad you think you're doing bro?");
+        if (getDefaultGroup() == null) {
+            throw new UnsupportedOperationException("Invalid default group!");
         }
         this.players = new HashMap<>();
         for (String s : onlinePlayers()) {
@@ -131,7 +130,7 @@ public abstract class GearzPermissions {
         GModel one = new PermPlayer(this.database, s).findOne();
         if (one == null) {
             one = new PermPlayer(this.database, s);
-            ((PermPlayer) one).addPlayerToGroup(defaultGroup);
+            ((PermPlayer) one).addPlayerToGroup(getDefaultGroup());
             one.save();
         }
         if (!(one instanceof PermPlayer)) return;
@@ -170,8 +169,8 @@ public abstract class GearzPermissions {
      * Sets a permission
      *
      * @param player Player to upadate
-     * @param perm permission to add
-     * @param value whether or not the permission is active
+     * @param perm   permission to add
+     * @param value  whether or not the permission is active
      */
     @SuppressWarnings("unused")
     public void givePermToPlayer(String player, String perm, boolean value) {
@@ -193,7 +192,7 @@ public abstract class GearzPermissions {
      * Unsets a permission
      *
      * @param player player to update
-     * @param perm permission to remove
+     * @param perm   permission to remove
      */
     @SuppressWarnings("unused")
     public void unsetPlayerPerm(String player, String perm) {
@@ -207,7 +206,7 @@ public abstract class GearzPermissions {
      * Unsets a permission
      *
      * @param group group to update
-     * @param perm permission to remove
+     * @param perm  permission to remove
      */
     public void unsetGroupPerm(String group, String perm) {
         PermGroup group1 = this.groups.get(group);
@@ -220,9 +219,8 @@ public abstract class GearzPermissions {
      * Sets the player to the group
      *
      * @param player player to update
-     * @param group group to add the player to
+     * @param group  group to add the player to
      */
-    @SuppressWarnings("unused")
     public void setGroup(String player, String group) {
         PermPlayer PermPlayer = (PermPlayer) new PermPlayer(this.database, player).findOne();
         if (PermPlayer == null) {
@@ -256,11 +254,11 @@ public abstract class GearzPermissions {
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(thisPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
-        PermGroup PermGroup = thisPlayer.getGroups().get(0);
-        if (PermGroup == null) return;
-        String prefix = thisPlayer.prefix == null ? PermGroup.prefix : thisPlayer.prefix;
-        String tab_color = thisPlayer.tab_color == null ? PermGroup.tab_color : thisPlayer.tab_color;
-        String name_color = thisPlayer.name_color == null ? PermGroup.name_color : thisPlayer.name_color;
+        PermGroup permGroup = thisPlayer.getGroups().get(0);
+        if (permGroup == null) return;
+        String prefix = thisPlayer.getPrefix() == null ? permGroup.getPrefix() : thisPlayer.getPrefix();
+        String tab_color = thisPlayer.getTab_color() == null ? permGroup.getTab_color() : thisPlayer.getTab_color();
+        String name_color = thisPlayer.getName_color() == null ? permGroup.getName_color() : thisPlayer.getName_color();
         if (tab_color == null) tab_color = name_color;
         this.updatePlayerDisplays(player, prefix, name_color, tab_color);
     }
@@ -286,7 +284,7 @@ public abstract class GearzPermissions {
     public void deleteGroup(String name) {
         PermGroup group = getGroup(name);
         if (group == null) return;
-        PermPlayer player = new PermPlayer(database);
+        PermPlayer player = new PermPlayer(this.database);
         player.addPlayerToGroup(group);
         for (GModel gModel : player.findMany()) {
             if (!(gModel instanceof PermPlayer)) continue;
@@ -306,8 +304,8 @@ public abstract class GearzPermissions {
     public String getPrefix(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String prefix = group.prefix;
-        if (player.prefix != null) prefix = player.prefix;
+        String prefix = group.getPrefix();
+        if (player.getPrefix() != null) prefix = player.getPrefix();
         return prefix;
     }
 
@@ -320,8 +318,8 @@ public abstract class GearzPermissions {
     public String getSuffix(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String prefix = group.suffix;
-        if (player.suffix != null) prefix = player.suffix;
+        String prefix = group.getSuffix();
+        if (player.getSuffix() != null) prefix = player.getSuffix();
         return prefix;
     }
 
@@ -334,8 +332,8 @@ public abstract class GearzPermissions {
     public String getNameColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String name_color = group.name_color;
-        if (player.name_color != null) name_color = player.name_color;
+        String name_color = group.getName_color();
+        if (player.getName_color() != null) name_color = player.getName_color();
         return name_color;
     }
 
@@ -348,8 +346,8 @@ public abstract class GearzPermissions {
     public String getTabColor(PermPlayer player) {
         if (player.getGroups().size() < 1) return null;
         PermGroup group = player.getGroups().get(0);
-        String name_color = group.tab_color;
-        if (player.tab_color != null) name_color = player.tab_color;
+        String name_color = group.getTab_color();
+        if (player.getTab_color() != null) name_color = player.getTab_color();
         return name_color;
     }
 }
