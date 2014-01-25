@@ -1,5 +1,5 @@
 formats:
-  created-group: &6Group created &4<name>&6, default: &4<default>.
+  created-group: &6Group created &4<group>&6, default: &4<default>.
   deleted-group: &6Deleted group: &4<group>&6.
   set-group-perm: &6Set &4<permission>&6 for &4<group>&6 to &4<value>&6.
   remove-group-perm: &6Removed &4<permission>&6 for &4<group>&6.
@@ -10,3 +10,4 @@ formats:
   check-player-perm-value: &4<player>&6 has &4<permission>&6 with value &4<value>&6.
   check-player-perm-invalid: &4<player>&6 does not have &4<permission>&6.
   reload: &6Reloading all permissions...
+  null-group: &6That group does not exist.

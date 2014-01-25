@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 public class PermissionsCommands implements TCommandHandler {
 
     /**
-     * group admin create <default>
+     * group admin remove Derpsd.lol
      */
     @TCommand(
             name = "group",
@@ -27,7 +27,7 @@ public class PermissionsCommands implements TCommandHandler {
     @SuppressWarnings("unused")
     public TCommandStatus group(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length < 1) {
-            return TCommandStatus.INVALID_ARGS;
+            return TCommandStatus.FEW_ARGS;
         }
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         PermGroup group = permsManager.getGroup(args[0]);
@@ -38,17 +38,49 @@ public class PermissionsCommands implements TCommandHandler {
                 if (args.length == 3) {
                     defau = Boolean.parseBoolean(args[2]);
                 }
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("created-group", false, new String[]{"<group>", args[0]}, new String[]{"<default>", defau + ""}));
                 permsManager.createGroup(args[0], defau);
-
-                break;
+                return TCommandStatus.SUCCESSFUL;
             case "delete":
-                break;
+                if (args.length != 2) return TCommandStatus.INVALID_ARGS;
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("deleted-group", false, new String[]{"<group>", args[0]}));
+                permsManager.deleteGroup(args[0]);
+                return TCommandStatus.SUCCESSFUL;
             case "set":
+                if (args.length < 3 || args.length > 4) return TCommandStatus.INVALID_ARGS;
+                if (group == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("null-group", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                boolean value = true;
+                if (args.length == 4) {
+                    value = Boolean.parseBoolean(args[3]);
+                }
+                String permission = args[2];
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("set-group-perm", false, new String[]{"<permission>", permission}, new String[]{"<group>", args[0]}, new String[]{"<value>", value + ""}));
+                group.addPermission(permission, value);
                 break;
             case "remove":
-                break;
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                if (group == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("null-group", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("remove-group-perm", false, new String[]{"<oermission>", args[2]}, new String[]{"<group>", args[0]}));
+                group.removePermission(args[2]);
+                return TCommandStatus.SUCCESSFUL;
             case "check":
-                break;
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                if (group == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("null-group", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                if (group.hasPermission(args[2])) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("check-group-perm-value", false, new String[]{"<group>", args[0]}, new String[]{"<permission>", args[2]}, new String[]{"<value>", true + ""}));
+                } else {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("check-group-perm-invalid", false, new String[]{"<group>", args[0]}, new String[]{"<permission>", args[2]}));
+                }
+                return TCommandStatus.SUCCESSFUL;
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -63,66 +95,10 @@ public class PermissionsCommands implements TCommandHandler {
         if (args.length < 2) {
             return TCommandStatus.INVALID_ARGS;
         }
-        Player target = Bukkit.getPlayerExact(args[0]);
-        if (target == null) return TCommandStatus.INVALID_ARGS;
-        String cmd = args[1];
         if (args[0].equalsIgnoreCase("reload")) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("reload"));
             GearzBukkitPermissions.getInstance().getPermsManager().reload();
             return TCommandStatus.SUCCESSFUL;
-        }
-        if (args[0].equalsIgnoreCase("group")) {
-            if (args.length < 3) {
-                return TCommandStatus.INVALID_ARGS;
-            }
-            switch (args[1]) {
-                case "create":
-                    GearzBukkitPermissions.getInstance().getPermsManager().createGroup(args[2]);
-                    break;
-                case "delete":
-                    GearzBukkitPermissions.getInstance().getPermsManager().deleteGroup(args[2]);
-                    break;
-                case "add":
-                    GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[2]).addPermission(args[3], true);
-                    break;
-                case "remove":
-                    GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[2]).removePermission(args[3]);
-                    break;
-            }
-        }
-        switch (cmd) {
-            case "add":
-                if (args.length < 3) {
-                    return TCommandStatus.INVALID_ARGS;
-                }
-                GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).addPermission(args[2], true);
-                break;
-            case "remove":
-                if (args.length < 3) {
-                    return TCommandStatus.INVALID_ARGS;
-                }
-                GearzBukkitPermissions.getInstance().getPermsManager().givePermsToPlayer(target.getName(), args[2], false);
-                break;
-            case "check":
-                if (args.length < 3) {
-                    return TCommandStatus.INVALID_ARGS;
-                }
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).hasPermission(args[2]) + "");
-                break;
-            case "group":
-                if (args.length < 4) {
-                    return TCommandStatus.INVALID_ARGS;
-                }
-                switch (args[2]) {
-                    case "add":
-                        GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).addPlayerToGroup(GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[3]));
-                        break;
-                    case "remove":
-                        GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).removePlayerFromGroup(GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[3]));
-                        break;
-                    case "check":
-                        sender.sendMessage(GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).isPlayerInGroup(GearzBukkitPermissions.getInstance().getPermsManager().getGroup(args[3])) + "");
-                }
-                break;
         }
         return TCommandStatus.SUCCESSFUL;
     }
