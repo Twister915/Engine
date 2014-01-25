@@ -60,6 +60,35 @@ public class PermissionsCommands implements TCommandHandler {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("check-player-perm-invalid", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}));
                 }
                 return TCommandStatus.SUCCESSFUL;
+            case "perms":
+            case "show":
+            case "permissions":
+                if (args.length != 2) return TCommandStatus.INVALID_ARGS;
+                for (String perm : player.getPermissions()) {
+                    String[] s = perm.split(",");
+                    sender.sendMessage(s[0] + " : " + s[1]);
+                }
+                return TCommandStatus.SUCCESSFUL;
+            case "addgroup":
+            case "setgroup":
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                PermGroup group = permsManager.getGroup(args[2]);
+                if (group == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("null-group", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("added-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
+                player.addPlayerToGroup(group);
+                return TCommandStatus.SUCCESSFUL;
+            case "prefix":
+                return TCommandStatus.SUCCESSFUL;
+            case "suffix":
+                return TCommandStatus.SUCCESSFUL;
+            case "tabcolor":
+                return TCommandStatus.SUCCESSFUL;
+            case "namecolor":
+            default:
+                return TCommandStatus.INVALID_ARGS;
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -126,6 +155,8 @@ public class PermissionsCommands implements TCommandHandler {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("check-group-perm-invalid", false, new String[]{"<group>", args[0]}, new String[]{"<permission>", args[2]}));
                 }
                 return TCommandStatus.SUCCESSFUL;
+            default:
+                return TCommandStatus.INVALID_ARGS;
         }
         return TCommandStatus.SUCCESSFUL;
     }
