@@ -141,7 +141,7 @@ public abstract class GearzPermissions {
         }
         System.out.println("possibly instanceof");
         if (!(one instanceof PermPlayer)) return;
-        System.out.println("nope I lied");
+        System.out.println("adding to players..means instance of");
         this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
         reloadPlayer(s);
     }
