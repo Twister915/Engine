@@ -98,13 +98,13 @@ public class PermissionsCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             case "tabcolor":
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
-                player.prefix = args[2];
+                player.tabColor = args[2];
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("set-tab-color", true, new String[]{"<color>", args[2]}));
                 player.save();
                 return TCommandStatus.SUCCESSFUL;
             case "namecolor":
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
-                player.prefix = args[2];
+                player.nameColor = args[2];
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("set-tab-prefix", true, new String[]{"<color>", args[2]}));
                 player.save();
                 return TCommandStatus.SUCCESSFUL;
@@ -203,13 +203,13 @@ public class PermissionsCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             case "tabcolor":
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
-                group.prefix = args[2];
+                group.tabColor = args[2];
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("set-tab-color", true, new String[]{"<color>", args[2]}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
             case "namecolor":
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
-                group.prefix = args[2];
+                group.nameColor = args[2];
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("set-tab-prefix", true, new String[]{"<color>", args[2]}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
