@@ -333,23 +333,32 @@ public abstract class GModel {
         updateObjects();
         DBObject dbObject = basicDBObjectBuilder.get();
         if (includeNulls) return dbObject;
+        DBObject object2 = cloneObject(dbObject);
         for (String s : dbObject.keySet()) {
             Object o = dbObject.get(s);
             if (o == null) {
-                dbObject.removeField(s);
+                object2.removeField(s);
                 continue;
             }
             if (o instanceof BasicDBObject && ((BasicDBObject) o).size() == 0) {
-                dbObject.removeField(s);
+                object2.removeField(s);
                 continue;
             }
             if (o instanceof BasicDBList && ((BasicDBList) o).size() == 0) {
-                dbObject.removeField(s);
+                object2.removeField(s);
             }
         }
-        return dbObject;
+        return object2;
     }
 
+    private BasicDBObject cloneObject(DBObject object) {
+        BasicDBObject basicDBObject = new BasicDBObject();
+        for (String s : object.keySet()) {
+            basicDBObject.put(s, object.get(s));
+        }
+        return basicDBObject;
+
+    }
     /**
      * Validates the type.
      *
