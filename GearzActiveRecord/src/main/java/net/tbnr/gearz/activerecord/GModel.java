@@ -410,6 +410,7 @@ public abstract class GModel {
         GModel gModel = modelFromOne(this.getClass(), one, this.database);
         gModel.database = this.database;
         gModel.updateObjects();
+        System.err.println(gModel.basicDBObjectBuilder.get().toMap().toString());
         return gModel;
     }
 
