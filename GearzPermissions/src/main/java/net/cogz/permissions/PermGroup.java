@@ -43,4 +43,15 @@ public class PermGroup extends GModel {
     public void removePermission(String perm) {
         this.permissions.remove(perm);
     }
+
+    public boolean hasPermission(String perm) {
+        for (String string : this.permissions) {
+            String[] s = string.split(",");
+            String permission = s[0];
+            if (permission.equals(perm)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -244,8 +244,11 @@ public abstract class GearzPermissions {
         if (thisPlayer == null) return;
         Map<String, Boolean> perms = new HashMap<>();
         for (String entry : thisPlayer.getPermissions()) {
-            perms.put(stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
-    }
+            String[] s = entry.split(",");
+            String permission = s[0];
+            boolean value = Boolean.valueOf(s[1]);
+            perms.put(permission, value);
+        }
         for (PermGroup group : thisPlayer.getGroups()) {
             for (String entry : group.getPermissions()) {
                 String[] s = entry.split(",");

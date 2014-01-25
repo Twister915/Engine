@@ -61,7 +61,11 @@ public class PermPlayer extends GModel {
 
     public boolean hasPermission(String perm) {
         for (String string : this.permissions) {
-            if (string.startsWith(perm)) return true;
+            String[] s = string.split(",");
+            String permission = s[0];
+            if (permission.equals(perm)) {
+                return true;
+            }
         }
         return false;
     }
