@@ -170,6 +170,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         registerCommandHandler(whitelistModule);
         AnnouncerModule announcerModule = new AnnouncerModule(true);
         registerCommandHandler(announcerModule);
+		registerCommandHandler(new StatsModule());
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
