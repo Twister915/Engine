@@ -107,7 +107,6 @@ public abstract class GearzPermissions {
         List<GModel> many = permGroup.findAll();
         for (GModel m : many) {
             if (!(m instanceof PermGroup)) continue;
-            System.out.println(((PermGroup) m).getName()); //TODO remove debug
             PermGroup group = (PermGroup) m;
             if (group.isDefault()) defaultGroup = group;
             this.groups.put(group.getName(), group);
@@ -117,7 +116,7 @@ public abstract class GearzPermissions {
             group.isDefault = true;
             defaultGroup = group;
             group.save();
-            throw new UnsupportedOperationException("Invalid default group!");
+            throw new UnsupportedOperationException("Invalid default group! New one created..");
         }
         this.players = new HashMap<>();
         for (String s : onlinePlayers()) {
