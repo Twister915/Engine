@@ -130,7 +130,7 @@ public abstract class GearzPermissions {
      * @param s Player who joined
      */
     public void onJoin(String s) {
-        GModel one = new PermPlayer(this.database).findOne();
+        GModel one = new PermPlayer(this.database, s).findOne();
         System.out.println("possibly found");
         if (one == null) {
             System.out.println("nope null");
