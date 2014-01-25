@@ -21,6 +21,7 @@
         <module>GearzSetup</module>
         <module>GearzMapDev</module>
         <module>GearzPermissions</module>
+        <module>GearzBungeePermissions</module>
     </modules>
 
     <properties>

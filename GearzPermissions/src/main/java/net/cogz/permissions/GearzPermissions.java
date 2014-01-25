@@ -39,10 +39,11 @@ public abstract class GearzPermissions {
     private DB database;
 
     /**
-     * @param value  Adds a permission to a player
+     * Give a player a permission
+     *
+     * @param value  True or false, whether or not to add it
      * @param player Name of player
      * @param perm   Permission to give player
-     * @param value  Value of that permission
      */
     public abstract void givePermsToPlayer(String player, String perm, boolean value);
 
@@ -63,6 +64,19 @@ public abstract class GearzPermissions {
      */
     public abstract void updatePlayerDisplays(String player, String prefix, String name_color, String tab_color);
 
+    /**
+     * Sets a player's chat name color
+     *
+     * @param player     Player to set the name for
+     * @param name_color Color to set the name too
+     */
+    public abstract void updatePlayerNameColor(String player, String name_color);
+
+    public abstract void updatePlayerSuffix(String player, String suffix);
+
+    public abstract void updatePlayerPrefix(String player, String prefix);
+
+    public abstract void updatePlayerTabColor(String player, String tab_color);
     /**
      * Reloads all the data from the database
      */
@@ -184,9 +198,6 @@ public abstract class GearzPermissions {
 
     /**
      * Sets a group
-     *
-     * @param player
-     * @param group
      */
     @SuppressWarnings("unused")
     public void setGroup(String player, String group) {
@@ -273,6 +284,14 @@ public abstract class GearzPermissions {
         PermGroup group = player.getGroups().get(0);
         String name_color = group.name_color;
         if (player.name_color != null) name_color = player.name_color;
+        return name_color;
+    }
+
+    public String getTabColor(PermPlayer player) {
+        if (player.getGroups().size() < 1) return null;
+        PermGroup group = player.getGroups().get(0);
+        String name_color = group.tab_color;
+        if (player.tab_color != null) name_color = player.tab_color;
         return name_color;
     }
 }
