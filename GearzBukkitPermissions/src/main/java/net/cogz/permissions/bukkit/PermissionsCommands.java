@@ -1,6 +1,7 @@
 package net.cogz.permissions.bukkit;
 
 import net.cogz.permissions.PermGroup;
+import net.cogz.permissions.PermPlayer;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
@@ -15,6 +16,55 @@ import org.bukkit.entity.Player;
  * Created by Jake on 1/24/14.
  */
 public class PermissionsCommands implements TCommandHandler {
+
+    @TCommand(
+            name = "player",
+            usage = "/player",
+            permission = "gearz.permissions.player",
+            senders = {TCommandSender.Player, TCommandSender.Console})
+    @SuppressWarnings("unused")
+    public TCommandStatus player(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
+        PermPlayer player = permsManager.getPlayer(args[0]);
+        switch (args[1]) {
+            case "set":
+                if (args.length < 3 || args.length > 4) return TCommandStatus.INVALID_ARGS;
+                if (player == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("null-player", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                boolean value = true;
+                if (args.length == 4) {
+                    value = Boolean.parseBoolean(args[3]);
+                }
+                String permission = args[2];
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("set-player-perm", false, new String[]{"<permission>", permission}, new String[]{"<player>", args[0]}, new String[]{"<value>", value + ""}));
+                player.addPermission(permission, value);
+                break;
+            case "remove":
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                if (player == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("null-player", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("remove-player-perm", false, new String[]{"<oermission>", args[2]}, new String[]{"<player>", args[0]}));
+                player.removePermission(args[2]);
+                return TCommandStatus.SUCCESSFUL;
+            case "check":
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                if (player == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("null-player", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                if (player.hasPermission(args[2])) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("check-player-perm-value", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}, new String[]{"<value>", true + ""}));
+                } else {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("check-player-perm-invalid", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}));
+                }
+                return TCommandStatus.SUCCESSFUL;
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
 
     /**
      * group admin remove Derpsd.lol

@@ -11,3 +11,4 @@ formats:
   check-player-perm-invalid: &4<player>&6 does not have &4<permission>&6.
   reload: &6Reloading all permissions...
   null-group: &6That group does not exist.
+  null-player: &6That player does not exist.
