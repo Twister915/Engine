@@ -264,7 +264,12 @@ public abstract class GearzPermissions {
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(thisPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
-        PermGroup permGroup = thisPlayer.getGroups().get(0);
+        PermGroup permGroup;
+        try {
+            permGroup = thisPlayer.getGroups().get(0);
+        } catch (Exception e) {
+            return;
+        }
         if (permGroup == null) return;
         String prefix = thisPlayer.getPrefix() == null ? permGroup.getPrefix() : thisPlayer.getPrefix();
         String tab_color = thisPlayer.getTabColor() == null ? permGroup.getTabColor() : thisPlayer.getTabColor();
