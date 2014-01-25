@@ -81,7 +81,7 @@ public final class GearzPlayer {
 
     private GearzPlayer(TPlayer player) {
         this.player = player;
-        this.username = player.getPlayer().getName();
+        this.username = player.getPlayerName();
         GearzPlayer.players.put(player, this);
     }
 
