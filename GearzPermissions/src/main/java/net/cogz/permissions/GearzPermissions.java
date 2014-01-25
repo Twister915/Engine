@@ -115,6 +115,7 @@ public abstract class GearzPermissions {
         if (getDefaultGroup() == null) {
             PermGroup group = createGroup("Default");
             group.isDefault = true;
+            group.save();
             throw new UnsupportedOperationException("Invalid default group!");
         }
         this.players = new HashMap<>();
