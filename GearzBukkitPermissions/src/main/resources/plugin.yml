@@ -3,6 +3,7 @@ version: 1.0
 authors: [Jake0oo0]
 description: Bukkit Permissions
 main: net.cogz.permissions.bukkit.GearzBukkitPermissions
+depend: [Gearz]
 commands:
   permissions:
     description: Permissions command.
