@@ -7,10 +7,8 @@ import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Created by Jake on 1/24/14.
@@ -66,9 +64,6 @@ public class PermissionsCommands implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    /**
-     * group admin remove Derpsd.lol
-     */
     @TCommand(
             name = "group",
             usage = "/group <args...>",
