@@ -137,7 +137,6 @@ public abstract class GearzPermissions {
             one = new PermPlayer(this.database, s);
             ((PermPlayer) one).addPlayerToGroup(getDefaultGroup());
             one.save();
-            return;
         }
         System.out.println("possibly instanceof");
         if (!(one instanceof PermPlayer)) return;

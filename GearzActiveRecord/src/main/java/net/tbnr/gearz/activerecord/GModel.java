@@ -406,6 +406,7 @@ public abstract class GModel {
         }
         DBObject one = this.collection.findOne(objectValue);
         if (one == null) return null;
+        System.err.println("Found one of the model! " + one.toMap().toString());
         GModel gModel = modelFromOne(this.getClass(), one, this.database);
         gModel.database = this.database;
         gModel.updateObjects();
