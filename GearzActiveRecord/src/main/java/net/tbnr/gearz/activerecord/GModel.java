@@ -372,6 +372,9 @@ public abstract class GModel {
      */
     public GModel findOne() {
         DBObject objectValue = this.getObjectValue();
+        for (String s : objectValue.keySet()) {
+            System.err.println(s + ":" + objectValue.get(s).toString());
+        }
         DBObject one = this.collection.findOne(objectValue);
         if (one == null) return null;
         GModel gModel = modelFromOne(this.getClass(), one, this.database);
