@@ -7,14 +7,14 @@ import org.bukkit.Bukkit;
 /**
  * Created by Jake on 1/24/14.
  */
-public class GearzBukkitPerimssions extends TPlugin {
-    @Getter private static GearzBukkitPerimssions instance;
+public class GearzBukkitPermissions extends TPlugin {
+    @Getter private static GearzBukkitPermissions instance;
     @Getter private PermissionsManager permsManager;
 
     @SuppressWarnings("deprecation")
     @Override
     public void enable() {
-        GearzBukkitPerimssions.instance = this;
+        GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
         registerEvents(this.permsManager);
         registerCommands(new PermissionsCommands());
@@ -22,9 +22,9 @@ public class GearzBukkitPerimssions extends TPlugin {
             @Override
             public void run() {
                 try {
-                    GearzBukkitPerimssions.getInstance().getPermsManager().reload();
+                    GearzBukkitPermissions.getInstance().getPermsManager().reload();
                 } catch (Exception ex) {
-                    GearzBukkitPerimssions.getInstance().getLogger().severe(ex.getMessage());
+                    GearzBukkitPermissions.getInstance().getLogger().severe(ex.getMessage());
                 }
             }
         }, 0, 30 * 20);

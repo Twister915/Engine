@@ -29,12 +29,12 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     public void givePermsToPlayer(String player, String perm, boolean value) {
         Player p = Bukkit.getPlayerExact(player);
         if (p == null) return;
-        p.addAttachment(GearzBukkitPerimssions.getInstance(), perm, value);
+        p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
     }
 
     @Override
     public DB getDatabase() {
-        return GearzBukkitPerimssions.getInstance().getMongoDB();
+        return GearzBukkitPermissions.getInstance().getMongoDB();
     }
 
     @Override
