@@ -55,7 +55,7 @@ public class PermissionsCommands implements TCommandHandler {
                 if (args.length < 3) {
                     return TCommandStatus.INVALID_ARGS;
                 }
-                GearzBukkitPermissions.getInstance().getPermsManager().givePermsToPlayer(target.getName(), args[2], true);
+                GearzBukkitPermissions.getInstance().getPermsManager().getPlayer(target.getName()).addPermission(args[2], true);
                 break;
             case "remove":
                 if (args.length < 3) {
