@@ -138,11 +138,8 @@ public abstract class GearzPermissions {
             ((PermPlayer) one).addPlayerToGroup(getDefaultGroup());
             one.save();
         }
-        System.out.println(one.getClass().getSimpleName());
-        System.out.println("possibly instanceof");
-        if (!(one instanceof PermPlayer)) return;
-        System.out.println("adding to players..means instance of");
-        this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
+        PermPlayer player = (PermPlayer) one;
+        this.players.put(player.getName(), player);
         reloadPlayer(s);
     }
 
