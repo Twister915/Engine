@@ -13,3 +13,7 @@ formats:
   reload: &6Reloading all permissions...
   null-group: &6That group does not exist.
   null-player: &6That player does not exist.
+  set-name-color: &6Set name color to &4<color>&6.
+  set-tab-color: &6Set tab color to &4<color>&6.
+  set-suffix: &6Set suffix to &4<suffix>&6.
+  set-prefix: &6Set prefix to &4<prefix>&6.
