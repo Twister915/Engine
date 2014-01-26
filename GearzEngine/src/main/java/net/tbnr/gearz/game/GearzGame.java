@@ -655,18 +655,23 @@ public abstract class GearzGame implements Listener {
         PlayerGameDeathEvent event = new PlayerGameDeathEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
         if (!canPlayerRespawn(player)) {
-            makeSpectator(player);
+            Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+                    makeSpectator(player);
+                }
+            }, 1);
             return;
         }
         player.getTPlayer().teleport(playerRespawn(player));
         player.getPlayer().playNote(player.getPlayer().getLocation(), Instrument.PIANO, Note.sharp(1, Note.Tone.F));
+        final PlayerGameRespawnEvent respawnEvent = new PlayerGameRespawnEvent(player, this);
         Bukkit.getScheduler().runTaskLater(
                 getPlugin(),
                 new Runnable() {
                     @Override
                     public void run() {
                         activatePlayer(player);
-                        PlayerGameRespawnEvent respawnEvent = new PlayerGameRespawnEvent(player, this);
                         Bukkit.getPluginManager().callEvent(respawnEvent);
                     }
                 },
