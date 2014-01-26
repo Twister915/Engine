@@ -13,7 +13,6 @@ import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.InventoryGUI;
-import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
 import org.apache.commons.lang.StringUtils;
@@ -987,13 +986,13 @@ public abstract class GearzGame implements Listener {
                 playerKilledPlayer(player, dead);
             }
             else {
-                this.playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
                 fakeDeath(dead);
+                this.playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
             }
             return;
         }
-        onDeath(dead);
         fakeDeath(dead);
+        onDeath(dead);
         broadcast(getFormat("solo-death", new String[]{"<victim>", dead.getPlayer().getDisplayName()}));
     }
 
