@@ -16,6 +16,8 @@ import net.tbnr.gearz.chat.Messaging;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
+import net.tbnr.gearz.party.PartyCommands;
+import net.tbnr.gearz.party.PartyHandler;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.punishments.IPBanHandler;
 import net.tbnr.gearz.punishments.LoginHandler;
@@ -102,6 +104,8 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter @Setter
     private boolean whitelisted;
 
+    @Getter PartyHandler partyHandler;
+
     /**
      * Gets the current instance of the GearzBungee plugin.
      *
@@ -171,6 +175,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         AnnouncerModule announcerModule = new AnnouncerModule(true);
         registerCommandHandler(announcerModule);
 		registerCommandHandler(new StatsModule());
+        this.partyHandler = new PartyHandler();
+        registerEvents(this.partyHandler);
+        registerCommandHandler(new PartyCommands());
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
