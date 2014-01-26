@@ -34,9 +34,9 @@ public class InstallCommands implements TCommandHandler {
         String url = GearzMapDev.getInstance().getConfig().getString("ci-url");
         url = url.replace("%plugin%", plugin).replace("%network%", network);
         if (FileUtil.downloadFile(url, GearzMapDev.getInstance().getServer().getWorldContainer() + "/plugins/")) {
-            sender.sendMessage(GearzMapDev.getInstance().getFormat("installed", false, new String[]{"<plugin>", args[0]}));
+            sender.sendMessage(GearzMapDev.getInstance().getFormat("formats.installed", false, new String[]{"<plugin>", args[0]}));
         } else {
-            sender.sendMessage(GearzMapDev.getInstance().getFormat("fail-installed", false, new String[]{"<plugin>", args[0]}));
+            sender.sendMessage(GearzMapDev.getInstance().getFormat("formats.fail-installed", false, new String[]{"<plugin>", args[0]}));
         }
 
         return TCommandStatus.SUCCESSFUL;
@@ -54,9 +54,9 @@ public class InstallCommands implements TCommandHandler {
         }
         String path = GearzMapDev.getInstance().getServer().getWorldContainer() + "/plugins/" + args[0] + ".jar";
         if (FileUtil.delete(new File(path))) {
-            sender.sendMessage(GearzMapDev.getInstance().getFormat("un-installed", false, new String[]{"<plugin>", args[0]}));
+            sender.sendMessage(GearzMapDev.getInstance().getFormat("formats.un-installed", false, new String[]{"<plugin>", args[0]}));
         } else {
-            sender.sendMessage(GearzMapDev.getInstance().getFormat("fail-uninstall", false, new String[]{"<plugin>", args[0]}));
+            sender.sendMessage(GearzMapDev.getInstance().getFormat("formats.fail-uninstall", false, new String[]{"<plugin>", args[0]}));
         }
 
         return TCommandStatus.SUCCESSFUL;

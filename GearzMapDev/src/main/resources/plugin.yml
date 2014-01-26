@@ -6,6 +6,8 @@ main: net.tbnr.gearz.GearzMapDev
 depend: [Gearz]
 commands:
   install:
-    description: Installs the specified plugin
+    description: Installs the specified plugin.
   remove:
-    description: Removes the specified plugin
+    description: Removes the specified plugin.
+  package:
+    description: Package the specified world for download.

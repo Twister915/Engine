@@ -23,6 +23,7 @@ public class GearzMapDev extends TPlugin {
         GearzMapDev.instance = this;
         ServerManager.setOpenForJoining(true);
         registerCommands(new InstallCommands());
+        registerCommands(new PackageCommands());
     }
 
     @Override
