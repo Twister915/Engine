@@ -4,3 +4,5 @@ formats:
   fail-installed: "&cFailed to install &4<plugin>!"
   un-installed: "&cYou have successfully uninstalled &4<plugin>!"
   fail-uninstall: "&cFailed to uninstall &4<plugin>!"
+  error-zipping: "&cThere was an error zipping that world!"
+  zipping-successful: "&cWorld successfully zipped."
