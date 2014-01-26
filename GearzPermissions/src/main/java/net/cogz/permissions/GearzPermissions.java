@@ -12,6 +12,11 @@ import java.util.Map;
  * Created by Jake on 1/23/14.
  */
 public abstract class GearzPermissions {
+    public static GearzPermissions instance;
+
+    public static GearzPermissions getInstance() {
+        return instance;
+    }
     /**
      * Players who are online with their names.
      */

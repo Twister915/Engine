@@ -2,6 +2,7 @@ package net.tbnr.gearz.chat.channels;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
+import net.cogz.permissions.GearzPermissions;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.Configuration;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;
 import net.md_5.bungee.api.ChatColor;
@@ -97,6 +98,7 @@ public class ChannelManager {
             channel.setIRCChannels(channels);
             channel.setCrossServer(crossServer);
             channel.setFiltered(filter);
+            channel.setLogged(logged);
             registerChannel(channel);
         }
     }
@@ -188,6 +190,17 @@ public class ChannelManager {
     private String formatMessage(String message, ProxiedPlayer player) {
         String chanFormat = getCurrentChannel(player).getFormat();
         chanFormat = chanFormat.replace("%message%", message).replace("%player%", player.getName());
+        GearzPermissions perms = GearzBungee.getInstance().getPermissions();
+        if (perms != null) {
+            String prefix = ChatColor.translateAlternateColorCodes('&', perms.getPrefix(perms.getPlayer(player.getName())));
+            String suffix = ChatColor.translateAlternateColorCodes('&', perms.getSuffix(perms.getPlayer(player.getName())));
+            if (prefix == null) prefix = "";
+            if (suffix == null) suffix = "";
+            chanFormat = chanFormat.replace("%prefix%", prefix).replace("%suffix%", suffix);
+
+        } else {
+            chanFormat = chanFormat.replace("%suffix%", "").replace("%prefix%", "");
+        }
         chanFormat = ChatColor.translateAlternateColorCodes('&', chanFormat);
         return chanFormat;
     }

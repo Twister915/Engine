@@ -3,6 +3,7 @@ package net.tbnr.gearz;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
 import lombok.Setter;
+import net.cogz.permissions.GearzPermissions;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -111,7 +112,10 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     private ChannelManager channelManager;
 
     @Getter
-    public SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+    public SimpleDateFormat readable;
+
+    @Getter
+    public GearzPermissions permissions;
 
 
     /**
@@ -132,6 +136,12 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.getConfig().options().copyDefaults(true);
         this.saveDefaultConfig();
         GearzBungee.instance = this;
+        if (ProxyServer.getInstance().getPluginManager().getPlugin("GearzBungeePermissions") != null) {
+            permissions = GearzPermissions.getInstance();
+            getLogger().info("GearzBungeePermissions found..enabling permissions support!");
+        }
+        readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        whitelisted = false;
         GModel.setDefaultDatabase(this.getMongoDB());
         this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("host"));
         //this.responder = new ServerResponder();
@@ -184,10 +194,13 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         registerCommandHandler(announcerModule);
 		registerCommandHandler(new StatsModule());
         if (getConfig().getBoolean("channels.enabled")) {
+            getLogger().info("Channels enabled...");
             registerEvents(new ChannelsListener());
             channelManager = new ChannelManager();
             channelManager.registerChannels();
             registerCommandHandler(new ChannelCommand());
+        } else {
+            getLogger().info("Channels disabled...");
         }
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }

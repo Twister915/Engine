@@ -7,18 +7,14 @@ channels:
     - default
 formatting:
   default:
-    format: "%player%: %message%"
+    format: "%prefix%%player%%suffix%: %message%"
     permission: "gearz.channels.default"
     default: true
-    irc:
-      enabled: true
-      channels:
-        - "#tbnrserver"
     filter: true
 irc:
   name: TBNRBot
   server: irc.esper.net
   login: tbnr
-  enabled: true
+  enabled: false
   printout: true
   format: "[%server%]<%sender%>: %message%"

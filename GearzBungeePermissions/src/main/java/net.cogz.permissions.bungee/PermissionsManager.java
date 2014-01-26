@@ -1,11 +1,13 @@
 package net.cogz.permissions.bungee;
 
+import com.google.common.base.Preconditions;
 import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -18,6 +20,7 @@ import java.util.List;
  * Many of these methods are not used bungee side
  */
 public class PermissionsManager extends GearzPermissions implements Listener {
+    private final List<ProxiedPlayer> playersAlreadyConnected = new ArrayList<>();
 
     @Override
     public List<String> onlinePlayers() {
@@ -31,7 +34,11 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
-        if (player == null) return;
+        Preconditions.checkNotNull(player, "player can not be null");
+        Preconditions.checkNotNull(perm, "permission null");
+        Preconditions.checkNotNull(value, "value null");
+        Preconditions.checkNotNull(proxiedPlayer, "proxied player null");
+        if (proxiedPlayer == null) return;
         proxiedPlayer.setPermission(perm, value);
     }
 
@@ -42,13 +49,17 @@ public class PermissionsManager extends GearzPermissions implements Listener {
 
     @EventHandler
     @SuppressWarnings("unused")
-    public void onPostLogin(PostLoginEvent event) {
-        onJoin(event.getPlayer().getName());
+    public void onPostLogin(ServerConnectEvent event) {
+        if (!this.playersAlreadyConnected.contains(event.getPlayer())) {
+            this.playersAlreadyConnected.add(event.getPlayer());
+            onJoin(event.getPlayer().getName());
+        }
     }
 
     @EventHandler
     @SuppressWarnings("unused")
     public void onLeave(PlayerDisconnectEvent event) {
+        this.playersAlreadyConnected.remove(event.getPlayer());
         onQuit(event.getPlayer().getName());
     }
 
