@@ -453,7 +453,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         for(int i = players.size()-1; i >= 0; i--) {
             Player wannaBe = players.get(i);
             if (p.getName().equals(wannaBe.getName())) continue;
-            if(integer < priorityForPlayer(wannaBe.getPlayer())) {
+            if(integer < priorityForPlayer(wannaBe.getPlayer()) || event.isAbsolutePriority()) {
                 candidate = GearzPlayer.playerFromPlayer(wannaBe);
                 break;
             }

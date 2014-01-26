@@ -96,11 +96,12 @@ public final class GearzPlayer {
     public void addPoints(int points) {
         Integer current_points = getPoints();
         Integer newPoints = Math.max(0, current_points + points);
-        PlayerPointChangeEvent playerPointChangeEvent = new PlayerPointChangeEvent(this, current_points, newPoints);
+        PlayerPointChangeEvent playerPointChangeEvent = new PlayerPointChangeEvent(this, current_points, newPoints, points);
         Bukkit.getPluginManager().callEvent(playerPointChangeEvent);
         if (playerPointChangeEvent.isCancelled()) {
             return;
         }
+        if (playerPointChangeEvent.getPoints() != points) newPoints = Math.max(0, current_points + playerPointChangeEvent.getPoints());
         this.player.store(Gearz.getInstance(), new GPlayerPoints(newPoints));
         this.updateStats();
     }
