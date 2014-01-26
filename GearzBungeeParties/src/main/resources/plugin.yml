@@ -1,0 +1,5 @@
+name: GearzBungeeParties
+version: 1.0
+author: Jake0oo0
+main: net.cogz.parties.bungee.GearzBungeeParties
+depends: ['GearzBungee']
