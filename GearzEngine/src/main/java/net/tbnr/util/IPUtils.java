@@ -24,7 +24,6 @@ public final class IPUtils {
      */
     public static void getPing(final InetAddress ip, final PingCallbackEventHandler ev) {
         Bukkit.getScheduler().runTaskAsynchronously(Gearz.getInstance(), new BukkitRunnable() {
-
             @Override
             public void run() {
                 float oldTime = System.currentTimeMillis();

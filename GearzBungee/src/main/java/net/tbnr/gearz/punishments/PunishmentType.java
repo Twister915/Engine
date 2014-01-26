@@ -3,11 +3,11 @@ package net.tbnr.gearz.punishments;
 import lombok.Getter;
 
 /**
- * Created by jake on 1/4/14.
+ * Created by Jake on 1/4/14.
  *
  * Purpose Of File: Enum For Punishment's
  *
- * Latest Change: Changed how the action and isKickable was got
+ * Latest Change: Correct the punishments that are kickable
  */
 public enum PunishmentType {
     PERMANENT_BAN("banned", true),

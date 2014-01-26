@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 /**
  * Created by jake on 1/4/14.
  *
- * Purpose Of File:
+ * Purpose Of File: Commands to punish players
  *
  * Latest Change:
  */

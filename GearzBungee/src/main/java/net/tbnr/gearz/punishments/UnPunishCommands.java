@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by jake on 1/4/14.
  *
- * Purpose Of File:
+ * Purpose Of File: Commands to unpunish players
  *
  * Latest Change:
  */
