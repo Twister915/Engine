@@ -346,7 +346,7 @@ public abstract class GearzGame implements Listener {
 
     protected abstract void mobKilled(LivingEntity killed, GearzPlayer killer);
 
-    protected abstract boolean canDropItem(GearzPlayer player, Item itemToDrop);
+    protected abstract boolean canDropItem(GearzPlayer player, ItemStack itemToDrop);
 
     protected abstract Location playerRespawn(GearzPlayer player);
 
@@ -650,30 +650,8 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-    protected final void dropItemsFormPlayer(GearzPlayer player) {
-        World world = this.arena.getWorld();
-        ItemStack[] armorContents = player.getPlayer().getInventory().getArmorContents();
-        ItemStack[] inventoryContents = player.getPlayer().getInventory().getContents();
-        ItemStack[] all = RandomUtils.concatenate(armorContents, inventoryContents);
-        for (ItemStack stack : all) {
-            if (stack == null) {
-                continue;
-            }
-            if (stack.getType() == Material.AIR) {
-                continue;
-            }
-            Item item = world.dropItemNaturally(player.getPlayer().getLocation(), stack);
-            if (!canDropItem(player, item)) {
-                item.remove();
-            } else {
-                Gearz.getInstance().getLogger().info(player.getUsername() + " dropped " + item.getItemStack().getType() + ":" + item.getItemStack().getAmount());
-            }
-        }
-        player.getTPlayer().clearInventory();
-    }
-
     protected final void fakeDeath(GearzPlayer player) {
-        dropItemsFormPlayer(player);
+        //dropItemsFormPlayer(player);
         player.getTPlayer().resetPlayer();
         PlayerGameDeathEvent event = new PlayerGameDeathEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
@@ -994,6 +972,13 @@ public abstract class GearzGame implements Listener {
         Player deadPlayer = event.getEntity();
         GearzPlayer dead = GearzPlayer.playerFromPlayer(deadPlayer);
         EntityDamageEvent.DamageCause cause = deadPlayer.getLastDamageCause().getCause();
+        List<ItemStack> drops = event.getDrops();
+        ItemStack[] itemStacks = drops.toArray(new ItemStack[drops.size()]);
+        for (ItemStack stack : itemStacks) {
+            if (!canDropItem(dead, stack)) {
+                event.getDrops().remove(stack);
+            }
+        }
         if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             //Process a PvP/PvE encounter
             EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
@@ -1182,7 +1167,7 @@ public abstract class GearzGame implements Listener {
         if (!isIngame(player)) {
             return;
         }
-        if (isSpectating(player) || !canDropItem(player, event.getItemDrop())) {
+        if (isSpectating(player) || !canDropItem(player, event.getItemDrop().getItemStack())) {
             event.setCancelled(true);
         }
     }
