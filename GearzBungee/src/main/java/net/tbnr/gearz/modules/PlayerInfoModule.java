@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Responsible for stalking our player base. #NoPrivacyPolicy
@@ -83,7 +84,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public TCommandStatus playerInfo(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 1) return TCommandStatus.FEW_ARGS;
-        if (!TCooldownManager.canContinueLocal("allchat", new TCooldown(7))) {
+        if (!TCooldownManager.canContinueLocal("allchat", new TCooldown(TimeUnit.SECONDS.toMillis(7)))) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("cooling-down", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
