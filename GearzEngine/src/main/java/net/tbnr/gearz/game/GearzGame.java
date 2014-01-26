@@ -649,7 +649,7 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-    protected final void fakeDeath(GearzPlayer player) {
+    protected final void fakeDeath(final GearzPlayer player) {
         //dropItemsFormPlayer(player);
         //player.getTPlayer().resetPlayer();
         PlayerGameDeathEvent event = new PlayerGameDeathEvent(this, player);
@@ -660,9 +660,18 @@ public abstract class GearzGame implements Listener {
         }
         player.getTPlayer().teleport(playerRespawn(player));
         player.getPlayer().playNote(player.getPlayer().getLocation(), Instrument.PIANO, Note.sharp(1, Note.Tone.F));
-        activatePlayer(player);
-        PlayerGameRespawnEvent respawnEvent = new PlayerGameRespawnEvent(player, this);
-        Bukkit.getPluginManager().callEvent(respawnEvent);
+        Bukkit.getScheduler().runTaskLater(
+                getPlugin(),
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        activatePlayer(player);
+                        PlayerGameRespawnEvent respawnEvent = new PlayerGameRespawnEvent(player, this);
+                        Bukkit.getPluginManager().callEvent(respawnEvent);
+                    }
+                },
+                1L
+        );
     }
 
     protected final void makePlayer(GearzPlayer player) {
