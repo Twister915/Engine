@@ -58,18 +58,18 @@ public abstract class GearzPermissions {
      *
      * @param player     Player to update
      * @param prefix     Their prefix
-     * @param name_color Their name color
-     * @param tab_color  Their tab color
+     * @param nameColor Their name color
+     * @param tabColor  Their tab color
      */
-    public abstract void updatePlayerDisplays(String player, String prefix, String name_color, String tab_color);
+    public abstract void updatePlayerDisplays(String player, String prefix, String nameColor, String tabColor);
 
     /**
      * Sets a player's chat name color
      *
      * @param player     Player to set the name for
-     * @param name_color Color to set the name too
+     * @param nameColor Color to set the name too
      */
-    public abstract void updatePlayerNameColor(String player, String name_color);
+    public abstract void updatePlayerNameColor(String player, String nameColor);
 
     /**
      * Sets a players suffix
@@ -91,9 +91,9 @@ public abstract class GearzPermissions {
      * Sets a players tab color
      *
      * @param player    player to update
-     * @param tab_color new tab color
+     * @param tabColor new tab color
      */
-    public abstract void updatePlayerTabColor(String player, String tab_color);
+    public abstract void updatePlayerTabColor(String player, String tabColor);
 
     /**
      * Reloads all the data from the database
@@ -131,17 +131,12 @@ public abstract class GearzPermissions {
      */
     public void onJoin(String s) {
         GModel one = new PermPlayer(this.database, s).findOne();
-        System.out.println("possibly found");
         if (one == null) {
-            System.out.println("nope null");
             one = new PermPlayer(this.database, s);
             ((PermPlayer) one).addPlayerToGroup(getDefaultGroup());
             one.save();
         }
-        System.out.println(one.getClass().getSimpleName());
-        System.out.println("possibly instanceof");
         if (!(one instanceof PermPlayer)) return;
-        System.out.println("adding to players..means instance of");
         this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
         reloadPlayer(s);
     }
@@ -196,7 +191,7 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Unsets a permission
+     * Removes a player permission
      *
      * @param player player to update
      * @param perm   permission to remove
@@ -209,7 +204,7 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Unsets a permission
+     * Remove a group permission
      *
      * @param group group to update
      * @param perm  permission to remove
@@ -283,7 +278,7 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Creats a PermGroup
+     * Creates a PermGroup
      *
      * @param name name of group
      * @return group that was created
@@ -293,7 +288,7 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Creats a PermGroup
+     * Creates a PermGroup
      *
      * @param name name of group
      * @return group that was created
@@ -307,7 +302,7 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Deletes a Permgroup
+     * Deletes a PermGroup
      *
      * @param name name of the group to delete
      */
