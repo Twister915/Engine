@@ -164,6 +164,7 @@ public class InventoryGUI implements Listener {
         if (!event.getInventory().getTitle().equalsIgnoreCase(this.inventory.getTitle())) {
             return;
         }
+		event.setCancelled(true);
         Player player1 = (Player) event.getWhoClicked();
         boolean cont = false;
         switch (event.getClick()) {
@@ -188,7 +189,6 @@ public class InventoryGUI implements Listener {
             }
             this.callback.onItemSelect(this, item, player1);
         }
-        event.setCancelled(true);
     }
 
     @ToString
