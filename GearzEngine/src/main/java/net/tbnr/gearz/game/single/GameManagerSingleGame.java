@@ -444,17 +444,17 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
      */
     private GearzPlayer candidateForKicking(@NonNull Player p) {
         GearzPlayer candidate = null;
-        ArrayList<TPlayer> players = new ArrayList<>();
-        players.addAll(TPlayerManager.getInstance().getPlayers());
+        ArrayList<Player> players = new ArrayList<>();
+        Collections.addAll(players, Bukkit.getOnlinePlayers());
         Integer integer = priorityForPlayer(p);
         PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(GearzPlayer.playerFromPlayer(p));
         event = Gearz.getInstance().callEvent(event);
         if (event.isCancelled()) return null;
         for(int i = players.size()-1; i >= 0; i--) {
-            GearzPlayer wannaBe = GearzPlayer.playerFromTPlayer(players.get(i));
-            if (p.getName().equals(wannaBe.getTPlayer().getPlayerName())) continue;
+            Player wannaBe = players.get(i);
+            if (p.getName().equals(wannaBe.getName())) continue;
             if(integer < priorityForPlayer(wannaBe.getPlayer())) {
-                candidate = wannaBe;
+                candidate = GearzPlayer.playerFromPlayer(wannaBe);
                 break;
             }
         }
