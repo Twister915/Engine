@@ -13,6 +13,9 @@ import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
 import net.tbnr.gearz.chat.Messaging;
+import net.tbnr.gearz.chat.channels.ChannelCommand;
+import net.tbnr.gearz.chat.channels.ChannelManager;
+import net.tbnr.gearz.chat.channels.ChannelsListener;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
@@ -29,6 +32,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -99,8 +103,16 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private Hub hub;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean whitelisted;
+
+    @Getter
+    private ChannelManager channelManager;
+
+    @Getter
+    public SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+
 
     /**
      * Gets the current instance of the GearzBungee plugin.
@@ -171,6 +183,12 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         AnnouncerModule announcerModule = new AnnouncerModule(true);
         registerCommandHandler(announcerModule);
 		registerCommandHandler(new StatsModule());
+        if (getConfig().getBoolean("channels.enabled")) {
+            registerEvents(new ChannelsListener());
+            channelManager = new ChannelManager();
+            channelManager.registerChannels();
+            registerCommandHandler(new ChannelCommand());
+        }
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -223,7 +241,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         if (censoredWords == null || !(censoredWords instanceof BasicDBList)) {
             return new String[0];
         }
-        BasicDBList dbListCensored = (BasicDBList)censoredWords;
+        BasicDBList dbListCensored = (BasicDBList) censoredWords;
         return dbListCensored.toArray(new String[dbListCensored.size()]);
     }
 
