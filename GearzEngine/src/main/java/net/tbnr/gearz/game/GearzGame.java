@@ -977,10 +977,6 @@ public abstract class GearzGame implements Listener {
                     return;
                 }
                 event.setDamage(callingEvent2.getDamage());
-                if (target.getPlayer().getHealth() - event.getDamage() <= 0) {
-                    playerKilledPlayer(damager, target);
-                    event.setCancelled(true);
-                }
             }
         } else if (eventDamager instanceof LivingEntity) {
             GearzPlayer target = GearzPlayer.playerFromPlayer((Player) eventTarget);
@@ -988,14 +984,34 @@ public abstract class GearzGame implements Listener {
             Bukkit.getPluginManager().callEvent(callingEvent);
             if (callingEvent.isCancelled()) {
                 event.setCancelled(true);
-                return;
-            }
-            if (target.getPlayer().getHealth() - event.getDamage() <= 0) {
-                this.playerKilled(target, (LivingEntity) eventDamager);
-                fakeDeath(target);
-                event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void playerDied(PlayerDeathEvent event) {
+        Player deadPlayer = event.getEntity();
+        GearzPlayer dead = GearzPlayer.playerFromPlayer(deadPlayer);
+        dead.getTPlayer().resetPlayer();
+        event.setDeathMessage(null);
+        event.getDrops().clear();
+        EntityDamageEvent.DamageCause cause = deadPlayer.getLastDamageCause().getCause();
+        if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            //Process a PvP/PvE encounter
+            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
+            if (deadPlayer.getKiller() != null) {
+                GearzPlayer player = GearzPlayer.playerFromPlayer(deadPlayer.getKiller());
+                playerKilledPlayer(player, dead);
+            }
+            else {
+                this.playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
+                fakeDeath(dead);
+            }
+            return;
+        }
+        onDeath(dead);
+        fakeDeath(dead);
+        broadcast(getFormat("solo-death", new String[]{"<victim>", dead.getPlayer().getDisplayName()}));
     }
 
     private void playerKilledPlayer(final GearzPlayer damager, final GearzPlayer target) {
@@ -1043,24 +1059,10 @@ public abstract class GearzGame implements Listener {
         Bukkit.getPluginManager().callEvent(callingEvent);
         if (callingEvent.isCancelled()) {
             event.setCancelled(true);
-            return;
-        }
-        if (player.getPlayer().getHealth() - event.getDamage() <= 0) {
-            EntityDamageEvent lastDamageCause = player.getPlayer().getLastDamageCause();
-            if (lastDamageCause instanceof EntityDamageByEntityEvent && !lastDamageCause.equals(event) && !lastDamageCause.isCancelled()) {
-                onEntityAttack((EntityDamageByEntityEvent) lastDamageCause);
-                if (lastDamageCause.isCancelled()) {
-                    return;
-                }
-            }
-            onDeath(player);
-            fakeDeath(player);
-            event.setCancelled(true);
-            broadcast(getFormat("solo-death", new String[]{"<victim>", player.getPlayer().getDisplayName()}));
         }
     }
 
-        //NOTICE Static Strings!
+    //NOTICE Static Strings!
     protected final void displayWinners(GearzPlayer... players) {
         List<String> strings = new ArrayList<>();
         //char[] emptyStrings = new char[64];

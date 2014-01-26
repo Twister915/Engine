@@ -155,7 +155,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     public void onLogin(PlayerLoginEvent event) {
         if (Bukkit.getOnlinePlayers().length < this.gameMeta.maxPlayers()) return;
         if (this.runningGame != null && this.runningGame.isRunning()) return;
-        GearzPlayer personToKick = candidateForKicking(GearzPlayer.playerFromPlayer(event.getPlayer()));
+        GearzPlayer personToKick = candidateForKicking(event.getPlayer());
         if(personToKick != null) {
             personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
         } else {
@@ -442,18 +442,18 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
      * Get the person on the server with lower priority then them if no player lower it returns null
      * @return GearzPlayer ~ player with lower priority then them
      */
-    private GearzPlayer candidateForKicking(@NonNull GearzPlayer p) {
+    private GearzPlayer candidateForKicking(@NonNull Player p) {
         GearzPlayer candidate = null;
         ArrayList<TPlayer> players = new ArrayList<>();
         players.addAll(TPlayerManager.getInstance().getPlayers());
         Integer integer = priorityForPlayer(p);
-        PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(p);
+        PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(GearzPlayer.playerFromPlayer(p));
         event = Gearz.getInstance().callEvent(event);
         if (event.isCancelled()) return null;
         for(int i = players.size()-1; i >= 0; i--) {
             GearzPlayer wannaBe = GearzPlayer.playerFromTPlayer(players.get(i));
-            if (p.equals(wannaBe)) continue;
-            if(integer < priorityForPlayer(wannaBe)) {
+            if (p.getName().equals(wannaBe.getTPlayer().getPlayerName())) continue;
+            if(integer < priorityForPlayer(wannaBe.getPlayer())) {
                 candidate = wannaBe;
                 break;
             }
@@ -467,7 +467,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
      * @return priority of player, -1 default
      */
     @NonNull
-    private Integer priorityForPlayer(GearzPlayer p) {
+    private Integer priorityForPlayer(Player p) {
         Integer priority = priorities.size();
         String permissionPriority;
         Player player = p.getPlayer();
