@@ -17,7 +17,6 @@ import net.tbnr.gearz.Gearz;
  * Latest Change:
  */
 public class TabListener {
-
     public TabListener() {
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(Gearz.getInstance(), ListenerPriority.NORMAL, PacketType.Play.Client.TAB_COMPLETE) {
             public void onPacketReceiving(PacketEvent event) {

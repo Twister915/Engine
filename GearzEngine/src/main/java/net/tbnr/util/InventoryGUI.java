@@ -102,18 +102,6 @@ public class InventoryGUI implements Listener {
     }
 
     private int determineSize() {
-        /*if (items == null) {
-            return 9;
-        }
-        if (items.size() <= 9) {
-            return 9;
-        } else if (items.size() <= 18) {
-            return 18;
-        } else if (items.size() <= 27) {
-            return 27;
-        } else {
-            return 36;
-        }*/
         int rowSize = 9;
         if (items == null || items.size() == 0) {
             return rowSize;

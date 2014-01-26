@@ -11,7 +11,7 @@ import net.tbnr.gearz.GearzBungee;
 /**
  * Created by jake on 1/4/14.
  *
- * Purpose Of File:
+ * Purpose Of File: Handles IP Bans in the database
  *
  * Latest Change:
  */

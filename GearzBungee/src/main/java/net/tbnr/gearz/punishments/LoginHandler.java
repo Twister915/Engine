@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * Created by jake on 1/4/14.
  *
- * Purpose Of File:
+ * Purpose Of File: Handles logins that may have a ip ban attached
  *
  * Latest Change:
  */
