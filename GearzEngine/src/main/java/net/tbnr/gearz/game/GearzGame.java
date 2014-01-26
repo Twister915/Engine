@@ -13,7 +13,6 @@ import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.InventoryGUI;
-import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
 import org.apache.commons.lang.StringUtils;
@@ -346,7 +345,7 @@ public abstract class GearzGame implements Listener {
 
     protected abstract void mobKilled(LivingEntity killed, GearzPlayer killer);
 
-    protected abstract boolean canDropItem(GearzPlayer player, Item itemToDrop);
+    protected abstract boolean canDropItem(GearzPlayer player, ItemStack itemToDrop);
 
     protected abstract Location playerRespawn(GearzPlayer player);
 
@@ -650,30 +649,8 @@ public abstract class GearzGame implements Listener {
         }
     }
 
-    protected final void dropItemsFormPlayer(GearzPlayer player) {
-        World world = this.arena.getWorld();
-        ItemStack[] armorContents = player.getPlayer().getInventory().getArmorContents();
-        ItemStack[] inventoryContents = player.getPlayer().getInventory().getContents();
-        ItemStack[] all = RandomUtils.concatenate(armorContents, inventoryContents);
-        for (ItemStack stack : all) {
-            if (stack == null) {
-                continue;
-            }
-            if (stack.getType() == Material.AIR) {
-                continue;
-            }
-            Item item = world.dropItemNaturally(player.getPlayer().getLocation(), stack);
-            if (!canDropItem(player, item)) {
-                item.remove();
-            } else {
-                Gearz.getInstance().getLogger().info(player.getUsername() + " dropped " + item.getItemStack().getType() + ":" + item.getItemStack().getAmount());
-            }
-        }
-        player.getTPlayer().clearInventory();
-    }
-
     protected final void fakeDeath(GearzPlayer player) {
-        dropItemsFormPlayer(player);
+        //dropItemsFormPlayer(player);
         player.getTPlayer().resetPlayer();
         PlayerGameDeathEvent event = new PlayerGameDeathEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
@@ -977,10 +954,6 @@ public abstract class GearzGame implements Listener {
                     return;
                 }
                 event.setDamage(callingEvent2.getDamage());
-                if (target.getPlayer().getHealth() - event.getDamage() <= 0) {
-                    playerKilledPlayer(damager, target);
-                    event.setCancelled(true);
-                }
             }
         } else if (eventDamager instanceof LivingEntity) {
             GearzPlayer target = GearzPlayer.playerFromPlayer((Player) eventTarget);
@@ -988,14 +961,39 @@ public abstract class GearzGame implements Listener {
             Bukkit.getPluginManager().callEvent(callingEvent);
             if (callingEvent.isCancelled()) {
                 event.setCancelled(true);
-                return;
-            }
-            if (target.getPlayer().getHealth() - event.getDamage() <= 0) {
-                this.playerKilled(target, (LivingEntity) eventDamager);
-                fakeDeath(target);
-                event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void playerDied(PlayerDeathEvent event) {
+        event.getEntity().setHealth(event.getEntity().getHealthScale());
+        Player deadPlayer = event.getEntity();
+        GearzPlayer dead = GearzPlayer.playerFromPlayer(deadPlayer);
+        EntityDamageEvent.DamageCause cause = deadPlayer.getLastDamageCause().getCause();
+        List<ItemStack> drops = event.getDrops();
+        ItemStack[] itemStacks = drops.toArray(new ItemStack[drops.size()]);
+        for (ItemStack stack : itemStacks) {
+            if (!canDropItem(dead, stack)) {
+                event.getDrops().remove(stack);
+            }
+        }
+        if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            //Process a PvP/PvE encounter
+            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
+            if (deadPlayer.getKiller() != null) {
+                GearzPlayer player = GearzPlayer.playerFromPlayer(deadPlayer.getKiller());
+                playerKilledPlayer(player, dead);
+            }
+            else {
+                this.playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
+                fakeDeath(dead);
+            }
+            return;
+        }
+        onDeath(dead);
+        fakeDeath(dead);
+        broadcast(getFormat("solo-death", new String[]{"<victim>", dead.getPlayer().getDisplayName()}));
     }
 
     private void playerKilledPlayer(final GearzPlayer damager, final GearzPlayer target) {
@@ -1043,24 +1041,10 @@ public abstract class GearzGame implements Listener {
         Bukkit.getPluginManager().callEvent(callingEvent);
         if (callingEvent.isCancelled()) {
             event.setCancelled(true);
-            return;
-        }
-        if (player.getPlayer().getHealth() - event.getDamage() <= 0) {
-            EntityDamageEvent lastDamageCause = player.getPlayer().getLastDamageCause();
-            if (lastDamageCause instanceof EntityDamageByEntityEvent && !lastDamageCause.equals(event) && !lastDamageCause.isCancelled()) {
-                onEntityAttack((EntityDamageByEntityEvent) lastDamageCause);
-                if (lastDamageCause.isCancelled()) {
-                    return;
-                }
-            }
-            onDeath(player);
-            fakeDeath(player);
-            event.setCancelled(true);
-            broadcast(getFormat("solo-death", new String[]{"<victim>", player.getPlayer().getDisplayName()}));
         }
     }
 
-        //NOTICE Static Strings!
+    //NOTICE Static Strings!
     protected final void displayWinners(GearzPlayer... players) {
         List<String> strings = new ArrayList<>();
         //char[] emptyStrings = new char[64];
@@ -1182,7 +1166,7 @@ public abstract class GearzGame implements Listener {
         if (!isIngame(player)) {
             return;
         }
-        if (isSpectating(player) || !canDropItem(player, event.getItemDrop())) {
+        if (isSpectating(player) || !canDropItem(player, event.getItemDrop().getItemStack())) {
             event.setCancelled(true);
         }
     }
