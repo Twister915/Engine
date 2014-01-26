@@ -986,13 +986,13 @@ public abstract class GearzGame implements Listener {
                 playerKilledPlayer(player, dead);
             }
             else {
-                fakeDeath(dead);
                 this.playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
+                fakeDeath(dead);
             }
             return;
         }
-        fakeDeath(dead);
         onDeath(dead);
+        fakeDeath(dead);
         broadcast(getFormat("solo-death", new String[]{"<victim>", dead.getPlayer().getDisplayName()}));
     }
 
