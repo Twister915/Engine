@@ -20,14 +20,17 @@ public final class PlayerPointChangeEvent extends Event implements Cancellable {
     private final GearzPlayer player;
     @Getter
     private final Integer oldPoints;
-    @Getter @Setter
+    @Getter
     private Integer newPoints;
+    @Getter @Setter
+    private Integer points;
     private boolean canceled;
 
-    public PlayerPointChangeEvent(GearzPlayer player, Integer oldPoints, Integer newPoints) {
+    public PlayerPointChangeEvent(GearzPlayer player, Integer oldPoints, Integer newPoints, Integer points) {
         this.player = player;
         this.oldPoints = oldPoints;
         this.newPoints = newPoints;
+        this.points = points;
         this.canceled = false;
     }
 
