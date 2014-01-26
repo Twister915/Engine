@@ -990,11 +990,9 @@ public abstract class GearzGame implements Listener {
 
     @EventHandler
     public void playerDied(PlayerDeathEvent event) {
+        event.getEntity().setHealth(event.getEntity().getHealthScale());
         Player deadPlayer = event.getEntity();
         GearzPlayer dead = GearzPlayer.playerFromPlayer(deadPlayer);
-        dead.getTPlayer().resetPlayer();
-        event.setDeathMessage(null);
-        event.getDrops().clear();
         EntityDamageEvent.DamageCause cause = deadPlayer.getLastDamageCause().getCause();
         if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             //Process a PvP/PvE encounter
