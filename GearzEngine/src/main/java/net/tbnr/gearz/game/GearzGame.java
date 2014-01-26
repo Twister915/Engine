@@ -650,8 +650,7 @@ public abstract class GearzGame implements Listener {
     }
 
     protected final void fakeDeath(final GearzPlayer player) {
-        //dropItemsFormPlayer(player);
-        //player.getTPlayer().resetPlayer();
+        player.getTPlayer().resetPlayer();
         PlayerGameDeathEvent event = new PlayerGameDeathEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
         if (!canPlayerRespawn(player)) {
