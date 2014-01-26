@@ -39,6 +39,7 @@
         <module>GearzBungeePunishments</module>
         <module>GearzFriends</module>
         <module>GearzBukkitFriends</module>
+        <module>GearzSettings</module>
     </modules>
 
     <properties>

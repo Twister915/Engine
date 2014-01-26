@@ -109,7 +109,7 @@ public abstract class GearzGame implements Listener {
         }
     }
     /**
-     * You only get points if you leave on good terms
+     * You only getSetting points if you leave on good terms
      */
     private final HashMap<GearzPlayer, Integer> pendingPoints;
 
@@ -622,7 +622,7 @@ public abstract class GearzGame implements Listener {
                     List<String> headImage = ImageToChatBukkitUtil.getHeadImage(name, true);
                     itemMeta.setLore(headImage);
                 } catch (RuntimeException ex) {
-                    System.err.println("Could not get head for " + name);
+                    System.err.println("Could not getSetting head for " + name);
                 }*/
                 stack.setItemMeta(itemMeta);
                 //stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 32);

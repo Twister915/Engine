@@ -235,7 +235,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
             if (votable == null) {
                 continue;
             }
-            //item.setAmount(Math.max(1,voteCounts.get(votable)));
+            //item.setAmount(Math.max(1,voteCounts.getSetting(votable)));
             if (voteCounts.get(votable) == null) {
                 return;
             }

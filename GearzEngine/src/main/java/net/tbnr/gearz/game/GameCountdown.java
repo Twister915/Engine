@@ -29,7 +29,7 @@ public final class GameCountdown implements Runnable {
      */
     private Integer passed;
     /**
-     * Handler storage. This will get calls.
+     * Handler storage. This will getSetting calls.
      */
     private final GameCountdownHandler handler;
     /**

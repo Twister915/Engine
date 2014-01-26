@@ -25,6 +25,8 @@ import net.tbnr.gearz.player.GearzPlayerUtils;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.gearz.server.ServerManagerHelper;
+import net.tbnr.gearz.settings.SettingsRegistration;
+import net.tbnr.gearz.settings.commands.SettingsCommands;
 import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
@@ -203,6 +205,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         registerEvents(new PlayerListener());
         registerEvents(new EnderBar.EnderBarListeners());
         registerCommands(new ClearChat());
+        registerCommands(new SettingsCommands());
         new TabListener();
 
         //EnderBar utils
@@ -224,6 +227,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         Gearz.getInstance().getConfig().set("bg.name", RandomUtils.getRandomString(16));
 
         //Link the server up in the database.
+        SettingsRegistration.register();
         Bukkit.getScheduler().runTaskLater(Gearz.getInstance(), new Runnable() {
             @Override
             public void run() {

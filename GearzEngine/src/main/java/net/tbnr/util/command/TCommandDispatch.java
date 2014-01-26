@@ -53,7 +53,7 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
      */
     private final HashMap<Command, Method> methods = new HashMap<>();
     /**
-     * Associates commands with their metadata. This is easily done without this array, but if you get a variable, best store it.
+     * Associates commands with their metadata. This is easily done without this array, but if you getSetting a variable, best store it.
      */
     private final HashMap<Command, TCommand> metas = new HashMap<>();
     /**

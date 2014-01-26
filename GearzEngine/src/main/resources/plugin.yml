@@ -22,6 +22,15 @@ commands:
   clearmychat:
     description: Clears senders chat
     aliases: [cmc, cmychat]
+    description: Gives info about the map
+  settings:
+    description: Lists settings
+  set:
+    description: Sets setting to specified value
+  get:
+    description: Gets the value of the setting
+  toggle:
+    description: Toggles a setting, if applicable
 permissions:
   gearz.test:
     default: op

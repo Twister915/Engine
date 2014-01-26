@@ -14,6 +14,8 @@ package net.tbnr.util.player;
 import com.mongodb.*;
 import lombok.NonNull;
 import net.tbnr.gearz.Gearz;
+import net.tbnr.gearz.settings.PlayerSettings;
+import net.tbnr.gearz.settings.SettingsRegistration;
 import net.tbnr.util.player.cooldowns.TCooldownManager;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
@@ -46,7 +48,7 @@ public final class TPlayerManager implements Listener {
         if (id1 == null) return null;
         Object username = id1.get("username");
         if (!(username instanceof String)) return null;
-        return (String)username;
+        return (String) username;
     }
 
     public TPlayerManager(AuthenticationDetails details) {
@@ -95,10 +97,14 @@ public final class TPlayerManager implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     @SuppressWarnings("unused")
     public void onLogin(PlayerJoinEvent event) {
-        if(event.getPlayer() == null) return;
+        if (event.getPlayer() == null) return;
         TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.getPlayer(event.getPlayer()));
         Bukkit.getPluginManager().callEvent(tPlayerJoinEvent);
-        event.setJoinMessage(tPlayerJoinEvent.getJoinMessage());
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
+                player.sendMessage(tPlayerJoinEvent.getJoinMessage());
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

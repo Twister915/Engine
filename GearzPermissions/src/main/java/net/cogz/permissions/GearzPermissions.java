@@ -318,7 +318,7 @@ public abstract class GearzPermissions {
     /**
      * Gets the prefix of a player
      *
-     * @param player player to get the prefix of
+     * @param player player to getSetting the prefix of
      * @return the prefix of the player
      */
     public String getPrefix(PermPlayer player) {
@@ -334,7 +334,7 @@ public abstract class GearzPermissions {
     /**
      * Gets the suffix of a player
      *
-     * @param player player to get the suffix of
+     * @param player player to getSetting the suffix of
      * @return the suffix of the player
      */
     public String getSuffix(PermPlayer player) {
@@ -350,7 +350,7 @@ public abstract class GearzPermissions {
     /**
      * Gets the name color of a player
      *
-     * @param player player to get the name color of
+     * @param player player to getSetting the name color of
      * @return the name color of the player
      */
     @SuppressWarnings("unused")
@@ -367,7 +367,7 @@ public abstract class GearzPermissions {
     /**
      * Gets the tab color of a player
      *
-     * @param player player to get the tab color of
+     * @param player player to getSetting the tab color of
      * @return the tab color of the player
      */
     @SuppressWarnings("unused")

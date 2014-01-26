@@ -12,6 +12,12 @@ redis:
   port: 6379
 scoreboard: true
 formats:
+  setting-not-found: "&cThat setting was not found."
+  setting-not-toggleable: "&cThat setting can not be toggled."
+  setting-bad-parse: "&cCould not parse setting input."
+  settings-header: "&6Settings:"
+  settings-list: "&c<setting>&7 - &4<description>"
+  settings-value: "&c<setting>: &4<value>"
   no-permission: "&cYou don't have permission for this command!"
   many-args: "&cYou have supplied too many arguments!"
   few-args: "&cYou have supplied too few arguments!"

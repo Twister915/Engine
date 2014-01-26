@@ -85,10 +85,10 @@ public class ZipUtil implements GUtility {
                 folder.mkdir();
             }
 
-            // get the zip file content
+            // getSetting the zip file content
             ZipInputStream zis = new ZipInputStream(
                     new FileInputStream(zipFile));
-            // get the zipped file list entry
+            // getSetting the zipped file list entry
             ZipEntry ze = zis.getNextEntry();
 
             while (ze != null) {

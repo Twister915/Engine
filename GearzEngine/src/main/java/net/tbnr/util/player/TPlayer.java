@@ -14,9 +14,12 @@ package net.tbnr.util.player;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import net.gearz.settings.SettingsManager;
+import net.gearz.settings.base.BaseSetting;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
 import net.tbnr.util.*;
@@ -24,6 +27,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import net.tbnr.gearz.settings.PlayerSettings;
+import net.tbnr.util.IPUtils;
+import net.tbnr.util.PlayerResetParams;
+import net.tbnr.util.TPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,6 +47,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.*;
 
 import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.ParticleEffect;
 
@@ -114,6 +122,72 @@ public final class TPlayer {
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
         //this.getPlayer().setScoreboard(this.scoreboard);
+        loadSettings();
+    }
+
+    public void loadSettings() {
+        DBObject dbObject = getPlayerDocument();
+        Object settingsObj = dbObject.get("settings");
+        if (settingsObj == null || !(settingsObj instanceof BasicDBList)) {
+            settingsObj = new BasicDBList();
+        }
+        BasicDBList settings = (BasicDBList) settingsObj;
+        Map<String, Object> values = new HashMap<>();
+        for (Object object : settings) {
+            if (!(object instanceof BasicDBObject)) continue;
+            BasicDBObject setting = (BasicDBObject) object;
+            String key = setting.getString("name");
+            Object value = setting.get("value");
+            values.put(key, value);
+        }
+        for (BaseSetting setting : PlayerSettings.getRegistry().getSettings()) {
+            String key = setting.getName().replace(" ", "").toLowerCase();
+            SettingsManager settingsManager = PlayerSettings.getManager(getPlayer());
+            if (!values.containsKey(key)) continue;
+            settingsManager.setValue(setting, values.get(key));
+        }
+    }
+
+    public void setSetting(BaseSetting toSet, Object value) {
+        DBObject dbObject = getPlayerDocument();
+        Object settingsObj = dbObject.get("settings");
+        if (settingsObj == null || !(settingsObj instanceof BasicDBList)) {
+            settingsObj = new BasicDBList();
+        }
+        BasicDBList settings = (BasicDBList) settingsObj;
+        for (Object object : settings) {
+            if (!(object instanceof BasicDBObject)) continue;
+            BasicDBObject setting = (BasicDBObject) object;
+            String key = setting.getString("name");
+            if (key.equals(toSet.getName())) {
+                setting.put("value", value);
+                save();
+                return;
+            }
+        }
+        DBObject setting = new BasicDBObjectBuilder().add("name", toSet.getName()).add("value", value).get();
+        settings.add(setting);
+        dbObject.put("settings", settings);
+        save();
+    }
+
+    public void deleteSetting(BaseSetting toSet) {
+        DBObject dbObject = getPlayerDocument();
+        Object settingsObj = dbObject.get("settings");
+        if (settingsObj == null || !(settingsObj instanceof BasicDBList)) {
+            settingsObj = new BasicDBList();
+        }
+        String settingKey = toSet.getName().replace(" ", "").toLowerCase();
+        BasicDBList settings = (BasicDBList) settingsObj;
+        for (Object object : settings) {
+            if (!(object instanceof BasicDBObject)) continue;
+            BasicDBObject setting = (BasicDBObject) object;
+            String key = setting.getString("name");
+            if (key.equals(settingKey)) {
+                settings.remove(setting);
+            }
+        }
+        save();
     }
 
     public static DBObject getPlayerObject(String name) {

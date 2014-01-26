@@ -155,7 +155,7 @@ public final class ArenaManager {
             ArenaField annotation = field.getAnnotation(ArenaField.class); //Get the Annotation from the field as an object
             ArenaIterator iterator; //Setup an object to put the iterator in
             try {
-                iterator = (ArenaIterator) field.get(arena); //Try to get the arena iterator
+                iterator = (ArenaIterator) field.get(arena); //Try to getSetting the arena iterator
             } catch (IllegalAccessException e) {
                 continue; //Didn't work :o
             }
