@@ -255,7 +255,7 @@ public class PermissionsCommands implements TCommandHandler {
             senders = {TCommandSender.Player, TCommandSender.Console})
     @SuppressWarnings("unused")
     public TCommandStatus command(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
-        if (args.length < 2) {
+        if (args.length < 1) {
             return TCommandStatus.INVALID_ARGS;
         }
         if (args[0].equalsIgnoreCase("reload")) {

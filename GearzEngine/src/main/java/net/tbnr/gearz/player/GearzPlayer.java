@@ -32,9 +32,11 @@ public final class GearzPlayer {
     private static final Integer magic_number = 7;
     private GearzGame game;
     private static HashMap<TPlayer, GearzPlayer> players;
+    private static boolean scoreboard;
 
     static {
         GearzPlayer.players = new HashMap<>();
+        scoreboard = Gearz.getInstance().getConfig().getBoolean("scoreboard");
     }
 
     @SuppressWarnings("unused")
@@ -44,6 +46,7 @@ public final class GearzPlayer {
     }
 
     public void setHideStats(boolean h) {
+        if (!scoreboard) return;
         if (this.getPlayer() == null) {
             return;
         }
@@ -152,6 +155,7 @@ public final class GearzPlayer {
     }
 
     public void updateStats() {
+        if (!scoreboard) return;
         Integer xp = this.getXP();
         int new_level = this.getLevelFromXP(xp);
         Integer level = this.getLevel();
@@ -180,6 +184,7 @@ public final class GearzPlayer {
     }
 
     public void setupScoreboard() {
+        if (!scoreboard) return;
         Gearz instance = Gearz.getInstance();
         this.player.setScoreboardSideTitle(instance.getFormat("formats.sidebar-title-loading"));
         this.player.setScoreBoardSide(instance.getFormat("formats.xp-sidebar"), -1);

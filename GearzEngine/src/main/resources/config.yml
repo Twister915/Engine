@@ -10,6 +10,7 @@ database:
 redis:
   host: one.tbnr.pw
   port: 6379
+scoreboard: true
 formats:
   no-permission: "&cYou don't have permission for this command!"
   many-args: "&cYou have supplied too many arguments!"

@@ -47,7 +47,7 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     }
 
     @Override
-    public void updatePlayerNameColor(String player, String name_color) {
+    public void updatePlayerNameColor(String player, String nameColor) {
 
     }
 
@@ -62,7 +62,7 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     }
 
     @Override
-    public void updatePlayerTabColor(String player, String tab_color) {
+    public void updatePlayerTabColor(String player, String tabColor) {
         Player player1 = Bukkit.getPlayer(player);
         if (player1 == null) return;
         Object storable = GearzPlayer.playerFromPlayer(player1).getTPlayer().getStorable(Gearz.getInstance(), new GearzPlayerNickname(null));
@@ -70,7 +70,7 @@ public class PermissionsManager extends GearzPermissions implements Listener {
             storable = player;
         }
         String name = (String) storable;
-        player1.setPlayerListName(ChatColor.translateAlternateColorCodes('&', tab_color + name).substring(14));
+        player1.setPlayerListName(ChatColor.translateAlternateColorCodes('&', tabColor + name).substring(14));
     }
 
     @EventHandler

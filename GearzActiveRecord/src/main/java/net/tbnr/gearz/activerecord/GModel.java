@@ -400,16 +400,11 @@ public abstract class GModel {
      */
     public GModel findOne() {
         DBObject objectValue = this.getObjectValue(false);
-        for (String s : objectValue.keySet()) {
-            System.err.println(s + ":" + objectValue.get(s).toString());
-        }
         DBObject one = this.collection.findOne(objectValue);
         if (one == null) return null;
-        System.err.println("Found one of the model! " + one.toMap().toString());
         GModel gModel = modelFromOne(this.getClass(), one, this.database);
         gModel.database = this.database;
         gModel.updateObjects();
-        System.err.println(gModel.basicDBObjectBuilder.get().toMap().toString());
         return gModel;
     }
 

@@ -53,12 +53,12 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     }
 
     @Override
-    public void updatePlayerDisplays(String player, String prefix, String name_color, String tab_color) {
+    public void updatePlayerDisplays(String player, String prefix, String nameColor, String tabColor) {
 
     }
 
     @Override
-    public void updatePlayerNameColor(String player, String name_color) {
+    public void updatePlayerNameColor(String player, String nameColor) {
 
     }
 
@@ -73,7 +73,7 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     }
 
     @Override
-    public void updatePlayerTabColor(String player, String tab_color) {
+    public void updatePlayerTabColor(String player, String tabColor) {
 
     }
 }
