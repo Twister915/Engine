@@ -84,7 +84,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public TCommandStatus playerInfo(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 1) return TCommandStatus.FEW_ARGS;
-        if (!TCooldownManager.canContinueLocal("allchat", new TCooldown(TimeUnit.SECONDS.toMillis(7)))) {
+        if (!TCooldownManager.canContinueLocal("playerinfo", new TCooldown(TimeUnit.SECONDS.toMillis(7)))) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("cooling-down", false, false));
             return TCommandStatus.SUCCESSFUL;
         }

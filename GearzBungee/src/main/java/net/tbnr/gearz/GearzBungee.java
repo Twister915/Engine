@@ -19,6 +19,7 @@ import net.tbnr.gearz.chat.channels.ChannelManager;
 import net.tbnr.gearz.chat.channels.ChannelsListener;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
+import net.tbnr.gearz.friends.FriendCommands;
 import net.tbnr.gearz.modules.*;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
@@ -183,7 +184,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         registerCommandHandler(whitelistModule);
         AnnouncerModule announcerModule = new AnnouncerModule(getConfig().getBoolean("announcer.enabled", false));
         registerCommandHandler(announcerModule);
-		registerCommandHandler(new StatsModule());
+        registerCommandHandler(new StatsModule());
         channelManager = new ChannelManager();
         if (getConfig().getBoolean("channels.enabled", false)) {
             getLogger().info("Channels enabled...");
@@ -198,6 +199,12 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         }
         this.chatManager = new ChatManager();
         registerCommandHandler(new ClearChat());
+        if (getConfig().getBoolean("friends.enabled", false)) {
+            registerCommandHandler(new FriendCommands());
+            getLogger().info("Friends enabled!");
+        } else {
+            getLogger().warning("Friends disabled!");
+        }
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -320,6 +327,10 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     public String getFormat(String key, boolean prefix, boolean color) {
         return getFormat(key, prefix, color, null);
+    }
+
+    public String getFormat(String key, String[]... data) {
+        return getFormat(key, false, false, data);
     }
 
     public String getFormat(String key, boolean prefix) {
