@@ -55,6 +55,7 @@ public class PermPlayer extends GModel {
     }
 
     public PermGroup getGroup() {
+        if (this.group == null) return null;
         return GearzPermissions.getInstance().getGroup(this.group);
     }
 

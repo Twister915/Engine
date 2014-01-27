@@ -8,6 +8,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.chat.channels.Channel;
+import net.tbnr.gearz.friends.Friend;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishmentType;
 import org.bson.types.ObjectId;
@@ -365,6 +366,164 @@ public final class GearzPlayer {
         if (!ignoreList.contains(player.getName())) return;
         ignoreList.remove(player.getName());
         getPlayerDocument().put("ignored", ignoreList);
+    }
+
+    public List<Friend> getAllFriends() {
+        List<Friend> friends = new ArrayList<>();
+        try {
+            loadDocument();
+        } catch (PlayerNotFoundException e) {
+            return friends;
+        }
+        Object friendsObj = getPlayerDocument().get("friends");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
+            return friends;
+        }
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        for (Object o : friendsList) {
+            if (!(o instanceof String)) continue;
+            String friend = (String) o;
+            friends.add(new Friend(friend, ProxyServer.getInstance().getPlayer(friend) != null));
+        }
+        return friends;
+    }
+
+    public void removeFriend(String name, boolean primary) throws IllegalStateException {
+        Object friendsObj = getPlayerDocument().get("friends");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
+            friendsObj = new BasicDBList();
+        }
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        for (Object object : friendsList) {
+            if (!(object instanceof String)) continue;
+            String s = (String) object;
+            if (s.equals(name)) {
+                friendsList.remove(name);
+                if (primary) {
+                    try {
+                        new GearzPlayer(name).removeFriend(getName(), false);
+                    } catch (PlayerNotFoundException e) {
+                        return;
+                    }
+                }
+                getPlayerDocument().put("friends", friendsList);
+                save();
+                return;
+            }
+        }
+        throw new IllegalStateException("That player is not your friend");
+    }
+
+    public void addFriend(String name, boolean primary) throws Friend.FriendRequestexception, IllegalStateException {
+        if (isFriend(name)) throw new IllegalStateException("already added");
+        Object friendsObj = getPlayerDocument().get("friends");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
+            friendsObj = new BasicDBList();
+        }
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        if (!hasRequest(name)) {
+            throw new Friend.FriendRequestexception("no request found");
+        } else {
+            friendsList.add(name);
+            if (primary) {
+                try {
+                    GearzPlayer target = new GearzPlayer(name);
+                    target.addRequest(getName());
+                    target.addFriend(getName(), false);
+                } catch (PlayerNotFoundException e) {
+                    return;
+                }
+            }
+            removeRequest(name);
+        }
+        getPlayerDocument().put("friends", friendsList);
+        save();
+    }
+
+    public List<Friend> getPendingRequests() {
+        List<Friend> friends = new ArrayList<>();
+        try {
+            loadDocument();
+        } catch (PlayerNotFoundException e) {
+            return friends;
+        }
+        Object friendsObj = getPlayerDocument().get("friend_requests");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
+            return friends;
+        }
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        for (Object o : friendsList) {
+            if (!(o instanceof String)) continue;
+            String friend = (String) o;
+            friends.add(new Friend(friend, ProxyServer.getInstance().getPlayer(friend) != null));
+        }
+        return friends;
+    }
+
+    public boolean hasRequest(String name) throws IllegalStateException {
+        try {
+            loadDocument();
+        } catch (PlayerNotFoundException e) {
+            return false;
+        }
+        Object friendsObj = getPlayerDocument().get("friend_requests");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
+            return false;
+        }
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        for (Object object : friendsList) {
+            if (!(object instanceof String)) continue;
+            String nameObj = (String) object;
+            if (nameObj.equals(name)) return true;
+        }
+        return false;
+    }
+
+    public void removeRequest(String name) throws IllegalStateException {
+        Object friendsObj = getPlayerDocument().get("friend_requests");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
+            friendsObj = new BasicDBList();
+        }
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        if (friendsList.contains(name)) {
+            friendsList.remove(name);
+        } else {
+            throw new IllegalStateException("No friend request from that player");
+        }
+        getPlayerDocument().put("friend_requests", friendsList);
+        save();
+    }
+
+    public void addRequest(String name) throws IllegalStateException {
+        Object friendsObj = getPlayerDocument().get("friend_requests");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
+            friendsObj = new BasicDBList();
+        }
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        if (friendsList.contains(name)) {
+            throw new IllegalStateException("Friend request exists for that player");
+        } else {
+            friendsList.add(name);
+        }
+        getPlayerDocument().put("friend_requests", friendsList);
+        save();
+    }
+
+    public boolean isFriend(String name) {
+        try {
+            loadDocument();
+        } catch (PlayerNotFoundException e) {
+            return false;
+        }
+        Object friendsObj = getPlayerDocument().get("friends");
+        if (friendsObj == null || !(friendsObj instanceof BasicDBList)) return false;
+        BasicDBList friendsList = (BasicDBList) friendsObj;
+        for (Object object : friendsList) {
+            if (!(object instanceof String)) continue;
+            String nameObj = (String) object;
+            if (nameObj.equals(name)) return true;
+        }
+        return false;
     }
 
     public String getName() {

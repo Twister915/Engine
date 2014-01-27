@@ -407,22 +407,35 @@ public final class TPlayer {
      * Called by the TPlayerManager when the player disconnects. Do not call otherwise
      */
     void disconnected() {
-        DBObject playerDocument1 = getPlayerDocument();
-        Object object = getPlayerObject(getPlayerName()).get("punishments");
-        if (!(object instanceof BasicDBList)) {
-            object = new BasicDBList();
+        DBObject playerDoc = getPlayerDocument();
+        Object punishObject = getPlayerObject(getPlayerName()).get("punishments");
+        if (punishObject instanceof BasicDBList) {
+            BasicDBList punishList = (BasicDBList) punishObject;
+            getPlayerDocument().put("punishments", punishList);
         }
-        BasicDBList bans = (BasicDBList) object;
-        playerDocument1.put("punishments", bans);
-        playerDocument1.put("online", false);
-        Object o = playerDocument1.get("time-online");
+
+        Object frObject = getPlayerObject(getPlayerName()).get("friends");
+        if (frObject instanceof BasicDBList) {
+            BasicDBList friends = (BasicDBList) frObject;
+            getPlayerDocument().put("friends", friends);
+        }
+
+        Object frqObject = getPlayerObject(getPlayerName()).get("friend_requests");
+        if (frqObject instanceof BasicDBList) {
+            BasicDBList friendRequests = (BasicDBList) frqObject;
+            getPlayerDocument().put("friend_requests", friendRequests);
+        }
+
+        getPlayerDocument().put("online", false);
+        Object o = getPlayerDocument().get("time-online");
+
         if (o == null) o = 0l;
         if (!(o instanceof Long)) return;
         long timeOnline = (Long) o;
         long now = Calendar.getInstance().getTimeInMillis();
         timeOnline = timeOnline + (now - timeJoined);
-        playerDocument1.put("time-online", timeOnline);
-        playerDocument1.put("last-seen", now);
+        playerDoc.put("time-online", timeOnline);
+        playerDoc.put("last-seen", now);
         save();
     }
 
