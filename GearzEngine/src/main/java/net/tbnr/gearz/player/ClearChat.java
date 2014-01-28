@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
  * Latest Change:
  */
 public class ClearChat implements TCommandHandler {
-
     @TCommand(
             name = "clearchat",
             usage = "/clearchat",

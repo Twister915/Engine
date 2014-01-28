@@ -8,6 +8,7 @@ import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.netcommand.NetCommand;
+import net.tbnr.gearz.player.ClearChat;
 import net.tbnr.gearz.player.GearzNickname;
 import net.tbnr.gearz.player.GearzPlayerUtils;
 import net.tbnr.gearz.server.Server;
@@ -103,6 +104,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         registerCommands(gearzPlayerUtils);
         registerEvents(new PlayerListener());
         registerEvents(new EnderBar.EnderBarListeners());
+        registerCommands(new ClearChat());
         new TabListener();
         EnchantmentEffect.addEnchantmentListener();
         this.inventoryRefresher = new InventoryRefresher();
