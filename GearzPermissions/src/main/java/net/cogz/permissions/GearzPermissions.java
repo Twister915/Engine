@@ -56,7 +56,9 @@ public abstract class GearzPermissions {
      *
      * @return The DB.
      */
-    public abstract DB getDatabase();
+    public DB getDatabase() {
+        return GModel.getDefaultDatabase();
+    }
 
     /**
      * Sets the player's displays
@@ -105,6 +107,12 @@ public abstract class GearzPermissions {
      */
     public void reload() {
         this.database = getDatabase();
+        int checks = 0;
+        while (this.database == null) {
+            this.database = getDatabase();
+            checks++;
+            if (checks >= 15000) break;
+        }
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         this.groups = new HashMap<>();
         defaultGroup = null;

@@ -15,7 +15,7 @@ import net.tbnr.util.bungee.command.TCommandStatus;
  */
 public class ChannelCommand implements TCommandHandler {
 
-    @TCommand(name = "channel", usage = "/channel <channel>", permission = "gearz.channels.command.switch", senders = {TCommandSender.Player})
+    @TCommand(name = "channel", aliases = {"chan"}, usage = "/channel <channel>", permission = "gearz.channels.command.switch", senders = {TCommandSender.Player})
     public TCommandStatus channel(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length != 1) {
             return TCommandStatus.INVALID_ARGS;
@@ -39,7 +39,7 @@ public class ChannelCommand implements TCommandHandler {
             return TCommandStatus.INVALID_ARGS;
         }
 
-        sender.sendMessage(GearzBungee.getInstance().getFormat("channels"));
+        sender.sendMessage(GearzBungee.getInstance().getFormat("channels", false));
         for (Channel channel : GearzBungee.getInstance().getChannelManager().getChannels()) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("channel", false, false, new String[]{"<channel>", channel.getName()}));
         }

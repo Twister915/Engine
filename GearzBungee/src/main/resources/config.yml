@@ -16,5 +16,5 @@ irc:
   server: irc.esper.net
   login: tbnr
   enabled: false
-  printout: true
+  printout: false
   format: "[%server%]<%sender%>: %message%"

@@ -4,6 +4,7 @@ import com.mongodb.BasicDBList;
 import lombok.Getter;
 import lombok.Setter;
 import net.cogz.permissions.GearzPermissions;
+import net.cogz.permissions.bungee.GearzBungeePermissions;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -115,7 +116,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     public SimpleDateFormat readable;
 
     @Getter
-    public GearzPermissions permissions;
+    public GearzBungeePermissions permissions;
 
 
     /**
@@ -136,13 +137,13 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.getConfig().options().copyDefaults(true);
         this.saveDefaultConfig();
         GearzBungee.instance = this;
-        if (ProxyServer.getInstance().getPluginManager().getPlugin("GearzBungeePermissions") != null) {
-            permissions = GearzPermissions.getInstance();
-            getLogger().info("GearzBungeePermissions found..enabling permissions support!");
-        }
         readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
         whitelisted = false;
         GModel.setDefaultDatabase(this.getMongoDB());
+        if (ProxyServer.getInstance().getPluginManager().getPlugin("GearzBungeePermissions") != null) {
+            this.permissions = (GearzBungeePermissions) ProxyServer.getInstance().getPluginManager().getPlugin("GearzBungeePermissions");
+            getLogger().info("GearzBungeePermissions found..enabling permissions support!");
+        }
         this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("host"));
         //this.responder = new ServerResponder();
         this.dispatch = new NetCommandDispatch();

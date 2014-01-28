@@ -29,7 +29,7 @@ public abstract class GModel {
     /**
      * This is the database that the GearzModel will operate in
      */
-    @Setter private static DB defaultDatabase;
+    @Getter @Setter private static DB defaultDatabase;
 
     /**
      * The ID of this object. Is null by default

@@ -37,11 +37,6 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     }
 
     @Override
-    public DB getDatabase() {
-        return GearzBukkitPermissions.getInstance().getMongoDB();
-    }
-
-    @Override
     public void updatePlayerDisplays(String player, String prefix, String nameColor, String tabColor) {
 
     }
