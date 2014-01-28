@@ -46,6 +46,7 @@ public class ChatManager implements Listener, TCommandHandler {
     public void onChat(ChatEvent event) {
         if (GearzBungee.getInstance().getChannelManager().isEnabled()) return;
         if (event.isCancelled()) return;
+        this.handleSpy(event, null);
         if (event.isCommand()) return;
         if (event.getMessage().contains("\\")) {
             event.getSender().disconnect("Bad.");
@@ -115,7 +116,7 @@ public class ChatManager implements Listener, TCommandHandler {
 
     public void handleSpy(ChatEvent event, Channel channel) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", player.getName()}, new String[]{"<server>", player.getServer().getInfo().getName()}, new String[]{"<channel>", channel != null ?channel.getName() : ""});
+        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", player.getName()}, new String[]{"<server>", player.getServer().getInfo().getName()}, new String[]{"<channel>", channel != null ? channel.getName() : ""});
         for (Map.Entry<String, SpyType> p : this.spies.entrySet()) {
             ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(p.getKey());
             if (player1 == null) continue;
@@ -135,8 +136,8 @@ public class ChatManager implements Listener, TCommandHandler {
             name = "censor",
             permission = "gearz.censor",
             usage = "/censor [list|remove|add] [message (required if applicable)]",
-            senders = {TCommandSender.Player, TCommandSender.Console},
-            aliases = {})
+            senders = {TCommandSender.Player, TCommandSender.Console}
+    )
     @SuppressWarnings("unused")
     public TCommandStatus censors(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 1) return TCommandStatus.HELP;
@@ -187,6 +188,37 @@ public class ChatManager implements Listener, TCommandHandler {
         basicDBList.addAll(strings);
         GearzBungee.getInstance().setCensoredWords(basicDBList);
         GearzBungee.getInstance().getChat().updateCensor();
+        return TCommandStatus.SUCCESSFUL;
+    }
+
+    @TCommand(
+            name = "chat",
+            usage = "/chat <args>",
+            permission = "gearz.chat",
+            senders = {TCommandSender.Player, TCommandSender.Console})
+    @SuppressWarnings("unused")
+    public TCommandStatus command(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
+        if (args.length < 1) return TCommandStatus.FEW_ARGS;
+        Chat chat = GearzBungee.getInstance().getChat();
+        switch (args[0]) {
+            case "mute":
+                if (chat.isMuted()) {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-is-muted"));
+                } else {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-mute-on"));
+                    chat.setMuted(true);
+                }
+                return TCommandStatus.SUCCESSFUL;
+            case "unmute":
+                if (chat.isMuted()) {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-mute-off"));
+                    chat.setMuted(false);
+                } else {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-not-muted"));
+                    chat.setMuted(true);
+                }
+                return TCommandStatus.SUCCESSFUL;
+        }
         return TCommandStatus.SUCCESSFUL;
     }
 
