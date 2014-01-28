@@ -2,7 +2,6 @@ package net.tbnr.gearz.chat.channels;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
-import net.cogz.permissions.GearzPermissions;
 import net.cogz.permissions.bungee.GearzBungeePermissions;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.Configuration;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;
@@ -11,7 +10,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.chat.Filter;
-import net.tbnr.gearz.chat.channels.irc.IRCConnection;
+import net.tbnr.gearz.chat.channels.irc.Connection;
 import net.tbnr.gearz.modules.PlayerInfoModule;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
@@ -34,7 +33,7 @@ public class ChannelManager {
     private List<Channel> channels = new ArrayList<>();
 
     @Getter
-    IRCConnection ircConnection;
+    Connection connection;
 
     @Getter
     List<String> toJoin;
@@ -43,19 +42,15 @@ public class ChannelManager {
     boolean ircEnabled = false;
 
     public ChannelManager() {
-        if (GearzBungee.getInstance().getConfig().isBoolean("channels.enabled")) {
-            enabled = GearzBungee.getInstance().getConfig().getBoolean("channels.enabled");
-        }
-        if (GearzBungee.getInstance().getConfig().getBoolean("irc.enabled") && enabled) {
+        enabled = GearzBungee.getInstance().getConfig().getBoolean("channels.enabled", false);
+        if (GearzBungee.getInstance().getConfig().getBoolean("irc.enabled", false) && enabled) {
             ircEnabled = true;
             toJoin = new ArrayList<>();
             FileConfiguration config = GearzBungee.getInstance().getConfig();
-            this.ircConnection = new IRCConnection(config.getString("irc.name"), config.getString("irc.server"), config.getString("irc.login"));
+            this.connection = new Connection(config.getString("irc.name"), config.getString("irc.server"), config.getString("irc.login"));
             try {
-                this.ircConnection.connect();
-                if (config.isBoolean("irc.printout")) {
-                    this.ircConnection.printInput = config.getBoolean("irc.printout");
-                }
+                this.connection.connect();
+                this.connection.printInput = config.getBoolean("irc.printout", false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -67,32 +62,18 @@ public class ChannelManager {
         for (String chanName : config.getStringList("channels.list")) {
             String format = config.getString("formatting." + chanName + ".format");
             String permission = config.getString("formatting." + chanName + ".permission");
-            boolean main = false;
-            boolean ircLinked = false;
             List<String> channels = new ArrayList<>();
-            boolean crossServer = false;
-            boolean filter = true;
-            boolean logged = false;
-            if (config.isBoolean("formatting." + chanName + ".default")) {
-                main = config.getBoolean("formatting." + chanName + ".default");
-            }
-            if (config.isBoolean("formatting." + chanName + ".logged")) {
-                logged = config.getBoolean("formatting." + chanName + ".logged");
-            }
-            if (config.isBoolean("formatting." + chanName + ".irc.enabled")) {
-                ircLinked = config.getBoolean("formatting." + chanName + ".irc.enabled");
+            boolean main = config.getBoolean("formatting." + chanName + ".default", false);
+            boolean logged = config.getBoolean("formatting." + chanName + ".logged", false);
+            boolean ircLinked = config.getBoolean("formatting." + chanName + ".irc.enabled");
+            if (ircLinked) {
                 for (String chan : config.getStringList("formatting." + chanName + ".irc.channels")) {
-                    ProxyServer.getInstance().getLogger().info("Found channel:" + chan);
                     channels.add(chan);
                     toJoin.add(chan);
                 }
             }
-            if (config.isBoolean("formatting." + chanName + ".cross-server")) {
-                crossServer = config.getBoolean("formatting." + chanName + ".cross-server");
-            }
-            if (config.isBoolean("formatting." + chanName + ".filter")) {
-                filter = config.getBoolean("formatting." + chanName + ".filter");
-            }
+            boolean crossServer = config.getBoolean("formatting." + chanName + ".cross-server", false);
+            boolean filter = config.getBoolean("formatting." + chanName + ".filter", true);
             Channel channel = new Channel(chanName, format, permission);
             channel.setDefault(main);
             channel.setIRCLinked(ircLinked);
@@ -149,12 +130,13 @@ public class ChannelManager {
         return target.getChannel();
     }
 
-    public void sendMessage(ProxiedPlayer sender, String message) {
+    public Channel sendMessage(ProxiedPlayer sender, String message, boolean isCommand) {
         final Channel channel = getCurrentChannel(sender);
+        if (isCommand) return channel;
         if (channel.isFiltered()) {
             Filter.FilterData filterData = Filter.filter(message, sender);
             if (filterData.isCancelled()) {
-                return;
+                return channel;
             }
             message = filterData.getMessage();
         }
@@ -163,9 +145,9 @@ public class ChannelManager {
             ProxyServer.getInstance().getScheduler().runAsync(GearzBungee.getInstance(), new Runnable() {
                 @Override
                 public void run() {
-                    if (channel.isIRCLinked() && ircEnabled && ircConnection != null) {
+                    if (channel.isIRCLinked() && ircEnabled && connection != null) {
                         for (String chan : channel.getIRCChannels()) {
-                            ircConnection.raw("PRIVMSG " + chan + " :" + toSend);
+                            connection.raw("PRIVMSG " + chan + " :" + toSend);
                         }
                     }
                     if (channel.isLogged()) {
@@ -179,13 +161,14 @@ public class ChannelManager {
                             writer.write(timeStamp + toSend);
                             writer.close();
                         } catch (Exception e) {
-                            //ignore
+                            GearzBungee.getInstance().getLogger().warning("Error logging chat message to " + file + ".");
                         }
                     }
                 }
             });
         }
         channel.sendMessage(formatMessage(message, sender), sender);
+        return channel;
     }
 
     private String formatMessage(String message, ProxiedPlayer player) {

@@ -115,7 +115,6 @@ public abstract class GearzPermissions {
             System.out.println(checks);
         }
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
-        else System.out.println("Permissions database found..enabling!");
         this.groups = new HashMap<>();
         defaultGroup = null;
         PermGroup permGroup = new PermGroup(this.database);

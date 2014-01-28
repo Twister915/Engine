@@ -132,7 +132,7 @@ public class PermissionsCommands implements TCommandHandler {
                 }
                 String suffix = Gearz.getInstance().compile(args, 2, args.length);
                 player.suffix = suffix;
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<prefix>", suffix}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<suffix>", suffix}));
                 player.save();
                 return TCommandStatus.SUCCESSFUL;
             case "tabcolor":
@@ -256,7 +256,7 @@ public class PermissionsCommands implements TCommandHandler {
                 }
                 String suffix = Gearz.getInstance().compile(args, 2, args.length);
                 group.suffix = suffix;
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<prefix>", suffix}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<suffix>", suffix}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
             case "tabcolor":

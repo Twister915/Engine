@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by jake on 12/20/13.
  */
-public class IRCConnection {
+public class Connection {
     String name;
     String server;
     String login;
@@ -28,7 +28,7 @@ public class IRCConnection {
     public boolean connected;
 
 
-    public IRCConnection(String name, String server, String login) {
+    public Connection(String name, String server, String login) {
         this.name = name;
         this.server = server;
         this.login = login;

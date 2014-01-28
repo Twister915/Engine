@@ -118,6 +118,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     public GearzBungeePermissions permissions;
 
+    @Getter
+    public ChatManager chatManager;
+
 
     /**
      * Gets the current instance of the GearzBungee plugin.
@@ -203,6 +206,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         } else {
             getLogger().info("Channels disabled...");
         }
+        this.chatManager = new ChatManager();
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 

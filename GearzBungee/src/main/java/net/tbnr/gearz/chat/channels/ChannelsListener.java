@@ -2,26 +2,51 @@ package net.tbnr.gearz.chat.channels;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
-import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.chat.Filter;
-import net.tbnr.gearz.player.bungee.GearzPlayer;
-import net.tbnr.gearz.player.bungee.GearzPlayerManager;
+import net.tbnr.gearz.punishments.LoginHandler;
+import net.tbnr.gearz.punishments.PunishmentType;
+
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Jake on 1/16/14.
  */
 public class ChannelsListener implements Listener {
-
+    public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
     @EventHandler
+    @SuppressWarnings("unused")
     public void onChat(ChatEvent event) {
-        if (event.isCommand()) return;
         if (!GearzBungee.getInstance().getChannelManager().isEnabled()) return;
-        String message = event.getMessage();
+        if (event.isCancelled()) return;
+        if (event.getMessage().contains("\\")) {
+            event.getSender().disconnect("Bad.");
+            event.setCancelled(true);
+            return;
+        }
         ProxiedPlayer sender = (ProxiedPlayer) event.getSender();
-        GearzBungee.getInstance().getChannelManager().sendMessage(sender, message);
+
+        if (GearzBungee.getInstance().getChat().isPlayerInConversation(sender)) return;
+        if (GearzBungee.getInstance().getChat().isMuted()) {
+            event.setCancelled(true);
+            sender.sendMessage(GearzBungee.getInstance().getFormat("chat-muted"));
+            return;
+        }
+        if (GearzBungee.getInstance().getChat().isPlayerMuted(sender.getName())) {
+            LoginHandler.MuteData muteData = GearzBungee.getInstance().getChat().getMute(sender.getName());
+            if (muteData.getPunishmentType() == PunishmentType.MUTE) {
+                sender.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
+            } else if (muteData.getPunishmentType() == PunishmentType.TEMP_MUTE) {
+                sender.sendMessage(GearzBungee.getInstance().getFormat("temp-muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}, new String[]{"<end>", longReadable.format(muteData.getEnd())}));
+            }
+            event.setCancelled(true);
+            return;
+        }
+
+        String message = event.getMessage();
+        Channel channel = GearzBungee.getInstance().getChannelManager().sendMessage(sender, message, event.isCommand());
+        GearzBungee.getInstance().getChatManager().handleSpy(event, channel);
         event.setCancelled(true);
     }
 }
