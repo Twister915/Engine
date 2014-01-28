@@ -22,6 +22,7 @@ public class PermissionsCommands implements TCommandHandler {
             senders = {TCommandSender.Player, TCommandSender.Console})
     @SuppressWarnings("unused")
     public TCommandStatus player(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        if (args.length == 0) return TCommandStatus.FEW_ARGS;
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         PermPlayer player = permsManager.getPlayer(args[0]);
         switch (args[1]) {
@@ -33,6 +34,7 @@ public class PermissionsCommands implements TCommandHandler {
                 player.remove();
                 permsManager.onJoin(name);
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.player-deleted"));
+                return TCommandStatus.SUCCESSFUL;
             case "set":
                 if (!sender.hasPermission("gearz.permissions.player.set")) return TCommandStatus.PERMISSIONS;
                 if (args.length < 3 || args.length > 4) return TCommandStatus.INVALID_ARGS;
@@ -94,11 +96,27 @@ public class PermissionsCommands implements TCommandHandler {
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.added-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
                 player.addPlayerToGroup(group);
                 return TCommandStatus.SUCCESSFUL;
+            case "removegroup":
+                if (!sender.hasPermission("gearz.permissions.player.removegroup")) return TCommandStatus.PERMISSIONS;
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                PermGroup grp = permsManager.getGroup(args[2]);
+                if (grp == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
+                player.removePlayerFromGroup(grp);
+                return TCommandStatus.SUCCESSFUL;
             case "prefix":
                 if (!sender.hasPermission("gearz.permissions.player.prefix")) return TCommandStatus.PERMISSIONS;
                 if (args.length < 3) return TCommandStatus.INVALID_ARGS;
-                String prefix;
-                prefix = Gearz.getInstance().compile(args, 2, args.length);
+                if (args[2].trim().equals("null")) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix-null", false, new String[]{"<target>", player.getName()}));
+                    player.prefix = null;
+                    player.save();
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                String prefix = Gearz.getInstance().compile(args, 2, args.length);
                 player.prefix = prefix;
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix", true, new String[]{"<prefix>", prefix}));
                 player.save();
@@ -106,8 +124,13 @@ public class PermissionsCommands implements TCommandHandler {
             case "suffix":
                 if (!sender.hasPermission("gearz.permissions.player.suffix")) return TCommandStatus.PERMISSIONS;
                 if (args.length < 3) return TCommandStatus.INVALID_ARGS;
-                String suffix;
-                suffix = Gearz.getInstance().compile(args, 2, args.length);
+                if (args[2].trim().equals("null")) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix-null", false, new String[]{"<target>", player.getName()}));
+                    player.suffix = null;
+                    player.save();
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                String suffix = Gearz.getInstance().compile(args, 2, args.length);
                 player.suffix = suffix;
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<prefix>", suffix}));
                 player.save();
@@ -139,9 +162,7 @@ public class PermissionsCommands implements TCommandHandler {
             senders = {TCommandSender.Player, TCommandSender.Console})
     @SuppressWarnings("unused")
     public TCommandStatus group(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
-        if (args.length < 1) {
-            return TCommandStatus.FEW_ARGS;
-        }
+        if (args.length == 0) return TCommandStatus.FEW_ARGS;
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         PermGroup group = permsManager.getGroup(args[0]);
         switch (args[1]) {
@@ -213,8 +234,13 @@ public class PermissionsCommands implements TCommandHandler {
             case "prefix":
                 if (!sender.hasPermission("gearz.permissions.group.prefix")) return TCommandStatus.PERMISSIONS;
                 if (args.length < 3) return TCommandStatus.INVALID_ARGS;
-                String prefix;
-                prefix = Gearz.getInstance().compile(args, 2, args.length);
+                if (args[2].trim().equals("null")) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix-null", false, new String[]{"<target>", group.getName()}));
+                    group.prefix = null;
+                    group.save();
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                String prefix = Gearz.getInstance().compile(args, 2, args.length);
                 group.prefix = prefix;
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix", true, new String[]{"<prefix>", prefix}));
                 group.save();
@@ -222,8 +248,13 @@ public class PermissionsCommands implements TCommandHandler {
             case "suffix":
                 if (!sender.hasPermission("gearz.permissions.group.suffix")) return TCommandStatus.PERMISSIONS;
                 if (args.length < 3) return TCommandStatus.INVALID_ARGS;
-                String suffix;
-                suffix = Gearz.getInstance().compile(args, 2, args.length);
+                if (args[2].trim().equals("null")) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix-null", false, new String[]{"<target>", group.getName()}));
+                    group.suffix = null;
+                    group.save();
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                String suffix = Gearz.getInstance().compile(args, 2, args.length);
                 group.suffix = suffix;
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<prefix>", suffix}));
                 group.save();
@@ -258,12 +289,14 @@ public class PermissionsCommands implements TCommandHandler {
         if (args.length < 1) {
             return TCommandStatus.INVALID_ARGS;
         }
-        if (args[0].equalsIgnoreCase("reload")) {
-            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.reload"));
-            GearzBukkitPermissions.getInstance().getPermsManager().reload();
-            return TCommandStatus.SUCCESSFUL;
+        switch (args[0]) {
+            case "reload":
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.reload"));
+                GearzBukkitPermissions.getInstance().getPermsManager().reload();
+                return TCommandStatus.SUCCESSFUL;
+            default:
+                return TCommandStatus.INVALID_ARGS;
         }
-        return TCommandStatus.SUCCESSFUL;
     }
 
     @Override

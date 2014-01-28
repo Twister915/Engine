@@ -111,9 +111,11 @@ public abstract class GearzPermissions {
         while (this.database == null) {
             this.database = getDatabase();
             checks++;
-            if (checks >= 15000) break;
+            if (checks >= 2000000) break;
+            System.out.println(checks);
         }
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
+        else System.out.println("Permissions database found..enabling!");
         this.groups = new HashMap<>();
         defaultGroup = null;
         PermGroup permGroup = new PermGroup(this.database);
