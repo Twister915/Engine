@@ -14,7 +14,13 @@ commands:
   game:
     description: Game manager command
   map:
-    description: Gives info about the map
+    description: Gives info about the map.
+  clearchat:
+    description: Clears chat
+    aliases: [cc, cchat, clearc]
+  clearmychat:
+    description: Clears senders chat
+    aliases: [cmc, cmychat]
 permissions:
   gearz.test:
     default: op
