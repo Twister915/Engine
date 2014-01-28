@@ -209,6 +209,7 @@ public final class GearzPlayer {
     }
 
     public static GearzPlayer playerFromPlayer(Player player) {
+        if (player == null) throw new NullPointerException("Cannot pass a null player!");
         return GearzPlayer.playerFromTPlayer(Gearz.getInstance().getPlayerManager().getPlayer(player));
     }
 
