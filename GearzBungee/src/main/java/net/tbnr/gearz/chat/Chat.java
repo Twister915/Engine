@@ -36,6 +36,7 @@ public class Chat {
         this.censoredWords = new ArrayList<>();
         this.lastMessages = Maps.newHashMap();
         updateCensor();
+        
     }
 
     public boolean isPlayerMuted(String username) {
