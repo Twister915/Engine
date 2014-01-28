@@ -91,9 +91,13 @@ public final class TPlayer {
         if (this.playerDocument == null) {
             this.playerDocument = new BasicDBObject("username", player.getName()); //So we didn't find it, create our own, and set the username var.
             this.playerDocument.put("time-online", 0l); //Sets the online time to 0 so this var is present (long).
+            this.playerDocument.put("first-join", Calendar.getInstance().getTimeInMillis());
             this.firstJoin = true;
         } else {
             this.firstJoin = false;
+        }
+        if (this.playerDocument.get("first-join") == null) {
+            this.playerDocument.put("first-join", Calendar.getInstance().getTimeInMillis());
         }
         this.playerDocument.put("last-seen", Calendar.getInstance().getTimeInMillis()); //Update last-seen
         this.playerDocument.put("online", true); //Update the online variable
