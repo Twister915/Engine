@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
  */
 public class GearzBukkitPermissions extends TPlugin {
     @Getter private static GearzBukkitPermissions instance;
-    @Getter private PermissionsManager permsManager;
+    @Getter public PermissionsManager permsManager;
 
     @SuppressWarnings("deprecation")
     @Override

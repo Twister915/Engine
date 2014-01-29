@@ -1,6 +1,5 @@
 package net.cogz.permissions.bukkit;
 
-import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.player.GearzPlayer;

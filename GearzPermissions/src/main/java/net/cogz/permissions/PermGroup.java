@@ -18,9 +18,13 @@ public class PermGroup extends GModel {
     @Getter @BasicField public String suffix;
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
-    @Getter @BasicField private List<String> permissions = new ArrayList<>();
+    @Getter @BasicField public List<String> permissions = new ArrayList<>();
+    @Getter @BasicField public List<String> inheritances = new ArrayList<>();
     @Getter @BasicField public boolean isDefault;
+    @Getter @BasicField public Integer priority;
+    @Getter @BasicField public String ladder = "default";
 
+    @SuppressWarnings("unused")
     public PermGroup() {
         super();
     }
@@ -29,6 +33,7 @@ public class PermGroup extends GModel {
         super(database);
     }
 
+    @SuppressWarnings("unused")
     public PermGroup(DB database, DBObject dBobject) {
         super(database, dBobject);
     }
@@ -42,6 +47,16 @@ public class PermGroup extends GModel {
     public void removePermission(String perm) {
         this.permissions.remove(perm);
         save();
+    }
+
+    public void addInheritance(PermGroup permGroup) {
+        this.inheritances.add(permGroup.getName());
+    }
+
+    public void removeInheritance(PermGroup permGroup) {
+        if (this.inheritances.contains(permGroup.getName())) {
+            this.inheritances.remove(permGroup.getName());
+        }
     }
 
     public boolean hasPermission(String perm) {

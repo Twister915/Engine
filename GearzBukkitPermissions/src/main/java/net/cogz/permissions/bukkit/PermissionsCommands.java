@@ -273,6 +273,31 @@ public class PermissionsCommands implements TCommandHandler {
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", args[2]}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
+            case "addinheritance":
+                if (!sender.hasPermission("gearz.permissions.group.inheritance")) return TCommandStatus.PERMISSIONS;
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                PermGroup toAdd = permsManager.getGroup(args[2]);
+                if (toAdd == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group"));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                permsManager.addInheritance(group, toAdd);
+                return TCommandStatus.SUCCESSFUL;
+            case "removeinheritance":
+                if (!sender.hasPermission("gearz.permissions.group.inheritance")) return TCommandStatus.PERMISSIONS;
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                PermGroup toRemove = permsManager.getGroup(args[2]);
+                if (toRemove == null) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group"));
+                    return TCommandStatus.SUCCESSFUL;
+                }
+                permsManager.addInheritance(group, toRemove);
+                return TCommandStatus.SUCCESSFUL;
+            case "setladder":
+                if (!sender.hasPermission("gearz.permissions.group.ladder")) return TCommandStatus.PERMISSIONS;
+                if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                permsManager.setLadder(group, args[2]);
+                return TCommandStatus.SUCCESSFUL;
             default:
                 return TCommandStatus.INVALID_ARGS;
         }
@@ -285,7 +310,7 @@ public class PermissionsCommands implements TCommandHandler {
             permission = "gearz.permissions",
             senders = {TCommandSender.Player, TCommandSender.Console})
     @SuppressWarnings("unused")
-    public TCommandStatus command(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+    public TCommandStatus permissions(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length < 1) {
             return TCommandStatus.INVALID_ARGS;
         }
