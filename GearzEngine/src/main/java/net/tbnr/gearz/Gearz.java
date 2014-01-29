@@ -2,6 +2,7 @@ package net.tbnr.gearz;
 
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import net.tbnr.gearz.activerecord.GModel;
@@ -78,6 +79,10 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Getter
     private Permission permission;
 
+    @Getter
+    @Setter
+    private boolean isLobbyServer;
+
     public static Gearz getInstance() {
         return instance;
     }
@@ -100,19 +105,38 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public void enable() {
+
+        //** ENABLE **
+        //This method is a bit confusing. Let's comment/clean it up a bit <3
+
+        //Reset all players for the EnderBar
         EnderBar.resetPlayers();
+
+        //Setup the helper delegation methods
         ServerManager.setHelper(this);
+
+        //Setup a new Bungee Name variable.
         if (Gearz.bungeeName2 == null) Gearz.bungeeName2 = RandomUtils.getRandomString(16);
+
+        //Kick all players
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.kickPlayer("Server is reloading!");
         }
+
+        //Setup the Jedis pool so we can communicate with BungeeCord using our NetCommand system.
         this.jedisPool = new JedisPool(getConfig().getString("redis.host"), getConfig().getInt("redis.port"));
+
+        //Setup an array to hold a list of all Gearz plugins.
         this.gamePlugins = new ArrayList<>();
+
+        //Get a local variable of the PluginManager, and setup our chat/permission hooks.
         PluginManager pm = getServer().getPluginManager();
         if (pm.isPluginEnabled("zPermissions") && pm.isPluginEnabled("zChat")) {
             try {
                 this.setupChat();
                 this.setupPermission();
+                new TabListener();
+                registerEvents(new ColoredTablist());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -120,19 +144,34 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             registerEvents(nicknameHandler);
             registerCommands(nicknameHandler);
         }
+
+        //Setup the player utils commands and events
         GearzPlayerUtils gearzPlayerUtils = new GearzPlayerUtils();
         registerEvents(gearzPlayerUtils);
         registerCommands(gearzPlayerUtils);
+
+        //Generic player utils
         registerEvents(new PlayerListener());
-        registerEvents(new ColoredTablist());
+
+        //EnderBar utils
         registerEvents(new EnderBar.EnderBarListeners());
+
+        //ClearChat
         registerCommands(new ClearChat());
-        new TabListener();
+
+        //Silk Touch 32 listener for effects
         EnchantmentEffect.addEnchantmentListener();
+
+        //Setup the inv refresher. This is used in the server selector.
         this.inventoryRefresher = new InventoryRefresher();
+
+        //Setup some hooks for the GModel class to connect to our database.
         GModel.setDefaultDatabase(this.getMongoDB());
+
+        //Deprecated.
         Gearz.getInstance().getConfig().set("bg.name", RandomUtils.getRandomString(16));
 
+        //Link the server up in the database.
         Bukkit.getScheduler().runTaskLater(Gearz.getInstance(), new Runnable() {
             @Override
             public void run() {
