@@ -1,7 +1,9 @@
 package net.tbnr.gearz.player.bungee;
 
 import com.mongodb.*;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
@@ -24,6 +26,7 @@ public final class GearzPlayer {
      * The player's username
      */
     private final String username;
+    @Getter @Setter public String nickname;
     /**
      * The player document
      */
@@ -40,6 +43,7 @@ public final class GearzPlayer {
         }
         this.playerDocument = object;
         this.username = username1;
+        updateNickname();
     }
 
     /**
@@ -315,6 +319,19 @@ public final class GearzPlayer {
             }
         }
         return punishments;
+    }
+
+    public void updateNickname() {
+        try {
+            loadDocument();
+        } catch (PlayerNotFoundException e) {
+            return;
+        }
+        Object nick = playerDocument.get("nickname");
+        if (nick == null || !(nick instanceof String)) return;
+        String nickname = (String) nick;
+        setNickname(nickname);
+        getProxiedPlayer().setDisplayName(nickname);
     }
 
     public String getName() {

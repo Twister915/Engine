@@ -1,6 +1,7 @@
 package net.tbnr.gearz.player;
 
 import net.tbnr.gearz.Gearz;
+import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.util.ColoredTablist;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
@@ -78,6 +79,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
         player.store(Gearz.getInstance(), new GearzPlayerNickname(nick));
         String s = this.updateNickname(player);
         player.sendMessage(Gearz.getInstance().getFormat("formats.update-nickname", false, new String[]{"<name>", s}));
+        NetCommand.withName("update_nick").withArg("player", player).send();
         return TCommandStatus.SUCCESSFUL;
     }
 

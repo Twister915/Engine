@@ -173,7 +173,7 @@ public class ChannelManager {
 
     private String formatMessage(String message, ProxiedPlayer player) {
         String chanFormat = getCurrentChannel(player).getFormat();
-        chanFormat = chanFormat.replace("%message%", message).replace("%player%", player.getName());
+        chanFormat = chanFormat.replace("%message%", message).replace("%player%", player.getDisplayName());
         GearzBungeePermissions perms = GearzBungee.getInstance().getPermissions();
         if (perms != null) {
             String prefix = perms.getPermsManager().getPrefix(perms.getPermsManager().getPlayer(player.getName()));
