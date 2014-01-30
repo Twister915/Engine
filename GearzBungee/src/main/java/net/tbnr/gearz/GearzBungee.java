@@ -14,6 +14,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
+import net.tbnr.gearz.chat.ClearChat;
 import net.tbnr.gearz.chat.Messaging;
 import net.tbnr.gearz.chat.channels.ChannelCommand;
 import net.tbnr.gearz.chat.channels.ChannelManager;
@@ -207,6 +208,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             getLogger().info("Channels disabled...");
         }
         this.chatManager = new ChatManager();
+        registerCommandHandler(new ClearChat());
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
