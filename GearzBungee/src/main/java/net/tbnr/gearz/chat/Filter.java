@@ -17,7 +17,6 @@ import java.util.ArrayList;
  * Chat filtering
  */
 public class Filter {
-
     public static FilterData filter(String message, ProxiedPlayer player) {
         FilterData filterData = new FilterData(message, player, false);
         if (player.hasPermission("gearz.chat.filters.bypass")) return filterData;

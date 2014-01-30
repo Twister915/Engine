@@ -5,12 +5,18 @@ channels:
   enabled: true
   list:
     - default
+    - staff
 formatting:
   default:
     format: "%prefix%%player%%suffix%: %message%"
     permission: ""
     default: true
     filter: true
+  staff:
+    format: "&0[&1Staff&0] &c%player%&f: &a%message%"
+    permission: "gearz.modbroadcast"
+    default: false
+    filter: false
 irc:
   name: TBNRBot
   server: irc.esper.net

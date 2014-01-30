@@ -334,6 +334,39 @@ public final class GearzPlayer {
         getProxiedPlayer().setDisplayName(nickname);
     }
 
+    public List<String> getIgnoredUsers() {
+        List<String> ignores = new ArrayList<>();
+        Object ignoreObj = getPlayerDocument().get("ignored");
+        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) return ignores;
+        BasicDBList ignoreList = (BasicDBList) ignoreObj;
+        for (Object obj : ignoreList) {
+            if (!(obj instanceof String)) continue;
+            ignoreList.add(obj);
+        }
+        return ignores;
+    }
+
+    public void ignorePlayer(ProxiedPlayer player) {
+        Object ignoreObj = getPlayerDocument().get("ignored");
+        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) {
+            ignoreObj = new BasicDBList();
+        }
+        BasicDBList ignoreList = (BasicDBList) ignoreObj;
+        ignoreList.add(player.getName());
+        getPlayerDocument().put("ignored", ignoreList);
+    }
+
+    public void unignorePlayer(ProxiedPlayer player) {
+        Object ignoreObj = getPlayerDocument().get("ignored");
+        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) {
+            ignoreObj = new BasicDBList();
+        }
+        BasicDBList ignoreList = (BasicDBList) ignoreObj;
+        if (!ignoreList.contains(player.getName())) return;
+        ignoreList.remove(player.getName());
+        getPlayerDocument().put("ignored", ignoreList);
+    }
+
     public String getName() {
         return this.username;
     }
