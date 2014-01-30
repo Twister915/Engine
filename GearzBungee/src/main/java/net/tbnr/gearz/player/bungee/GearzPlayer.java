@@ -89,13 +89,11 @@ public final class GearzPlayer {
     }
 
     public void setChannel(Channel channel) {
+        if (this.channel != null && this.channel.getName().equals(channel.getName())) {
+            throw new IllegalStateException("Already on this channel!");
+        }
         if (this.channel != null) {
             this.channel.removeMember(this.getProxiedPlayer());
-        }
-
-        if (channel == null) {
-            this.channel = null;
-            return;
         }
 
         this.channel = channel;

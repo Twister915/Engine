@@ -3,7 +3,6 @@ package net.tbnr.gearz;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
 import lombok.Setter;
-import net.cogz.permissions.GearzPermissions;
 import net.cogz.permissions.bungee.GearzBungeePermissions;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -43,10 +42,8 @@ import java.util.concurrent.TimeUnit;
  * - Reconnect attempts
  * - Register on Site TODO
  * - Help command
- * - Chat logger
- * - Stream chat to a site for viewing by staff
  */
-@SuppressWarnings("NullArgumentToVariableArgMethod")
+@SuppressWarnings({"NullArgumentToVariableArgMethod", "FieldCanBeLocal", "UnusedDeclaration"})
 public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee, TabExecutor {
     /**
      * Gearz Instance
@@ -90,9 +87,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     private HelpMe helpMeModule;
-
-    @Getter
-    private ModBroadcast modBroadCastModule;
 
     @Getter
     private IPBanHandler ipBanHandler;
@@ -176,9 +170,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.helpMeModule.registerReminderTask(30);
         registerCommandHandler(this.helpMeModule);
         registerEvents(this.helpMeModule);
-        this.modBroadCastModule = new ModBroadcast();
-        registerCommandHandler(this.modBroadCastModule);
-        registerEvents(this.modBroadCastModule);
         PlayerInfoModule infoModule = new PlayerInfoModule();
         registerCommandHandler(infoModule);
         registerEvents(infoModule);
