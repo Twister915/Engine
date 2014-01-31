@@ -15,8 +15,8 @@ public class ZipUtil {
 
     public static void zipFolder(String srcFolder, String destZipFile)
             throws Exception {
-        ZipOutputStream zip = null;
-        FileOutputStream fileWriter = null;
+        ZipOutputStream zip;
+        FileOutputStream fileWriter;
 
         fileWriter = new FileOutputStream(destZipFile);
         zip = new ZipOutputStream(fileWriter);
