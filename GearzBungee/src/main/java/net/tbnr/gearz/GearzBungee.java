@@ -189,7 +189,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         AnnouncerModule announcerModule = new AnnouncerModule(true);
         registerCommandHandler(announcerModule);
 		registerCommandHandler(new StatsModule());
-        if (getConfig().getBoolean("channels.enabled")) {
+        if (getConfig().getBoolean("channels.enabled", false)) {
             getLogger().info("Channels enabled...");
             registerEvents(new ChannelsListener());
             channelManager = new ChannelManager();
