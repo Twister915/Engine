@@ -10,6 +10,10 @@ import java.util.Map;
 
 /**
  * Created by Jake on 1/23/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public abstract class GearzPermissions {
     /**

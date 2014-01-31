@@ -12,6 +12,10 @@ import org.bukkit.command.CommandSender;
 
 /**
  * Created by Jake on 1/24/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class PermissionsCommands implements TCommandHandler {
 
