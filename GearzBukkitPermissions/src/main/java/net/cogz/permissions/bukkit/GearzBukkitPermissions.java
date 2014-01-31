@@ -7,6 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Created by Jake on 1/24/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class GearzBukkitPermissions extends JavaPlugin {
     @Getter private static GearzBukkitPermissions instance;

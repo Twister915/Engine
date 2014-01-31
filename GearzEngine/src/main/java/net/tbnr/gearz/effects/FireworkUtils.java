@@ -12,6 +12,10 @@ import java.util.Random;
 
 /**
  * Created by Jake on 1/26/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class FireworkUtils {
     static Random random = new Random();
