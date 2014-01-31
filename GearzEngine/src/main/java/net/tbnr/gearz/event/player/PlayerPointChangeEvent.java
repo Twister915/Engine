@@ -21,7 +21,7 @@ public final class PlayerPointChangeEvent extends Event implements Cancellable {
     @Getter
     private final Integer oldPoints;
     @Getter
-    private Integer newPoints;
+    private final Integer newPoints;
     @Getter @Setter
     private Integer points;
     private boolean canceled;

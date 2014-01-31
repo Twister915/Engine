@@ -18,10 +18,10 @@ import java.util.Random;
  * Latest Change:
  */
 public class FireworkUtils {
-    static Random random = new Random();
-    static List<Color> colors = Lists.newArrayList(Color.AQUA, Color.BLUE, Color.FUCHSIA, Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.NAVY, Color.OLIVE, Color.ORANGE, Color.PURPLE, Color.RED, Color.TEAL, Color.YELLOW);
-    static int FIREWORK_POWER = 0;
-    static boolean FIREWORK_TRAIL = false;
+    static final Random random = new Random();
+    static final List<Color> colors = Lists.newArrayList(Color.AQUA, Color.BLUE, Color.FUCHSIA, Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.NAVY, Color.OLIVE, Color.ORANGE, Color.PURPLE, Color.RED, Color.TEAL, Color.YELLOW);
+    static final int FIREWORK_POWER = 0;
+    static final boolean FIREWORK_TRAIL = false;
 
     public static Firework getRandomFirework(Location loc) {
         FireworkMeta fireworkMeta = (FireworkMeta) (new ItemStack(Material.FIREWORK)).getItemMeta();
