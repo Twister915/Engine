@@ -142,7 +142,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             this.permissions = (GearzBungeePermissions) ProxyServer.getInstance().getPluginManager().getPlugin("GearzBungeePermissions");
             getLogger().info("GearzBungeePermissions found..enabling permissions support!");
         }
-        this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("host"));
+        this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("database.host"));
         //this.responder = new ServerResponder();
         this.dispatch = new NetCommandDispatch();
         this.getDispatch().registerNetCommands(new BaseReceiver());
@@ -186,7 +186,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         WhitelistModule whitelistModule = new WhitelistModule();
         registerEvents(whitelistModule);
         registerCommandHandler(whitelistModule);
-        AnnouncerModule announcerModule = new AnnouncerModule(true);
+        AnnouncerModule announcerModule = new AnnouncerModule(getConfig().getBoolean("announcer.enabled", false));
         registerCommandHandler(announcerModule);
 		registerCommandHandler(new StatsModule());
         if (getConfig().getBoolean("channels.enabled", false)) {
@@ -285,17 +285,17 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Override
     public String database() {
-        return getConfig().getString("database");
+        return getConfig().getString("database.db");
     }
 
     @Override
     public String host() {
-        return getConfig().getString("host");
+        return getConfig().getString("database.host");
     }
 
     @Override
     public int port() {
-        return getConfig().getInt("port");
+        return getConfig().getInt("database.port");
     }
 
     @SuppressWarnings("unused")
