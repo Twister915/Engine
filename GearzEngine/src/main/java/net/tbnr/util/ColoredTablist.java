@@ -1,5 +1,6 @@
 package net.tbnr.util;
 
+import net.cogz.permissions.bukkit.PermissionsManager;
 import net.tbnr.gearz.Gearz;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -22,20 +23,14 @@ public class ColoredTablist implements Listener {
         updateNick(player);
     }
 
-    public static String getPlayerSuffix(Player player) {
-        String suffix = Gearz.getInstance().getChat().getPlayerSuffix(player);
-        if (suffix == null || suffix.equals("")) {
-            String group = Gearz.getInstance().getPermission().getPrimaryGroup(player);
-            suffix = Gearz.getInstance().getChat().getGroupSuffix(player.getWorld().getName(), group);
-            if (suffix == null) {
-                suffix = "";
-            }
-        }
-        return suffix;
+    public static String getPlayerPrefix(Player player) {
+        PermissionsManager permsManager = Gearz.getInstance().getPermissions().getPermsManager();
+        String prefix = permsManager.getPrefix(permsManager.getPlayer(player.getName()));
+        return prefix != null ? prefix : "";
     }
 
     public static void updateNick(Player player) {
-        String name = ChatColor.translateAlternateColorCodes('&', getPlayerSuffix(player) + player.getDisplayName());
+        String name = ChatColor.translateAlternateColorCodes('&', getPlayerPrefix(player) + player.getDisplayName());
         player.setPlayerListName(name.substring(0, Math.min(name.length(), 16)));
     }
 }

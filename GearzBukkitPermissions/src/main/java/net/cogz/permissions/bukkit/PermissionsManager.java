@@ -1,11 +1,7 @@
 package net.cogz.permissions.bukkit;
 
 import net.cogz.permissions.GearzPermissions;
-import net.tbnr.gearz.Gearz;
-import net.tbnr.gearz.player.GearzPlayer;
-import net.tbnr.gearz.player.GearzPlayerNickname;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -57,14 +53,14 @@ public class PermissionsManager extends GearzPermissions implements Listener {
 
     @Override
     public void updatePlayerTabColor(String player, String tabColor) {
-        Player player1 = Bukkit.getPlayer(player);
+/*        Player player1 = Bukkit.getPlayer(player);
         if (player1 == null) return;
         Object storable = GearzPlayer.playerFromPlayer(player1).getTPlayer().getStorable(Gearz.getInstance(), new GearzPlayerNickname(null));
         if (!(storable instanceof String)) {
             storable = player;
         }
         String name = (String) storable;
-        player1.setPlayerListName(ChatColor.translateAlternateColorCodes('&', tabColor + name).substring(14));
+        player1.setPlayerListName(ChatColor.translateAlternateColorCodes('&', tabColor + name).substring(14));*/
     }
 
     @EventHandler
