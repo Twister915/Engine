@@ -24,13 +24,14 @@ public final class IPUtils {
      */
     public static void getPing(final InetAddress ip, final PingCallbackEventHandler ev) {
         Bukkit.getScheduler().runTaskAsynchronously(Gearz.getInstance(), new BukkitRunnable() {
+            @SuppressWarnings("ResultOfMethodCallIgnored")
             @Override
             public void run() {
                 float oldTime = System.currentTimeMillis();
 
                 //give up trying to reach it at 9.999 seconds
                 try {
-                    ip.isReachable(9999);
+	                ip.isReachable(9999);
                 } catch (IOException e) {
                     /*If Not reachable fail silently and return 9999 as it's the default ping*/
                     ev.onPingCallback(new PingCallbackEvent(9999));

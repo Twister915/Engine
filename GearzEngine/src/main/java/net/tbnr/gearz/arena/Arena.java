@@ -106,6 +106,7 @@ public abstract class Arena implements Votable {
         this.world.setGameRuleValue("keepInventory", "false");
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveWorld() throws ZipException, IOException, GearzException {
         this.world.save();
         File worldFolder = this.world.getWorldFolder();
@@ -130,7 +131,7 @@ public abstract class Arena implements Votable {
         file.setFilename(randomString);
         file.setContentType("application/zip");
         file.save();
-        gearzZipFile.delete();
+	    gearzZipFile.delete();
         this.worldId = file.getId().toString();
     }
 

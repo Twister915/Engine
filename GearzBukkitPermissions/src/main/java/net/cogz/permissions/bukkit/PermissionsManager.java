@@ -18,6 +18,10 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/24/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class PermissionsManager extends GearzPermissions implements Listener {
     @Override

@@ -1,3 +1,6 @@
-database: gearz_test
-host: one.tbnr.pw
-port: 27017
+database:
+  db: gearz_test
+  host: one.tbnr.pw
+  port: 27017
+announcer:
+  enabled: true

@@ -15,8 +15,8 @@ public class ZipUtil {
 
     public static void zipFolder(String srcFolder, String destZipFile)
             throws Exception {
-        ZipOutputStream zip = null;
-        FileOutputStream fileWriter = null;
+        ZipOutputStream zip;
+        FileOutputStream fileWriter;
 
         fileWriter = new FileOutputStream(destZipFile);
         zip = new ZipOutputStream(fileWriter);
@@ -59,6 +59,7 @@ public class ZipUtil {
         unZip(zip.getAbsolutePath(), output.getAbsolutePath());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void unZip(String zipFile, String outputFolder) {
 
         byte[] buffer = new byte[1024];

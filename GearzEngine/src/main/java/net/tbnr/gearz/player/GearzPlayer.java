@@ -32,7 +32,7 @@ public final class GearzPlayer {
     private static final Integer magic_number = 7;
     private GearzGame game;
     private static HashMap<TPlayer, GearzPlayer> players;
-    private static boolean scoreboard;
+    private static final boolean scoreboard;
 
     static {
         GearzPlayer.players = new HashMap<>();

@@ -11,6 +11,10 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/24/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class PermGroup extends GModel {
     @Getter @BasicField public String name;
@@ -18,7 +22,7 @@ public class PermGroup extends GModel {
     @Getter @BasicField public String suffix;
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
-    @Getter @BasicField private List<String> permissions = new ArrayList<>();
+    @Getter @BasicField private final List<String> permissions = new ArrayList<>();
     @Getter @BasicField public boolean isDefault;
 
     public PermGroup() {
