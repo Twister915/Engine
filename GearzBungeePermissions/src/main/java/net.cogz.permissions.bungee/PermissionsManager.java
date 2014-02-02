@@ -1,7 +1,6 @@
 package net.cogz.permissions.bungee;
 
 import com.google.common.base.Preconditions;
-import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -34,9 +33,9 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     public void givePermsToPlayer(String player, String perm, boolean value) {
         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
         Preconditions.checkNotNull(player, "player can not be null");
-        Preconditions.checkNotNull(perm, "permission null");
-        Preconditions.checkNotNull(value, "value null");
-        Preconditions.checkNotNull(proxiedPlayer, "proxied player null");
+        Preconditions.checkNotNull(perm, "permission can not be null");
+        Preconditions.checkNotNull(value, "value can not be null");
+        Preconditions.checkNotNull(proxiedPlayer, "proxied player can not be null");
         if (proxiedPlayer == null) return;
         proxiedPlayer.setPermission(perm, value);
     }

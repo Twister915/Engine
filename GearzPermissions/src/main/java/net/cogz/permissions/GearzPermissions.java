@@ -16,6 +16,7 @@ import java.util.Map;
  *
  * Latest Change:
  */
+@SuppressWarnings("FieldCanBeLocal")
 public abstract class GearzPermissions {
     public static GearzPermissions instance;
 
@@ -34,7 +35,6 @@ public abstract class GearzPermissions {
     /**
      * Default group
      */
-    @SuppressWarnings("FieldCanBeLocal")
     @Getter private PermGroup defaultGroup;
 
     /**
@@ -158,7 +158,7 @@ public abstract class GearzPermissions {
         GModel one = new PermPlayer(this.database, player).findOne();
         if (one == null) {
             one = new PermPlayer(this.database, player);
-            ((PermPlayer) one).addPlayerToGroup(getDefaultGroup());
+            ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
         if (!(one instanceof PermPlayer)) return;
@@ -203,6 +203,7 @@ public abstract class GearzPermissions {
     @SuppressWarnings("unused")
     public void givePermToPlayer(String player, String perm, boolean value) {
         this.players.get(player).addPermission(perm, value);
+        this.givePermsToPlayer(player, perm, value);
     }
 
     /**
@@ -213,8 +214,8 @@ public abstract class GearzPermissions {
      * @param value whether or not the permission is active
      */
     @SuppressWarnings("unused")
-    public void givePermToGroup(String group, String perm, boolean value) {
-        this.groups.get(group).addPermission(perm, value);
+    public void givePermToGroup(PermGroup group, String perm, boolean value) {
+        group.addPermission(perm, value);
     }
 
     /**
@@ -238,10 +239,9 @@ public abstract class GearzPermissions {
      * @param perm  permission to remove
      */
     @SuppressWarnings("unused")
-    public void removeGroupPerm(String group, String perm) {
-        PermGroup group1 = this.groups.get(group);
-        group1.removePermission(perm);
-        group1.save();
+    public void removeGroupPerm(PermGroup group, String perm) {
+        group.removePermission(perm);
+        group.save();
         reload();
     }
 
@@ -258,12 +258,9 @@ public abstract class GearzPermissions {
             onJoin(player);
         }
         if (permPlayer == null) return;
-        for (String g : permPlayer.getGroups()) {
-            PermGroup permGroup = getGroup(g);
-            permPlayer.removePlayerFromGroup(permGroup);
-        }
-        PermGroup group1 = getGroup(group);
-        permPlayer.addPlayerToGroup(group1);
+        if (permPlayer.getGroup() == null) return;
+        PermGroup permGroup = getGroup(group);
+        permPlayer.setGroup(permGroup);
         permPlayer.save();
     }
 
@@ -282,8 +279,7 @@ public abstract class GearzPermissions {
             boolean value = Boolean.valueOf(s[1]);
             perms.put(permission, value);
         }
-        for (String g : getAllGroups(permPlayer)) {
-            PermGroup group = getGroup(g);
+        for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
                 String[] s = entry.split(",");
                 String permission = s[0];
@@ -296,7 +292,7 @@ public abstract class GearzPermissions {
         }
         PermGroup permGroup;
         try {
-            permGroup = getGroup(permPlayer.getGroups().get(0));
+            permGroup = permPlayer.getGroup();
         } catch (Exception e) {
             return;
         }
@@ -341,12 +337,12 @@ public abstract class GearzPermissions {
         PermGroup permGroup = getGroup(name);
         if (permGroup == null) return;
         PermPlayer player = new PermPlayer(this.database);
-        player.addPlayerToGroup(permGroup);
+        player.setGroup(permGroup);
         for (GModel gModel : player.findMany()) {
             if (!(gModel instanceof PermPlayer)) continue;
-            PermPlayer player1 = (PermPlayer) gModel;
-            player1.removePlayerFromGroup(permGroup);
-            player1.save();
+            PermPlayer permPlayer = (PermPlayer) gModel;
+            permPlayer.removeGroup();
+            permPlayer.save();
         }
         permGroup.remove();
     }
@@ -358,8 +354,8 @@ public abstract class GearzPermissions {
      * @return the prefix of the player
      */
     public String getPrefix(PermPlayer player) {
-        if (player.getGroups().size() < 1) return null;
-        PermGroup permGroup = getGroup(player.getGroups().get(0));
+        if (player.getGroup() == null) return null;
+        PermGroup permGroup = player.getGroup();
         String prefix = permGroup.getPrefix();
         if (player.getPrefix() != null) prefix = player.getPrefix();
         return prefix;
@@ -372,8 +368,8 @@ public abstract class GearzPermissions {
      * @return the suffix of the player
      */
     public String getSuffix(PermPlayer player) {
-        if (player.getGroups().size() < 1) return null;
-        PermGroup permGroup = getGroup(player.getGroups().get(0));
+        if (player.getGroup() == null) return null;
+        PermGroup permGroup = player.getGroup();
         String prefix = permGroup.getSuffix();
         if (player.getSuffix() != null) prefix = player.getSuffix();
         return prefix;
@@ -387,8 +383,8 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public String getNameColor(PermPlayer player) {
-        if (player.getGroups().size() < 1) return null;
-        PermGroup permGroup = getGroup(player.getGroups().get(0));
+        if (player.getGroup() == null) return null;
+        PermGroup permGroup = player.getGroup();
         String nameColor = permGroup.getNameColor();
         if (player.getNameColor() != null) nameColor = player.getNameColor();
         return nameColor;
@@ -402,97 +398,11 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public String getTabColor(PermPlayer player) {
-        if (player.getGroups().size() < 1) return null;
-        PermGroup permGroup = getGroup(player.getGroups().get(0));
+        if (player.getGroup() == null) return null;
+        PermGroup permGroup = player.getGroup();
         String tabColor = permGroup.getTabColor();
         if (player.getTabColor() != null) tabColor = player.getTabColor();
         return tabColor;
-    }
-
-    /**
-     * Sets the priority that a group has in a ladder
-     *
-     * @param permGroup  group to update
-     * @param priority   priority to set group to
-     */
-    @SuppressWarnings("unused")
-    public void setPriority(PermGroup permGroup, Integer priority) {
-        permGroup.priority = priority;
-    }
-
-    /**
-     * Sets the ladder that a group is on
-     *
-     * @param permGroup group to update
-     * @param ladder    ladder to set the group to
-     */
-    @SuppressWarnings("unused")
-    public void setLadder(PermGroup permGroup, String ladder) {
-        permGroup.ladder = ladder;
-    }
-
-    /**
-     * Gets the next group in the player's track
-     *
-     * @param player player to get the next group of
-     * @return       the player's next PermGroup
-     */
-    @SuppressWarnings("unused")
-    public PermGroup getNextGroup(PermPlayer player) {
-        return getNextGroup(getGroup(player.getGroups().get(0)));
-    }
-
-    /**
-     * Gets the next group of a PermGroup on a ladder
-     *
-     * @param permGroup PermGroup to check
-     * @return          the PermGroup that is next
-     */
-    public PermGroup getNextGroup(PermGroup permGroup) {
-        List<PermGroup> groups = new ArrayList<>();
-        for (PermGroup group : this.groups.values()) {
-            if (group.getName().equals(permGroup.getName())) continue;
-            if (!group.getLadder().equals(permGroup.getLadder())) continue;
-            if (group.getPriority() < permGroup.getPriority()) continue;
-            groups.add(group);
-        }
-        try {
-            return groups.get(0);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Gets a player's previous group on their ladder
-     *
-     * @param player the player to check
-     * @return       the previous group of the player
-     */
-    @SuppressWarnings("unused")
-    public PermGroup getPreviousGroup(PermPlayer player) {
-        return getPreviousGroup(getGroup(player.getGroups().get(0)));
-    }
-
-    /**
-     * Gets the previous group of another PermGroup
-     *
-     * @param permGroup PermGroup to check
-     * @return          the group's previous PermGroup
-     */
-    public PermGroup getPreviousGroup(PermGroup permGroup) {
-        List<PermGroup> groups = new ArrayList<>();
-        for (PermGroup group : this.groups.values()) {
-            if (group.getName().equals(permGroup.getName())) continue;
-            if (!group.getLadder().equals(permGroup.getLadder())) continue;
-            if (group.getPriority() < permGroup.getPriority()) continue;
-            groups.add(group);
-        }
-        try {
-            return groups.get(0);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
     }
 
     /**
@@ -522,16 +432,14 @@ public abstract class GearzPermissions {
      * including inherited groups
      *
      * @param permPlayer player to search
-     * @return           list of all a player's groups
+     * @return list of all a player's groups
      */
-    public List<String> getAllGroups(PermPlayer permPlayer) {
-        List<String> allGroups = new ArrayList<>();
-        for (String group : permPlayer.getGroups()) {
-            PermGroup permGroup = getGroup(group);
-            if (!allGroups.contains(group)) allGroups.add(group);
-            for (String inheritedGroup : permGroup.getInheritances()) {
-                if (!allGroups.contains(inheritedGroup)) allGroups.add(inheritedGroup);
-            }
+    public List<PermGroup> getAllGroups(PermPlayer permPlayer) {
+        List<PermGroup> allGroups = new ArrayList<>();
+        PermGroup permGroup = permPlayer.getGroup();
+        if (!allGroups.contains(permGroup)) allGroups.add(permGroup);
+        for (String inheritedGroup : permGroup.getInheritances()) {
+            if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));
         }
         return allGroups;
     }

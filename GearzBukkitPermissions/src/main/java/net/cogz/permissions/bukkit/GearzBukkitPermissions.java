@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * Latest Change:
  */
-public class GearzBukkitPermissions extends JavaPlugin {
+public final class GearzBukkitPermissions extends JavaPlugin {
     @Getter private static GearzBukkitPermissions instance;
     @Getter public PermissionsManager permsManager;
 
@@ -83,7 +83,7 @@ public class GearzBukkitPermissions extends JavaPlugin {
      * @return The formatted message.
      */
     public final String getFormat(String formatPath, boolean color) {
-        return this.getFormat(formatPath, color, null);
+        return this.getFormat(formatPath, color, new String[]{});
     }
 
     public String compile(String[] args, int min, int max) {

@@ -26,7 +26,6 @@ public class PermGroup extends GModel {
     @Getter @BasicField final public List<String> inheritances = new ArrayList<>();
     @Getter @BasicField public boolean isDefault;
     @Getter @BasicField public Integer priority;
-    @Getter @BasicField public String ladder = "default";
 
     @SuppressWarnings("unused")
     public PermGroup() {
@@ -42,13 +41,14 @@ public class PermGroup extends GModel {
         super(database, dBobject);
     }
 
-    public void addPermission(String perm, boolean value) {
+    protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
+        if (this.permissions.contains(permission)) return;
         this.permissions.add(permission);
         save();
     }
 
-    public void removePermission(String perm) {
+    protected void removePermission(String perm) {
         this.permissions.remove(perm);
         save();
     }

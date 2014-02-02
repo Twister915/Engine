@@ -48,13 +48,13 @@ public class ChatManager implements Listener, TCommandHandler {
     public void onChat(ChatEvent event) {
         if (GearzBungee.getInstance().getChannelManager().isEnabled()) return;
         if (event.isCancelled()) return;
-        this.handleSpy(event, null);
-        if (event.isCommand()) return;
         if (event.getMessage().contains("\\")) {
             event.getSender().disconnect("Bad.");
             event.setCancelled(true);
             return;
         }
+        this.handleSpy(event, null);
+        if (event.isCommand()) return;
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
         if (GearzBungee.getInstance().getChat().isPlayerInConversation(player)) return;

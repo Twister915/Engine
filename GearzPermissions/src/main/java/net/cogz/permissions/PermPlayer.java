@@ -44,12 +44,12 @@ public class PermPlayer extends GModel {
         this.name = name;
     }
 
-    public void addPlayerToGroup(PermGroup group) {
+    public void setGroup(PermGroup group) {
         this.group = group;
         save();
     }
 
-    public void removePlayerFromGroup(PermGroup group) {
+    public void removeGroup() {
         this.group = null;
         save();
     }
@@ -59,8 +59,9 @@ public class PermPlayer extends GModel {
         return this.group.getName().equals(group.getName());
     }
 
-    public void addPermission(String perm, boolean value) {
+    protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
+        if (this.permissions.contains(permission)) return;
         this.permissions.add(permission);
         save();
     }

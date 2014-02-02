@@ -43,7 +43,7 @@ public class PermissionsCommands implements CommandExecutor {
                     }
                     String permission = args[2];
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-player-perm", false, new String[]{"<permission>", permission}, new String[]{"<player>", args[0]}, new String[]{"<value>", value + ""}));
-                    player.addPermission(permission, value);
+                    permsManager.givePermToPlayer(player.getName(), permission, value);
                     break;
                 case "remove":
                 case "unset":
@@ -88,18 +88,18 @@ public class PermissionsCommands implements CommandExecutor {
                         return false;
                     }
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.added-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
-                    player.addPlayerToGroup(group);
+                    player.setGroup(group);
                     return false;
                 case "removegroup":
                     if (!sender.hasPermission("gearz.permissions.player.removegroup")) return false;
-                    if (args.length != 3) return false;
-                    PermGroup grp = permsManager.getGroup(args[2]);
+                    if (args.length != 2) return false;
+                    PermGroup grp = player.getGroup();
                     if (grp == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
                         return false;
                     }
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
-                    player.removePlayerFromGroup(grp);
+                    player.removeGroup();
                     return false;
                 case "prefix":
                     if (!sender.hasPermission("gearz.permissions.player.prefix")) return false;
@@ -166,6 +166,10 @@ public class PermissionsCommands implements CommandExecutor {
             switch (args[1]) {
                 case "create":
                     if (!sender.hasPermission("gearz.permissions.group.create")) return false;
+                    if (permsManager.getGroup(args[0]) != null) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.duplicate-group", false));
+                        return false;
+                    }
                     if (args.length < 2 || args.length > 3) return false;
                     boolean defau = false;
                     if (args.length == 3) {
@@ -176,6 +180,10 @@ public class PermissionsCommands implements CommandExecutor {
                     return false;
                 case "delete":
                     if (!sender.hasPermission("gearz.permissions.group.delete")) return false;
+                    if (permsManager.getGroup(args[0]) == null) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
+                        return false;
+                    }
                     if (args.length != 2) return false;
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.deleted-group", false, new String[]{"<group>", args[0]}));
                     permsManager.deleteGroup(args[0]);
@@ -193,7 +201,7 @@ public class PermissionsCommands implements CommandExecutor {
                     }
                     String permission = args[2];
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-group-perm", false, new String[]{"<permission>", permission}, new String[]{"<group>", args[0]}, new String[]{"<value>", value + ""}));
-                    group.addPermission(permission, value);
+                    permsManager.givePermToGroup(group, permission, value);
                     break;
                 case "remove":
                 case "unset":
@@ -204,7 +212,7 @@ public class PermissionsCommands implements CommandExecutor {
                         return false;
                     }
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-group-perm", false, new String[]{"<oermission>", args[2]}, new String[]{"<group>", args[0]}));
-                    group.removePermission(args[2]);
+                    permsManager.removeGroupPerm(group, args[2]);
                     return false;
                 case "check":
                     if (!sender.hasPermission("gearz.permissions.group.check")) return false;
@@ -290,11 +298,6 @@ public class PermissionsCommands implements CommandExecutor {
                         return false;
                     }
                     permsManager.addInheritance(group, toRemove);
-                    return false;
-                case "setladder":
-                    if (!sender.hasPermission("gearz.permissions.group.ladder")) return false;
-                    if (args.length != 3) return false;
-                    permsManager.setLadder(group, args[2]);
                     return false;
                 default:
                     return false;

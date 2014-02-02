@@ -23,14 +23,14 @@ public class ColoredTablist implements Listener {
         updateNick(player);
     }
 
-    public static String getPlayerPrefix(Player player) {
+    public static String getPlayerTabColor(Player player) {
         PermissionsManager permsManager = Gearz.getInstance().getPermissions().getPermsManager();
-        String prefix = permsManager.getPrefix(permsManager.getPlayer(player.getName()));
-        return prefix != null ? prefix : "";
+        String tabCoolor = permsManager.getTabColor(permsManager.getPlayer(player.getName()));
+        return tabCoolor != null ? tabCoolor : "";
     }
 
     public static void updateNick(Player player) {
-        String name = ChatColor.translateAlternateColorCodes('&', getPlayerPrefix(player) + player.getDisplayName());
+        String name = ChatColor.translateAlternateColorCodes('&', getPlayerTabColor(player) + player.getDisplayName());
         player.setPlayerListName(name.substring(0, Math.min(name.length(), 16)));
     }
 }
