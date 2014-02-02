@@ -1,6 +1,7 @@
 package net.tbnr.gearz.player;
 
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.event.player.PlayerChangeDonorPointsEvent;
@@ -82,7 +83,7 @@ public final class GearzPlayer {
         return this.hideStats;
     }
 
-    private GearzPlayer(TPlayer player) {
+    private GearzPlayer(@NonNull TPlayer player) {
         this.player = player;
         this.username = player.getPlayerName();
         GearzPlayer.players.put(player, this);

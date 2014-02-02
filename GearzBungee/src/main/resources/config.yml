@@ -27,3 +27,4 @@ irc:
   enabled: false
   printout: false
   format: "[%server%]<%sender%>: %message%"
+  enabled: true
