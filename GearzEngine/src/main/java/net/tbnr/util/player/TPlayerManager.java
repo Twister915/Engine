@@ -1,6 +1,7 @@
 package net.tbnr.util.player;
 
 import com.mongodb.*;
+import lombok.NonNull;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.player.cooldowns.TCooldownManager;
 import org.bson.types.ObjectId;
@@ -116,7 +117,8 @@ public final class TPlayerManager implements Listener {
         event.setLeaveMessage(tPlayerDisconnectEvent.getQuitMessage());
     }
 
-    public TPlayer getPlayer(Player player) {
+    public TPlayer getPlayer(@NonNull Player player) {
+        if (!this.players.containsKey(player.getName())) addPlayer(player);
         return players.get(player.getName());
     }
 

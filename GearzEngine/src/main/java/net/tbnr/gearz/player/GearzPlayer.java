@@ -1,6 +1,7 @@
 package net.tbnr.gearz.player;
 
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.event.player.PlayerChangeDonorPointsEvent;
@@ -32,7 +33,7 @@ public final class GearzPlayer {
     private static final Integer magic_number = 7;
     private GearzGame game;
     private static HashMap<TPlayer, GearzPlayer> players;
-    private static final boolean scoreboard;
+    private static boolean scoreboard;
 
     static {
         GearzPlayer.players = new HashMap<>();
@@ -82,7 +83,7 @@ public final class GearzPlayer {
         return this.hideStats;
     }
 
-    private GearzPlayer(TPlayer player) {
+    private GearzPlayer(@NonNull TPlayer player) {
         this.player = player;
         this.username = player.getPlayerName();
         GearzPlayer.players.put(player, this);
@@ -209,7 +210,6 @@ public final class GearzPlayer {
     }
 
     public static GearzPlayer playerFromPlayer(Player player) {
-        if (player == null) throw new NullPointerException("Cannot pass a null player!");
         return GearzPlayer.playerFromTPlayer(Gearz.getInstance().getPlayerManager().getPlayer(player));
     }
 
