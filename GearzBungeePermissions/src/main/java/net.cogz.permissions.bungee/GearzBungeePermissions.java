@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  *
  * Latest Change:
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class GearzBungeePermissions extends Plugin {
     @Getter
     private static GearzBungeePermissions instance;
