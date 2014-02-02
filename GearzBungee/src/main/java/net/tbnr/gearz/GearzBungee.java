@@ -3,6 +3,7 @@ package net.tbnr.gearz;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
 import lombok.Setter;
+import net.cogz.permissions.bungee.GearzBungeePermissions;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -12,7 +13,11 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
+import net.tbnr.gearz.chat.ClearChat;
 import net.tbnr.gearz.chat.Messaging;
+import net.tbnr.gearz.chat.channels.ChannelCommand;
+import net.tbnr.gearz.chat.channels.ChannelManager;
+import net.tbnr.gearz.chat.channels.ChannelsListener;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
@@ -29,6 +34,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -36,10 +42,8 @@ import java.util.concurrent.TimeUnit;
  * - Reconnect attempts
  * - Register on Site TODO
  * - Help command
- * - Chat logger
- * - Stream chat to a site for viewing by staff
  */
-@SuppressWarnings("NullArgumentToVariableArgMethod")
+@SuppressWarnings({"NullArgumentToVariableArgMethod", "FieldCanBeLocal", "UnusedDeclaration"})
 public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee, TabExecutor {
     /**
      * Gearz Instance
@@ -85,9 +89,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     private HelpMe helpMeModule;
 
     @Getter
-    private ModBroadcast modBroadCastModule;
-
-    @Getter
     private IPBanHandler ipBanHandler;
 
     @Getter
@@ -99,8 +100,22 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private Hub hub;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean whitelisted;
+
+    @Getter
+    private ChannelManager channelManager;
+
+    @Getter
+    public SimpleDateFormat readable;
+
+    @Getter
+    public GearzBungeePermissions permissions;
+
+    @Getter
+    public ChatManager chatManager;
+
 
     /**
      * Gets the current instance of the GearzBungee plugin.
@@ -120,7 +135,13 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.getConfig().options().copyDefaults(true);
         this.saveDefaultConfig();
         GearzBungee.instance = this;
+        readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        whitelisted = false;
         GModel.setDefaultDatabase(this.getMongoDB());
+        if (ProxyServer.getInstance().getPluginManager().getPlugin("GearzBungeePermissions") != null) {
+            this.permissions = (GearzBungeePermissions) ProxyServer.getInstance().getPluginManager().getPlugin("GearzBungeePermissions");
+            getLogger().info("GearzBungeePermissions found..enabling permissions support!");
+        }
         this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("database.host"));
         //this.responder = new ServerResponder();
         this.dispatch = new NetCommandDispatch();
@@ -149,9 +170,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.helpMeModule.registerReminderTask(30);
         registerCommandHandler(this.helpMeModule);
         registerEvents(this.helpMeModule);
-        this.modBroadCastModule = new ModBroadcast();
-        registerCommandHandler(this.modBroadCastModule);
-        registerEvents(this.modBroadCastModule);
         PlayerInfoModule infoModule = new PlayerInfoModule();
         registerCommandHandler(infoModule);
         registerEvents(infoModule);
@@ -171,6 +189,17 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         AnnouncerModule announcerModule = new AnnouncerModule(getConfig().getBoolean("announcer.enabled", false));
         registerCommandHandler(announcerModule);
 		registerCommandHandler(new StatsModule());
+        if (getConfig().getBoolean("channels.enabled", false)) {
+            getLogger().info("Channels enabled...");
+            registerEvents(new ChannelsListener());
+            channelManager = new ChannelManager();
+            channelManager.registerChannels();
+            registerCommandHandler(new ChannelCommand());
+        } else {
+            getLogger().info("Channels disabled...");
+        }
+        this.chatManager = new ChatManager();
+        registerCommandHandler(new ClearChat());
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -223,7 +252,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         if (censoredWords == null || !(censoredWords instanceof BasicDBList)) {
             return new String[0];
         }
-        BasicDBList dbListCensored = (BasicDBList)censoredWords;
+        BasicDBList dbListCensored = (BasicDBList) censoredWords;
         return dbListCensored.toArray(new String[dbListCensored.size()]);
     }
 

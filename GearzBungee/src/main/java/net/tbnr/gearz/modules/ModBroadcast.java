@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * <p/>
  * Latest Change: Added support for console
  */
+@Deprecated //Deprecated on 1/30/2014 in favor of new, better, channels system.
 public class ModBroadcast implements TCommandHandler, Listener {
 
     final ArrayList<String> modBroadcast = new ArrayList<>();

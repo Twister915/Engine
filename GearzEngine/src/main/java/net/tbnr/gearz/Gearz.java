@@ -2,9 +2,8 @@ package net.tbnr.gearz;
 
 import lombok.Getter;
 import lombok.NonNull;
+import net.cogz.permissions.bukkit.GearzBukkitPermissions;
 import lombok.Setter;
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.permission.Permission;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
@@ -24,7 +23,6 @@ import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -57,27 +55,9 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return gamePlugins;
     }
 
-    /**
-     *
-     */
     private List<GearzPlugin> gamePlugins;
-    /**
-     *
-     */
+
     public static final String CHAN = "GEARZ_NETCOMMAND";
-
-
-    /**
-     * The chat.
-     */
-    @Getter
-    private Chat chat;
-
-    /**
-     * The Permission
-     */
-    @Getter
-    private Permission permission;
 
     @Getter
     @Setter
@@ -97,6 +77,9 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     public static Random getRandom() {
         return random;
     }
+
+    @Getter
+    public GearzBukkitPermissions permissions;
 
     public Gearz() {
         Gearz.instance = this;
@@ -131,18 +114,12 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
         //Get a local variable of the PluginManager, and setup our chat/permission hooks.
         PluginManager pm = getServer().getPluginManager();
-        if (pm.isPluginEnabled("zPermissions") && pm.isPluginEnabled("zChat")) {
-            try {
-                this.setupChat();
-                this.setupPermission();
-                new TabListener();
-                registerEvents(new ColoredTablist());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        if (pm.isPluginEnabled("GearzBukkitPermissions")) {
+            this.permissions = (GearzBukkitPermissions) pm.getPlugin("GearzBukkitPermissions");
             GearzNickname nicknameHandler = new GearzNickname();
             registerEvents(nicknameHandler);
             registerCommands(nicknameHandler);
+            registerEvents(new ColoredTablist());
         }
 
         //Setup the player utils commands and events
@@ -152,6 +129,9 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
         //Generic player utils
         registerEvents(new PlayerListener());
+        registerEvents(new EnderBar.EnderBarListeners());
+        registerCommands(new ClearChat());
+        new TabListener();
 
         //EnderBar utils
         registerEvents(new EnderBar.EnderBarListeners());
@@ -191,40 +171,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             }
         }, 1);
 
-    }
-
-    private void setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider == null) {
-            getLogger().info("Vault cannot be found, disabling!");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
-	    if (chatProvider != null) {
-		    chat = chatProvider.getProvider();
-	    } else {
-		    try {
-			    throw new GearzException("Chat Cannot be set up");
-		    } catch (GearzException e) {
-			    e.printStackTrace();
-		    }
-	    }
-    }
-
-    private void setupPermission() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider == null) {
-            getLogger().info("Vault cannot be found, disabling!");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
-	    if(permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-	    } else {
-			try {
-				throw new GearzException("Chat Cannot be set up");
-			} catch (GearzException e) {
-				e.printStackTrace();
-			}
-		}
     }
 
     @Override

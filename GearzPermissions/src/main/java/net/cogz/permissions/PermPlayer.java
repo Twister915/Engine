@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +21,11 @@ public class PermPlayer extends GModel {
     @Getter @BasicField public String suffix;
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
-    @Getter @BasicField private String name;
-    @Getter @BasicField private List<String> groups;
-    @Getter @BasicField private List<String> permissions;
+    @Getter @BasicField public String name;
+    @Getter @BasicField public List<String> groups;
+    @Getter @BasicField public List<String> permissions;
 
+    @SuppressWarnings("unused")
     public PermPlayer() {
         super();
     }
@@ -32,6 +34,7 @@ public class PermPlayer extends GModel {
         super(database);
     }
 
+    @SuppressWarnings("unused")
     public PermPlayer(DB database, DBObject dBobject) {
         super(database, dBobject);
     }
@@ -51,6 +54,7 @@ public class PermPlayer extends GModel {
         save();
     }
 
+    @SuppressWarnings("unused")
     public boolean isPlayerInGroup(PermGroup group) {
         return this.groups.contains(group.getName());
     }

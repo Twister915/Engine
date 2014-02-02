@@ -10,6 +10,9 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.chat.channels.Channel;
+import net.tbnr.gearz.player.bungee.GearzPlayer;
+import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishmentType;
 import net.tbnr.util.bungee.command.TCommand;
@@ -43,7 +46,9 @@ public class ChatManager implements Listener, TCommandHandler {
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onChat(ChatEvent event) {
+        if (GearzBungee.getInstance().getChannelManager().isEnabled()) return;
         if (event.isCancelled()) return;
+        this.handleSpy(event, null);
         if (event.isCommand()) return;
         if (event.getMessage().contains("\\")) {
             event.getSender().disconnect("Bad.");
@@ -78,7 +83,6 @@ public class ChatManager implements Listener, TCommandHandler {
         }
 
         event.setMessage(filterData.getMessage());
-
     }
 
     @TCommand(name = "spy", permission = "gearz.spy", senders = {TCommandSender.Player}, usage = "/spy [off|chat|command|all]", aliases = {"cs", "commandspy", "cw", "commandwatcher", "chatspy"})
@@ -112,15 +116,12 @@ public class ChatManager implements Listener, TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    @SuppressWarnings("unused")
-    public void onChatMonitor(ChatEvent event) {
+    public void handleSpy(ChatEvent event, Channel channel) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", player.getName()}, new String[]{"<server>", player.getServer().getInfo().getName()});
+        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", player.getName()}, new String[]{"<server>", player.getServer().getInfo().getName()}, new String[]{"<channel>", channel != null ? channel.getName() : ""});
         for (Map.Entry<String, SpyType> p : this.spies.entrySet()) {
             ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(p.getKey());
             if (player1 == null) continue;
-            if (event.isCancelled()) continue;
             if ((p.getValue() == SpyType.All) || (p.getValue() == SpyType.Command && event.isCommand()) || (p.getValue() == SpyType.Chat && !event.isCommand())) {
                 player1.sendMessage(m);
             }
@@ -133,17 +134,12 @@ public class ChatManager implements Listener, TCommandHandler {
         if (this.spies.containsKey(event.getPlayer().getName())) this.spies.remove(event.getPlayer().getName());
     }
 
-    @Override
-    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
-        GearzBungee.handleCommandStatus(status, sender);
-    }
-
     @TCommand(
             name = "censor",
             permission = "gearz.censor",
             usage = "/censor [list|remove|add] [message (required if applicable)]",
-            senders = {TCommandSender.Player, TCommandSender.Console},
-            aliases = {})
+            senders = {TCommandSender.Player, TCommandSender.Console}
+    )
     @SuppressWarnings("unused")
     public TCommandStatus censors(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 1) return TCommandStatus.HELP;
@@ -195,6 +191,71 @@ public class ChatManager implements Listener, TCommandHandler {
         GearzBungee.getInstance().setCensoredWords(basicDBList);
         GearzBungee.getInstance().getChat().updateCensor();
         return TCommandStatus.SUCCESSFUL;
+    }
+
+    @TCommand(
+            name = "chat",
+            usage = "/chat <args>",
+            permission = "gearz.chat",
+            senders = {TCommandSender.Player, TCommandSender.Console})
+    @SuppressWarnings("unused")
+    public TCommandStatus command(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
+        if (args.length < 1) return TCommandStatus.FEW_ARGS;
+        Chat chat = GearzBungee.getInstance().getChat();
+        switch (args[0]) {
+            case "mute":
+                if (chat.isMuted()) {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-is-muted"));
+                } else {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-mute-on"));
+                    chat.setMuted(true);
+                }
+                return TCommandStatus.SUCCESSFUL;
+            case "unmute":
+                if (chat.isMuted()) {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-mute-off"));
+                    chat.setMuted(false);
+                } else {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("chat-not-muted"));
+                    chat.setMuted(true);
+                }
+                return TCommandStatus.SUCCESSFUL;
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
+
+    @TCommand(
+            name = "ignore",
+            usage = "/ignore <player>",
+            permission = "gearz.chat.ignore",
+            senders = {TCommandSender.Player})
+    @SuppressWarnings("unused")
+    public TCommandStatus ignore(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
+        if (args.length < 1) return TCommandStatus.FEW_ARGS;
+        GearzPlayer player = GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender);
+        List<String> ignoredPlayers = player.getIgnoredUsers();
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+        if (target == null) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("null-player"));
+            return TCommandStatus.SUCCESSFUL;
+        }
+        if (target.hasPermission("gearz.staff")) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("cant-ignore-staff"));
+            return TCommandStatus.SUCCESSFUL;
+        }
+        if (ignoredPlayers.contains(args[0])) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("unignored-player"));
+            player.unignorePlayer(target);
+        } else {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("ignored-player"));
+            player.ignorePlayer(target);
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
+
+    @Override
+    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
+        GearzBungee.handleCommandStatus(status, sender);
     }
 
 }

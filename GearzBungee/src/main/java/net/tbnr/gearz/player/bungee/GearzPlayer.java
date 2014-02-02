@@ -1,10 +1,13 @@
 package net.tbnr.gearz.player.bungee;
 
 import com.mongodb.*;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.chat.channels.Channel;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishmentType;
 import org.bson.types.ObjectId;
@@ -23,10 +26,13 @@ public final class GearzPlayer {
      * The player's username
      */
     private final String username;
+    @Getter @Setter public String nickname;
     /**
      * The player document
      */
     private DBObject playerDocument;
+
+    private Channel channel;
 
     private GearzPlayer(@NonNull DBObject object) throws PlayerNotFoundException {
         String username1;
@@ -37,6 +43,7 @@ public final class GearzPlayer {
         }
         this.playerDocument = object;
         this.username = username1;
+        updateNickname();
     }
 
     /**
@@ -75,6 +82,22 @@ public final class GearzPlayer {
         } else {
             throw new PlayerNotFoundException("Player not found yet!");
         }
+    }
+
+    public Channel getChannel() {
+        return this.channel;
+    }
+
+    public void setChannel(Channel channel) {
+        if (this.channel != null && this.channel.getName().equals(channel.getName())) {
+            throw new IllegalStateException("Already on this channel!");
+        }
+        if (this.channel != null) {
+            this.channel.removeMember(this.getProxiedPlayer());
+        }
+
+        this.channel = channel;
+        this.channel.addMember(this.getProxiedPlayer());
     }
 
     /**
@@ -294,6 +317,52 @@ public final class GearzPlayer {
             }
         }
         return punishments;
+    }
+
+    public void updateNickname() {
+        try {
+            loadDocument();
+        } catch (PlayerNotFoundException e) {
+            return;
+        }
+        Object nick = playerDocument.get("nickname");
+        if (nick == null || !(nick instanceof String)) return;
+        String nickname = (String) nick;
+        setNickname(nickname);
+        getProxiedPlayer().setDisplayName(nickname);
+    }
+
+    public List<String> getIgnoredUsers() {
+        List<String> ignores = new ArrayList<>();
+        Object ignoreObj = getPlayerDocument().get("ignored");
+        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) return ignores;
+        BasicDBList ignoreList = (BasicDBList) ignoreObj;
+        for (Object obj : ignoreList) {
+            if (!(obj instanceof String)) continue;
+            ignoreList.add(obj);
+        }
+        return ignores;
+    }
+
+    public void ignorePlayer(ProxiedPlayer player) {
+        Object ignoreObj = getPlayerDocument().get("ignored");
+        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) {
+            ignoreObj = new BasicDBList();
+        }
+        BasicDBList ignoreList = (BasicDBList) ignoreObj;
+        ignoreList.add(player.getName());
+        getPlayerDocument().put("ignored", ignoreList);
+    }
+
+    public void unignorePlayer(ProxiedPlayer player) {
+        Object ignoreObj = getPlayerDocument().get("ignored");
+        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) {
+            ignoreObj = new BasicDBList();
+        }
+        BasicDBList ignoreList = (BasicDBList) ignoreObj;
+        if (!ignoreList.contains(player.getName())) return;
+        ignoreList.remove(player.getName());
+        getPlayerDocument().put("ignored", ignoreList);
     }
 
     public String getName() {

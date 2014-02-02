@@ -10,6 +10,7 @@ formats:
   check-player-perm-value: "&4<player>&6 has &4<permission>&6 with value &4<value>&6."
   check-player-perm-invalid: "&4<player>&6 does not have &4<permission>&6."
   added-player-group: "&6Added &4<player>&6 to &4<group>&6."
+  removed-player-group: "&6Removed &4<player>&6 from &4<group>&6."
   reload: "&6Reloading all permissions..."
   player-deleted: "&6Player deleted."
   null-group: "&6That group does not exist."
@@ -18,3 +19,6 @@ formats:
   set-tab-color: "&6Set tab color to &4<color>&6."
   set-suffix: "&6Set suffix to &4<suffix>&6."
   set-prefix: "&6Set prefix to &4<prefix>&6."
+  set-prefix-null: "&cYou removed &4<target>&c's prefix."
+  set-suffix-null: "&cYou removed &4<target>&c's suffix."
+
