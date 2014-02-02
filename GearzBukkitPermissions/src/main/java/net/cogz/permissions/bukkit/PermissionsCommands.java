@@ -16,7 +16,7 @@ import org.bukkit.command.CommandSender;
 public class PermissionsCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (command.getName().equalsIgnoreCase("group")) {
+        if (command.getName().equalsIgnoreCase("player")) {
             if (args.length == 0) return false;
             PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
             PermPlayer player = permsManager.getPlayer(args[0]);
@@ -79,7 +79,6 @@ public class PermissionsCommands implements CommandExecutor {
                         sender.sendMessage(split[0] + " : " + split[1]);
                     }
                     return false;
-                case "addgroup":
                 case "setgroup":
                     if (!sender.hasPermission("gearz.permissions.player.addgroup")) return false;
                     if (args.length != 3) return false;
