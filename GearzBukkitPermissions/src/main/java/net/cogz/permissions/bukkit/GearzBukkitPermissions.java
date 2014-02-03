@@ -22,7 +22,7 @@ public final class GearzBukkitPermissions extends JavaPlugin {
         GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
         try {
-            new Converter();
+            Converter.newConverter();
         } catch (Exception e) {
             e.printStackTrace();
         }

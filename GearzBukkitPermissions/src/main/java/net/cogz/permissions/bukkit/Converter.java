@@ -12,15 +12,14 @@ import java.sql.SQLException;
  * Created by Jake on 2/2/14.
  */
 public class Converter {
-    String username;
-    String password;
-    String mysqlDb;
-    Integer port;
-    String host;
-    BoneCP connectionPool;
+    static String username;
+    static String password;
+    static String mysqlDb;
+    static Integer port;
+    static String host;
+    static private BoneCP connectionPool;
 
-    public Converter() throws Exception {
-        System.out.println("THIS MAKE NO FUCKING SENSE");
+    public static void newConverter() throws Exception {
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
@@ -31,7 +30,7 @@ public class Converter {
         doStuff();
     }
 
-    public void doStuff() throws SQLException {
+    public static void doStuff() throws SQLException {
         Connection connection = connectionPool.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
         ResultSet resultSet = stmt.executeQuery();
@@ -40,7 +39,7 @@ public class Converter {
         }
     }
 
-    public void enable() {
+    public static void enable() {
         BoneCPConfig config = new BoneCPConfig();
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + mysqlDb);
         config.setUser(username);
