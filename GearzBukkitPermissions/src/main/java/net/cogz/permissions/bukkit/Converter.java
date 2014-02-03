@@ -12,14 +12,15 @@ import java.sql.SQLException;
  * Created by Jake on 2/2/14.
  */
 public class Converter {
-    static String username;
-    static String password;
-    static String mysqlDb;
-    static Integer port;
-    static String host;
-    static private BoneCP connectionPool;
+    String username;
+    String password;
+    String mysqlDb;
+    Integer port;
+    String host;
+    BoneCP connectionPool;
 
     public Converter() throws Exception {
+        System.out.println("THIS MAKE NO FUCKING SENSE");
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
