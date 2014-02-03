@@ -24,7 +24,7 @@ public class Converter {
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
         port = 3306;
-        host = "one.tbnr.pw";
+        host = "127.0.0.1";
         enable();
         doStuff();
     }
