@@ -19,7 +19,7 @@ public class Converter {
     static String host;
     static private BoneCP connectionPool;
 
-    public Converter() throws Exception {
+    public static void newConverter() throws Exception {
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
@@ -30,16 +30,17 @@ public class Converter {
         doStuff();
     }
 
-    public void doStuff() throws SQLException {
+    public static void doStuff() throws SQLException {
         Connection connection = connectionPool.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
         ResultSet resultSet = stmt.executeQuery();
+        System.out.println("Size:" + resultSet.getFetchSize());
         while (resultSet.next()) {
             System.out.println("Name: " + resultSet.getString("display_name") + "Id: " + resultSet.getInt("id"));
         }
     }
 
-    public void enable() {
+    public static void enable() {
         BoneCPConfig config = new BoneCPConfig();
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + mysqlDb);
         config.setUser(username);

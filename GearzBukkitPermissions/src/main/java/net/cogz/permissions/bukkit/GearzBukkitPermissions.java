@@ -1,5 +1,6 @@
 package net.cogz.permissions.bukkit;
 
+import com.jolbox.bonecp.BoneCP;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,13 +17,19 @@ public final class GearzBukkitPermissions extends JavaPlugin {
     @Getter private static GearzBukkitPermissions instance;
     @Getter public PermissionsManager permsManager;
 
+    static String username;
+    static String password;
+    static String mysqlDb;
+    static Integer port;
+    static String host;
+    static private BoneCP connectionPool;
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
         GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
         try {
-            new Converter();
+            Converter.newConverter();
         } catch (Exception e) {
             e.printStackTrace();
         }
