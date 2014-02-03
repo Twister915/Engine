@@ -25,6 +25,7 @@ public class Converter {
         mysqlDb = "tbnr2";
         port = 3306;
         host = "127.0.0.1";
+        System.out.println(host);
         enable();
         doStuff();
     }
