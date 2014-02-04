@@ -1,6 +1,5 @@
 package net.tbnr.gearz.effects.entityblocks;
 
-import net.tbnr.gearz.effects.entityblocks.exceptions.GearzBlockException;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
@@ -18,9 +17,10 @@ public final class GearzBlockManager {
 
 	private static List<GearzBlock> regBlocks = new ArrayList<>();
 
-	public static GearzBlock registerBlock(Block b) throws GearzBlockException {
-		if(isRegistered(b.getLocation())) return getGearzBlock(b);
-		GearzBlock gearzBlock = new GearzBlock(b);
+	public static GearzBlock registerBlock(Block b) {
+		GearzBlock gearzBlock = getGearzBlock(b);
+		if(gearzBlock != null) return gearzBlock;
+		gearzBlock = new GearzBlock(b);
 		regBlocks.add(gearzBlock);
 		return gearzBlock;
 	}
@@ -30,16 +30,20 @@ public final class GearzBlockManager {
 	}
 
 	public static boolean isRegistered(Location l) {
+		return getGearzBlock(l) != null;
+	}
+
+	private static GearzBlock getGearzBlock(Block b) {
+		return getGearzBlock(b.getLocation());
+	}
+
+	private static GearzBlock getGearzBlock(Location l) {
 		for(GearzBlock gearzBlock : regBlocks) {
 			if(gearzBlock.getBlockX() != l.getBlockX()) continue;
 			if(gearzBlock.getBlockY() != l.getBlockY()) continue;
 			if(gearzBlock.getBlockZ() != l.getBlockZ()) continue;
-			return true;
+			return gearzBlock;
 		}
-		return false;
-	}
-
-	private static GearzBlock getGearzBlock(Block b) {
-
+		return null;
 	}
 }

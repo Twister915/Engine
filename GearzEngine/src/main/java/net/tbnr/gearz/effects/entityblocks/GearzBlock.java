@@ -19,12 +19,12 @@ import org.bukkit.block.Block;
 
 	private double z;
 
-	GearzBlock(Block block) throws GearzBlockException	{
+	GearzBlock(Block block)	{
 		GearzBlockManager.registerBlock(block);
 
 	}
 
-	public static GearzBlock block2GearzBlock(Block block) throws GearzBlockException {
+	public static GearzBlock block2GearzBlock(Block block) {
 		return GearzBlockManager.registerBlock(block);
 	}
 
