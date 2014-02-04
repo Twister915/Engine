@@ -30,11 +30,6 @@
             <version>1.7.2-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.12.2</version>
-        </dependency>
-        <dependency>
             <groupId>net.tbnr.gearz</groupId>
             <artifactId>GearzPermissions</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -71,18 +66,13 @@
                             <artifactSet>
                                 <includes>
                                     <include>net.tbnr.gearz:GearzPermissions</include>
-                                    <include>org.projectlombok:lombok</include>
                                     <include>com.jolbox:bonecp</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <finalName>${project.artifactId}</finalName>
-                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>
