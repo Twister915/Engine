@@ -11,6 +11,11 @@ The repo for the Engine stuff.
 
 [![Gitter chat](https://badges.gitter.im/CogzMC/Engine.png)](https://gitter.im/CogzMC/Engine)
 
+Compiling:
+======
+* Install [Maven 3](http://maven.apache.org/download.html)
+* Then to compile, use 'mvn clean install'
+
 Coding Conventions:
 ======
 
