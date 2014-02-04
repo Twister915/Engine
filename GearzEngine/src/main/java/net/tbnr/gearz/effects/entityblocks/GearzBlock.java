@@ -1,5 +1,6 @@
 package net.tbnr.gearz.effects.entityblocks;
 
+import lombok.Data;
 import net.tbnr.gearz.effects.entityblocks.exceptions.GearzBlockException;
 import org.bukkit.block.Block;
 
@@ -10,16 +11,33 @@ import org.bukkit.block.Block;
  * <p/>
  * Latest Change: created it and added base functions
  */
-public class GearzBlock {
+@Data public class GearzBlock {
 
-	public GearzBlock(Block block) throws GearzBlockException	{
-		if(GearzBlockManager.isRegistered(block)) {
-			throw new GearzBlockException("That block is already Registered: "+block.getLocation().toString());
-		}
+	private double x;
+
+	private double y;
+
+	private double z;
+
+	GearzBlock(Block block) throws GearzBlockException	{
+		GearzBlockManager.registerBlock(block);
+
 	}
 
 	public static GearzBlock block2GearzBlock(Block block) throws GearzBlockException {
-		return new GearzBlock(block);
+		return GearzBlockManager.registerBlock(block);
+	}
+
+	public int getBlockX() {
+		return (int) Math.floor(x);
+	}
+
+	public int getBlockY() {
+		return (int) Math.floor(x);
+	}
+
+	public int getBlockZ() {
+		return (int) Math.floor(x);
 	}
 
 }
