@@ -2,6 +2,7 @@ package net.cogz.permissions.bukkit;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
+import net.cogz.permissions.PermGroup;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +20,7 @@ public class Converter {
     static String host;
     static private BoneCP connectionPool;
 
-    public static void newConverter() throws Exception {
+    public static void newConverter() {
         for (int x = 0; x < 20; x++) {
             System.out.println("WTFUCK");
         }
@@ -30,16 +31,17 @@ public class Converter {
         host = "127.0.0.1";
         System.out.println(host);
         enable();
-        doStuff();
     }
 
     public static void doStuff() throws SQLException {
+        PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         Connection connection = connectionPool.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
         ResultSet resultSet = stmt.executeQuery();
         System.out.println("Size:" + resultSet.getFetchSize());
         while (resultSet.next()) {
-            System.out.println("Name: " + resultSet.getString("display_name") + "Id: " + resultSet.getInt("id"));
+            System.out.println("Name: " + resultSet.getString("display_name") + " Id: " + resultSet.getInt("id"));
+            permsManager.createGroup(resultSet.getString("display_name"));
         }
     }
 
