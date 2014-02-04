@@ -1,8 +1,5 @@
 package net.tbnr.gearz.effects.entityblocks;
 
-import com.comphenix.protocol.wrappers.nbt.NbtCompound;
-import com.comphenix.protocol.wrappers.nbt.NbtFactory;
-import net.tbnr.util.EntityUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
