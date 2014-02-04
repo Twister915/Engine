@@ -1,7 +1,8 @@
 package net.tbnr.gearz.effects.entityblocks;
 
 import lombok.Data;
-import net.tbnr.gearz.effects.entityblocks.exceptions.GearzBlockException;
+import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 /**
@@ -10,34 +11,31 @@ import org.bukkit.block.Block;
  * Purpose Of File: To provide a wrapper for bukkit block's with more method's
  * <p/>
  * Latest Change: created it and added base functions
+ * <p/>
+ * Important Information: To get a GearzBlock from a block use the {@link #block2GearzBlock(Block block)}
+ * <p/>
+ * Do not try to invoke the constructor!
  */
 @Data public class GearzBlock {
 
-	private double x;
+	// The reason I'm keeping all the type and data is because I might change the bukkit block to air
 
-	private double y;
+	private Material type;
 
-	private double z;
+	private Byte data;
+
+	@Getter
+	private final Block block;
 
 	GearzBlock(Block block)	{
-		GearzBlockManager.registerBlock(block);
 
+		this.type = block.getType();
+		this.data = block.getData();
+		this.block = block;
 	}
 
 	public static GearzBlock block2GearzBlock(Block block) {
 		return GearzBlockManager.registerBlock(block);
-	}
-
-	public int getBlockX() {
-		return (int) Math.floor(x);
-	}
-
-	public int getBlockY() {
-		return (int) Math.floor(x);
-	}
-
-	public int getBlockZ() {
-		return (int) Math.floor(x);
 	}
 
 }

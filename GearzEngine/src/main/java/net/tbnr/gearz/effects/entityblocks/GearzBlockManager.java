@@ -38,10 +38,12 @@ public final class GearzBlockManager {
 	}
 
 	private static GearzBlock getGearzBlock(Location l) {
+		Location gearzLocation;
 		for(GearzBlock gearzBlock : regBlocks) {
-			if(gearzBlock.getBlockX() != l.getBlockX()) continue;
-			if(gearzBlock.getBlockY() != l.getBlockY()) continue;
-			if(gearzBlock.getBlockZ() != l.getBlockZ()) continue;
+			gearzLocation = gearzBlock.getBlock().getLocation();
+			if(gearzLocation.getBlockX() != l.getBlockX()) continue;
+			if(gearzLocation.getBlockY() != l.getBlockY()) continue;
+			if(gearzLocation.getBlockZ() != l.getBlockZ()) continue;
 			return gearzBlock;
 		}
 		return null;
