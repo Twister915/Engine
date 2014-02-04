@@ -1,5 +1,9 @@
 package net.tbnr.gearz.effects.entityblocks;
 
+import org.bukkit.Location;
+
+import java.util.UUID;
+
 /**
  * Created by George on 04/02/14.
  * <p/>
@@ -8,9 +12,16 @@ package net.tbnr.gearz.effects.entityblocks;
  * Latest Change:
  */
 public class EntityBlock extends GearzBlock {
-	EntityBlock(GearzBlock block) {
-		super(block.getBlock());
+
+	private final UUID UUID;
+
+	EntityBlock(Location location) {
+		super(location);
+		this.UUID = spawnMinecart();
 	}
 
+	public UUID spawnMinecart() {
+		return null;
+	}
 
 }
