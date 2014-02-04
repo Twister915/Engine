@@ -32,11 +32,17 @@ Creating a new feature:
       - You will most likely want to squash all of your commits down into a few, and make their messages descriptive!
   - When you have rebased everything, you can now open a pull request on github to merge into master.
     - The point of this is to allow other contributors a chance to look over your code before it is merged.
-    - We also want to make sure that master is ALWAYS deployable. Essentially, errors on the master branch, can be prevented by using these methods.
+    - We also want to make sure that master is ALWAYS deployable. Essentially, errors on the master branch, can be             prevented by using these methods.
   - Once the code has been approved, or you believe it is time to merge, you can merge!
     - git checkout master
     - git rebase [new-feature]
       - This merges your feature into the master branch, while saving commit data associated with it.
     - Once you are 100% sure everything is done, you can delete the old branch:
       - git branch -d [new-feature]
-  
+General Conventions:
+* In general you should follow the Java Coding Standards, found [here] (http://www.oracle.com/technetwork/java/codeconv-138413.html)
+* Remember to always use lower case package names, camel case fields and methods, and in general watch the casing of your code.
+* Always use tabs, not spaces, this will make the code very unorganized and hard to read.
+* Do not use linebreaks mid line, use the entire line, do not break, no matter the length.
+* Make sure to always format with IntelliJ IDEA, as this will get you very close to what your code should look like, in regards to these standards.
+* Do not supress deprecated methods, at some point in time, there is a good chance that these will finally be replaced with a different method, and are much easier to find if not supressed.
