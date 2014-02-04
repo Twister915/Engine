@@ -72,6 +72,7 @@
                                 <includes>
                                     <include>net.tbnr.gearz:GearzPermissions</include>
                                     <include>org.projectlombok:lombok</include>
+                                    <include>com.jolbox:bonecp</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
