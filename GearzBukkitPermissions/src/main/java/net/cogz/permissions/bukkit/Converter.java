@@ -34,6 +34,7 @@ public class Converter {
         Connection connection = connectionPool.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
         ResultSet resultSet = stmt.executeQuery();
+        System.out.println("Size:" + resultSet.getFetchSize());
         while (resultSet.next()) {
             System.out.println("Name: " + resultSet.getString("display_name") + "Id: " + resultSet.getInt("id"));
         }
