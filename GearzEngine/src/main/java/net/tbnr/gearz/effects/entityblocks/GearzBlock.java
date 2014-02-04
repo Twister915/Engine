@@ -24,12 +24,12 @@ import java.util.List;
 
 	// The reason I'm keeping all the type and data is because I might change the bukkit block to air
 
-	private Material type;
+	protected Material type;
 
-	private Byte data;
+	protected Byte data;
 
 	@Getter
-	private final Block block;
+	protected final Block block;
 
 	GearzBlock(Block block)	{
 		this.type = block.getType();

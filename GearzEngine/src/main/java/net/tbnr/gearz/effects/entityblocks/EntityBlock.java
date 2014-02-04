@@ -1,6 +1,10 @@
 package net.tbnr.gearz.effects.entityblocks;
 
+import com.comphenix.protocol.wrappers.nbt.NbtCompound;
+import com.comphenix.protocol.wrappers.nbt.NbtFactory;
+import net.tbnr.util.EntityUtil;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 
 import java.util.UUID;
 
@@ -18,10 +22,15 @@ public class EntityBlock extends GearzBlock {
 	EntityBlock(Location location) {
 		super(location);
 		this.UUID = spawnMinecart();
+		giveNBTData();
 	}
 
 	public UUID spawnMinecart() {
-		return null;
+		return block.getWorld().spawnEntity(block.getLocation(), EntityType.MINECART).getUniqueId();
+	}
+
+	public void giveNBTData() {
+		//INSERT NBT EDITING HERE :) :) :)
 	}
 
 }
