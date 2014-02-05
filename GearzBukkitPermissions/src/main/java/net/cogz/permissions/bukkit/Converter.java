@@ -2,7 +2,6 @@ package net.cogz.permissions.bukkit;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
-import net.cogz.permissions.PermGroup;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,14 +19,10 @@ public class Converter {
     static String host;
     static private BoneCP connectionPool;
 
-<<<<<<< HEAD
     public static void newConverter() throws Exception {
-=======
-    public static void newConverter() {
         for (int x = 0; x < 20; x++) {
             System.out.println("WTFUCK");
         }
->>>>>>> 311e3688214268f696b47049e2a6a42f263e4a3c
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
@@ -38,10 +33,7 @@ public class Converter {
     }
 
     public static void doStuff() throws SQLException {
-<<<<<<< HEAD
-=======
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
->>>>>>> 311e3688214268f696b47049e2a6a42f263e4a3c
         Connection connection = connectionPool.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
         ResultSet resultSet = stmt.executeQuery();
