@@ -28,10 +28,16 @@ public final class GearzBukkitPermissions extends JavaPlugin {
     public void onEnable() {
         GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
+        for (int x = 0; x < 20; x++) {
+            System.out.println("WTF");
+        }
         try {
             Converter.newConverter();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        for (int x = 0; x < 20; x++) {
+            System.out.println("WTFUDGE");
         }
         getServer().getPluginManager().registerEvents(this.permsManager, this);
         PermissionsCommands permsCommands = new PermissionsCommands();
