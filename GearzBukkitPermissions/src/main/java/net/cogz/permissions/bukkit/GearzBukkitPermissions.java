@@ -17,15 +17,12 @@ public final class GearzBukkitPermissions extends JavaPlugin {
     @Getter private static GearzBukkitPermissions instance;
     @Getter public PermissionsManager permsManager;
 
-    static String username;
-    static String password;
-    static String mysqlDb;
-    static Integer port;
-    static String host;
-    static private BoneCP connectionPool;
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
+        for (int x = 0; x < 20; x++) {
+            System.out.println("DOES THIS FUCKING UPDATE");
+        }
         GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
         for (int x = 0; x < 20; x++) {
