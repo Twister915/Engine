@@ -25,6 +25,7 @@ public class ColoredTablist implements Listener {
         /*PermissionsManager permsManager = Gearz.getInstance().getPermissions().getPermsManager();
         String tabCoolor = permsManager.getTabColor(permsManager.getPlayer(player.getName()));
         return tabCoolor != null ? tabCoolor : "";*/
+        return "";
     }
 
     public static void updateNick(Player player) {
