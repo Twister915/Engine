@@ -53,6 +53,7 @@ public class Converter {
         while (entityResult.next()) {
             String caseName = entityResult.getString("name");
             String displayName = entityResult.getString("display_name");
+            System.out.println("Found player with lower case name " + caseName + " with the real name, " + displayName);
             playerMap.put(caseName, displayName);
         }
 
@@ -61,6 +62,7 @@ public class Converter {
         while (playerResult.next()) {
             Integer groupId = playerResult.getInt("group_id");
             String realName = playerMap.get(playerResult.getString("member"));
+            System.out.println("Adding player " + realName + " to the group " + rankMap.get(groupId));
             permsManager.setGroup(realName, rankMap.get(groupId));
         }
     }
