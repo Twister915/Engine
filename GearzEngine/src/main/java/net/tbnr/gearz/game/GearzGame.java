@@ -1254,6 +1254,15 @@ public abstract class GearzGame implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBoat(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)) return;
+        GearzPlayer player = GearzPlayer.playerFromPlayer((Player) event.getDamager());
+        if (!isSpectating(player)) return;
+        event.setCancelled(true);
+        player.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
+    }
+
     protected final void addWin(GearzPlayer gearzPlayer) {
         TPlayer tPlayer = gearzPlayer.getTPlayer();
         Integer gameWins = (Integer) tPlayer.getStorable(getPlugin(), new GameWins(this));

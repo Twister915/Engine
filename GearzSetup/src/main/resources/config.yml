@@ -16,5 +16,6 @@ formats:
   cannot-complete: "&cYou can't save this arena now!"
   saved: "&aThe arena has been saved."
   failed-save: "&cThe arena failed to save."
-  selected: "&aPoint selected (&c<count&a)"
+  selected: "&aPoint selected (&c<count>&a)"
   blocks-added: "&aAdded &c<num>&a points to the current field using skull selectors."
+  complete-fail: "&cYou need to select two points!"

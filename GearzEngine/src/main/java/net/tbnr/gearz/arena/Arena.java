@@ -76,7 +76,7 @@ public abstract class Arena implements Votable {
         this.world = world;
     }
 
-    public void loadWorld() throws GearzException, ZipException, IOException {
+    public final void loadWorld() throws GearzException, ZipException, IOException {
         GridFSDBFile one = Arena.bucket.findOne(new ObjectId(this.worldId));
         if (one == null) throw new GearzException("Failed to load world - not found");
         String worldName = RandomUtils.getRandomString(16);
@@ -107,7 +107,7 @@ public abstract class Arena implements Votable {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void saveWorld() throws ZipException, IOException, GearzException {
+    public final void saveWorld() throws ZipException, IOException, GearzException {
         this.world.save();
         File worldFolder = this.world.getWorldFolder();
         String randomString = RandomUtils.getRandomString(16);
@@ -135,7 +135,7 @@ public abstract class Arena implements Votable {
         this.worldId = file.getId().toString();
     }
 
-    public void unloadWorld() {
+    public final void unloadWorld() {
         File worldFolder = this.world.getWorldFolder();
         Bukkit.unloadWorld(this.world, false);
         delete(worldFolder);
@@ -153,7 +153,7 @@ public abstract class Arena implements Votable {
         return dir.delete();
     }
 
-    public Location pointToLocation(Point p) {
+    public final Location pointToLocation(Point p) {
         return new Location(this.getWorld(), p.getX(), p.getY(), p.getZ(), p.getPitch(), p.getYaw());
     }
 
@@ -161,7 +161,7 @@ public abstract class Arena implements Votable {
         return new Point(l.getX(), l.getY(), l.getZ(), l.getPitch(), l.getYaw());
     }
 
-    public void cleanupDrops() {
+    public final void cleanupDrops() {
         cleanupEntities(Item.class);
     }
 
