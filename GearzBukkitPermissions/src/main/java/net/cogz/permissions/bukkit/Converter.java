@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Jake on 2/2/14.
@@ -18,6 +20,9 @@ public class Converter {
     static Integer port;
     static String host;
     static private BoneCP connectionPool;
+
+    static Map<Integer, String> rankMap = new HashMap<>();
+    static Map<String, String> playerMap = new HashMap<>();
 
     public static void newConverter() throws Exception {
         for (int x = 0; x < 20; x++) {
@@ -39,8 +44,24 @@ public class Converter {
         ResultSet resultSet = stmt.executeQuery();
         System.out.println("Size:" + resultSet.getFetchSize());
         while (resultSet.next()) {
-            System.out.println("Name: " + resultSet.getString("display_name") + " Id: " + resultSet.getInt("id"));
+            rankMap.put(resultSet.getInt("id"), resultSet.getString("display_name"));
             permsManager.createGroup(resultSet.getString("display_name"));
+        }
+
+        PreparedStatement entitySelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='0'");
+        ResultSet entityResult = entitySelect.executeQuery();
+        while (entityResult.next()) {
+            String caseName = entityResult.getString("name");
+            String displayName = entityResult.getString("display_name");
+            playerMap.put(caseName, displayName);
+        }
+
+        PreparedStatement playerSelect = connection.prepareStatement("SELECT * FROM memberships");
+        ResultSet playerResult = playerSelect.executeQuery();
+        while (playerResult.next()) {
+            Integer groupId = playerResult.getInt("group_id");
+            String realName = playerMap.get(playerResult.getString("member"));
+            permsManager.setGroup(realName, rankMap.get(groupId));
         }
     }
 
