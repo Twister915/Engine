@@ -18,11 +18,9 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 9/24/13
- * Time: 5:19 PM
- * To change this template use File | Settings | File Templates.
+ * gg
+ *
+ * @returns no re
  */
 @EqualsAndHashCode(of = {"username"}, doNotUseGetters = true)
 @ToString(exclude = {"hideStats", "game"})
