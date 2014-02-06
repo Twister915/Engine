@@ -25,9 +25,6 @@ public class Converter {
     static Map<String, String> playerMap = new HashMap<>();
 
     public static void newConverter() throws Exception {
-        for (int x = 0; x < 20; x++) {
-            System.out.println("WTFUCK");
-        }
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";

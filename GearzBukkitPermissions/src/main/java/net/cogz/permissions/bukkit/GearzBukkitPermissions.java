@@ -20,22 +20,8 @@ public final class GearzBukkitPermissions extends JavaPlugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onEnable() {
-        for (int x = 0; x < 20; x++) {
-            System.out.println("DOES THIS FUCKING UPDATE");
-        }
         GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
-        for (int x = 0; x < 20; x++) {
-            System.out.println("WTF");
-        }
-        try {
-            Converter.newConverter();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        for (int x = 0; x < 20; x++) {
-            System.out.println("WTFUDGE");
-        }
         getServer().getPluginManager().registerEvents(this.permsManager, this);
         PermissionsCommands permsCommands = new PermissionsCommands();
         getCommand("player").setExecutor(permsCommands);
@@ -51,6 +37,11 @@ public final class GearzBukkitPermissions extends JavaPlugin {
                 }
             }
         }, 0, 30 * 20);
+        try {
+            Converter.newConverter();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
