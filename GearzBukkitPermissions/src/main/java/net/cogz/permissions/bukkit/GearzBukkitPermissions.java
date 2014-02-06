@@ -27,7 +27,7 @@ public final class GearzBukkitPermissions extends JavaPlugin {
         getCommand("player").setExecutor(permsCommands);
         getCommand("group").setExecutor(permsCommands);
         getCommand("permissions").setExecutor(permsCommands);
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
                 try {
