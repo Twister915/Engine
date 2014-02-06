@@ -25,27 +25,23 @@ public class Converter {
     static Map<String, String> playerMap = new HashMap<>();
 
     public static void newConverter() throws Exception {
-        for (int x = 0; x < 20; x++) {
-            System.out.println("WTFUCK");
-        }
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
         port = 3306;
-        host = "127.0.0.1";
-        System.out.println(host);
+        host = "one.tbnr.pw";
         enable();
     }
 
     public static void doStuff() throws SQLException {
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         Connection connection = connectionPool.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
-        ResultSet resultSet = stmt.executeQuery();
-        System.out.println("Size:" + resultSet.getFetchSize());
-        while (resultSet.next()) {
-            rankMap.put(resultSet.getInt("id"), resultSet.getString("display_name"));
-            permsManager.createGroup(resultSet.getString("display_name"));
+        PreparedStatement groupSelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
+        ResultSet groupResult = groupSelect.executeQuery();
+        while (groupResult.next()) {
+            System.out.println("Found group: " + groupResult.getString("display_name"));
+            rankMap.put(groupResult.getInt("id"), groupResult.getString("display_name"));
+            permsManager.createGroup(groupResult.getString("display_name"), false);
         }
 
         PreparedStatement entitySelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='0'");
@@ -53,7 +49,8 @@ public class Converter {
         while (entityResult.next()) {
             String caseName = entityResult.getString("name");
             String displayName = entityResult.getString("display_name");
-            System.out.println("Found player with lower case name " + caseName + " with the real name, " + displayName);
+            Integer id = entityResult.getInt("id");
+            System.out.println("Found player with lower case name " + caseName + " with the real name, " + displayName + " and id " + id);
             playerMap.put(caseName, displayName);
         }
 

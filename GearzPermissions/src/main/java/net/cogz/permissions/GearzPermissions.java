@@ -27,11 +27,11 @@ public abstract class GearzPermissions {
     /**
      * Players who are online with their names.
      */
-    private Map<String, PermPlayer> players;
+    private Map<String, PermPlayer> players = new HashMap<>();
     /**
      * All groups
      */
-    private Map<String, PermGroup> groups;
+    private Map<String, PermGroup> groups = new HashMap<>();
     /**
      * Default group
      */
@@ -321,7 +321,11 @@ public abstract class GearzPermissions {
      * @return group that was created
      */
     public PermGroup createGroup(String name, boolean defau) {
-        if (this.groups.containsKey(name)) return null;
+        if (name == null) {
+            System.out.println("DATS NULL");
+            
+        }
+        if (this.groups.containsKey(name)) throw new IllegalStateException("Group already exists");
         PermGroup group = new PermGroup(this.database);
         group.name = name;
         group.isDefault = defau;
