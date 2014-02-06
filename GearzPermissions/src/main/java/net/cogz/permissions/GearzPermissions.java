@@ -27,11 +27,11 @@ public abstract class GearzPermissions {
     /**
      * Players who are online with their names.
      */
-    private Map<String, PermPlayer> players;
+    private Map<String, PermPlayer> players = new HashMap<>();
     /**
      * All groups
      */
-    private Map<String, PermGroup> groups;
+    private Map<String, PermGroup> groups = new HashMap<>();
     /**
      * Default group
      */

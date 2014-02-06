@@ -30,7 +30,6 @@ public class Converter {
         mysqlDb = "tbnr2";
         port = 3306;
         host = "one.tbnr.pw";
-        System.out.println(host + " swag");
         enable();
     }
 
