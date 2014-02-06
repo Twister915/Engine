@@ -38,7 +38,6 @@ public class Converter {
         Connection connection = connectionPool.getConnection();
         PreparedStatement groupSelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
         ResultSet groupResult = groupSelect.executeQuery();
-        System.out.println("Size:" + groupResult.getFetchSize());
         while (groupResult.next()) {
             System.out.println("Found group: " + groupResult.getString("display_name"));
             rankMap.put(groupResult.getInt("id"), groupResult.getString("display_name"));
@@ -50,7 +49,8 @@ public class Converter {
         while (entityResult.next()) {
             String caseName = entityResult.getString("name");
             String displayName = entityResult.getString("display_name");
-            System.out.println("Found player with lower case name " + caseName + " with the real name, " + displayName);
+            Integer id = entityResult.getInt("id");
+            System.out.println("Found player with lower case name " + caseName + " with the real name, " + displayName + " and id " + id);
             playerMap.put(caseName, displayName);
         }
 
