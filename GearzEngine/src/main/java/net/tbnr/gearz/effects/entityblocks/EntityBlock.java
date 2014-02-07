@@ -1,7 +1,11 @@
 package net.tbnr.gearz.effects.entityblocks;
 
+import net.tbnr.util.EntityUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Minecart;
+import org.reflections.Reflections;
 
 import java.util.UUID;
 
@@ -27,7 +31,19 @@ public class EntityBlock extends GearzBlock {
 	}
 
 	public void giveNBTData() {
-		//INSERT NBT EDITING HERE :) :) :)
+
+		final String NMS_PATH =
+			"net.minecraft.server."+
+			(Bukkit.getServer() != null ?
+					Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] :
+					"UNKNOWN"
+			);
+
+		Minecart m = (Minecart) EntityUtil.UUID2Entity(UUID);
+
+
+		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) entity).getHandle();
+		AttributeInstance attributes = nmsEntity.a(GenericAttributes.d);
 	}
 
 }
