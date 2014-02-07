@@ -1,6 +1,7 @@
 package net.tbnr.gearz.effects;
 
 import com.google.common.collect.Lists;
+import net.tbnr.util.GUtility;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -17,7 +18,7 @@ import java.util.Random;
  *
  * Latest Change:
  */
-public class FireworkUtils {
+public class FireworkUtils implements GUtility {
     static final Random random = new Random();
     static final List<Color> colors = Lists.newArrayList(Color.AQUA, Color.BLUE, Color.FUCHSIA, Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.NAVY, Color.OLIVE, Color.ORANGE, Color.PURPLE, Color.RED, Color.TEAL, Color.YELLOW);
     static final int FIREWORK_POWER = 0;

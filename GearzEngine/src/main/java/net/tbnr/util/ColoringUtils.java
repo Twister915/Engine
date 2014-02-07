@@ -18,7 +18,7 @@ import java.util.List;
  *
  * Latest Change:
  */
-public class ColoringUtils {
+public class ColoringUtils implements GUtility {
 
     public static ItemStack colorizeLeather(Material material, Color color) {
         ItemStack item = new ItemStack(material);

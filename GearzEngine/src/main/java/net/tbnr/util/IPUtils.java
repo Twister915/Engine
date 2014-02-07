@@ -14,7 +14,7 @@ import java.net.InetAddress;
  *
  * Latest Change:
  */
-public final class IPUtils {
+public final class IPUtils implements GUtility {
 
     /**
      * Returns player ping via the eventHandler passed in

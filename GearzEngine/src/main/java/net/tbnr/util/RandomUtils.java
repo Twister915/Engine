@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 
-public class RandomUtils {
+public class RandomUtils implements GUtility {
 
     public static String getRandomString(Integer length) {
         return (new BigInteger(130, Gearz.getRandom()).toString(length));

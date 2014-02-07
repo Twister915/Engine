@@ -11,7 +11,7 @@ import java.net.URL;
  *
  * Latest Change:
  */
-public class FileUtil {
+public class FileUtil implements GUtility {
 
     /**
      * Downloads the file from the parameters
