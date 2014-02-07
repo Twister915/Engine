@@ -48,7 +48,7 @@ General Conventions:
   * Make sure to always format with IntelliJ IDEA, as this will get you very close to what your code should look like,       in regards to these standards.
   * Do not supress deprecated methods, at some point in time, there is a good chance that these will finally be       replaced with a different method, and are much easier to find if not supressed.
   * General file header is as follows:
-...
+```
 /**
  * Created by ${USER} on ${DATE}.
  *
@@ -56,5 +56,5 @@ General Conventions:
  * 
  * Latest Change: 
  */
-...
+```
    * To Change the file header in intelij do File > settings > search file and code templates > Includes > File Header > Paste in the file header ;)
