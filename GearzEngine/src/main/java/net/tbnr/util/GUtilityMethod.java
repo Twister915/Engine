@@ -15,7 +15,7 @@ import static java.lang.annotation.ElementType.*;
  * Latest Change: Added it
  */
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target(value={CONSTRUCTOR, FIELD, LOCAL_VARIABLE, METHOD, PACKAGE, PARAMETER, TYPE})
+@Retention(RetentionPolicy.SOURCE)
+@Target(value={CONSTRUCTOR, METHOD})
 public @interface GUtilityMethod {
 }
