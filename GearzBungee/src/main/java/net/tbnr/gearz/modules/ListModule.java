@@ -100,7 +100,8 @@ public class ListModule implements TCommandHandler, Listener {
 						break;
 					}
 				}
-                messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber() }));
+				if(server != null)
+                	messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber() }));
             }
         }
         for (String s : GearzBungee.boxMessage(ChatColor.BLUE, messages)) {
