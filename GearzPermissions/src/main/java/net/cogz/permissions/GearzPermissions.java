@@ -362,9 +362,11 @@ public abstract class GearzPermissions {
      * @return the prefix of the player
      */
     public String getPrefix(PermPlayer player) {
-        if (player.getGroup() == null) return null;
-        PermGroup permGroup = player.getGroup();
-        String prefix = permGroup.getPrefix();
+        String prefix = null;
+        if (player.getGroup() != null) {
+            PermGroup permGroup = player.getGroup();
+            prefix = permGroup.getPrefix();
+        }
         if (player.getPrefix() != null) prefix = player.getPrefix();
         return prefix;
     }
@@ -376,9 +378,11 @@ public abstract class GearzPermissions {
      * @return the suffix of the player
      */
     public String getSuffix(PermPlayer player) {
-        if (player.getGroup() == null) return null;
-        PermGroup permGroup = player.getGroup();
-        String prefix = permGroup.getSuffix();
+        String prefix = null;
+        if (player.getGroup() != null) {
+            PermGroup permGroup = player.getGroup();
+            prefix = permGroup.getSuffix();
+        }
         if (player.getSuffix() != null) prefix = player.getSuffix();
         return prefix;
     }
@@ -391,9 +395,11 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public String getNameColor(PermPlayer player) {
-        if (player.getGroup() == null) return null;
-        PermGroup permGroup = player.getGroup();
-        String nameColor = permGroup.getNameColor();
+        String nameColor = null;
+        if (player.getGroup() != null) {
+            PermGroup permGroup = player.getGroup();
+            nameColor = permGroup.getNameColor();
+        }
         if (player.getNameColor() != null) nameColor = player.getNameColor();
         return nameColor;
     }
@@ -406,9 +412,11 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public String getTabColor(PermPlayer player) {
-        if (player.getGroup() == null) return null;
-        PermGroup permGroup = player.getGroup();
-        String tabColor = permGroup.getTabColor();
+        String tabColor = null;
+        if (player.getGroup() != null) {
+            PermGroup permGroup = player.getGroup();
+            tabColor = permGroup.getTabColor();
+        }
         if (player.getTabColor() != null) tabColor = player.getTabColor();
         return tabColor;
     }
