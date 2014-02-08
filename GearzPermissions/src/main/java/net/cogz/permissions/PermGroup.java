@@ -55,12 +55,14 @@ public class PermGroup extends GModel {
 
     public void addInheritance(PermGroup permGroup) {
         this.inheritances.add(permGroup.getName());
+        save();
     }
 
     public void removeInheritance(PermGroup permGroup) {
         if (this.inheritances.contains(permGroup.getName())) {
             this.inheritances.remove(permGroup.getName());
         }
+        save();
     }
 
     public boolean hasPermission(String perm) {
