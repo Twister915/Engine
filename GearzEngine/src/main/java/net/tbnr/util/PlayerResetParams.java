@@ -1,5 +1,6 @@
 package net.tbnr.util;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import net.tbnr.util.player.TPlayer;
@@ -15,27 +16,28 @@ import java.util.List;
  * Time: 2:11 PM
  * To change this template use File | Settings | File Templates.
  */
+@Data
 public class PlayerResetParams {
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private TPlayer player;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private List<ItemStack> doNotclear;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean clearXP = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean clearPotions = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean restoreHealth = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean restoreFood = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean resetFlight = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean movePlayerDown = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean restoreSpeeds = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private boolean resetInventory = true;
-    @SuppressWarnings("unused") @Getter @Setter
+    @SuppressWarnings("unused")
     private GameMode resetGamemode = GameMode.SURVIVAL;
 }
