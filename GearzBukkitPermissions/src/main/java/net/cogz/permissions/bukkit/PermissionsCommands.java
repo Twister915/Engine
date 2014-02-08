@@ -24,7 +24,10 @@ public class PermissionsCommands implements CommandExecutor {
             switch (args[1]) {
                 case "reset":
                 case "delete":
-                    if (!sender.hasPermission("gearz.permissions.player.delete")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.delete")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 2) return false;
                     String name = player.getName();
                     player.remove();
@@ -32,7 +35,10 @@ public class PermissionsCommands implements CommandExecutor {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.player-deleted"));
                     return false;
                 case "set":
-                    if (!sender.hasPermission("gearz.permissions.player.set")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.set")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length < 3 || args.length > 4) return false;
                     if (player == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player", false));
@@ -48,7 +54,10 @@ public class PermissionsCommands implements CommandExecutor {
                     break;
                 case "remove":
                 case "unset":
-                    if (!sender.hasPermission("gearz.permissions.player.remove")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.remove")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     if (player == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player", false));
@@ -58,7 +67,10 @@ public class PermissionsCommands implements CommandExecutor {
                     player.removePermission(args[2]);
                     return false;
                 case "check":
-                    if (!sender.hasPermission("gearz.permissions.player.check")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.check")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     if (player == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player", false));
@@ -73,7 +85,10 @@ public class PermissionsCommands implements CommandExecutor {
                 case "perms":
                 case "show":
                 case "permissions":
-                    if (!sender.hasPermission("gearz.permissions.player.show")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.show")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 2) return false;
                     for (String perm : player.getPermissions()) {
                         String[] split = perm.split(",");
@@ -81,7 +96,10 @@ public class PermissionsCommands implements CommandExecutor {
                     }
                     return false;
                 case "setgroup":
-                    if (!sender.hasPermission("gearz.permissions.player.addgroup")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.addgroup")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     PermGroup group = permsManager.getGroup(args[2]);
                     if (group == null) {
@@ -92,7 +110,10 @@ public class PermissionsCommands implements CommandExecutor {
                     player.setGroup(group);
                     return false;
                 case "removegroup":
-                    if (!sender.hasPermission("gearz.permissions.player.removegroup")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.removegroup")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 2) return false;
                     PermGroup grp = player.getGroup();
                     if (grp == null) {
@@ -103,7 +124,10 @@ public class PermissionsCommands implements CommandExecutor {
                     player.removeGroup();
                     return false;
                 case "prefix":
-                    if (!sender.hasPermission("gearz.permissions.player.prefix")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.prefix")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length < 3) return false;
                     if (args[2].trim().equals("null")) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix-null", false, new String[]{"<target>", player.getName()}));
@@ -117,7 +141,10 @@ public class PermissionsCommands implements CommandExecutor {
                     player.save();
                     return false;
                 case "suffix":
-                    if (!sender.hasPermission("gearz.permissions.player.suffix")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.suffix")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length < 3) return false;
                     if (args[2].trim().equals("null")) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix-null", false, new String[]{"<target>", player.getName()}));
@@ -131,14 +158,20 @@ public class PermissionsCommands implements CommandExecutor {
                     player.save();
                     return false;
                 case "tabcolor":
-                    if (!sender.hasPermission("gearz.permissions.player.tabcolor")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.tabcolor")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     player.tabColor = args[2];
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", args[2]}));
                     player.save();
                     return false;
                 case "namecolor":
-                    if (!sender.hasPermission("gearz.permissions.player.namecolor")) return false;
+                    if (!sender.hasPermission("gearz.permissions.player.namecolor")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     player.nameColor = args[2];
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", args[2]}));
@@ -150,6 +183,10 @@ public class PermissionsCommands implements CommandExecutor {
             return false;
         } else if (command.getName().equalsIgnoreCase("permissions")) {
             if (args.length < 1) {
+                return false;
+            }
+            if (!sender.hasPermission("gearz.permissions")) {
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
                 return false;
             }
             switch (args[0]) {
@@ -166,7 +203,10 @@ public class PermissionsCommands implements CommandExecutor {
             PermGroup group = permsManager.getGroup(args[0]);
             switch (args[1]) {
                 case "create":
-                    if (!sender.hasPermission("gearz.permissions.group.create")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.create")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (permsManager.getGroup(args[0]) != null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.duplicate-group", false));
                         return false;
@@ -180,7 +220,10 @@ public class PermissionsCommands implements CommandExecutor {
                     permsManager.createGroup(args[0], defau);
                     return false;
                 case "delete":
-                    if (!sender.hasPermission("gearz.permissions.group.delete")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.delete")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (permsManager.getGroup(args[0]) == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
                         return false;
@@ -190,7 +233,10 @@ public class PermissionsCommands implements CommandExecutor {
                     permsManager.deleteGroup(args[0]);
                     return false;
                 case "set":
-                    if (!sender.hasPermission("gearz.permissions.group.set")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.set")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length < 3 || args.length > 4) return false;
                     if (group == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
@@ -206,7 +252,10 @@ public class PermissionsCommands implements CommandExecutor {
                     break;
                 case "remove":
                 case "unset":
-                    if (!sender.hasPermission("gearz.permissions.group.remove")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.remove")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     if (group == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
@@ -216,7 +265,10 @@ public class PermissionsCommands implements CommandExecutor {
                     permsManager.removeGroupPerm(group, args[2]);
                     return false;
                 case "check":
-                    if (!sender.hasPermission("gearz.permissions.group.check")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.check")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     if (group == null) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
@@ -231,7 +283,10 @@ public class PermissionsCommands implements CommandExecutor {
                 case "perms":
                 case "show":
                 case "permissions":
-                    if (!sender.hasPermission("gearz.permissions.group.show")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.show")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 2) return false;
                     for (String perm : group.getPermissions()) {
                         String[] split = perm.split(",");
@@ -239,7 +294,10 @@ public class PermissionsCommands implements CommandExecutor {
                     }
                     return false;
                 case "prefix":
-                    if (!sender.hasPermission("gearz.permissions.group.prefix")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.prefix")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length < 3) return false;
                     if (args[2].trim().equals("null")) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix-null", false, new String[]{"<target>", group.getName()}));
@@ -253,7 +311,10 @@ public class PermissionsCommands implements CommandExecutor {
                     group.save();
                     return false;
                 case "suffix":
-                    if (!sender.hasPermission("gearz.permissions.group.suffix")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.suffix")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length < 3) return false;
                     if (args[2].trim().equals("null")) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix-null", false, new String[]{"<target>", group.getName()}));
@@ -267,21 +328,30 @@ public class PermissionsCommands implements CommandExecutor {
                     group.save();
                     return false;
                 case "tabcolor":
-                    if (!sender.hasPermission("gearz.permissions.group.tabcolor")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.tabcolor")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     group.tabColor = args[2];
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", args[2]}));
                     group.save();
                     return false;
                 case "namecolor":
-                    if (!sender.hasPermission("gearz.permissions.group.namecolor")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.namecolor")) {
+                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                    return false;
+                }
                     if (args.length != 3) return false;
                     group.nameColor = args[2];
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", args[2]}));
                     group.save();
                     return false;
                 case "addinheritance":
-                    if (!sender.hasPermission("gearz.permissions.group.inheritance")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.inheritance")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     PermGroup toAdd = permsManager.getGroup(args[2]);
                     if (toAdd == null) {
@@ -291,7 +361,10 @@ public class PermissionsCommands implements CommandExecutor {
                     permsManager.addInheritance(group, toAdd);
                     return false;
                 case "removeinheritance":
-                    if (!sender.hasPermission("gearz.permissions.group.inheritance")) return false;
+                    if (!sender.hasPermission("gearz.permissions.group.inheritance")) {
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) return false;
                     PermGroup toRemove = permsManager.getGroup(args[2]);
                     if (toRemove == null) {
