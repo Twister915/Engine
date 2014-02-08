@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
  */
 public class ChannelsListener implements Listener {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+
     @EventHandler
     @SuppressWarnings("unused")
     public void onChat(ChatEvent event) {
@@ -47,5 +48,6 @@ public class ChannelsListener implements Listener {
 
         String message = event.getMessage();
         GearzBungee.getInstance().getChannelManager().sendMessage(sender, message);
+        event.setCancelled(true);
     }
 }
