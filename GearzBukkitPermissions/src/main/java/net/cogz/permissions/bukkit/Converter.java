@@ -14,17 +14,17 @@ import java.util.Map;
  * Created by Jake on 2/2/14.
  */
 public class Converter {
-    static String username;
-    static String password;
-    static String mysqlDb;
-    static Integer port;
-    static String host;
-    static private BoneCP connectionPool;
+    String username;
+    String password;
+    String mysqlDb;
+    Integer port;
+    String host;
+    private BoneCP connectionPool;
 
-    static Map<Integer, String> rankMap = new HashMap<>();
-    static Map<Integer, String> playerMap = new HashMap<>();
+    Map<Integer, String> rankMap = new HashMap<>();
+    Map<Integer, String> playerMap = new HashMap<>();
 
-    public static void newConverter() throws Exception {
+    public Converter() throws Exception {
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
@@ -33,7 +33,7 @@ public class Converter {
         enable();
     }
 
-    public static void doStuff() throws SQLException {
+    public void doStuff() throws SQLException {
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         Connection connection = connectionPool.getConnection();
         PreparedStatement groupSelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
@@ -87,7 +87,7 @@ public class Converter {
         }
     }
 
-    public static void enable() {
+    public void enable() {
         BoneCPConfig config = new BoneCPConfig();
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + mysqlDb);
         config.setUser(username);

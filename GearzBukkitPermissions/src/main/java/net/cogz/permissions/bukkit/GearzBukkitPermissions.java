@@ -38,10 +38,12 @@ public final class GearzBukkitPermissions extends JavaPlugin {
                 }
             }
         }, 0, 30 * 20);
-        try {
-            Converter.newConverter();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (getConfig().getBoolean("converter", false)) {
+            try {
+                new Converter();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
