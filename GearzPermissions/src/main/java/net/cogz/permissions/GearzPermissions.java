@@ -169,19 +169,19 @@ public abstract class GearzPermissions {
     /**
      * Quit
      *
-     * @param s the player who quit.
+     * @param player the player who quit.
      */
-    public void onQuit(String s) {
-        this.players.remove(s);
+    public void onQuit(String player) {
+        this.players.remove(player);
     }
 
     /**
      * Get a player by name
      *
-     * @param n The name of the player
+     * @param player The name of the player
      */
-    public PermPlayer getPlayer(String n) {
-        return this.players.get(n);
+    public PermPlayer getPlayer(String player) {
+        return this.players.get(player);
     }
 
     /**

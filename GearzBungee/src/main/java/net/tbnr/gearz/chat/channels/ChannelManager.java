@@ -176,6 +176,7 @@ public class ChannelManager {
         chanFormat = chanFormat.replace("%message%", message).replace("%player%", player.getDisplayName());
         GearzBungeePermissions perms = GearzBungee.getInstance().getPermissions();
         if (perms != null) {
+            Preconditions.checkNotNull(perms.getPermsManager().getPlayer(player.getName()), "player is null");
             String prefix = perms.getPermsManager().getPrefix(perms.getPermsManager().getPlayer(player.getName()));
             String suffix = perms.getPermsManager().getSuffix(perms.getPermsManager().getPlayer(player.getName()));
             if (prefix == null) prefix = "";
