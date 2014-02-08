@@ -206,7 +206,7 @@ public abstract class TPlugin extends JavaPlugin {
         getServer().dispatchCommand(getServer().getConsoleSender(), command);
     }
 
-    public <T extends Event> T callEvent(T event) {
+    public final <T extends Event> T callEvent(T event) {
         getServer().getPluginManager().callEvent(event);
         return event;
     }

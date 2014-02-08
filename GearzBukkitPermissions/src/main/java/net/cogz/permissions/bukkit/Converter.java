@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Jake on 2/2/14.
@@ -19,27 +21,50 @@ public class Converter {
     static String host;
     static private BoneCP connectionPool;
 
-    public Converter() throws Exception {
+    static Map<Integer, String> rankMap = new HashMap<>();
+    static Map<String, String> playerMap = new HashMap<>();
+
+    public static void newConverter() throws Exception {
         username = "root";
         password = "5D3ecgJZ";
         mysqlDb = "tbnr2";
         port = 3306;
-        host = "127.0.0.1";
-        System.out.println(host);
+        host = "one.tbnr.pw";
         enable();
-        doStuff();
     }
 
-    public void doStuff() throws SQLException {
+    public static void doStuff() throws SQLException {
+        PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         Connection connection = connectionPool.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
-        ResultSet resultSet = stmt.executeQuery();
-        while (resultSet.next()) {
-            System.out.println("Name: " + resultSet.getString("display_name") + "Id: " + resultSet.getInt("id"));
+        PreparedStatement groupSelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
+        ResultSet groupResult = groupSelect.executeQuery();
+        while (groupResult.next()) {
+            System.out.println("Found group: " + groupResult.getString("display_name"));
+            rankMap.put(groupResult.getInt("id"), groupResult.getString("display_name"));
+            permsManager.createGroup(groupResult.getString("display_name"), false);
+        }
+
+        PreparedStatement entitySelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='0'");
+        ResultSet entityResult = entitySelect.executeQuery();
+        while (entityResult.next()) {
+            String caseName = entityResult.getString("name");
+            String displayName = entityResult.getString("display_name");
+            Integer id = entityResult.getInt("id");
+            System.out.println("Found player with lower case name " + caseName + " with the real name, " + displayName + " and id " + id);
+            playerMap.put(caseName, displayName);
+        }
+
+        PreparedStatement playerSelect = connection.prepareStatement("SELECT * FROM memberships");
+        ResultSet playerResult = playerSelect.executeQuery();
+        while (playerResult.next()) {
+            Integer groupId = playerResult.getInt("group_id");
+            String realName = playerMap.get(playerResult.getString("member"));
+            System.out.println("Adding player " + realName + " to the group " + rankMap.get(groupId));
+            permsManager.setGroup(realName, rankMap.get(groupId));
         }
     }
 
-    public void enable() {
+    public static void enable() {
         BoneCPConfig config = new BoneCPConfig();
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + mysqlDb);
         config.setUser(username);

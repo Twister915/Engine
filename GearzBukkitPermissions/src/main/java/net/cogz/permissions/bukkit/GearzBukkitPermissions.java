@@ -1,5 +1,6 @@
 package net.cogz.permissions.bukkit;
 
+import com.jolbox.bonecp.BoneCP;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,12 +22,8 @@ public final class GearzBukkitPermissions extends JavaPlugin {
     public void onEnable() {
         GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
-        try {
-            new Converter();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         getServer().getPluginManager().registerEvents(this.permsManager, this);
+        permsManager.reload();
         PermissionsCommands permsCommands = new PermissionsCommands();
         getCommand("player").setExecutor(permsCommands);
         getCommand("group").setExecutor(permsCommands);
@@ -41,6 +38,11 @@ public final class GearzBukkitPermissions extends JavaPlugin {
                 }
             }
         }, 0, 30 * 20);
+        try {
+            Converter.newConverter();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

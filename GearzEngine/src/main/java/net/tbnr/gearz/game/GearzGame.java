@@ -13,6 +13,7 @@ import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.InventoryGUI;
+import net.tbnr.util.ServerSelector;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
 import org.apache.commons.lang.StringUtils;
@@ -941,6 +942,10 @@ public abstract class GearzGame implements Listener {
             if (eventTarget instanceof Player) {
                 GearzPlayer target = GearzPlayer.playerFromPlayer((Player) eventTarget);
                 double damage = damageForHit(damager, target, event.getDamage());
+                if (isSpectating(target)) {
+                    event.setCancelled(true);
+                    return;
+                }
                 if (damage != -1) {
                     event.setDamage(damage);
                 }
@@ -981,7 +986,7 @@ public abstract class GearzGame implements Listener {
     public void playerDied(PlayerDeathEvent event) {
         event.getEntity().setHealth(event.getEntity().getHealthScale());
         Player deadPlayer = event.getEntity();
-        GearzPlayer dead = GearzPlayer.playerFromPlayer(deadPlayer);
+        final GearzPlayer dead = GearzPlayer.playerFromPlayer(deadPlayer);
         EntityDamageEvent.DamageCause cause = deadPlayer.getLastDamageCause().getCause();
         List<ItemStack> drops = event.getDrops();
         ItemStack[] itemStacks = drops.toArray(new ItemStack[drops.size()]);
@@ -992,26 +997,41 @@ public abstract class GearzGame implements Listener {
         }
         if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             //Process a PvP/PvE encounter
-            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
+            final EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
             if (deadPlayer.getKiller() != null) {
-                GearzPlayer player = GearzPlayer.playerFromPlayer(deadPlayer.getKiller());
-                playerKilledPlayer(player, dead);
+                final GearzPlayer player = GearzPlayer.playerFromPlayer(deadPlayer.getKiller());
+                Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+                    @Override
+                    public void run() {
+                        playerKilledPlayer(player, dead);
+                    }
+                }, 2L);
             }
             else {
-                this.playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
                 fakeDeath(dead);
+                Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+                    @Override
+                    public void run() {
+                        playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
+                    }
+                }, 2L);
             }
             return;
         }
-        onDeath(dead);
         fakeDeath(dead);
+        Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                onDeath(dead);
+            }
+        }, 2L);
         broadcast(getFormat("solo-death", new String[]{"<victim>", dead.getPlayer().getDisplayName()}));
     }
 
     private void playerKilledPlayer(final GearzPlayer damager, final GearzPlayer target) {
-        this.playerKilled(target, damager);
         this.tracker.trackKill(damager, target);
         fakeDeath(target);
+        this.playerKilled(target, damager);
         PlayerGameKillEvent event = new PlayerGameKillEvent(this, target, damager);
         Bukkit.getPluginManager().callEvent(event);
         broadcast(getFormat("death-message", new String[]{"<killer>", damager.getPlayer().getDisplayName()}, new String[]{"<victim>", target.getPlayer().getDisplayName()}));
@@ -1250,6 +1270,15 @@ public abstract class GearzGame implements Listener {
         if (isSpectating(player) || !canPickupEXP(player)) {
             event.setAmount(0);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBoat(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)) return;
+        GearzPlayer player = GearzPlayer.playerFromPlayer((Player) event.getDamager());
+        if (!isSpectating(player)) return;
+        event.setCancelled(true);
+        player.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
     }
 
     protected final void addWin(GearzPlayer gearzPlayer) {

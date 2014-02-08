@@ -2,7 +2,6 @@ package net.tbnr.gearz;
 
 import lombok.Getter;
 import lombok.NonNull;
-import net.cogz.permissions.bukkit.GearzBukkitPermissions;
 import lombok.Setter;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.effects.EnchantmentEffect;
@@ -78,8 +77,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return random;
     }
 
-    @Getter
-    public GearzBukkitPermissions permissions;
+    /*@Getter
+    public GearzBukkitPermissions permissions;*/
 
     public Gearz() {
         Gearz.instance = this;
@@ -115,7 +114,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         //Get a local variable of the PluginManager, and setup our chat/permission hooks.
         PluginManager pm = getServer().getPluginManager();
         if (pm.isPluginEnabled("GearzBukkitPermissions")) {
-            this.permissions = (GearzBukkitPermissions) pm.getPlugin("GearzBukkitPermissions");
+            //this.permissions = (GearzBukkitPermissions) pm.getPlugin("GearzBukkitPermissions");
             GearzNickname nicknameHandler = new GearzNickname();
             registerEvents(nicknameHandler);
             registerCommands(nicknameHandler);

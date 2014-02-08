@@ -43,7 +43,7 @@ public class PermGroup extends GModel {
 
     protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
-        if (this.permissions.contains(permission)) return;
+        if (this.permissions.contains(permission) || this.permissions.contains(perm + "," + !value)) return;
         this.permissions.add(permission);
         save();
     }
