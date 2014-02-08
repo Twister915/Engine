@@ -279,12 +279,6 @@ public abstract class GearzPermissions {
         PermPlayer permPlayer = this.players.get(player);
         if (permPlayer == null) return;
         Map<String, Boolean> perms = new HashMap<>();
-        for (String entry : permPlayer.getPermissions()) {
-            String[] s = entry.split(",");
-            String permission = s[0];
-            boolean value = Boolean.valueOf(s[1]);
-            perms.put(permission, value);
-        }
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
                 String[] s = entry.split(",");
@@ -292,6 +286,12 @@ public abstract class GearzPermissions {
                 boolean value = Boolean.valueOf(s[1]);
                 perms.put(permission, value);
             }
+        }
+        for (String entry : permPlayer.getPermissions()) {
+            String[] s = entry.split(",");
+            String permission = s[0];
+            boolean value = Boolean.valueOf(s[1]);
+            perms.put(permission, value);
         }
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
