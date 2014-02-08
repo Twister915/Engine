@@ -1,5 +1,6 @@
 package net.cogz.permissions.bukkit;
 
+import com.google.common.base.Preconditions;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 import lombok.Getter;
@@ -73,7 +74,8 @@ public class Converter {
             System.out.println("Found entity " + entityId + " with permission " + permission + " and value " + value);
             if (rankMap.containsKey(entityId)) {
                 System.out.print(" and is group!");
-                permsManager.givePermToGroup(permsManager.getGroup(rankMap.get(entityId)), permission, value);
+                permsManager.givePermToGroup(rankMap.get(entityId), permission, value);
+
             } else if (playerMap.containsKey(entityId)) {
                 System.out.print(" and is player!");
                 permsManager.givePermToPlayer(playerMap.get(entityId), permission, value);

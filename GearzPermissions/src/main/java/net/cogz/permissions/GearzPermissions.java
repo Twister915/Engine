@@ -217,8 +217,11 @@ public abstract class GearzPermissions {
      * @param value whether or not the permission is active
      */
     @SuppressWarnings("unused")
-    public void givePermToGroup(PermGroup group, String perm, boolean value) {
-        group.addPermission(perm, value);
+    public void givePermToGroup(String group, String perm, boolean value) {
+        if (getGroup(group) == null) {
+            throw new IllegalStateException("Group does not exist!");
+        }
+        getGroup(group).addPermission(perm, value);
     }
 
     /**

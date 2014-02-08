@@ -201,7 +201,7 @@ public class PermissionsCommands implements CommandExecutor {
                     }
                     String permission = args[2];
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-group-perm", false, new String[]{"<permission>", permission}, new String[]{"<group>", args[0]}, new String[]{"<value>", value + ""}));
-                    permsManager.givePermToGroup(group, permission, value);
+                    permsManager.givePermToGroup(group.getName(), permission, value);
                     break;
                 case "remove":
                 case "unset":
