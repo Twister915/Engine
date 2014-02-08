@@ -48,6 +48,7 @@ public class Converter {
         while (playerResult.next()) {
             Integer groupId = playerResult.getInt("group_id");
             String name = playerResult.getString("member");
+            System.out.println("Player " + name + " added to group " + rankMap.get(groupId));
             permsManager.setGroup(name, rankMap.get(groupId));
         }
     }
