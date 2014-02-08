@@ -74,8 +74,8 @@ public class Converter {
             System.out.println("Found entity " + entityId + " with permission " + permission + " and value " + value);
             if (rankMap.containsKey(entityId)) {
                 System.out.print(" and is group!");
+                System.out.println(rankMap.get(entityId));
                 permsManager.givePermToGroup(rankMap.get(entityId), permission, value);
-
             } else if (playerMap.containsKey(entityId)) {
                 System.out.print(" and is player!");
                 permsManager.givePermToPlayer(playerMap.get(entityId), permission, value);
