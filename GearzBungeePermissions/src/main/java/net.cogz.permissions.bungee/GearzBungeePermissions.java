@@ -28,6 +28,7 @@ public class GearzBungeePermissions extends Plugin {
             @Override
             public void run() {
                 try {
+                    System.out.println("RUNNING");
                     GearzBungeePermissions.getInstance().getPermsManager().reload();
                 } catch (Exception ex) {
                     GearzBungeePermissions.getInstance().getLogger().severe(ex.getMessage());

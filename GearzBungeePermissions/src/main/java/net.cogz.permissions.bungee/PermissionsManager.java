@@ -31,12 +31,12 @@ public class PermissionsManager extends GearzPermissions implements Listener {
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
+        System.out.println("We're adding a permission now!");
         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
         Preconditions.checkNotNull(player, "player can not be null");
         Preconditions.checkNotNull(perm, "permission can not be null");
         Preconditions.checkNotNull(value, "value can not be null");
         Preconditions.checkNotNull(proxiedPlayer, "proxied player can not be null");
-        System.out.println("We're adding a permission now!");
         if (proxiedPlayer == null) return;
         proxiedPlayer.setPermission(perm, value);
     }
