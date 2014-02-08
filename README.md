@@ -39,6 +39,9 @@ Creating a new feature:
       - This merges your feature into the master branch, while saving commit data associated with it.
     - Once you are 100% sure everything is done, you can delete the old branch:
       - git branch -d [new-feature]
+      - Then do:
+      - git push origin :[new-feature]
+      - That pushes nothing to the remote branch deleting it there aswell ;)
 
 General Conventions:
   * In general you should follow the Java Coding Standards, found [here] (http://www.oracle.com/technetwork/java/codeconv-138413.html)
