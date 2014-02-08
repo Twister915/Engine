@@ -20,6 +20,7 @@ public class ChannelsListener implements Listener {
     public void onChat(ChatEvent event) {
         if (!GearzBungee.getInstance().getChannelManager().isEnabled()) return;
         if (event.isCancelled()) return;
+        if (event.isCommand()) return;
         if (event.getMessage().contains("\\")) {
             event.getSender().disconnect("Bad.");
             event.setCancelled(true);
@@ -45,7 +46,6 @@ public class ChannelsListener implements Listener {
         }
 
         String message = event.getMessage();
-        Channel channel = GearzBungee.getInstance().getChannelManager().sendMessage(sender, message, event.isCommand());
-        GearzBungee.getInstance().getChatManager().handleSpy(event, channel);
+        GearzBungee.getInstance().getChannelManager().sendMessage(sender, message);
     }
 }

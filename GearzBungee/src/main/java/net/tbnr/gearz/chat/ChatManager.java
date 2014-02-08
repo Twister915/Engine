@@ -46,6 +46,7 @@ public class ChatManager implements Listener, TCommandHandler {
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onChat(ChatEvent event) {
+        this.handleSpy(event);
         if (GearzBungee.getInstance().getChannelManager().isEnabled()) return;
         if (event.isCancelled()) return;
         if (event.getMessage().contains("\\")) {
@@ -53,7 +54,6 @@ public class ChatManager implements Listener, TCommandHandler {
             event.setCancelled(true);
             return;
         }
-        this.handleSpy(event, null);
         if (event.isCommand()) return;
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
@@ -116,9 +116,9 @@ public class ChatManager implements Listener, TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    public void handleSpy(ChatEvent event, Channel channel) {
+    public void handleSpy(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", player.getName()}, new String[]{"<server>", player.getServer().getInfo().getName()}, new String[]{"<channel>", channel != null ? channel.getName() : ""});
+        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", player.getName()}, new String[]{"<server>", player.getServer().getInfo().getName()});
         for (Map.Entry<String, SpyType> p : this.spies.entrySet()) {
             ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(p.getKey());
             if (player1 == null) continue;

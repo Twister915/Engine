@@ -130,9 +130,8 @@ public class ChannelManager {
         return target.getChannel();
     }
 
-    public Channel sendMessage(ProxiedPlayer sender, String message, boolean isCommand) {
+    public Channel sendMessage(ProxiedPlayer sender, String message) {
         final Channel channel = getCurrentChannel(sender);
-        if (isCommand) return channel;
         if (channel.isFiltered()) {
             Filter.FilterData filterData = Filter.filter(message, sender);
             if (filterData.isCancelled()) {
