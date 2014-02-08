@@ -26,14 +26,7 @@ public class Converter {
     static private BoneCP connectionPool;
 
     static Map<Integer, String> rankMap = new HashMap<>();
-    static Set<SelectData> fullMap = new HashSet<>();
-
-    public static SelectData getByEntityId(Integer id) {
-        for (SelectData selectData : fullMap) {
-            if (selectData.getId().equals(id)) return selectData;
-        }
-        return null;
-    }
+    static Map<Integer, String> playerMap = new HashMap<>();
 
     public static void newConverter() throws Exception {
         username = "root";
@@ -42,18 +35,6 @@ public class Converter {
         port = 3306;
         host = "one.tbnr.pw";
         enable();
-    }
-
-    public static class SelectData {
-        @Getter Integer id;
-        @Getter String name;
-        @Getter boolean group;
-
-        public SelectData(Integer id, String name, Integer group) {
-            this.id = id;
-            this.name = name;
-            this.group = group == 1;
-        }
     }
 
     public static void doStuff() throws SQLException {
@@ -67,10 +48,11 @@ public class Converter {
             permsManager.createGroup(groupResult.getString("display_name"), false);
         }
 
-        PreparedStatement playerSelect2 = connection.prepareStatement("SELECT * FROM entities");
-        ResultSet playerResult2 = playerSelect2.executeQuery();
-        while (playerResult2.next()) {
-            fullMap.add(new SelectData(playerResult2.getInt("id"), playerResult2.getString("name"), playerResult2.getInt("is_group")));
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM entities WHERE is_group='0'");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            System.out.println("Found player: " + resultSet.getString("name"));
+            playerMap.put(resultSet.getInt("id"), resultSet.getString("name"));
         }
 
         PreparedStatement playerSelect = connection.prepareStatement("SELECT * FROM memberships");
@@ -88,11 +70,10 @@ public class Converter {
             Integer entityId = permissionsResult.getInt("entity_id");
             String permission = permissionsResult.getString("permission");
             boolean value = permissionsResult.getInt("value") == 1;
-            SelectData selectData = getByEntityId(entityId);
-            if (selectData.isGroup()) {
-                permsManager.givePermToGroup(permsManager.getGroup(selectData.getName()), permission, value);
-            } else {
-                permsManager.givePermToPlayer(selectData.getName(), permission, value);
+            if (rankMap.containsKey(entityId)) {
+                permsManager.givePermToGroup(permsManager.getGroup(rankMap.get(entityId)), permission, value);
+            } else if (playerMap.containsKey(entityId)) {
+                permsManager.givePermToPlayer(playerMap.get(entityId), permission, value);
             }
         }
     }
