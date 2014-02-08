@@ -1,4 +1,4 @@
-converter: true
+converter: false
 formats:
   created-group: "&6Group created &4<group>&6, default: &4<default>."
   deleted-group: "&6Deleted group: &4<group>&6."
