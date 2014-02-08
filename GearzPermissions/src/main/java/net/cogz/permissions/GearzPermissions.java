@@ -327,10 +327,6 @@ public abstract class GearzPermissions {
      * @return group that was created
      */
     public PermGroup createGroup(String name, boolean defau) {
-        if (name == null) {
-            System.out.println("DATS NULL");
-            
-        }
         if (this.groups.containsKey(name)) throw new IllegalStateException("Group already exists");
         PermGroup group = new PermGroup(this.database);
         group.name = name;

@@ -1,19 +1,14 @@
 package net.cogz.permissions.bukkit;
 
-import com.google.common.base.Preconditions;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
-import lombok.Getter;
-import org.bukkit.event.HandlerList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Jake on 2/2/14.
@@ -80,6 +75,15 @@ public class Converter {
                 System.out.print(" and is player!");
                 permsManager.givePermToPlayer(playerMap.get(entityId), permission, value);
             }
+        }
+
+        PreparedStatement inheritSelect = connection.prepareStatement("SELECT * FROM entries");
+        ResultSet inheritResult = inheritSelect.executeQuery();
+        while (inheritResult.next()) {
+            Integer parentId = inheritResult.getInt("parent_id");
+            Integer childId = inheritResult.getInt("child_id");
+            System.out.println("Added inheritance parent: " + parentId + " child: " + childId);
+            permsManager.addInheritance(permsManager.getGroup(rankMap.get(childId)), permsManager.getGroup(rankMap.get(parentId)));
         }
     }
 
