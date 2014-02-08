@@ -8,7 +8,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class ZipUtil {
+public class ZipUtil implements GUtility {
     public static void zipFolder(File src, File dest) throws Exception {
         zipFolder(src.getAbsolutePath(), dest.getAbsolutePath());
     }

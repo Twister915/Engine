@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class JsonChatUtil {
+public class JsonChatUtil implements GUtility {
 
     public static void sendUrlWithPopup(String textBefore, String textAfter, String text, String url, boolean underlined, Player player) {
         String json = "{text:\"" + text + "\", " + (underlined ? "underlined:true, " : "") + "hoverEvent:{ action:show_text, value:\"" + url + "\" }, clickEvent:{ action:open_url, value:\"" + url + "\"} }";
