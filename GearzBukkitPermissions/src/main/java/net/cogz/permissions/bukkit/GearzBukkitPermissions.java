@@ -56,10 +56,6 @@ public final class GearzBukkitPermissions extends JavaPlugin {
      * @return The formatted String
      */
     public final String getFormat(String formatPath, boolean color, String[]... data) {
-        if (!this.getConfig().contains(formatPath)) {
-            return formatPath;
-        }
-
         //Added default value
         String string = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(formatPath, ""));
         if (data != null) {
