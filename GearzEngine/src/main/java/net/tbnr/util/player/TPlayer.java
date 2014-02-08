@@ -410,21 +410,22 @@ public final class TPlayer {
      * Called by the TPlayerManager when the player disconnects. Do not call otherwise
      */
     void disconnected() {
+        DBObject playerDocument1 = getPlayerDocument();
         Object object = getPlayerObject(getPlayerName()).get("punishments");
         if (!(object instanceof BasicDBList)) {
             object = new BasicDBList();
         }
         BasicDBList bans = (BasicDBList) object;
-        getPlayerDocument().put("punishments", bans);
-        getPlayerDocument().put("online", false);
-        Object o = getPlayerDocument().get("time-online");
+        playerDocument1.put("punishments", bans);
+        playerDocument1.put("online", false);
+        Object o = playerDocument1.get("time-online");
         if (o == null) o = 0l;
         if (!(o instanceof Long)) return;
         long timeOnline = (Long) o;
         long now = Calendar.getInstance().getTimeInMillis();
         timeOnline = timeOnline + (now - timeJoined);
-        getPlayerDocument().put("time-online", timeOnline);
-        getPlayerDocument().put("last-seen", now);
+        playerDocument1.put("time-online", timeOnline);
+        playerDocument1.put("last-seen", now);
         save();
     }
 

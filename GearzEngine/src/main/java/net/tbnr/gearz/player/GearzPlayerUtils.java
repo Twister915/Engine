@@ -53,7 +53,7 @@ public final class GearzPlayerUtils implements Listener, TCommandHandler {
         event.getPlayer().getTPlayer().playSound(Sound.ORB_PICKUP);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     @SuppressWarnings("unused")
     public void onPlayerDisconnect(TPlayerDisconnectEvent event) {
         GearzPlayer.removePlayer(event.getPlayer());
