@@ -16,7 +16,6 @@ import org.bukkit.command.CommandSender;
 public class PermissionsCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        System.out.println("Command executed!");
         if (command.getName().equalsIgnoreCase("player")) {
             if (args.length == 0) return false;
             PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
@@ -135,7 +134,7 @@ public class PermissionsCommands implements CommandExecutor {
                         player.save();
                         return false;
                     }
-                    String prefix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length);
+                    String prefix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
                     player.prefix = prefix;
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix", true, new String[]{"<prefix>", prefix}));
                     player.save();
@@ -152,7 +151,7 @@ public class PermissionsCommands implements CommandExecutor {
                         player.save();
                         return false;
                     }
-                    String suffix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length);
+                    String suffix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
                     player.suffix = suffix;
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<suffix>", suffix}));
                     player.save();
@@ -163,7 +162,7 @@ public class PermissionsCommands implements CommandExecutor {
                         return false;
                     }
                     if (args.length != 3) return false;
-                    player.tabColor = args[2];
+                    player.tabColor = args[2].trim();
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", args[2]}));
                     player.save();
                     return false;
@@ -173,7 +172,7 @@ public class PermissionsCommands implements CommandExecutor {
                         return false;
                     }
                     if (args.length != 3) return false;
-                    player.nameColor = args[2];
+                    player.nameColor = args[2].trim();
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", args[2]}));
                     player.save();
                     return false;
@@ -305,7 +304,7 @@ public class PermissionsCommands implements CommandExecutor {
                         group.save();
                         return false;
                     }
-                    String prefix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length);
+                    String prefix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
                     group.prefix = prefix;
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix", true, new String[]{"<prefix>", prefix}));
                     group.save();
@@ -322,7 +321,7 @@ public class PermissionsCommands implements CommandExecutor {
                         group.save();
                         return false;
                     }
-                    String suffix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length);
+                    String suffix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
                     group.suffix = suffix;
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<suffix>", suffix}));
                     group.save();
@@ -333,7 +332,7 @@ public class PermissionsCommands implements CommandExecutor {
                         return false;
                     }
                     if (args.length != 3) return false;
-                    group.tabColor = args[2];
+                    group.tabColor = args[2].trim();
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", args[2]}));
                     group.save();
                     return false;
@@ -343,7 +342,7 @@ public class PermissionsCommands implements CommandExecutor {
                     return false;
                 }
                     if (args.length != 3) return false;
-                    group.nameColor = args[2];
+                    group.nameColor = args[2].trim();
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", args[2]}));
                     group.save();
                     return false;
