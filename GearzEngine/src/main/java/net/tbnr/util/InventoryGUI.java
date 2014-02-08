@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -74,7 +75,6 @@ public class InventoryGUI implements Listener {
      * @param effects  Whether to show or not the effects
      */
     public InventoryGUI(ArrayList<InventoryGUIItem> items, String title, InventoryGUICallback callback, boolean effects) {
-        Bukkit.getServer().getPluginManager().registerEvents(this, Gearz.getInstance());
         this.items = items;
         this.title = title;
         this.callback = callback;
@@ -124,6 +124,7 @@ public class InventoryGUI implements Listener {
      * Opens the GUI for @player
      */
     public void open(Player player) {
+        Bukkit.getServer().getPluginManager().registerEvents(this, Gearz.getInstance());
         player.openInventory(inventory);
         if (effects) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 128, false));
@@ -139,6 +140,7 @@ public class InventoryGUI implements Listener {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
         }
         player.closeInventory();
+        HandlerList.unregisterAll(this);
     }
 
     @EventHandler
