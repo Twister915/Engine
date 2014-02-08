@@ -77,7 +77,7 @@ public class Converter {
             }
         }
 
-        PreparedStatement inheritSelect = connection.prepareStatement("SELECT * FROM entries");
+        PreparedStatement inheritSelect = connection.prepareStatement("SELECT * FROM inheritances");
         ResultSet inheritResult = inheritSelect.executeQuery();
         while (inheritResult.next()) {
             Integer parentId = inheritResult.getInt("parent_id");
