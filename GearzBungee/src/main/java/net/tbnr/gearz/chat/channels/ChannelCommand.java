@@ -63,7 +63,7 @@ public class ChannelCommand implements TCommandHandler {
             sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
         } else {
             String message = GearzBungee.getInstance().compile(args, 0, args.length);
-            GearzBungee.getInstance().getChannelManager().sendMessage((ProxiedPlayer) sender, message, false);
+            GearzBungee.getInstance().getChannelManager().sendMessage((ProxiedPlayer) sender, message);
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -84,7 +84,7 @@ public class ChannelCommand implements TCommandHandler {
             sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
         } else {
             String message = GearzBungee.getInstance().compile(args, 0, args.length);
-            GearzBungee.getInstance().getChannelManager().sendMessage((ProxiedPlayer) sender, message, false);
+            GearzBungee.getInstance().getChannelManager().sendMessage((ProxiedPlayer) sender, message);
         }
         return TCommandStatus.SUCCESSFUL;
     }
