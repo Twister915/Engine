@@ -335,6 +335,7 @@ public abstract class GearzPermissions {
         PermGroup group = new PermGroup(this.database);
         group.name = name;
         group.isDefault = defau;
+        this.groups.put(name, group);
         group.save();
         return group;
     }
