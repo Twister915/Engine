@@ -59,7 +59,7 @@ public class Converter {
         while (playerResult.next()) {
             Integer groupId = playerResult.getInt("group_id");
             String realName = playerMap.get(playerResult.getString("member"));
-            System.out.println("Adding player " + realName + " to the group " + rankMap.get(groupId));
+            System.out.println("Adding player " + realName + " to the group " + rankMap.get(groupId) + " and fake name "  + playerResult.getString("member"));
             permsManager.setGroup(realName, rankMap.get(groupId));
         }
     }
