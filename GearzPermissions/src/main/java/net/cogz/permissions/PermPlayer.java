@@ -7,6 +7,7 @@ import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.activerecord.LinkedObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +62,7 @@ public class PermPlayer extends GModel {
 
     protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
+        if (this.permissions == null) permissions = new ArrayList<>();
         if (this.permissions.contains(permission)) return;
         this.permissions.add(permission);
         save();
