@@ -10,7 +10,6 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 
-
 /**
  * Created by jake on 12/29/13.
  *
@@ -39,16 +38,12 @@ public class PrivateConversation implements Listener {
 
         Filter.FilterData filterData = Filter.filter(event.getMessage(), player);
         if (!filterData.isCancelled()) {
-
             GearzBungee.getInstance().getChat().getConversationForPlayer(player).sendMessage(filterData.getMessage());
-
             event.setCancelled(true);
         } else {
             event.setCancelled(true);
         }
-
     }
-
 
     @AllArgsConstructor
     @Data
@@ -72,5 +67,4 @@ public class PrivateConversation implements Listener {
             GearzBungee.getInstance().getChat().getConversations().remove(this);
         }
     }
-
 }
