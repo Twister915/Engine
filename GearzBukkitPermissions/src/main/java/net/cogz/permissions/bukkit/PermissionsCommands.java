@@ -1,6 +1,5 @@
 package net.cogz.permissions.bukkit;
 
-import com.google.common.base.Preconditions;
 import net.cogz.permissions.PermGroup;
 import net.cogz.permissions.PermPlayer;
 import org.bukkit.command.Command;
@@ -17,11 +16,11 @@ import org.bukkit.command.CommandSender;
 public class PermissionsCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+        System.out.println("Command executed!");
         if (command.getName().equalsIgnoreCase("player")) {
             if (args.length == 0) return false;
             PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
             PermPlayer player = permsManager.getPlayer(args[0].toLowerCase());
-            Preconditions.checkNotNull(player, "NULL PLAYER");
             switch (args[1]) {
                 case "reset":
                 case "delete":
