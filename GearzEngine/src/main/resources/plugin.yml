@@ -4,7 +4,6 @@ authors: [Twister915, xIGBClutchIx, Thecraftgod, pokuit]
 description: o, dem gearz
 main: net.tbnr.gearz.Gearz
 depend: [ProtocolLib]
-softdepend: [GearzBukkitPermissions]
 commands:
   nick:
     description: Nickname.
