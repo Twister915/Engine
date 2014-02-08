@@ -462,8 +462,10 @@ public abstract class GearzPermissions {
         List<PermGroup> allGroups = new ArrayList<>();
         PermGroup permGroup = permPlayer.getGroup();
         if (!allGroups.contains(permGroup)) allGroups.add(permGroup);
-        for (String inheritedGroup : permGroup.getInheritances()) {
-            if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));
+        if (permGroup.getInheritances() != null) {
+            for (String inheritedGroup : permGroup.getInheritances()) {
+                if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));
+            }
         }
         return allGroups;
     }
