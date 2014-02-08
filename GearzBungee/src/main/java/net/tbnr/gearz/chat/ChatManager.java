@@ -53,7 +53,6 @@ public class ChatManager implements Listener, TCommandHandler {
             event.setCancelled(true);
             return;
         }
-        this.handleSpy(event, null);
         if (event.isCommand()) return;
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
@@ -85,6 +84,19 @@ public class ChatManager implements Listener, TCommandHandler {
         event.setMessage(filterData.getMessage());
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onSpy(ChatEvent event) {
+        if (!(event.getSender() instanceof ProxiedPlayer)) return;
+        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", ((ProxiedPlayer) event.getSender()).getName()}, new String[]{"<server>", ((ProxiedPlayer) event.getSender()).getServer().getInfo().getName()});
+        for (Map.Entry<String, SpyType> p : this.spies.entrySet()) {
+            ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(p.getKey());
+            if (player1 == null) continue;
+            if ((p.getValue() == SpyType.All) || (p.getValue() == SpyType.Command && event.isCommand()) || (p.getValue() == SpyType.Chat && !event.isCommand())) {
+                player1.sendMessage(m);
+            }
+        }
+    }
+
     @TCommand(name = "spy", permission = "gearz.spy", senders = {TCommandSender.Player}, usage = "/spy [off|chat|command|all]", aliases = {"cs", "commandspy", "cw", "commandwatcher", "chatspy"})
     @SuppressWarnings("unused")
     public TCommandStatus spyCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
@@ -114,18 +126,6 @@ public class ChatManager implements Listener, TCommandHandler {
         this.spies.put(sender.getName(), sType);
         sender.sendMessage(GearzBungee.getInstance().getFormat(formatKey));
         return TCommandStatus.SUCCESSFUL;
-    }
-
-    public void handleSpy(ChatEvent event, Channel channel) {
-        ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", player.getName()}, new String[]{"<server>", player.getServer().getInfo().getName()}, new String[]{"<channel>", channel != null ? channel.getName() : ""});
-        for (Map.Entry<String, SpyType> p : this.spies.entrySet()) {
-            ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(p.getKey());
-            if (player1 == null) continue;
-            if ((p.getValue() == SpyType.All) || (p.getValue() == SpyType.Command && event.isCommand()) || (p.getValue() == SpyType.Chat && !event.isCommand())) {
-                player1.sendMessage(m);
-            }
-        }
     }
 
     @EventHandler(priority = EventPriority.LOW)

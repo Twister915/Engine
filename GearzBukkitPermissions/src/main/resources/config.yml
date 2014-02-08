@@ -1,4 +1,4 @@
-converter: true
+converter: false
 formats:
   created-group: "&6Group created &4<group>&6, default: &4<default>."
   deleted-group: "&6Deleted group: &4<group>&6."
@@ -23,4 +23,5 @@ formats:
   set-prefix-null: "&cYou removed &4<target>&c's prefix."
   set-suffix-null: "&cYou removed &4<target>&c's suffix."
   duplicate-group: "&cThat group already exists!"
+  no-permission: "&cNo permission."
 

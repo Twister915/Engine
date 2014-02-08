@@ -3,7 +3,6 @@ version: 1.3
 authors: [Jake0oo0]
 description: Bukkit Permissions Manager
 main: net.cogz.permissions.bukkit.GearzBukkitPermissions
-load: STARTUP
 commands:
   permissions:
     description: Permissions command.
