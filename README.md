@@ -61,3 +61,6 @@ General Conventions:
  */
 ```
    * To Change the file header in intelij do File > settings > search file and code templates > Includes > File Header > Paste in the file header ;)
+   * If you have a utility file in gearz make it implement GUtility so we can easily find them (only in gearz)
+   * If you have a method you made for let's say headhunter and it is a good utility method that can be put in a utlity file in gearz then give it the annotation @GUtilityMethod
+   * If you have a abstract class or something taht you think should be moved to gearz make the class implement Move2Gearz
