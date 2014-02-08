@@ -296,6 +296,7 @@ public abstract class GearzPermissions {
             boolean value = Boolean.valueOf(s[1]);
             perms.put(permission, value);
         }
+        System.out.println(perms.size());
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             System.out.println("Pre giving " + player + " permission " + stringBooleanEntry.getKey());
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
