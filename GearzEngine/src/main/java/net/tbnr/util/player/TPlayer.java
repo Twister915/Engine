@@ -521,7 +521,7 @@ public final class TPlayer {
             packet.setParticleSpeed(effect.getSpeed());
             packet.setNumberOfParticles(effect.getCount());
 
-            sendPacket(packet.getHandle());
+            packet.sendPacket(getPlayer());
         }
     }
 
@@ -678,24 +678,6 @@ public final class TPlayer {
             return particleEffectTypes;
         }
 
-    }
-
-    public void sendPacket(PacketContainer packet) {
-        Player player = getPlayer();
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Cannot send " + packet + " to " + player, e);
-        }
-    }
-
-    public void sendClientPacket(PacketContainer packet) {
-        Player player = getPlayer();
-        try {
-            ProtocolLibrary.getProtocolManager().recieveClientPacket(player, packet);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Cannot send " + packet + " to " + player, e);
-        }
     }
 
     public boolean isOnline() {
