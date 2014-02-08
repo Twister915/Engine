@@ -11,6 +11,8 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.server.Server;
+import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
@@ -74,7 +76,7 @@ public class ListModule implements TCommandHandler, Listener {
         for (String arg : args) {
             String name = arg;
             boolean online = false;
-            String server = null;
+            String serverBungeeName = null;
             ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(arg);
             if (player1 == null) {
                 for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
@@ -87,11 +89,18 @@ public class ListModule implements TCommandHandler, Listener {
             if (player1 != null) {
                 name = player1.getName();
                 online = true;
-                server = player1.getServer().getInfo().getName();
+				serverBungeeName = player1.getServer().getInfo().getName();
             }
             messages.add(GearzBungee.getInstance().getFormat("player-status-where", false, true, new String[]{"<status>", online ? "&aonline" : "&coffline"}, new String[]{"<name>", name}));
             if (online) {
-                messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server}));
+				Server server = null;
+				for(Server server1 : ServerManager.getAllServers()) {
+					if(server1.getBungee_name().equalsIgnoreCase(serverBungeeName)) {
+						server = server1;
+						break;
+					}
+				}
+                messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber() }));
             }
         }
         for (String s : GearzBungee.boxMessage(ChatColor.BLUE, messages)) {
