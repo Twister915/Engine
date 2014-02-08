@@ -47,6 +47,5 @@ public class ChannelsListener implements Listener {
         String message = event.getMessage();
         Channel channel = GearzBungee.getInstance().getChannelManager().sendMessage(sender, message, event.isCommand());
         GearzBungee.getInstance().getChatManager().handleSpy(event, channel);
-        event.setCancelled(true);
     }
 }
