@@ -280,7 +280,10 @@ public abstract class GearzPermissions {
         System.out.println("reload for " + player);
 
         PermPlayer permPlayer = this.players.get(player);
-        if (permPlayer == null) return;
+        if (permPlayer == null) {
+            System.out.println("NULL");
+            return;
+        }
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
