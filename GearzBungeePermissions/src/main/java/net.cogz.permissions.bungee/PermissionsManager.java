@@ -24,6 +24,7 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     public List<String> onlinePlayers() {
         List<String> players = new ArrayList<>();
         for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+            System.out.println(p.getName() + " online!");
             players.add(p.getName());
         }
         return players;
