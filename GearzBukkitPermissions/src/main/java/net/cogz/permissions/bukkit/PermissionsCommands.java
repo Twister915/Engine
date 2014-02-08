@@ -19,7 +19,7 @@ public class PermissionsCommands implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("player")) {
             if (args.length == 0) return false;
             PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
-            PermPlayer player = permsManager.getPlayer(args[0]);
+            PermPlayer player = permsManager.getPlayer(args[0].toLowerCase());
             switch (args[1]) {
                 case "reset":
                 case "delete":
