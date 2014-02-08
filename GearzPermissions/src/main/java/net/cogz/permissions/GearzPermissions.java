@@ -202,6 +202,9 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public void givePermToPlayer(String player, String perm, boolean value) {
+        if (getPlayer(player) == null) {
+            onJoin(player);
+        }
         this.players.get(player).addPermission(perm, value);
         this.givePermsToPlayer(player, perm, value);
     }

@@ -70,9 +70,12 @@ public class Converter {
             Integer entityId = permissionsResult.getInt("entity_id");
             String permission = permissionsResult.getString("permission");
             boolean value = permissionsResult.getInt("value") == 1;
+            System.out.println("Found entity " + entityId + " with permission " + permission + " and value " + value);
             if (rankMap.containsKey(entityId)) {
+                System.out.print(" and is group!");
                 permsManager.givePermToGroup(permsManager.getGroup(rankMap.get(entityId)), permission, value);
             } else if (playerMap.containsKey(entityId)) {
+                System.out.print(" and is player!");
                 permsManager.givePermToPlayer(playerMap.get(entityId), permission, value);
             }
         }
