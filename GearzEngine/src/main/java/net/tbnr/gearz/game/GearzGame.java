@@ -534,9 +534,10 @@ public abstract class GearzGame implements Listener {
         this.spectators.add(player);
         Bukkit.getPluginManager().callEvent(new PlayerBeginSpectateEvent(player, this));
         player.getTPlayer().sendMessage(getFormat("begin-spectating"));
-        player.getPlayer().setGameMode(GameMode.ADVENTURE);
-        player.getPlayer().setAllowFlight(true);
-        player.getPlayer().setFlying(true);
+        Player player2 = player.getPlayer();
+        player2.setGameMode(GameMode.ADVENTURE);
+        player2.setAllowFlight(true);
+        player2.setFlying(true);
         //player.getTPlayer().addPotionEffect(PotionEffectType.INVISIBILITY);
         hideFromAll(player);
         player.getTPlayer().playSound(Sound.FIZZ);
@@ -552,19 +553,17 @@ public abstract class GearzGame implements Listener {
             }
         }
         for (GearzPlayer player1 : spectators) {
-            if (player1.getPlayer() == null) {
+            Player player3 = player1.getPlayer();
+            if (player3 == null) {
                 continue;
             }
-            if (!player1.getPlayer().isOnline()) {
+            if (!player3.isOnline()) {
                 continue;
             }
-            if (player.getPlayer() == null) {
+            if (!player2.isOnline()) {
                 continue;
             }
-            if (!player.getPlayer().isOnline()) {
-                continue;
-            }
-            player.getPlayer().hidePlayer(player1.getPlayer());
+            player2.hidePlayer(player3);
         }
         player.setHideStats(false);
         player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("spectator-chooser"));
