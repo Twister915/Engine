@@ -279,7 +279,7 @@ public abstract class GearzPermissions {
     private void reloadPlayer(String player) {
         System.out.println("reload for " + player);
 
-        PermPlayer permPlayer = this.players.get(player);
+        PermPlayer permPlayer = this.players.get(player.toLowerCase());
         if (permPlayer == null) {
             System.out.println("NULL");
             return;
