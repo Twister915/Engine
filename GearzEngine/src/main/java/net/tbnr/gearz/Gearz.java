@@ -81,10 +81,14 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Getter
     public GearzBukkitPermissions permissions;
 
-    @Override
-    public void enable() {
+    public Gearz() {
         Gearz.instance = this;
         Gearz.random = new Random();
+    }
+
+    @Override
+    public void enable() {
+
         //** ENABLE **
         //This method is a bit confusing. Let's comment/clean it up a bit <3
 
