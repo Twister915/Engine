@@ -41,7 +41,7 @@ public class PermPlayer extends GModel {
 
     public PermPlayer(DB database, String name) {
         this(database);
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 
     public void setGroup(PermGroup group) {

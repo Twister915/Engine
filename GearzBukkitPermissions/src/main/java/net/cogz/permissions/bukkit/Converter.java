@@ -2,13 +2,17 @@ package net.cogz.permissions.bukkit;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
+import lombok.Getter;
+import org.bukkit.event.HandlerList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Jake on 2/2/14.
@@ -22,7 +26,7 @@ public class Converter {
     static private BoneCP connectionPool;
 
     static Map<Integer, String> rankMap = new HashMap<>();
-    static Map<String, String> playerMap = new HashMap<>();
+    static Map<Integer, String> playerMap = new HashMap<>();
 
     public static void newConverter() throws Exception {
         username = "root";
@@ -44,23 +48,33 @@ public class Converter {
             permsManager.createGroup(groupResult.getString("display_name"), false);
         }
 
-        PreparedStatement entitySelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='0'");
-        ResultSet entityResult = entitySelect.executeQuery();
-        while (entityResult.next()) {
-            String caseName = entityResult.getString("name");
-            String displayName = entityResult.getString("display_name");
-            Integer id = entityResult.getInt("id");
-            System.out.println("Found player with lower case name " + caseName + " with the real name, " + displayName + " and id " + id);
-            playerMap.put(caseName, displayName);
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM entities WHERE is_group='0'");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            System.out.println("Found player: " + resultSet.getString("name"));
+            playerMap.put(resultSet.getInt("id"), resultSet.getString("name"));
         }
 
         PreparedStatement playerSelect = connection.prepareStatement("SELECT * FROM memberships");
         ResultSet playerResult = playerSelect.executeQuery();
         while (playerResult.next()) {
             Integer groupId = playerResult.getInt("group_id");
-            String realName = playerMap.get(playerResult.getString("member"));
-            System.out.println("Adding player " + realName + " to the group " + rankMap.get(groupId));
-            permsManager.setGroup(realName, rankMap.get(groupId));
+            String name = playerResult.getString("member");
+            System.out.println("Player " + name + " added to group " + rankMap.get(groupId));
+            permsManager.setGroup(name, rankMap.get(groupId));
+        }
+
+        PreparedStatement permissionsSelect = connection.prepareStatement("SELECT * FROM entries");
+        ResultSet permissionsResult = permissionsSelect.executeQuery();
+        while (permissionsResult.next()) {
+            Integer entityId = permissionsResult.getInt("entity_id");
+            String permission = permissionsResult.getString("permission");
+            boolean value = permissionsResult.getInt("value") == 1;
+            if (rankMap.containsKey(entityId)) {
+                permsManager.givePermToGroup(permsManager.getGroup(rankMap.get(entityId)), permission, value);
+            } else if (playerMap.containsKey(entityId)) {
+                permsManager.givePermToPlayer(playerMap.get(entityId), permission, value);
+            }
         }
     }
 
