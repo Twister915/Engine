@@ -97,7 +97,9 @@ public final class GearzPlayer {
         }
 
         this.channel = channel;
-        this.channel.addMember(this.getProxiedPlayer());
+        if (channel != null) {
+            this.channel.addMember(this.getProxiedPlayer());
+        }
     }
 
     /**
