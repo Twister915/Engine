@@ -1,6 +1,5 @@
 package net.cogz.permissions.bukkit;
 
-import com.jolbox.bonecp.BoneCP;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
