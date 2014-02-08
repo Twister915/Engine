@@ -24,7 +24,6 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     public List<String> onlinePlayers() {
         List<String> players = new ArrayList<>();
         for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-            System.out.println(p.getName() + " online!");
             players.add(p.getName());
         }
         return players;
@@ -32,7 +31,6 @@ public class PermissionsManager extends GearzPermissions implements Listener {
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
-        System.out.println("We're adding a permission now!");
         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
         Preconditions.checkNotNull(player, "player can not be null");
         Preconditions.checkNotNull(perm, "permission can not be null");
