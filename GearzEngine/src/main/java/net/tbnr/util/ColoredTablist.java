@@ -1,5 +1,7 @@
 package net.tbnr.util;
 
+import net.cogz.permissions.bukkit.PermissionsManager;
+import net.tbnr.gearz.Gearz;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,10 +24,9 @@ public class ColoredTablist implements Listener {
     }
 
     public static String getPlayerTabColor(Player player) {
-        /*PermissionsManager permsManager = Gearz.getInstance().getPermissions().getPermsManager();
+        PermissionsManager permsManager = Gearz.getInstance().getPermissions().getPermsManager();
         String tabCoolor = permsManager.getTabColor(permsManager.getPlayer(player.getName()));
-        return tabCoolor != null ? tabCoolor : "";*/
-        return "";
+        return tabCoolor != null ? tabCoolor : "";
     }
 
     public static void updateNick(Player player) {
