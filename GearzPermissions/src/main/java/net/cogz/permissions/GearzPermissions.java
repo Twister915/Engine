@@ -163,7 +163,6 @@ public abstract class GearzPermissions {
         }
         if (!(one instanceof PermPlayer)) return;
         this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
-        System.out.println("On join for " + player);
         reloadPlayer(player);
     }
 
@@ -277,11 +276,8 @@ public abstract class GearzPermissions {
      * @param player Name of player to reload
      */
     private void reloadPlayer(String player) {
-        System.out.println("reload for " + player);
-
         PermPlayer permPlayer = this.players.get(player.toLowerCase());
         if (permPlayer == null) {
-            System.out.println("NULL");
             return;
         }
         Map<String, Boolean> perms = new HashMap<>();
@@ -299,9 +295,7 @@ public abstract class GearzPermissions {
             boolean value = Boolean.valueOf(s[1]);
             perms.put(permission, value);
         }
-        System.out.println(perms.size());
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
-            System.out.println("Pre giving " + player + " permission " + stringBooleanEntry.getKey());
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
         PermGroup permGroup;
