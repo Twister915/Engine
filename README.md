@@ -1,7 +1,7 @@
 Engine
 ======
 
-The repo for the Engine stuff.
+The backend of all Cogz based plugins!
 
 
 - [x] Awesomeness
