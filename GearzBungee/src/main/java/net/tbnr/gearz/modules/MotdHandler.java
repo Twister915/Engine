@@ -3,6 +3,8 @@ package net.tbnr.gearz.modules;
 import com.google.common.io.BaseEncoding;
 import com.google.common.io.Files;
 import com.mongodb.BasicDBList;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -21,6 +23,8 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,6 +38,7 @@ public class MotdHandler implements Listener, TCommandHandler {
     private List<String> motd;
     private Integer index;
     private String favicon;
+    private List<StaticMOTD> staticMotds = new LinkedList<>();
 
     public MotdHandler() {
         index = 0;
@@ -55,18 +60,25 @@ public class MotdHandler implements Listener, TCommandHandler {
     @EventHandler(priority = EventPriority.HIGHEST)
     @SuppressWarnings("unused")
     public void onMotdGrab(ProxyPingEvent event) {
-        Object[] motds = GearzBungee.getInstance().getMotds();
         String motd = null;
-        if (motds == null) motd = "Just another Gearz server";
-        else {
-            while (motd == null) {
-                index++;
-                if (index >= motds.length-1) {
-                    index = 0;
+        if (this.staticMotds.size() > 0) {
+            StaticMOTD staticMOTD = this.staticMotds.get(0);
+            motd = staticMOTD.getMotd();
+            if (staticMOTD.shouldRemove()) this.staticMotds.remove(0);
+        }
+        if (motd == null) {
+            Object[] motds = GearzBungee.getInstance().getMotds();
+            if (motds == null) motd = "Just another Gearz server";
+            else {
+                while (motd == null) {
+                    index++;
+                    if (index >= motds.length-1) {
+                        index = 0;
+                    }
+                    Object motd1 = motds[index];
+                    if (!(motd1 instanceof String)) continue;
+                    motd = (String) motd1;
                 }
-                Object motd1 = motds[index];
-                if (!(motd1 instanceof String)) continue;
-                motd = (String) motd1;
             }
         }
         motd = GearzBungee.getInstance().getFormat("motd-format", false, true, new String[]{"<motd>", motd}, new String[]{"<randomColor>", ChatColor.values()[GearzBungee.getRandom().nextInt(ChatColor.values().length)].toString()});
@@ -90,6 +102,26 @@ public class MotdHandler implements Listener, TCommandHandler {
         sendMotd(sender);
         return TCommandStatus.SUCCESSFUL;
     }
+    @TCommand(
+            name = "staticmotd",
+            permission = "gearz.setmotd",
+            usage = "/staticmotd [minutes] [motd...]",
+            senders = {TCommandSender.Player, TCommandSender.Console}
+    )
+    public TCommandStatus staticMOTD(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
+        if (args.length < 2) return TCommandStatus.FEW_ARGS;
+        Integer minutes;
+        try {
+            minutes = Integer.valueOf(args[0]);
+        } catch (NumberFormatException ex) {
+            return TCommandStatus.INVALID_ARGS;
+        }
+        String message = GearzBungee.getInstance().compile(args, 1, args.length-1);
+        this.staticMotds.add(new StaticMOTD(message, minutes));
+        sender.sendMessage(ChatColor.GREEN + "Added Static MOTD " + ChatColor.translateAlternateColorCodes('&', message));
+        return TCommandStatus.SUCCESSFUL;
+    }
+
 
     @TCommand(
             name = "setmotd",
@@ -175,7 +207,16 @@ public class MotdHandler implements Listener, TCommandHandler {
                 player.sendMessage(" ");
             }
         });
+    }
 
-
+    @Data
+    @RequiredArgsConstructor
+    private static class StaticMOTD {
+        private final String motd;
+        private final Date created = new Date();
+        private final Integer lengthInMinutes;
+        public boolean shouldRemove() {
+            return (created.getTime() + (lengthInMinutes*60) <= (new Date()).getTime());
+        }
     }
 }
