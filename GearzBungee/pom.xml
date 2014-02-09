@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>2.11.3</version>
+            <version>2.11.4</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
@@ -122,6 +122,7 @@
                                     <include>net.tbnr.gearz:GearzServerLib</include>
                                     <include>com.maxmind.geoip:geoip-api</include>
                                     <include>net.craftminecraft.bungee:bungeeyaml</include>
+                                    <include>net.tbnr.gearz:GearzBungeePermissions</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
