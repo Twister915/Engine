@@ -19,6 +19,22 @@
         </developer>
         <developer>
             <id>pokuit</id>
+            <name>George Padolsey</name>
+            <email>george@cogzmc.com</email>
+            <url>http://www.george.padolsey.co.uk/</url>
+            <timezone>0</timezone>
+            <organization>Cogz Development LLC</organization>
+            <organizationUrl>http://cogzmc.com/</organizationUrl>
+            <properties>
+                <picUrl>http://i.imgur.com/6N7ihFs.png</picUrl>
+            </properties>
+            <roles>
+                <role>Developer</role>
+                <role>Effect Maker</role>
+                <role>Vanilla Tweaker</role>
+                <role>Jaffa Cake Eater</role>
+                <role>Awesome Person</role>
+            </roles>
         </developer>
         <developer>
             <id>Thecraftgod</id>
