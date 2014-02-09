@@ -82,13 +82,48 @@ public class Hub implements TCommandHandler, Listener {
     }
 
     @EventHandler
-    @SuppressWarnings("unused")
     public void onKickEvent(ServerKickEvent event) {
-        if (event.getPlayer().getServer() == null) return;
-        if (isHubServer(event.getPlayer().getServer().getInfo())) return;
+        ProxiedPlayer player = event.getPlayer();
+        if (player.getServer() == null) return;
+        ServerInfo info = player.getServer().getInfo();
+        if (isHubServer(info)) {
+            ServerInfo aHubServer = null;
+            int x = 0;
+            while ((aHubServer == null || !aHubServer.equals(info)) && x < this.hubServers.size()) {
+                aHubServer = getAHubServer();
+            }
+            if (aHubServer != null && !aHubServer.equals(info)) {
+                GearzBungee.connectPlayer(player, aHubServer.getName());
+                return;
+            }
+            Server server;
+            try {
+                server = serverForDispersion();
+            } catch (Exception e) {
+                return;
+            }
+            player.sendMessage(GearzBungee.getInstance().getFormat("hub-disconnected-disperse"));
+            GearzBungee.connectPlayer(player, server.getBungee_name());
+            return;
+        }
         event.setCancelServer(getAHubServer());
         event.setCancelled(true);
-        event.getPlayer().sendMessage(GearzBungee.getInstance().getFormat("server-kick", true, true, new String[]{"<reason>", event.getKickReason()}));
+        player.sendMessage(GearzBungee.getInstance().getFormat("server-kick", true, true, new String[]{"<reason>", event.getKickReason()}));
+    }
+
+    private Server serverForDispersion() throws Exception {
+        Server s = null;
+        for (Server server : ServerManager.getAllServers()) {
+            if (server.getGame().equals("lobby")) continue;
+            if (!server.getStatusString().equals("lobby")) continue;
+            if (s == null) {
+                s = server;
+                continue;
+            }
+            if (s.getPlayerCount() > server.getPlayerCount()) s = server;
+        }
+        if (s == null) throw new Exception("Could not find a server to send the player to!");
+        return s;
     }
 
     @Data

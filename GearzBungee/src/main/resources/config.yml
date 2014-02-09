@@ -5,7 +5,7 @@ database:
 announcer:
   enabled: true
 channels:
-  enabled: true
+  enabled: false
   list:
     - default
     - staff
