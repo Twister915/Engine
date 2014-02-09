@@ -140,7 +140,6 @@ public class InventoryGUI implements Listener {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
         }
         player.closeInventory();
-        HandlerList.unregisterAll(this);
     }
 
     @EventHandler
@@ -156,6 +155,7 @@ public class InventoryGUI implements Listener {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
         }
         callback.onGUIClose(this, player);
+        HandlerList.unregisterAll(this);
     }
 
     @EventHandler
