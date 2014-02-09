@@ -1,7 +1,5 @@
 package net.tbnr.gearz.packets;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import lombok.Getter;
 import net.tbnr.gearz.Gearz;
@@ -12,9 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
 
 public class FakeEntity {
     private static int NEXT_ID = 6000;
@@ -91,7 +86,7 @@ public class FakeEntity {
             WrapperPlayServerEntityDestroy destroyMe = new WrapperPlayServerEntityDestroy();
             destroyMe.setEntities(new int[]{id});
 
-            sendPacket(destroyMe.getHandle());
+            destroyMe.sendPacket(player);
             created = false;
         }
     }
@@ -103,7 +98,7 @@ public class FakeEntity {
 
             update.setEntityId(id);
             update.setEntityMetadata(watcher.getWatchableObjects());
-            sendPacket(update.getHandle());
+            update.sendPacket(player);
         }
     }
 
@@ -121,17 +116,9 @@ public class FakeEntity {
         spawnMob.setHeadPitch(((location.getPitch() * 256.0F) / 360.0F));
         spawnMob.setMetadata(watcher);
 
-        sendPacket(spawnMob.getHandle());
+        spawnMob.sendPacket(player);
 
         created = true;
-    }
-
-    private void sendPacket(PacketContainer packet) {
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            Gearz.getInstance().getLogger().log(Level.WARNING, "Cannot send " + packet + " to " + player, e);
-        }
     }
 
     private byte getFlag(EntityFlags flag) {

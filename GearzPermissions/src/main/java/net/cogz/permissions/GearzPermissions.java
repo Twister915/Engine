@@ -276,8 +276,10 @@ public abstract class GearzPermissions {
      * @param player Name of player to reload
      */
     private void reloadPlayer(String player) {
-        PermPlayer permPlayer = this.players.get(player);
-        if (permPlayer == null) return;
+        PermPlayer permPlayer = this.players.get(player.toLowerCase());
+        if (permPlayer == null) {
+            return;
+        }
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
@@ -453,9 +455,12 @@ public abstract class GearzPermissions {
     public List<PermGroup> getAllGroups(PermPlayer permPlayer) {
         List<PermGroup> allGroups = new ArrayList<>();
         PermGroup permGroup = permPlayer.getGroup();
+        if (permGroup == null) return allGroups;
         if (!allGroups.contains(permGroup)) allGroups.add(permGroup);
-        for (String inheritedGroup : permGroup.getInheritances()) {
-            if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));
+        if (permGroup.getInheritances() != null) {
+            for (String inheritedGroup : permGroup.getInheritances()) {
+                if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));
+            }
         }
         return allGroups;
     }
