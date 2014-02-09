@@ -20,6 +20,8 @@ public class GearzSetup extends TPlugin {
     @Override
     public void enable() {
         GearzSetup.instance = this;
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         GameSetupFactory setupFactory = new GameSetupFactory();
         registerEvents(setupFactory);
         registerCommands(setupFactory);
