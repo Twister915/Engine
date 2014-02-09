@@ -26,8 +26,7 @@ import java.util.regex.Pattern;
  */
 public class PunishCommands implements TCommandHandler {
     @TCommand(
-            aliases = {"gban"},
-            name = "ggban",
+            name = "ban",
             usage = "/ban <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.ban")
@@ -59,8 +58,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
-            aliases = {"gtempban"},
-            name = "ggtempban",
+            name = "tempban",
             usage = "/tempban <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.tempban")
@@ -105,8 +103,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
-            aliases = {"gkick"},
-            name = "ggkick",
+            name = "kick",
             usage = "/kick <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.kick")
@@ -136,8 +133,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
-            aliases = {"gwarn"},
-            name = "ggwarn",
+            name = "warn",
             usage = "/warn <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.warn")
@@ -169,8 +165,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
-            aliases = {"gmute"},
-            name = "ggmute",
+            name = "mute",
             usage = "/mute <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.mute")
@@ -208,7 +203,7 @@ public class PunishCommands implements TCommandHandler {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @TCommand(
-            aliases = {"gtempmute", "tmute"},
+            aliases = {"tempmute", "tempmute"},
             name = "ggtempmute",
             usage = "/tempmute <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
@@ -254,8 +249,8 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
-            name = "gipban",
-            aliases = {"gbanip"},
+            name = "ipban",
+            aliases = {"banip"},
             usage = "/ipban <ip> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.ipban")
