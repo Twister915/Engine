@@ -12,9 +12,9 @@ import java.io.File;
 
 /**
  * Created by Jake on 1/23/14.
- *
+ * <p/>
  * Purpose Of File:
- *
+ * <p/>
  * Latest Change:
  */
 public class InstallCommands implements TCommandHandler {
@@ -24,8 +24,8 @@ public class InstallCommands implements TCommandHandler {
             usage = "/install <network> <minigame>",
             permission = "gearz.install",
             senders = {TCommandSender.Player, TCommandSender.Console})
-         @SuppressWarnings("unused")
-         public TCommandStatus install(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+    @SuppressWarnings("unused")
+    public TCommandStatus install(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length != 2) {
             return TCommandStatus.INVALID_ARGS;
         }

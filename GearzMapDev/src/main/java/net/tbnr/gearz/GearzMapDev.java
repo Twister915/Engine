@@ -5,9 +5,9 @@ import net.tbnr.util.TPlugin;
 
 /**
  * Created by Jake on 1/12/14.
- *
+ * <p/>
  * Purpose Of File:
- *
+ * <p/>
  * Latest Change:
  */
 public class GearzMapDev extends TPlugin {
@@ -16,6 +16,7 @@ public class GearzMapDev extends TPlugin {
     public static GearzMapDev getInstance() {
         return GearzMapDev.instance;
     }
+
     @Override
     public void enable() {
         getConfig().options().copyDefaults(true);
