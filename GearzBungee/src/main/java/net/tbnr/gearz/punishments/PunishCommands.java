@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
  */
 public class PunishCommands implements TCommandHandler {
     @TCommand(
+            aliases = "gtempban",
             name = "ban",
             usage = "/ban <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
@@ -58,6 +59,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
+            aliases = "gtempban",
             name = "tempban",
             usage = "/tempban <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
@@ -103,6 +105,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
+            aliases = {"gkick"},
             name = "kick",
             usage = "/kick <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
@@ -133,6 +136,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
+            aliases = {"gwarn"},
             name = "warn",
             usage = "/warn <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
@@ -165,6 +169,7 @@ public class PunishCommands implements TCommandHandler {
     }
 
     @TCommand(
+            aliases = {"gmute"},
             name = "mute",
             usage = "/mute <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
@@ -203,8 +208,8 @@ public class PunishCommands implements TCommandHandler {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @TCommand(
-            aliases = {"tempmute", "tempmute"},
-            name = "ggtempmute",
+            aliases = {"gtempmute", "tempmute"},
+            name = "tempmute",
             usage = "/tempmute <player> <reason...>",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "gearz.punish.mute")
