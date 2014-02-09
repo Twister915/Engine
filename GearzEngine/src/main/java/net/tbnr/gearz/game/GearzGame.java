@@ -868,7 +868,8 @@ public abstract class GearzGame implements Listener {
             return;
         }
         if (!canUse(player)) {
-            player.getTPlayer().sendMessage(getFormat("no-interact"));
+            if (event.getAction() != Action.PHYSICAL)
+                player.getTPlayer().sendMessage(getFormat("no-interact"));
             event.setCancelled(true);
         }
     }
