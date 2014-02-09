@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -81,6 +80,7 @@ public class InventoryGUI implements Listener {
         this.inventory = Bukkit.createInventory(null, determineSize(), title);
         updateContents(items);
         this.effects = effects;
+		Bukkit.getServer().getPluginManager().registerEvents(this, Gearz.getInstance());
     }
 
     /**
@@ -92,7 +92,8 @@ public class InventoryGUI implements Listener {
         inventory.clear();
         if (items == null) {
             return;
-        }
+		}
+		if(this.items.size() != items.size()) updateSize();
         for (int i = 0; i < items.size(); i++) {
             InventoryGUIItem item = items.get(i);
             if (item == null) continue;
@@ -124,7 +125,6 @@ public class InventoryGUI implements Listener {
      * Opens the GUI for @player
      */
     public void open(Player player) {
-        Bukkit.getServer().getPluginManager().registerEvents(this, Gearz.getInstance());
         player.openInventory(inventory);
         if (effects) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 128, false));
@@ -155,7 +155,6 @@ public class InventoryGUI implements Listener {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
         }
         callback.onGUIClose(this, player);
-        HandlerList.unregisterAll(this);
     }
 
     @EventHandler
