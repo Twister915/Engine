@@ -9,6 +9,7 @@ The backend of all Cogz based plugins!
 - [x] Blocks
 - [ ] No bugs
 
+[![Build Status](https://magnum.travis-ci.com/CogzMC/Engine.png?token=tDvULJKGstkZ5WsCunqT&branch=master)](https://magnum.travis-ci.com/CogzMC/Engine)
 [![Gitter chat](https://badges.gitter.im/CogzMC/Engine.png)](https://gitter.im/CogzMC/Engine)
 
 Compiling:
