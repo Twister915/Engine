@@ -10,10 +10,7 @@ import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.player.PlayerPriorityDetermineEvent;
 import net.tbnr.gearz.game.*;
-import net.tbnr.gearz.game.voting.InventoryBarVotingSession;
-import net.tbnr.gearz.game.voting.Votable;
-import net.tbnr.gearz.game.voting.VotingHandler;
-import net.tbnr.gearz.game.voting.VotingSession;
+import net.tbnr.gearz.game.voting.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.command.TCommand;
@@ -28,6 +25,7 @@ import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -96,6 +94,12 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         }, 5L);
         this.votingSession = new InventoryBarVotingSession(new ArrayList<GearzPlayer>(), plugin.getArenaManager().getRandomArenas(5), this, this);
         this.votingSession.startSession(60);
+        ConfigurationSection configurationSection = Gearz.getInstance().getConfig().getConfigurationSection("vote-boosts");
+        HashMap<String, Integer> integerHashMap = new HashMap<>();
+        for (String s : configurationSection.getKeys(false)) {
+            integerHashMap.put(s, configurationSection.getInt(s));
+        }
+        getPlugin().registerEvents(new AutoBoosts(integerHashMap));
     }
 
     @TCommand(

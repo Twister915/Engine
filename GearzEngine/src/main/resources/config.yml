@@ -88,4 +88,5 @@ priorities:
 - tbnr
 - hero
 - premium
-
+vote-boosts:
+  owner: 20
