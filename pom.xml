@@ -13,6 +13,30 @@
     <description>Parent project for all gearz modules.</description>
     <url>https://github.com/CogzMC/Engine</url>
 
+    <developers>
+        <developer>
+            <id>Twister915</id>
+        </developer>
+        <developer>
+            <id>pokuit</id>
+        </developer>
+        <developer>
+            <id>Thecraftgod</id>
+        </developer>
+        <developer>
+            <id>xIGBClutchIx</id>
+        </developer>
+        <developer>
+            <id>Ranil</id>
+        </developer>
+        <developer>
+            <id>Jake0oo0</id>
+            <name>Jake</name>
+            <email>jake0oo0andminecraft@gmail.com</email>
+            <url>https://github.com/Jake0oo0</url>
+        </developer>
+    </developers>
+
     <modules>
         <module>GearzEngine</module>
         <module>GearzActiveRecord</module>
