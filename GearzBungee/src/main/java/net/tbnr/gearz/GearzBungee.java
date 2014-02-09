@@ -196,6 +196,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             channelManager.registerChannels();
             registerCommandHandler(new ChannelCommand());
         } else {
+            ModBroadcast modBroadcast = new ModBroadcast();
+            registerEvents(modBroadcast);
+            registerCommandHandler(modBroadcast);
             getLogger().info("Channels disabled...");
         }
         this.chatManager = new ChatManager();
