@@ -1165,6 +1165,11 @@ public abstract class GearzGame implements Listener {
             return;
         }
         if (isSpectating(player)) {
+            if (event.getTo().add(0, -8, 0).getBlock().getType() != Material.AIR) {
+                event.setTo(event.getTo().add(0, 8, 0));
+                event.getPlayer().sendMessage(getFormat("spectator-hover"));
+                if (!event.getPlayer().getAllowFlight()) event.getPlayer().setAllowFlight(true);
+            }
             return;
         }
         if (!canMove(player)) {
