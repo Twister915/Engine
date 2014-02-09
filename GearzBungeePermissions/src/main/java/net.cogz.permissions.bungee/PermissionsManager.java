@@ -36,6 +36,7 @@ public class PermissionsManager extends GearzPermissions implements Listener {
         Preconditions.checkNotNull(perm, "permission can not be null");
         Preconditions.checkNotNull(value, "value can not be null");
         Preconditions.checkNotNull(proxiedPlayer, "proxied player can not be null");
+        System.out.println("We're adding a permission now!");
         if (proxiedPlayer == null) return;
         proxiedPlayer.setPermission(perm, value);
     }
