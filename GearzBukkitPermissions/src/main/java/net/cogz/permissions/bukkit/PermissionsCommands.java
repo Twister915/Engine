@@ -8,9 +8,9 @@ import org.bukkit.command.CommandSender;
 
 /**
  * Created by Jake on 1/24/14.
- *
+ * <p/>
  * Purpose Of File:
- *
+ * <p/>
  * Latest Change:
  */
 public class PermissionsCommands implements CommandExecutor {
@@ -407,9 +407,9 @@ public class PermissionsCommands implements CommandExecutor {
                     return false;
                 case "namecolor":
                     if (!sender.hasPermission("gearz.permissions.group.namecolor")) {
-                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
-                    return false;
-                }
+                        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
+                        return false;
+                    }
                     if (args.length != 3) {
                         sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.no-permission", false));
                         return false;
