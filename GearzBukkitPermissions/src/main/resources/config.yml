@@ -24,4 +24,5 @@ formats:
   set-suffix-null: "&cYou removed &4<target>&c's suffix."
   duplicate-group: "&cThat group already exists!"
   no-permission: "&cNo permission."
+  bad-args: "&cBad arguments!"
 
