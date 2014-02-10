@@ -35,6 +35,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.*;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -866,7 +868,8 @@ public abstract class GearzGame implements Listener {
             return;
         }
         if (!canUse(player)) {
-            player.getTPlayer().sendMessage(getFormat("no-interact"));
+            if (event.getAction() != Action.PHYSICAL)
+                player.getTPlayer().sendMessage(getFormat("no-interact"));
             event.setCancelled(true);
         }
     }
@@ -1165,6 +1168,11 @@ public abstract class GearzGame implements Listener {
             return;
         }
         if (isSpectating(player)) {
+            if (event.getTo().add(0, -8, 0).getBlock().getType() != Material.AIR) {
+                event.getPlayer().setVelocity(player.getPlayer().getLocation().getDirection().add(new Vector(0, 8, 0)));
+                event.getPlayer().sendMessage(getFormat("spectator-hover"));
+                if (!event.getPlayer().getAllowFlight()) event.getPlayer().setAllowFlight(true);
+            }
             return;
         }
         if (!canMove(player)) {

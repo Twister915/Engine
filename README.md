@@ -9,6 +9,8 @@ The backend of all Cogz based plugins!
 - [x] Blocks
 - [ ] No bugs
 
+[![Build Status](http://dev.tbnr.net:8080/buildStatus/icon?job=Engine)](http://dev.tbnr.net:8080/job/Engine/)
+
 [![Gitter chat](https://badges.gitter.im/CogzMC/Engine.png)](https://gitter.im/CogzMC/Engine)
 
 Compiling:

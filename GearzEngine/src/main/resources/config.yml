@@ -82,9 +82,11 @@ game-strings: #All strings should use colors <p> and <s>, and has <gname> (longN
   no-bow: "<s>You cannot use your bow now!"
   no-potion: "<s>You can't throw that now!"
   not-running: "&cNo arena is currently loaded."
+  spectator-hover: "<s>You must be higher as a spectator!"
 priorities:
 - staff
 - tbnr
 - hero
 - premium
-
+vote-boosts:
+  owner: 20
