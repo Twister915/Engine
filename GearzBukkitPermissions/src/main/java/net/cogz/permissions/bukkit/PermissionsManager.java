@@ -13,9 +13,9 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/24/14.
- *
+ * <p/>
  * Purpose Of File:
- *
+ * <p/>
  * Latest Change:
  */
 public class PermissionsManager extends GearzPermissions implements Listener {
@@ -57,14 +57,7 @@ public class PermissionsManager extends GearzPermissions implements Listener {
 
     @Override
     public void updatePlayerTabColor(String player, String tabColor) {
-/*        Player player1 = Bukkit.getPlayer(player);
-        if (player1 == null) return;
-        Object storable = GearzPlayer.playerFromPlayer(player1).getTPlayer().getStorable(Gearz.getInstance(), new GearzPlayerNickname(null));
-        if (!(storable instanceof String)) {
-            storable = player;
-        }
-        String name = (String) storable;
-        player1.setPlayerListName(ChatColor.translateAlternateColorCodes('&', tabColor + name).substring(14));*/
+
     }
 
     @EventHandler
