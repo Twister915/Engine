@@ -67,6 +67,10 @@ General Conventions:
    * If you have a method you made for let's say headhunter and it is a good utility method that can be put in a utlity file in gearz then give it the annotation @GUtilityMethod
    * If you have a abstract class or something taht you think should be moved to gearz make the class implement Move2Gearz
 
+Branch Naming:
+  - Branch names should be lowercase. Ex: parties (correct) vs. Parties (incorrect)
+  - Use dashes  (-) instead of spaces
+
 How to merge a feature branch:
   - DO NOT PRESS THE BIG GREEN BUTTON
   - Checkout the feature branch and type:
