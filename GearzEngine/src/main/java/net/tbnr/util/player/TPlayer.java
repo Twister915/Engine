@@ -1,7 +1,5 @@
 package net.tbnr.util.player;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketContainer;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
@@ -13,6 +11,7 @@ import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
 import net.tbnr.util.IPUtils;
 import net.tbnr.util.PlayerResetParams;
+import net.tbnr.util.RandomUtils;
 import net.tbnr.util.TPlugin;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -24,12 +23,10 @@ import org.bukkit.scoreboard.*;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
 
 import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.ParticleEffect;
 
@@ -603,6 +600,7 @@ public final class TPlayer {
         player.setVelocity(new Vector(0, 0, 0));
         player.setFallDistance(0F);
         player.setAllowFlight(false);
+        RandomUtils.setPlayerCollision(player, true);
     }
 
     /**

@@ -1,9 +1,13 @@
 package net.tbnr.util;
 
+import com.comphenix.protocol.injector.BukkitUnwrapper;
+import com.comphenix.protocol.reflect.accessors.Accessors;
 import net.tbnr.gearz.Gearz;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 
 public class RandomUtils implements GUtility {
@@ -40,5 +44,20 @@ public class RandomUtils implements GUtility {
         System.arraycopy(B, 0, C, aLen, bLen);
 
         return C;
+    }
+
+    // Default Collision info
+    // width - 0.6
+    // length - 1.8
+
+    public static void setPlayerCollision(Player player, Boolean collision) {
+        Object entityPlayer = BukkitUnwrapper.getInstance().unwrapItem(player);
+        Field width = Accessors.getFieldAccessor(entityPlayer.getClass(), "width", true).getField();
+        Field length = Accessors.getFieldAccessor(entityPlayer.getClass(), "length", true).getField();
+        try {
+            width.set(entityPlayer, collision ? 0.6F : 0.0F);
+            length.set(entityPlayer, collision ? 1.8F : 0.0F);
+        } catch (IllegalAccessException ignored) {
+        }
     }
 }
