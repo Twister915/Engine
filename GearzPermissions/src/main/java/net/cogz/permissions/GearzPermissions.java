@@ -123,7 +123,6 @@ public abstract class GearzPermissions {
             this.database = getDatabase();
             checks++;
             if (checks >= 2000000) break;
-            System.out.println(checks);
         }
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         this.groups = new HashMap<>();
