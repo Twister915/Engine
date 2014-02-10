@@ -116,7 +116,6 @@
                                 <includes>
                                     <include>redis.clients:jedis</include>
                                     <include>org.mongodb:mongo-java-driver</include>
-                                    <include>net.tbnr.gearz:GearzActiveRecord</include>
                                     <include>org.json:json</include>
                                     <include>commons-pool:commons-pool</include>
                                     <include>net.tbnr.gearz:GearzServerLib</include>

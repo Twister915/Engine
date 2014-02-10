@@ -170,7 +170,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
                 Gearz.getInstance().getLogger().info("Server linked and in the database");
             }
         }, 1);
-
     }
 
     @Override
