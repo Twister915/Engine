@@ -1,9 +1,9 @@
 package net.tbnr.util.command;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.VanillaCommand;
+import org.bukkit.command.defaults.BukkitCommand;
 
-public class GearzBukkitCommand extends VanillaCommand {
+public class GearzBukkitCommand extends BukkitCommand {
     public GearzBukkitCommand(String name, String description, String usageMessage) {
         super(name);
         this.description = description;
