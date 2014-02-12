@@ -68,52 +68,6 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Sets the player's displays
-     *
-     * @param player    Player to update
-     * @param prefix    Their prefix
-     * @param nameColor Their name color
-     * @param tabColor  Their tab color
-     */
-    public abstract void updatePlayerDisplays(String player, String prefix, String nameColor, String tabColor);
-
-    /**
-     * Sets a player's chat name color
-     *
-     * @param player    Player to set the name for
-     * @param nameColor Color to set the name too
-     */
-    @SuppressWarnings("unused")
-    public abstract void updatePlayerNameColor(String player, String nameColor);
-
-    /**
-     * Sets a players suffix
-     *
-     * @param player player to update
-     * @param suffix new suffix
-     */
-    @SuppressWarnings("unused")
-    public abstract void updatePlayerSuffix(String player, String suffix);
-
-    /**
-     * Set a player's prefix
-     *
-     * @param player player to update
-     * @param prefix new prefix
-     */
-    @SuppressWarnings("unused")
-    public abstract void updatePlayerPrefix(String player, String prefix);
-
-    /**
-     * Sets a players tab color
-     *
-     * @param player   player to update
-     * @param tabColor new tab color
-     */
-    @SuppressWarnings("unused")
-    public abstract void updatePlayerTabColor(String player, String tabColor);
-
-    /**
      * Reloads all the data from the database
      */
     public void reload() {
@@ -149,7 +103,7 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Player join
+     * Called when a player joins
      *
      * @param player Player who joined
      */
@@ -166,7 +120,8 @@ public abstract class GearzPermissions {
     }
 
     /**
-     * Quit
+     * Called when a player quits
+     * Handles permissions removal
      *
      * @param player the player who quit.
      */
@@ -297,18 +252,6 @@ public abstract class GearzPermissions {
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
-        PermGroup permGroup;
-        try {
-            permGroup = permPlayer.getGroup();
-        } catch (Exception e) {
-            return;
-        }
-        if (permGroup == null) return;
-        String prefix = permPlayer.getPrefix() == null ? permGroup.getPrefix() : permPlayer.getPrefix();
-        String tabColor = permPlayer.getTabColor() == null ? permGroup.getTabColor() : permPlayer.getTabColor();
-        String nameColor = permPlayer.getNameColor() == null ? permGroup.getNameColor() : permPlayer.getNameColor();
-        if (tabColor == null) tabColor = nameColor;
-        this.updatePlayerDisplays(player, prefix, nameColor, tabColor);
     }
 
     /**

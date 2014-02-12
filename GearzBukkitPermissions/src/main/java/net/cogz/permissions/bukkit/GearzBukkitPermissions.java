@@ -2,14 +2,12 @@ package net.cogz.permissions.bukkit;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Created by Jake on 1/24/14.
- * <p/>
+ *
  * Purpose Of File:
- * <p/>
+ *
  * Latest Change:
  */
 public final class GearzBukkitPermissions extends JavaPlugin {
@@ -25,9 +23,7 @@ public final class GearzBukkitPermissions extends JavaPlugin {
         saveConfig();
         getServer().getPluginManager().registerEvents(this.permsManager, this);
         PermissionsCommands permsCommands = new PermissionsCommands();
-        getCommand("player").setExecutor(permsCommands);
-        getCommand("group").setExecutor(permsCommands);
-        getCommand("permissions").setExecutor(permsCommands);
+        registerCommands(permsCommands);
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {

@@ -2,7 +2,6 @@ package net.tbnr.gearz.chat.channels;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
-import net.cogz.permissions.bungee.GearzBungeePermissions;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.Configuration;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;
 import net.md_5.bungee.api.ChatColor;
@@ -14,6 +13,7 @@ import net.tbnr.gearz.chat.channels.irc.Connection;
 import net.tbnr.gearz.modules.PlayerInfoModule;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
+import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -173,10 +173,10 @@ public class ChannelManager {
     private String formatMessage(String message, ProxiedPlayer player) {
         String chanFormat = getCurrentChannel(player).getFormat();
         chanFormat = chanFormat.replace("%message%", ChatColor.RESET + message).replace("%player%", player.getDisplayName());
-        GearzBungeePermissions perms = GearzBungee.getInstance().getPermissions();
+        PermissionsDelegate perms = GearzBungee.getInstance().getPermissionsDelegate();
         if (perms != null) {
-            String prefix = perms.getPermsManager().getPrefix(perms.getPermsManager().getPlayer(player.getName().toLowerCase()));
-            String suffix = perms.getPermsManager().getSuffix(perms.getPermsManager().getPlayer(player.getName().toLowerCase()));
+            String prefix = perms.getPrefix(player.getName().toLowerCase());
+            String suffix = perms.getSuffix(player.getName().toLowerCase());
             if (prefix == null) prefix = "";
             else prefix = ChatColor.translateAlternateColorCodes('&', prefix);
             if (suffix == null) suffix = "";

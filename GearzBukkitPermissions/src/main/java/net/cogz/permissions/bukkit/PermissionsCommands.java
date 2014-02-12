@@ -8,9 +8,9 @@ import org.bukkit.command.CommandSender;
 
 /**
  * Created by Jake on 1/24/14.
- * <p/>
+ *
  * Purpose Of File:
- * <p/>
+ *
  * Latest Change:
  */
 public class PermissionsCommands implements CommandExecutor {

@@ -3,7 +3,6 @@ package net.tbnr.gearz;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import net.cogz.permissions.bukkit.GearzBukkitPermissions;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
@@ -22,7 +21,6 @@ import net.tbnr.util.command.TCommandStatus;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
