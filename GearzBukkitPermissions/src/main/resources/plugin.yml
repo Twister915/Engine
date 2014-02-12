@@ -1,8 +1,9 @@
 name: GearzBukkitPermissions
-version: 1.2
+version: 1.1
 authors: [Jake0oo0]
 description: Bukkit Permissions Manager
 main: net.cogz.permissions.bukkit.GearzBukkitPermissions
+depend: Gearz
 commands:
   permissions:
     description: Permissions command.
