@@ -78,7 +78,7 @@ public class Connection {
                     }
                 }
             }
-        },0, 1, TimeUnit.MILLISECONDS);
+        }, 0, 1, TimeUnit.MILLISECONDS);
     }
 
     public void raw(String line) {

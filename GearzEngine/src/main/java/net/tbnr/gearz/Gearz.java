@@ -3,7 +3,6 @@ package net.tbnr.gearz;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import net.cogz.permissions.bukkit.GearzBukkitPermissions;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
@@ -22,7 +21,6 @@ import net.tbnr.util.command.TCommandStatus;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -78,8 +76,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return random;
     }
 
-    @Getter
-    public GearzBukkitPermissions permissions;
+    @Getter @Setter
+    public PermissionsDelegate permissionsDelegate;
 
     public Gearz() {
         Gearz.instance = this;
@@ -112,15 +110,9 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         //Setup an array to hold a list of all Gearz plugins.
         this.gamePlugins = new ArrayList<>();
 
-        //Get a local variable of the PluginManager, and setup our chat/permission hooks.
-        PluginManager pm = getServer().getPluginManager();
-        if (pm.isPluginEnabled("GearzBukkitPermissions")) {
-            this.permissions = (GearzBukkitPermissions) pm.getPlugin("GearzBukkitPermissions");
-            GearzNickname nicknameHandler = new GearzNickname();
-            registerEvents(nicknameHandler);
-            registerCommands(nicknameHandler);
-            registerEvents(new ColoredTablist());
-        }
+        GearzNickname nicknameHandler = new GearzNickname();
+        registerEvents(nicknameHandler);
+        registerCommands(nicknameHandler);
 
         //Setup the player utils commands and events
         GearzPlayerUtils gearzPlayerUtils = new GearzPlayerUtils();
@@ -177,6 +169,10 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         ServerManager.getThisServer().remove();
         NetCommand.withName("disconnect").withArg("name", Gearz.bungeeName2);
         EnderBar.resetPlayers();
+    }
+
+    public void activatePermissionsFeatures() {
+        registerEvents(new ColoredTablist());
     }
 
     @Override
