@@ -26,7 +26,7 @@ public class ChannelCommand implements TCommandHandler {
         }
 
         GearzPlayer target = GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender);
-        if (!target.getProxiedPlayer().hasPermission(channel.getListeningPermission()))
+        if (channel.hasPermission() && !target.getProxiedPlayer().hasPermission(channel.getListeningPermission()))
             return TCommandStatus.PERMISSIONS;
         target.setChannel(channel);
         sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));

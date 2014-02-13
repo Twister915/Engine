@@ -118,19 +118,25 @@ public class Channel implements ChannelInterface {
 
     @Override
     public void sendMessage(String message, ProxiedPlayer sender) {
-        for (ProxiedPlayer reciever : ProxyServer.getInstance().getPlayers()) {
+        for (ProxiedPlayer receiver : ProxyServer.getInstance().getPlayers()) {
             if (this.isCrossServer()) {
                 if (this.hasPermission()) {
-                    if (reciever.hasPermission(getListeningPermission())) reciever.sendMessage(message);
+                    if (receiver.hasPermission(getListeningPermission())) {
+                        receiver.sendMessage(message);
+                    }
                 } else {
-                    reciever.sendMessage(message);
+                    receiver.sendMessage(message);
                 }
             } else {
-                if (sender.getServer().equals(reciever.getServer())) {
+                if (sender.getServer().equals(receiver.getServer())) {
                     if (this.hasPermission()) {
-                        if (reciever.hasPermission(getListeningPermission())) reciever.sendMessage(message);
+                        System.out.println("it has a permission");
+                        if (receiver.hasPermission(getListeningPermission())) {
+                            System.out.println("and receiver has perm");
+                            receiver.sendMessage(message);
+                        }
                     } else {
-                        reciever.sendMessage(message);
+                        receiver.sendMessage(message);
                     }
                 }
             }
