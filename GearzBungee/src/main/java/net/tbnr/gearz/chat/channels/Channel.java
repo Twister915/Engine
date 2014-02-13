@@ -1,6 +1,5 @@
 package net.tbnr.gearz.chat.channels;
 
-import com.sun.istack.internal.Nullable;
 import lombok.ToString;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -24,7 +23,7 @@ public class Channel implements ChannelInterface {
     boolean logged;
     List<ProxiedPlayer> members;
 
-    public Channel(String name, String format, @Nullable String permission) {
+    public Channel(String name, String format, String permission) {
         this.name = name;
         this.format = format;
         this.permission = permission;
