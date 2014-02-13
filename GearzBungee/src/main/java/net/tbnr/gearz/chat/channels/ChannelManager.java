@@ -58,7 +58,6 @@ public class ChannelManager {
     }
 
     public void registerChannels() {
-        System.out.println("started registration");
         Configuration config = GearzBungee.getInstance().getConfig();
         for (String chanName : config.getStringList("channels.list")) {
             String format = config.getString("formatting." + chanName + ".format");

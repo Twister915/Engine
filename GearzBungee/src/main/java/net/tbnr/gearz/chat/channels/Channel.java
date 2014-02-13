@@ -53,7 +53,7 @@ public class Channel implements ChannelInterface {
 
     @Override
     public boolean hasPermission() {
-        return permission != null && !permission.equals("");
+        return permission == null || !permission.equals("");
     }
 
     @Override
@@ -119,10 +119,7 @@ public class Channel implements ChannelInterface {
     @Override
     public void sendMessage(String message, ProxiedPlayer sender) {
         for (ProxiedPlayer receiver : ProxyServer.getInstance().getPlayers()) {
-            sender.sendMessage("RUNNNING");
             if (this.isCrossServer()) {
-                sender.sendMessage("CROSS");
-
                 if (this.hasPermission()) {
                     if (receiver.hasPermission(getListeningPermission())) {
                         receiver.sendMessage(message);
@@ -132,15 +129,9 @@ public class Channel implements ChannelInterface {
                 }
             } else {
                 if (sender.getServer().getInfo().getName().equals(receiver.getServer().getInfo().getName())) {
-                    sender.sendMessage("SAME SERVER");
                     if (this.hasPermission()) {
-                        sender.sendMessage("IT HAS PERM");
                         if (receiver.hasPermission(getListeningPermission())) {
-                            sender.sendMessage("SENDING");
-
                             receiver.sendMessage(message);
-                        } else {
-                            receiver.sendMessage("NO PERMISSION FOR CHANNEL");
                         }
                     } else {
                         receiver.sendMessage(message);
