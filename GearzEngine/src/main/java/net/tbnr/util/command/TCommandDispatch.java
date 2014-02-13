@@ -1,10 +1,13 @@
 package net.tbnr.util.command;
 
 import net.tbnr.util.TPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -80,6 +83,34 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
             this.handlers.put(cmd, commandHandler);
             this.methods.put(cmd, method);
             this.metas.put(cmd, annotation);
+
+            // TODO Joey Need your info on what we need to add to TCommand like description and aliases. Also needs some testing once we get this info.
+            // registerGearzBukkitCommand("Gearz", annotation.name(), "Description here", annotation.usage());
+        }
+    }
+
+    /**
+     * Registers a command to bukkit without it needing to be in the plugin.yml
+     * Reflection too stronk
+     *
+     * @param plugin The plugin that hold the command code
+     * @param name The command name
+     * @param description The command description
+     * @param usageMessage The command usageMessage
+     */
+    public void registerGearzBukkitCommand(String plugin, String name, String description, String usageMessage) {
+        try {
+            PluginManager pluginManager = Bukkit.getPluginManager();
+
+            Field commandMap = pluginManager.getClass().getDeclaredField("commandMap");
+            commandMap.setAccessible(true);
+
+            Method registerMethod = commandMap.get(pluginManager).getClass().getDeclaredMethod("register", String.class, Command.class);
+            registerMethod.setAccessible(true);
+
+            registerMethod.invoke(commandMap.get(pluginManager), plugin, new GearzBukkitCommand(name, description, usageMessage));
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

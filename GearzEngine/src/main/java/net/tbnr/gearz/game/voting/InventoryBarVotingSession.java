@@ -171,7 +171,11 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
     }
 
     private ItemStack getWatch() {
-        return new ItemStack(Material.WATCH, 1);
+        ItemStack watch = new ItemStack(Material.WATCH, 1);
+        ItemMeta watchItemMeta = watch.getItemMeta();
+        watchItemMeta.setDisplayName(Gearz.getInstance().getFormat("voting-clock-title"));
+        watch.setItemMeta(watchItemMeta);
+        return watch;
     }
 
     private void updateWatch(Integer seconds) {

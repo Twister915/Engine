@@ -13,7 +13,7 @@ import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.InventoryGUI;
-import net.tbnr.util.ServerSelector;
+import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
 import org.apache.commons.lang.StringUtils;
@@ -35,8 +35,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.*;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -570,6 +568,7 @@ public abstract class GearzGame implements Listener {
         player.setHideStats(false);
         player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("spectator-chooser"));
         spectatorGui.updateContents(getPlayersForMenu());
+        RandomUtils.setPlayerCollision(player.getPlayer(), false);
     }
 
     protected final ArrayList<InventoryGUI.InventoryGUIItem> getPlayersForMenu() {
@@ -727,6 +726,7 @@ public abstract class GearzGame implements Listener {
             stopGame(GameStopCause.FORCED);
         }
         removePlayerFromGame(player);
+        RandomUtils.setPlayerCollision(player.getPlayer(), true);
     }
 
     public final String getFormatBase(String format) {
@@ -1167,6 +1167,7 @@ public abstract class GearzGame implements Listener {
         if (!isIngame(player)) {
             return;
         }
+        /** Comment out not needed because arrows and stuff go through spectators. Add back if wanted.
         if (isSpectating(player)) {
             if (event.getTo().add(0, -8, 0).getBlock().getType() != Material.AIR) {
                 event.getPlayer().setVelocity(player.getPlayer().getLocation().getDirection().add(new Vector(0, 8, 0)));
@@ -1175,6 +1176,7 @@ public abstract class GearzGame implements Listener {
             }
             return;
         }
+         */
         if (!canMove(player)) {
             if (event.getTo().getBlock().getX() != event.getFrom().getBlock().getX() || event.getTo().getBlock().getZ() != event.getFrom().getBlock().getZ()) {
                 event.setTo(event.getFrom());

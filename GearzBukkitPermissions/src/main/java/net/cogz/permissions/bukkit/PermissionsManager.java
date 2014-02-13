@@ -1,6 +1,7 @@
 package net.cogz.permissions.bukkit;
 
 import net.cogz.permissions.GearzPermissions;
+import net.tbnr.util.PermissionsDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,12 +14,12 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/24/14.
- * <p/>
+ *
  * Purpose Of File:
- * <p/>
+ *
  * Latest Change:
  */
-public class PermissionsManager extends GearzPermissions implements Listener {
+public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
     @Override
     public List<String> onlinePlayers() {
         List<String> players = new ArrayList<>();
@@ -35,31 +36,6 @@ public class PermissionsManager extends GearzPermissions implements Listener {
         p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
     }
 
-    @Override
-    public void updatePlayerDisplays(String player, String prefix, String nameColor, String tabColor) {
-
-    }
-
-    @Override
-    public void updatePlayerNameColor(String player, String nameColor) {
-
-    }
-
-    @Override
-    public void updatePlayerSuffix(String player, String suffix) {
-
-    }
-
-    @Override
-    public void updatePlayerPrefix(String player, String prefix) {
-
-    }
-
-    @Override
-    public void updatePlayerTabColor(String player, String tabColor) {
-
-    }
-
     @EventHandler
     @SuppressWarnings("unused")
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -70,5 +46,35 @@ public class PermissionsManager extends GearzPermissions implements Listener {
     @SuppressWarnings("unused")
     public void onPlayerQuit(PlayerQuitEvent event) {
         onQuit(event.getPlayer().getName());
+    }
+
+    @Override
+    public String getPrefix(String player) {
+        return getPrefix(getPlayer(player));
+    }
+
+    @Override
+    public String getSuffix(String player) {
+        return getSuffix(getPlayer(player));
+    }
+
+    @Override
+    public String getTabColor(String player) {
+        return getTabColor(getPlayer(player));
+    }
+
+    @Override
+    public String getNameColor(String player) {
+        return getNameColor(getPlayer(player));
+    }
+
+    @Override
+    public List<String> getValidPermissions(String player) {
+        return getPlayer(player).getPermissions();
+    }
+
+    @Override
+    public List<String> getAllPermissions(String player) {
+        return getPlayer(player).getPermissions();
     }
 }

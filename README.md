@@ -9,7 +9,7 @@ The backend of all Cogz based plugins!
 - [x] Blocks
 - [ ] No bugs
 
-[![Build Status](http://dev.tbnr.net:8080/buildStatus/icon?job=Engine)](http://dev.tbnr.net:8080/job/Engine/)
+[![Build Status](http://dev.tbnr.net:8080/buildStatus/icon?job=Engine-Package-master)](http://dev.tbnr.net:8080/job/Engine-Package-master/)
 
 [![Gitter chat](https://badges.gitter.im/CogzMC/Engine.png)](https://gitter.im/CogzMC/Engine)
 
@@ -66,3 +66,18 @@ General Conventions:
    * If you have a utility file in gearz make it implement GUtility so we can easily find them (only in gearz)
    * If you have a method you made for let's say headhunter and it is a good utility method that can be put in a utlity file in gearz then give it the annotation @GUtilityMethod
    * If you have a abstract class or something taht you think should be moved to gearz make the class implement Move2Gearz
+
+Branch Naming:
+  - Branch names should be lowercase. Ex: parties (correct) vs. Parties (incorrect)
+  - Use dashes  (-) instead of spaces
+
+How to merge a feature branch:
+  - DO NOT PRESS THE BIG GREEN BUTTON
+  - Checkout the feature branch and type:
+     - git rebase origin/master
+        - This will pull all the current changes from the master branch and merge them in. Solve any merge conflicts.
+     - git push --force
+        - This force pushes all the changes to the feature branch.
+     - git checkout master
+     - git rebase [feature-branch]
+  - That should neatly merge your feature branch!
