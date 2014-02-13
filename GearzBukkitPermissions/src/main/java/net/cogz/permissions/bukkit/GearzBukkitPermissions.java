@@ -20,6 +20,7 @@ public final class GearzBukkitPermissions extends TPlugin {
     public void enable() {
         GearzBukkitPermissions.instance = this;
         this.permsManager = new PermissionsManager();
+        permsManager.reload();
         getConfig().options().copyDefaults(true);
         saveConfig();
         getServer().getPluginManager().registerEvents(this.permsManager, this);
