@@ -71,11 +71,13 @@ public abstract class GearzPermissions {
     public void reload() {
         this.database = getDatabase();
         int checks = 0;
+        System.out.println("pre");
         while (this.database == null) {
             this.database = getDatabase();
             checks++;
             if (checks >= 2000000) break;
         }
+        System.out.println("post");
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         this.groups = new HashMap<>();
         defaultGroup = null;
