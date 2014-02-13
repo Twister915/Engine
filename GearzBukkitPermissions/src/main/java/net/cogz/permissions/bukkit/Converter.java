@@ -2,6 +2,7 @@ package net.cogz.permissions.bukkit;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
+import net.tbnr.util.GUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * Created by Jake on 2/2/14.
  */
-public class Converter {
+public class Converter implements GUtility {
     String username;
     String password;
     String mysqlDb;
