@@ -17,7 +17,7 @@ import net.tbnr.gearz.activerecord.GModel;
  */
 @Data
 @ToString
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, of = {"game", "bungee_name", "port", "address"})
 public final class Server extends GModel {
     @BasicField
     private String game;
