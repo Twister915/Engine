@@ -292,10 +292,11 @@ public abstract class GModel {
                 }
                 o = list;
             } else {
-                Object aClass = ((DBObject) o).get("_class");
+                DBObject o1 = (DBObject) o;
+                Object aClass = o1.get("_class");
                 if (aClass == null) {
                     System.out.println("Detected a db object " + o.toString());
-                    DBObject dBobject = (DBObject) o;
+                    DBObject dBobject = o1;
                     HashMap<String, Object> m = new HashMap<>();
                     for (String s : dBobject.keySet()) {
                         m.put(s, dBobject.get(s));
@@ -311,8 +312,14 @@ public abstract class GModel {
                     return null;
                 }
                 if (!c.isAssignableFrom(GModel.class)) return null;
-                GModel m = modelFromOne(c, (DBObject) o, this.database);
-                if (((DBObject) o).containsField("_link_flag")) {
+                ObjectId objectId = (ObjectId) o1.get("_id");
+                String collectionName = getCollectionName(c);
+                DBCollection collection1 = this.database.getCollection(collectionName);
+                DBObject id = collection1.findOne(new BasicDBObject("_id", objectId));
+                if (id == null) return null;
+                GModel m = modelFromOne(c, id, this.database);
+                System.out.println("Detected a linked object " + m.toString());
+                if (o1.containsField("_link_flag")) {
                     m = m.findOne();
                     System.out.println("Detected a linked object " + m.toString());
                 }
@@ -466,15 +473,23 @@ public abstract class GModel {
      * Loads the collection for the constructors.
      */
     private void loadCollection() {
+        this.collection = this.database.getCollection(getCollectionName(this));
+    }
+
+    static String getCollectionName(GModel model) {
+        return getCollectionName(model.getClass());
+    }
+
+    static String getCollectionName(Class<? extends GModel> clazz) {
         String name;
-        if (this.getClass().isAnnotationPresent(Collection.class)) {
-            Collection annotation = this.getClass().getAnnotation(Collection.class);
+        if (clazz.isAnnotationPresent(Collection.class)) {
+            Collection annotation = clazz.getAnnotation(Collection.class);
             name = annotation.name();
         } else {
-            name = this.getClass().getSimpleName().toLowerCase();
+            name = clazz.getSimpleName().toLowerCase();
             name = name + "s";
         }
-        this.collection = this.database.getCollection(name);
+        return name;
     }
 
     public void remove() {
