@@ -284,6 +284,7 @@ public abstract class GModel {
         }
         if (o instanceof DBObject) {
             if (o instanceof BasicDBList) {
+                System.out.println("Detected a list " + o.toString());
                 BasicDBList l = (BasicDBList) o;
                 List list = new ArrayList();
                 for (Object next : l) {
@@ -312,6 +313,7 @@ public abstract class GModel {
                 GModel m = modelFromOne(c, (DBObject) o, this.database);
                 if (((DBObject) o).containsField("_link_flag")) {
                     m = m.findOne();
+                    System.out.println("Detected a linked object " + m.toString());
                 }
                 o = m;
             }
