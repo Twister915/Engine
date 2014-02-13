@@ -9,6 +9,7 @@ import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public DB getDatabase() {
+        GModel.setDefaultDatabase(GearzBungee.getInstance().getMongoDB());
         return GearzBungee.getInstance().getMongoDB();
     }
 

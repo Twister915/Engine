@@ -3,6 +3,7 @@ package net.cogz.permissions.bukkit;
 import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
 import net.tbnr.gearz.Gearz;
+import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.util.PermissionsDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -40,6 +41,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public DB getDatabase() {
+        GModel.setDefaultDatabase(Gearz.getInstance().getMongoDB());
         return Gearz.getInstance().getMongoDB();
     }
 
