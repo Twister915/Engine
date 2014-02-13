@@ -216,7 +216,7 @@ public class MotdHandler implements Listener, TCommandHandler {
         private final Date created = new Date();
         private final Integer lengthInMinutes;
         public boolean shouldRemove() {
-            return (created.getTime() + (lengthInMinutes*60) <= (new Date()).getTime());
+            return (created.getTime() + (lengthInMinutes * 60000) <= (new Date()).getTime());
         }
     }
 }
