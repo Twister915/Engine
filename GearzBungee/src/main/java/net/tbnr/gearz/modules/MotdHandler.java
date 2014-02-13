@@ -39,6 +39,7 @@ public class MotdHandler implements Listener, TCommandHandler {
     private Integer index;
     private String favicon;
     private List<StaticMOTD> staticMotds = new LinkedList<>();
+    private static final ChatColor[] motdPrefixColors = {ChatColor.RED, ChatColor.BLUE, ChatColor.GREEN, ChatColor.RED, ChatColor.YELLOW, ChatColor.GOLD};
 
     public MotdHandler() {
         index = 0;
@@ -61,10 +62,12 @@ public class MotdHandler implements Listener, TCommandHandler {
     @SuppressWarnings("unused")
     public void onMotdGrab(ProxyPingEvent event) {
         String motd = null;
+        boolean isStatic = false;
         if (this.staticMotds.size() > 0) {
             StaticMOTD staticMOTD = this.staticMotds.get(0);
             motd = staticMOTD.getMotd();
             if (staticMOTD.shouldRemove()) this.staticMotds.remove(0);
+            isStatic = true;
         }
         if (motd == null) {
             Object[] motds = GearzBungee.getInstance().getMotds();
@@ -81,7 +84,8 @@ public class MotdHandler implements Listener, TCommandHandler {
                 }
             }
         }
-        motd = GearzBungee.getInstance().getFormat("motd-format", false, true, new String[]{"<motd>", motd}, new String[]{"<randomColor>", ChatColor.values()[GearzBungee.getRandom().nextInt(ChatColor.values().length)].toString()});
+        motd = GearzBungee.getInstance().getFormat("motd-format", false, true, new String[]{"<motd>", motd},
+                new String[]{"<randomColor>", isStatic ? "" : motdPrefixColors[GearzBungee.getRandom().nextInt(motdPrefixColors.length)].toString()});
         /*event.setResponse(new ServerPing(
                 ProxyServer.getInstance().getProtocolVersion(),
                 ProxyServer.getInstance().getGameVersion(),
