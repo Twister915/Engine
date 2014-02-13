@@ -11,7 +11,7 @@ channels:
     - staff
 formatting:
   default:
-    format: "%prefix%%player%%suffix%: %message%"
+    format: "%prefix% %player%%suffix%: %message%"
     permission: ""
     default: true
     filter: true
