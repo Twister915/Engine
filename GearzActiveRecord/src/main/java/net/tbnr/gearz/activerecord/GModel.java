@@ -294,6 +294,7 @@ public abstract class GModel {
             } else {
                 Object aClass = ((DBObject) o).get("_class");
                 if (aClass == null) {
+                    System.out.println("Detected a db object " + o.toString());
                     DBObject dBobject = (DBObject) o;
                     HashMap<String, Object> m = new HashMap<>();
                     for (String s : dBobject.keySet()) {
