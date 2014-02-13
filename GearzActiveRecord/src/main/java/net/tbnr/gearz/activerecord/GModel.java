@@ -308,7 +308,7 @@ public abstract class GModel {
                     e.printStackTrace(); //TODO remove this
                     return null;
                 }
-                if (!c.isInstance(GModel.class)) return null;
+                if (!c.isAssignableFrom(GModel.class)) return null;
                 GModel m = modelFromOne(c, (DBObject) o, this.database);
                 if (((DBObject) o).containsField("_link_flag")) {
                     m = m.findOne();
