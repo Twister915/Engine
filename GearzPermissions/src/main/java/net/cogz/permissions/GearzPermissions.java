@@ -63,9 +63,7 @@ public abstract class GearzPermissions {
      *
      * @return The DB.
      */
-    public DB getDatabase() {
-        return GModel.getDefaultDatabase();
-    }
+    public abstract DB getDatabase();
 
     /**
      * Reloads all the data from the database

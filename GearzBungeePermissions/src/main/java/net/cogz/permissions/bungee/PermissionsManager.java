@@ -1,5 +1,6 @@
 package net.cogz.permissions.bungee;
 
+import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -29,6 +30,11 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
         if (proxiedPlayer == null) return;
         proxiedPlayer.setPermission(perm, value);
+    }
+
+    @Override
+    public DB getDatabase() {
+        return GearzBungee.getInstance().getMongoDB();
     }
 
     @EventHandler

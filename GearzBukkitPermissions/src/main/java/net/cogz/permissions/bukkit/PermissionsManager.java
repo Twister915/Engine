@@ -1,6 +1,8 @@
 package net.cogz.permissions.bukkit;
 
+import com.mongodb.DB;
 import net.cogz.permissions.GearzPermissions;
+import net.tbnr.gearz.Gearz;
 import net.tbnr.util.PermissionsDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -34,6 +36,11 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
         Player p = Bukkit.getPlayerExact(player);
         if (p == null) return;
         p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
+    }
+
+    @Override
+    public DB getDatabase() {
+        return Gearz.getInstance().getMongoDB();
     }
 
     @EventHandler
