@@ -49,6 +49,7 @@ public class WhitelistModule implements TCommandHandler, Listener {
                     sb.append(" ").append(string).append(",");
                 }
                 sb.deleteCharAt(sb.length() - 1);
+                sender.sendMessage(sb.toString());
                 break;
             case "enable":
             case "on":
