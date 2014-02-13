@@ -5,6 +5,7 @@ import net.tbnr.gearz.Gearz;
 import org.json.JSONException;
 import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.util.HashMap;
 
@@ -68,8 +69,19 @@ public final class NetCommand {
             e.printStackTrace();
             return;
         }
-        Jedis jedis = Gearz.getInstance().getJedisClient();
-        jedis.publish(Gearz.CHAN, jsonObject.toString());
-        Gearz.getInstance().returnJedis(jedis);
+        boolean shouldStop = false;
+        int tries = 0;
+        while (!shouldStop) {
+            try {
+                Jedis jedis = Gearz.getInstance().getJedisClient();
+                jedis.publish(Gearz.CHAN, jsonObject.toString());
+                Gearz.getInstance().returnJedis(jedis);
+            } catch (JedisConnectionException ex) {
+                tries++;
+                if (tries <= 10) shouldStop = true;
+                continue;
+            }
+            shouldStop = true;
+        }
     }
 }
