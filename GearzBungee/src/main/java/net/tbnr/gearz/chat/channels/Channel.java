@@ -132,6 +132,8 @@ public class Channel implements ChannelInterface {
                     if (this.hasPermission()) {
                         if (receiver.hasPermission(getListeningPermission())) {
                             receiver.sendMessage(message);
+                        } else {
+                            receiver.sendMessage("NO PERMISSION FOR CHANNEL");
                         }
                     } else {
                         receiver.sendMessage(message);
