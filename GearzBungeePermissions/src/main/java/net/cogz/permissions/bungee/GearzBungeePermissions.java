@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.util.TPluginBungee;
 
 import java.util.concurrent.TimeUnit;
@@ -24,6 +25,7 @@ public class GearzBungeePermissions extends TPluginBungee {
     @Override
     protected void start() {
         GearzBungeePermissions.instance = this;
+        GModel.setDefaultDatabase(GearzBungee.getInstance().getMongoDB());
         this.permsManager = new PermissionsManager();
         GearzBungee.getInstance().setPermissionsDelegate(permsManager);
         registerEvents(permsManager);

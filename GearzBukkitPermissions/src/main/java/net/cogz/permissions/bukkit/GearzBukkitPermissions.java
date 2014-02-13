@@ -2,6 +2,7 @@ package net.cogz.permissions.bukkit;
 
 import lombok.Getter;
 import net.tbnr.gearz.Gearz;
+import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 
@@ -19,6 +20,7 @@ public final class GearzBukkitPermissions extends TPlugin {
     @Override
     public void enable() {
         GearzBukkitPermissions.instance = this;
+        GModel.setDefaultDatabase(Gearz.getInstance().getMongoDB());
         this.permsManager = new PermissionsManager();
         permsManager.reload();
         getConfig().options().copyDefaults(true);
