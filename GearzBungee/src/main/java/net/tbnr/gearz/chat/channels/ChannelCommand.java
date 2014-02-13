@@ -17,17 +17,19 @@ public class ChannelCommand implements TCommandHandler {
 
     @TCommand(name = "channel", aliases = {"chan"}, usage = "/channel <channel>", permission = "gearz.channels.command.switch", senders = {TCommandSender.Player})
     public TCommandStatus channel(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
-        if (args.length != 1) {
-            return TCommandStatus.INVALID_ARGS;
-        }
+        if (args.length != 1)  return TCommandStatus.INVALID_ARGS;
+
         Channel channel = GearzBungee.getInstance().getChannelManager().getChannelByName(args[0].toLowerCase());
         if (channel == null) {
             return TCommandStatus.INVALID_ARGS;
         }
 
         GearzPlayer target = GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender);
-        if (channel.hasPermission() && !target.getProxiedPlayer().hasPermission(channel.getListeningPermission()))
+        if (channel.hasPermission() && !target.getProxiedPlayer().hasPermission(channel.getListeningPermission())) {
+            sender.sendMessage("DAFUQ");
             return TCommandStatus.PERMISSIONS;
+
+        }
         target.setChannel(channel);
         sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
         return TCommandStatus.SUCCESSFUL;
