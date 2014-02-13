@@ -1,6 +1,7 @@
 package net.tbnr.gearz.chat.channels;
 
 import com.google.common.base.Preconditions;
+import com.sun.istack.internal.Nullable;
 import lombok.Getter;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.Configuration;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;

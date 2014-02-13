@@ -1,5 +1,6 @@
 package net.tbnr.gearz.chat.channels;
 
+import com.sun.istack.internal.Nullable;
 import lombok.ToString;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -23,7 +24,7 @@ public class Channel implements ChannelInterface {
     boolean logged;
     List<ProxiedPlayer> members;
 
-    public Channel(String name, String format, String permission) {
+    public Channel(String name, String format, @Nullable String permission) {
         this.name = name;
         this.format = format;
         this.permission = permission;
@@ -130,9 +131,7 @@ public class Channel implements ChannelInterface {
             } else {
                 if (sender.getServer().equals(receiver.getServer())) {
                     if (this.hasPermission()) {
-                        System.out.println("it has a permission");
                         if (receiver.hasPermission(getListeningPermission())) {
-                            System.out.println("and receiver has perm");
                             receiver.sendMessage(message);
                         }
                     } else {
