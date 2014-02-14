@@ -25,7 +25,6 @@ public class PermGroup extends GModel {
     @Getter @BasicField final public List<String> permissions = new ArrayList<>();
     @Getter @BasicField final public List<String> inheritances = new ArrayList<>();
     @Getter @BasicField public boolean isDefault;
-    @Getter @BasicField public Integer priority;
 
     @SuppressWarnings("unused")
     public PermGroup() {

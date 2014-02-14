@@ -5,7 +5,6 @@ import com.mongodb.DBObject;
 import lombok.Getter;
 import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
-import net.tbnr.gearz.activerecord.LinkedObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class PermPlayer extends GModel {
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
     @Getter @BasicField public String name;
-    @Getter @BasicField @LinkedObject public PermGroup group;
+    @BasicField public String group;
     @Getter @BasicField public List<String> permissions;
 
     @SuppressWarnings("unused")
@@ -46,7 +45,7 @@ public class PermPlayer extends GModel {
     }
 
     public void setGroup(PermGroup group) {
-        this.group = group;
+        this.group = group.getName();
         save();
     }
 
@@ -55,9 +54,13 @@ public class PermPlayer extends GModel {
         save();
     }
 
+    public PermGroup getGroup() {
+        return GearzPermissions.getInstance().getGroup(this.group);
+    }
+
     @SuppressWarnings("unused")
     public boolean isPlayerInGroup(PermGroup group) {
-        return this.group.getName().equals(group.getName());
+        return this.group.equals(group.getName());
     }
 
     protected void addPermission(String perm, boolean value) {
