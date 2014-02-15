@@ -702,7 +702,7 @@ public final class TPlayer {
      */
     public void setPrefix(String prefix) {
 	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team teamPrefix = scoreboard1.getTeam("prefix_"+getPlayerName()) != null ? scoreboard1.getTeam("prefix_"+getPlayerName()) : scoreboard1.registerNewTeam("prefix_"+getPlayerName());
+        Team teamPrefix = scoreboard1.getTeam(getPlayerName()) != null ? scoreboard1.getTeam(getPlayerName()) : scoreboard1.registerNewTeam(getPlayerName());
         teamPrefix.setPrefix(prefix);
 	    teamPrefix.addPlayer(this.getPlayer());
     }
@@ -713,7 +713,7 @@ public final class TPlayer {
      */
     public void setSuffix(String suffix) {
 	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team teamPrefix = scoreboard1.getTeam("suffix_"+getPlayerName()) != null ? scoreboard1.getTeam("suffix_"+getPlayerName()) : scoreboard1.registerNewTeam("suffix_"+getPlayerName());
+        Team teamPrefix = scoreboard1.getTeam(getPlayerName()) != null ? scoreboard1.getTeam(getPlayerName()) : scoreboard1.registerNewTeam(getPlayerName());
         teamPrefix.setPrefix(suffix);
 	    teamPrefix.addPlayer(this.getPlayer());
     }
