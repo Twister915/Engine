@@ -703,6 +703,7 @@ public final class TPlayer {
     public void setPrefix(String prefix) {
         Team teamPrefix = this.scoreboard.getTeam("prefix") != null ? this.scoreboard.getTeam("prefix") : this.scoreboard.registerNewTeam("prefix");
         teamPrefix.setPrefix(prefix);
+	    teamPrefix.addPlayer(this.getPlayer());
     }
 
     /**
@@ -712,5 +713,6 @@ public final class TPlayer {
     public void setSuffix(String suffix) {
         Team teamPrefix = this.scoreboard.getTeam("suffix") != null ? this.scoreboard.getTeam("suffix") : this.scoreboard.registerNewTeam("suffix");
         teamPrefix.setPrefix(suffix);
+	    teamPrefix.addPlayer(this.getPlayer());
     }
 }
