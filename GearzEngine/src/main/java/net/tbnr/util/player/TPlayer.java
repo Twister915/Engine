@@ -700,9 +700,8 @@ public final class TPlayer {
      * Set's the prefix after the player name (In Game)
      * @param prefix The prefix to set
      */
-    public void setPrefix(String prefix) {
-	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team teamPrefix = scoreboard1.getTeam("prefix") != null ? scoreboard1.getTeam("prefix") : scoreboard1.registerNewTeam("prefix");
+    public void setPrefix(String prefix, Scoreboard scoreboard1) {
+        Team teamPrefix = scoreboard1.getTeam("prefix_"+getPlayerName()) != null ? scoreboard1.getTeam("prefix_"+getPlayerName()) : scoreboard1.registerNewTeam("prefix_"+getPlayerName());
         teamPrefix.setPrefix(prefix);
 	    teamPrefix.addPlayer(this.getPlayer());
     }
@@ -711,9 +710,8 @@ public final class TPlayer {
      * Set's the suffix before a players name (In Game)
      * @param suffix The suffix to set
      */
-    public void setSuffix(String suffix) {
-	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team teamPrefix = scoreboard1.getTeam("suffix") != null ? scoreboard1.getTeam("suffix") : scoreboard1.registerNewTeam("suffix");
+    public void setSuffix(String suffix, Scoreboard scoreboard1) {
+        Team teamPrefix = scoreboard1.getTeam("suffix_"+getPlayerName()) != null ? scoreboard1.getTeam("suffix_"+getPlayerName()) : scoreboard1.registerNewTeam("suffix_"+getPlayerName());
         teamPrefix.setPrefix(suffix);
 	    teamPrefix.addPlayer(this.getPlayer());
     }
