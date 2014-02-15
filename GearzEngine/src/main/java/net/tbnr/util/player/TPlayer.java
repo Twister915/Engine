@@ -701,7 +701,8 @@ public final class TPlayer {
      * @param prefix The prefix to set
      */
     public void setPrefix(String prefix) {
-        Team teamPrefix = this.scoreboard.getTeam("prefix") != null ? this.scoreboard.getTeam("prefix") : this.scoreboard.registerNewTeam("prefix");
+	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team teamPrefix = scoreboard.getTeam("prefix") != null ? scoreboard.getTeam("prefix") : scoreboard.registerNewTeam("prefix");
         teamPrefix.setPrefix(prefix);
 	    teamPrefix.addPlayer(this.getPlayer());
     }
@@ -711,7 +712,8 @@ public final class TPlayer {
      * @param suffix The suffix to set
      */
     public void setSuffix(String suffix) {
-        Team teamPrefix = this.scoreboard.getTeam("suffix") != null ? this.scoreboard.getTeam("suffix") : this.scoreboard.registerNewTeam("suffix");
+	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team teamPrefix = scoreboard.getTeam("suffix") != null ? scoreboard.getTeam("suffix") : scoreboard.registerNewTeam("suffix");
         teamPrefix.setPrefix(suffix);
 	    teamPrefix.addPlayer(this.getPlayer());
     }
