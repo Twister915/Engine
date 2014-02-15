@@ -38,6 +38,21 @@
         </developer>
         <developer>
             <id>Thecraftgod</id>
+            <name>Igor Randjelovic</name>
+            <email>rigi@cogzmc.com</email>
+            <url>http://www.igor-randjelovic.com</url>
+            <timezone>GMT+1</timezone>
+            <organization>Cogz Development LLC</organization>
+            <organizationUrl>http://cogzmc.com/</organizationUrl>
+            <properties>
+                <picUrl>http://i.imgur.com/XimgwMm.jpg</picUrl>
+            </properties>
+            <roles>
+                <role>Developer</role>
+                <role>Web Developer</role>
+                <role>System Administrator</role>
+                <role>Website Manager</role>
+            </roles>
         </developer>
         <developer>
             <id>xIGBClutchIx</id>
