@@ -11,7 +11,6 @@
 
 package net.tbnr.gearz.event.game;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.tbnr.gearz.game.GearzGame;
 import org.bukkit.event.Event;

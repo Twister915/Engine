@@ -3,7 +3,6 @@ package net.tbnr.gearz.event.player;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.tbnr.gearz.player.GearzPlayer;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**

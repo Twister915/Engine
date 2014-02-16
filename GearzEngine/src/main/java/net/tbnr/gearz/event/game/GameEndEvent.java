@@ -1,7 +1,6 @@
 package net.tbnr.gearz.event.game;
 
 import net.tbnr.gearz.game.GearzGame;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**

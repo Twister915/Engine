@@ -1,11 +1,9 @@
 package net.tbnr.gearz.event.game;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.tbnr.gearz.game.GearzGame;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**

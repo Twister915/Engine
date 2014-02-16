@@ -3,7 +3,6 @@ package net.tbnr.gearz.event.player;
 import lombok.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public final class PlayerPriorityDetermineEvent extends GearzPlayerEvent implements Cancellable {

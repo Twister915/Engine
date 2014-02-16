@@ -10,7 +10,6 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.chat.channels.Channel;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.punishments.LoginHandler;

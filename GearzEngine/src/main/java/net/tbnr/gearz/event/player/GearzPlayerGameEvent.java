@@ -11,7 +11,6 @@
 
 package net.tbnr.gearz.event.player;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.tbnr.gearz.game.GearzGame;
 import net.tbnr.gearz.player.GearzPlayer;

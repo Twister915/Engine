@@ -5,7 +5,6 @@ import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.gearz.game.GearzGame;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
