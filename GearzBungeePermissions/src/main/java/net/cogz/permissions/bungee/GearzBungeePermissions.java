@@ -29,6 +29,7 @@ public class GearzBungeePermissions extends TPluginBungee {
         this.permsManager = new PermissionsManager();
         GearzBungee.getInstance().setPermissionsDelegate(permsManager);
         registerEvents(permsManager);
+        GearzBungee.getInstance().getDispatch().registerNetCommands(new ReloadReceiver());
         ProxyServer.getInstance().getScheduler().schedule(this, new Runnable() {
             @Override
             public void run() {

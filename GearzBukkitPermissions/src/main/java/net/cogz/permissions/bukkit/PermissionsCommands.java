@@ -3,6 +3,7 @@ package net.cogz.permissions.bukkit;
 import net.cogz.permissions.PermGroup;
 import net.cogz.permissions.PermPlayer;
 import net.tbnr.gearz.Gearz;
+import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
@@ -171,6 +172,7 @@ public class PermissionsCommands implements TCommandHandler {
             case "reload":
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.reload"));
                 GearzBukkitPermissions.getInstance().getPermsManager().reload();
+                NetCommand.withName("permissions").withArg("reload", true).send();
                 return TCommandStatus.SUCCESSFUL;
             default:
                 return TCommandStatus.INVALID_ARGS;
