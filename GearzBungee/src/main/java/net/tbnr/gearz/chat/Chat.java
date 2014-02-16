@@ -81,6 +81,4 @@ public class Chat {
             censoredWords.add(new CensoredWord(s));
         }
     }
-
-
 }
