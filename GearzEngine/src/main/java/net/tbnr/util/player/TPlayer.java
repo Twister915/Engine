@@ -708,26 +708,4 @@ public final class TPlayer {
         IPUtils.getPing(getPlayer().getAddress().getAddress(), eventHandler);
 
     }
-
-    /**
-     * Set's the prefix after the player name (In Game)
-     * @param prefix The prefix to set
-     */
-    public void setPrefix(String prefix) {
-	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team teamPrefix = scoreboard1.getTeam(getPlayerName()) != null ? scoreboard1.getTeam(getPlayerName()) : scoreboard1.registerNewTeam(getPlayerName());
-        teamPrefix.setPrefix(prefix);
-	    teamPrefix.addPlayer(this.getPlayer());
-    }
-
-    /**
-     * Set's the suffix before a players name (In Game)
-     * @param suffix The suffix to set
-     */
-    public void setSuffix(String suffix) {
-	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team teamPrefix = scoreboard1.getTeam(getPlayerName()) != null ? scoreboard1.getTeam(getPlayerName()) : scoreboard1.registerNewTeam(getPlayerName());
-        teamPrefix.setSuffix(suffix);
-	    teamPrefix.addPlayer(this.getPlayer());
-    }
 }
