@@ -8,12 +8,12 @@
  * You shall not disclose such Confidential Information and shall use it only in accordance
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
-
-package net.tbnr.util;
+package net.tbnr.util.inventory;
 
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
+import net.tbnr.util.ServerSelector;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;

@@ -23,7 +23,7 @@ import net.tbnr.gearz.event.game.GameStartEvent;
 import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
-import net.tbnr.util.InventoryGUI;
+import net.tbnr.util.inventory.InventoryGUI;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
