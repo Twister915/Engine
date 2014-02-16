@@ -13,6 +13,7 @@ package net.tbnr.gearz.event.game.classevents;
 
 import lombok.Getter;
 import net.tbnr.gearz.game.GearzGame;
+import org.bukkit.event.Event;
 
 /**
  * Created by George on 16/02/14.
@@ -21,7 +22,7 @@ import net.tbnr.gearz.game.GearzGame;
  * <p/>
  * Latest Change:
  */
-public abstract class GearzGameClassEvent {
+public abstract class GearzGameClassEvent extends Event {
 	@Getter
 	private final Class<? extends GearzGame> game;
 
