@@ -51,7 +51,7 @@ public class ServerModule implements TCommandHandler, Listener {
             if (args[0].equalsIgnoreCase("lobby")) {
                 return TCommandStatus.SUCCESSFUL;
             }
-            List<Server> serversWithGame = ServerManager.getServersWithGame(args[0]);
+            List<Server> serversWithGame = ServerManager.getServersWithGame(args[0].toLowerCase());
             if (serversWithGame.size() == 0) {
                 player.sendMessage(GearzBungee.getInstance().getFormat("server-minigame-not-found", false));
                 return TCommandStatus.SUCCESSFUL;
@@ -63,7 +63,7 @@ public class ServerModule implements TCommandHandler, Listener {
             return TCommandStatus.SUCCESSFUL;
         }
         if (args.length == 2) {
-            List<Server> serversWithGame = ServerManager.getServersWithGame(args[0]);
+            List<Server> serversWithGame = ServerManager.getServersWithGame(args[0].toLowerCase());
             if (serversWithGame.size() == 0) {
                 player.sendMessage(GearzBungee.getInstance().getFormat("server-minigame-not-found", false));
                 return TCommandStatus.SUCCESSFUL;
