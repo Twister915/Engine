@@ -22,6 +22,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jake on 12/20/13.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class Connection {
     String name;

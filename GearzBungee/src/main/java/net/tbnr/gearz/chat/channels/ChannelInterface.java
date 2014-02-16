@@ -17,6 +17,10 @@ import java.util.List;
 
 /**
  * Created by Jake on 1/16/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public interface ChannelInterface {
     public String getName();

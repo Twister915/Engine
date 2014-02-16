@@ -23,6 +23,10 @@ import java.text.SimpleDateFormat;
 
 /**
  * Created by Jake on 1/16/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ChannelsListener implements Listener {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");

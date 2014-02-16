@@ -24,6 +24,10 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by Jake on 1/29/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ClearChat implements TCommandHandler {
     @TCommand(
