@@ -142,13 +142,13 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         }
 
         if (this.runningGame == null) {
-            sender.sendMessage(Gearz.getInstance().getFormat("formats.not-running", false));
+            sender.sendMessage(Gearz.getInstance().getFormat("game-string.not-running", false));
             return TCommandStatus.SUCCESSFUL;
         }
 
-        sender.sendMessage(Gearz.getInstance().getFormat("formats.map-title", false, new String[]{"<name>", this.runningGame.getArena().getName()}));
-        sender.sendMessage(Gearz.getInstance().getFormat("formats.map-lore-author", false, new String[]{"<author>", this.runningGame.getArena().getAuthors()}));
-        sender.sendMessage(Gearz.getInstance().getFormat("formats.map-lore-description", false, new String[]{"<description>", this.runningGame.getArena().getDescription()}));
+        sender.sendMessage(Gearz.getInstance().getFormat("game-string.map-title", false, new String[]{"<name>", this.runningGame.getArena().getName()}));
+        sender.sendMessage(Gearz.getInstance().getFormat("game-string.map-lore-author", false, new String[]{"<author>", this.runningGame.getArena().getAuthors()}));
+        sender.sendMessage(Gearz.getInstance().getFormat("game-string.map-lore-description", false, new String[]{"<description>", this.runningGame.getArena().getDescription()}));
 
         return TCommandStatus.SUCCESSFUL;
     }
