@@ -27,6 +27,7 @@ import net.tbnr.gearz.punishments.IPBanHandler;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishCommands;
 import net.tbnr.gearz.punishments.UnPunishCommands;
+import net.tbnr.util.FileUtil;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
 import net.tbnr.util.bungee.command.TCommandStatus;
@@ -160,6 +161,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         listModule = new ListModule();
         registerCommandHandler(listModule);
         registerEvents(listModule);
+        if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
         this.strings = new Properties();
         reloadStrings();
         this.helpMeModule = new HelpMe();
@@ -210,10 +212,14 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     private void reloadStrings() {
         try {
-            this.strings.load(getResourceAsStream("strings.properties"));
+            this.strings.load(new FileInputStream(getDataFolder() + File.separator + "strings.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void saveStrings() {
+        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"));
     }
 
     @Override
