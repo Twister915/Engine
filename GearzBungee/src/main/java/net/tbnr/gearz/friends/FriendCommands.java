@@ -94,11 +94,11 @@ public class FriendCommands extends SimplePaginator implements TCommandHandler {
                     sender.sendMessage(GearzBungee.getInstance().getFormat("friend-need-request", false));
                     try {
                         targetGearzPlayer.addRequest(sender.getName());
+                        target.sendMessage(GearzBungee.getInstance().getFormat("friend-request-received", false, false, new String[]{"<player>", sender.getName()}));
                     } catch (IllegalStateException ex) {
                         sender.sendMessage(GearzBungee.getInstance().getFormat("friend-already-request", false));
                         return TCommandStatus.SUCCESSFUL;
                     }
-                    target.sendMessage(GearzBungee.getInstance().getFormat("friend-request-received", false, false, new String[]{"<player>", sender.getName()}));
                     return TCommandStatus.SUCCESSFUL;
                 }
                 sender.sendMessage(GearzBungee.getInstance().getFormat("friend-add", false, false, new String[]{"<player>", target.getName()}));
