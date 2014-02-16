@@ -714,7 +714,7 @@ public final class TPlayer {
     public void setSuffix(String suffix) {
 	    Scoreboard scoreboard1 = Bukkit.getScoreboardManager().getMainScoreboard();
         Team teamPrefix = scoreboard1.getTeam(getPlayerName()) != null ? scoreboard1.getTeam(getPlayerName()) : scoreboard1.registerNewTeam(getPlayerName());
-        teamPrefix.setPrefix(suffix);
+        teamPrefix.setSuffix(suffix);
 	    teamPrefix.addPlayer(this.getPlayer());
     }
 }
