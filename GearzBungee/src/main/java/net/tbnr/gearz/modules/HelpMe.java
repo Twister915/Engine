@@ -76,6 +76,10 @@ public class HelpMe implements TCommandHandler, Listener {
                         sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-waiting", false));
                         return TCommandStatus.SUCCESSFUL;
                     }
+                    if (args.length < 3) {
+                        sender1.sendMessage(GearzBungee.getInstance().getFormat("helpme-minlength", false));
+                        return TCommandStatus.SUCCESSFUL;
+                    }
                     String q = GearzBungee.getInstance().compile(args, 0, args.length);
                     Conversation convo = new Conversation(sender1, q);
                     this.conversations.add(convo);
