@@ -145,8 +145,8 @@ public class ReportModule implements TCommandHandler {
 
         public void broadcast() {
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-                if (player.hasPermission("gearz.reports.recieve")) {
-                    player.sendMessage(GearzBungee.getInstance().getFormat("report-recieve", false, false, new String[]{"<reported>", getReported().getName()}, new String[]{"<reporter>", getReporter().getName()}, new String[]{"<reason>", getMessage()}, new String[]{"<server>", getBungeeServer()}));
+                if (player.hasPermission("gearz.reports.receive")) {
+                    player.sendMessage(GearzBungee.getInstance().getFormat("report-receive", false, false, new String[]{"<reported>", getReported().getName()}, new String[]{"<reporter>", getReporter().getName()}, new String[]{"<reason>", getMessage()}, new String[]{"<server>", getBungeeServer()}));
                 }
             }
         }
