@@ -24,6 +24,10 @@ import java.util.Map;
 
 /**
  * Created by Jake on 2/2/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class Converter implements GUtility {
     String username;
