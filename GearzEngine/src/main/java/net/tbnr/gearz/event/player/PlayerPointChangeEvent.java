@@ -14,24 +14,24 @@ import org.bukkit.event.HandlerList;
  * Time: 5:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class PlayerPointChangeEvent extends Event implements Cancellable {
+public final class PlayerPointChangeEvent extends GearzPlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    @Getter
-    private final GearzPlayer player;
     @Getter
     private final Integer oldPoints;
     @Getter
     private final Integer newPoints;
     @Getter @Setter
     private Integer points;
-    private boolean canceled;
+
+	@Setter @Getter
+    private boolean cancelled;
 
     public PlayerPointChangeEvent(GearzPlayer player, Integer oldPoints, Integer newPoints, Integer points) {
-        this.player = player;
+        super(player);
         this.oldPoints = oldPoints;
         this.newPoints = newPoints;
         this.points = points;
-        this.canceled = false;
+        this.cancelled = false;
     }
 
     @Override
@@ -41,15 +41,5 @@ public final class PlayerPointChangeEvent extends Event implements Cancellable {
 
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return this.canceled;
-    }
-
-    @Override
-    public void setCancelled(boolean b) {
-        this.canceled = b;
     }
 }

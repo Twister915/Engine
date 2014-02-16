@@ -12,17 +12,15 @@ import org.bukkit.event.HandlerList;
  * Time: 9:18 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class PlayerGameEnterEvent extends Event {
-    private final GearzGame game;
-    private final GearzPlayer player;
+public final class PlayerGameEnterEvent extends GearzPlayerGameEvent {
+
     /*
     Event code
      */
     private static final HandlerList handlers = new HandlerList();
 
     public PlayerGameEnterEvent(GearzGame game, GearzPlayer player) {
-        this.game = game;
-        this.player = player;
+        super(player, game);
     }
 
     public HandlerList getHandlers() {
@@ -31,13 +29,5 @@ public final class PlayerGameEnterEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-    public GearzPlayer getPlayer() {
-        return player;
-    }
-
-    public GearzGame getGame() {
-        return game;
     }
 }

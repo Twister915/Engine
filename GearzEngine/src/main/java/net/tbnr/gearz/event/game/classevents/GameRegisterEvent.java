@@ -1,4 +1,4 @@
-package net.tbnr.gearz.event.game;
+package net.tbnr.gearz.event.game.classevents;
 
 import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.gearz.arena.Arena;
@@ -15,9 +15,8 @@ import org.bukkit.event.HandlerList;
  * Time: 9:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class GameRegisterEvent extends Event implements Cancellable {
+public final class GameRegisterEvent extends GearzGameClassEvent implements Cancellable {
     private final Class<? extends Arena> arena;
-    private final Class<? extends GearzGame> game;
     private final GearzPlugin plugin;
     private boolean cancelled;
     private final GameMeta meta;
@@ -28,9 +27,9 @@ public final class GameRegisterEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
     public GameRegisterEvent(Class<? extends Arena> arena, Class<? extends GearzGame> game, GameMeta meta, GearzPlugin plugin) {
+	    super(game);
         this.plugin = plugin;
         this.arena = arena;
-        this.game = game;
         this.meta = meta;
         this.cancelled = false;
     }
@@ -55,10 +54,6 @@ public final class GameRegisterEvent extends Event implements Cancellable {
 
     public Class<? extends Arena> getArena() {
         return arena;
-    }
-
-    public Class<? extends GearzGame> getGame() {
-        return game;
     }
 
     public GameMeta getMeta() {

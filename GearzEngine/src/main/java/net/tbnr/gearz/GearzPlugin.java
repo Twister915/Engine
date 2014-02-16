@@ -2,7 +2,7 @@ package net.tbnr.gearz;
 
 import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
-import net.tbnr.gearz.event.game.GameRegisterEvent;
+import net.tbnr.gearz.event.game.classevents.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.gearz.game.GearzGame;

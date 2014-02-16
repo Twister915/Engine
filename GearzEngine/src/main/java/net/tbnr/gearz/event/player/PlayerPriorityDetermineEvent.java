@@ -6,30 +6,25 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-@EqualsAndHashCode(callSuper = false)
-@RequiredArgsConstructor
-public final class PlayerPriorityDetermineEvent extends Event implements Cancellable {
-    @Getter
-    @Setter
-    private boolean cancelled;
-
-    @Getter
-    @Setter
-    private boolean absolutePriority = false;
-
-    @Getter
-    @Setter
-    private String joinMessage = null;
-
-    @Getter
-    @Setter
-    @NonNull
-    private GearzPlayer player;
-
-    /*
+public final class PlayerPriorityDetermineEvent extends GearzPlayerEvent implements Cancellable {
+	/*
     Event code
     */
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
+
+    @Getter @Setter
+    private boolean cancelled;
+
+    @Getter @Setter
+    private boolean absolutePriority = false;
+
+    @Getter @Setter
+    private String joinMessage = null;
+
+	public PlayerPriorityDetermineEvent(@NonNull GearzPlayer player) {
+		super(player);
+	}
+
     @Override
     public HandlerList getHandlers() {
         return handlers;
