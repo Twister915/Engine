@@ -18,9 +18,9 @@ import java.util.List;
 /**
  * Created by Jake on 1/15/14.
  *
- * Purpose Of File:
+ * Purpose Of File: A Bungee Whitelist
  *
- * Latest Change:
+ * Latest Change: Fix whitelisting
  */
 public class WhitelistModule implements TCommandHandler, Listener {
     @TCommand(name = "gwhitelist", permission = "gearz.gwhitelist", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/gwhitelist <argument>")
@@ -33,12 +33,12 @@ public class WhitelistModule implements TCommandHandler, Listener {
         List<String> whitelisted = config.getStringList("whitelisted");
         switch (args[0]) {
             case "remove":
-                whitelisted.remove(args[0]);
+                whitelisted.remove(args[1]);
                 config.set("whitelisted", whitelisted);
                 GearzBungee.getInstance().saveConfig();
                 break;
             case "add":
-                whitelisted.add(args[0]);
+                whitelisted.add(args[1]);
                 config.set("whitelisted", whitelisted);
                 GearzBungee.getInstance().saveConfig();
                 break;
