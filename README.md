@@ -52,6 +52,8 @@ General Conventions:
   * Do not use linebreaks mid line, use the entire line, do not break, no matter the length.
   * Make sure to always format with IntelliJ IDEA, as this will get you very close to what your code should look like,       in regards to these standards.
   * Do not supress deprecated methods, at some point in time, there is a good chance that these will finally be       replaced with a different method, and are much easier to find if not supressed.
+  * Use abstract classes to prevent you repeating tons of methods in classes
+  * Use interfaces for semantics
   * General file header is as follows:
 ```
 /**
@@ -65,7 +67,7 @@ General Conventions:
    * To Change the file header in intelij do File > settings > search file and code templates > Includes > File Header > Paste in the file header ;)
    * If you have a utility file in gearz make it implement GUtility so we can easily find them (only in gearz)
    * If you have a method you made for let's say headhunter and it is a good utility method that can be put in a utlity file in gearz then give it the annotation @GUtilityMethod
-   * If you have a abstract class or something taht you think should be moved to gearz make the class implement Move2Gearz
+   * If you have a abstract class or something that you think should be moved to gearz make the class implement Move2Gearz
 
 Branch Naming:
   - Branch names should be lowercase. Ex: parties (correct) vs. Parties (incorrect)
