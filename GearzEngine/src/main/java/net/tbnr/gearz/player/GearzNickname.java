@@ -1,10 +1,5 @@
 package net.tbnr.gearz.player;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.PacketType.Play.Server;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.util.ColoredTablist;
@@ -23,9 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Joey
@@ -35,20 +27,19 @@ import java.util.Map;
  */
 public final class GearzNickname implements Listener, TCommandHandler {
 
-	Map<String, String> ignNick = new HashMap<>();
+	/*Map<String, String> ignNick = new HashMap<>();
 
 	public GearzNickname() {
 		ProtocolLibrary.getProtocolManager().addPacketListener(
-				new PacketAdapter(Gearz.getInstance(), Server.PLAYER_INFO) {
+				new PacketAdapter(Gearz.getInstance(), Server.NAMED_ENTITY_SPAWN) {
 					@Override
 					public void onPacketSending(PacketEvent event) {
+						event.getPacketType()
 						event.getPacket().getStrings().write(0, "Joey");
 					}
 				});
-	}
+	}*/
 
-
-	//TODO add command to plugin.yml
 	@EventHandler(priority = EventPriority.MONITOR)
 	@SuppressWarnings("unused")
 	public void onPlayerJoin(TPlayerJoinEvent event) {
@@ -105,7 +96,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
 		return TCommandStatus.SUCCESSFUL;
 	}
 
-	@TCommand(
+/*	@TCommand(
 			name = "ignick",
 			usage = "/ignick <player>",
 			permission = "gearz.ignick",
@@ -122,7 +113,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
 		ignNick.put(sender.getName(), args[0]);
 
 		return TCommandStatus.SUCCESSFUL;
-	}
+	}*/
 
 	@TCommand(
 			name = "realname",
