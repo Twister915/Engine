@@ -22,6 +22,8 @@ commands:
   clearmychat:
     description: Clears senders chat
     aliases: [cmc, cmychat]
+  ignick:
+    description: I nick
 permissions:
   gearz.test:
     default: op
