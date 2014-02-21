@@ -88,12 +88,17 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             sender.sendMessage(GearzBungee.getInstance().getFormat("cooling-down", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
+        boolean anyFound = false;
         for (String s : args) {
             List<ProxiedPlayer> matchedPlayers = GearzBungee.getInstance().getPlayerManager().getMatchedPlayers(s);
             if (matchedPlayers.size() == 0) continue;
             for (ProxiedPlayer player : matchedPlayers) {
+                anyFound = true;
                 provideInformation(player, sender);
             }
+        }
+        if (!anyFound) {
+            sender.sendMessage(GearzBungee.getInstance().getFormat("no-matches", false));
         }
         return TCommandStatus.SUCCESSFUL;
     }
