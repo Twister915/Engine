@@ -22,7 +22,7 @@ public class PermPlayer extends GModel {
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
     @Getter @BasicField public String name;
-    @BasicField public String group;
+    @Getter @BasicField public String group;
     @Getter @BasicField public List<String> permissions;
 
     @SuppressWarnings("unused")
@@ -54,11 +54,6 @@ public class PermPlayer extends GModel {
         save();
     }
 
-    public PermGroup getGroup() {
-        if (this.group == null) return null;
-        return GearzPermissions.getInstance().getGroup(this.group);
-    }
-
     @SuppressWarnings("unused")
     public boolean isPlayerInGroup(PermGroup group) {
         return this.group.equals(group.getName());
@@ -67,7 +62,7 @@ public class PermPlayer extends GModel {
     protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
         if (this.permissions == null) permissions = new ArrayList<>();
-        if (this.permissions.contains(permission)) return;
+        if (this.permissions.contains(permission) || this.permissions.contains(perm + "," + !value)) return;
         this.permissions.add(permission);
         save();
     }
