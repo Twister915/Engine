@@ -284,7 +284,6 @@ public abstract class GModel {
         }
         if (o instanceof DBObject) {
             if (o instanceof BasicDBList) {
-                System.out.println("Detected a list " + o.toString());
                 BasicDBList l = (BasicDBList) o;
                 List list = new ArrayList();
                 for (Object next : l) {
@@ -295,7 +294,6 @@ public abstract class GModel {
                 DBObject o1 = (DBObject) o;
                 Object aClass = o1.get("_class");
                 if (aClass == null) {
-                    System.out.println("Detected a db object " + o.toString());
                     HashMap<String, Object> m = new HashMap<>();
                     for (String s : o1.keySet()) {
                         m.put(s, o1.get(s));
@@ -317,10 +315,8 @@ public abstract class GModel {
                 DBObject id = collection1.findOne(new BasicDBObject("_id", objectId));
                 if (id == null) return null;
                 GModel m = modelFromOne(c, id, this.database);
-                System.out.println("Detected a linked object " + m.toString());
                 if (o1.containsField("_link_flag")) {
                     m = m.findOne();
-                    System.out.println("Detected a linked object " + m.toString());
                 }
                 o = m;
             }

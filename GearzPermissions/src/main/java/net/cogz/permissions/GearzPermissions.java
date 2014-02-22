@@ -11,9 +11,9 @@ import java.util.Map;
 
 /**
  * Created by Jake on 1/23/14.
- * <p/>
+ *
  * Purpose Of File:
- * <p/>
+ *
  * Latest Change:
  */
 @SuppressWarnings("FieldCanBeLocal")
@@ -71,13 +71,11 @@ public abstract class GearzPermissions {
     public void reload() {
         this.database = getDatabase();
         int checks = 0;
-        System.out.println("pre");
         while (this.database == null) {
             this.database = getDatabase();
             checks++;
             if (checks >= 2000000) break;
         }
-        System.out.println("post");
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         this.groups = new HashMap<>();
         defaultGroup = null;
@@ -176,6 +174,7 @@ public abstract class GearzPermissions {
             throw new IllegalStateException("Group does not exist!");
         }
         getGroup(group).addPermission(perm, value);
+        getGroup(group).save();
     }
 
     /**
@@ -236,7 +235,9 @@ public abstract class GearzPermissions {
         }
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
+            System.out.println("Groups found");
             for (String entry : group.getPermissions()) {
+                System.out.println("Found group perm: " + entry);
                 String[] s = entry.split(",");
                 String permission = s[0];
                 boolean value = Boolean.valueOf(s[1]);
@@ -244,6 +245,7 @@ public abstract class GearzPermissions {
             }
         }
         for (String entry : permPlayer.getPermissions()) {
+            System.out.println("Found player perm: " + entry);
             String[] s = entry.split(",");
             String permission = s[0];
             boolean value = Boolean.valueOf(s[1]);
@@ -308,7 +310,7 @@ public abstract class GearzPermissions {
     public String getPrefix(PermPlayer player) {
         String prefix = null;
         if (player.getGroup() != null) {
-            PermGroup permGroup = player.getGroup();
+            PermGroup permGroup = getGroup(player.getGroup());
             prefix = permGroup.getPrefix();
         }
         if (player.getPrefix() != null) prefix = player.getPrefix();
@@ -324,7 +326,7 @@ public abstract class GearzPermissions {
     public String getSuffix(PermPlayer player) {
         String prefix = null;
         if (player.getGroup() != null) {
-            PermGroup permGroup = player.getGroup();
+            PermGroup permGroup = getGroup(player.getGroup());
             prefix = permGroup.getSuffix();
         }
         if (player.getSuffix() != null) prefix = player.getSuffix();
@@ -341,7 +343,7 @@ public abstract class GearzPermissions {
     public String getNameColor(PermPlayer player) {
         String nameColor = null;
         if (player.getGroup() != null) {
-            PermGroup permGroup = player.getGroup();
+            PermGroup permGroup = getGroup(player.getGroup());
             nameColor = permGroup.getNameColor();
         }
         if (player.getNameColor() != null) nameColor = player.getNameColor();
@@ -358,7 +360,7 @@ public abstract class GearzPermissions {
     public String getTabColor(PermPlayer player) {
         String tabColor = null;
         if (player.getGroup() != null) {
-            PermGroup permGroup = player.getGroup();
+            PermGroup permGroup = getGroup(player.getGroup());
             tabColor = permGroup.getTabColor();
         }
         if (player.getTabColor() != null) tabColor = player.getTabColor();
@@ -396,9 +398,15 @@ public abstract class GearzPermissions {
      */
     public List<PermGroup> getAllGroups(PermPlayer permPlayer) {
         List<PermGroup> allGroups = new ArrayList<>();
-        PermGroup permGroup = permPlayer.getGroup();
+        String groupString = permPlayer.getGroup();
+        System.out.println("Found group for " + permPlayer.getName() + " to be " + groupString);
+        if (groupString == null) return allGroups;
+        PermGroup permGroup = getGroup(groupString);
+        System.out.println("String aitn null");
         if (permGroup == null) return allGroups;
-        if (!allGroups.contains(permGroup)) allGroups.add(permGroup);
+        System.out.println("Neither is the group object");
+        allGroups.add(permGroup);
+        System.out.println("Size: " + allGroups.size());
         if (permGroup.getInheritances() != null) {
             for (String inheritedGroup : permGroup.getInheritances()) {
                 if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));

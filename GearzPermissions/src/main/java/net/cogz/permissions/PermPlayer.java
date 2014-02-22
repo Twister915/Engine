@@ -22,7 +22,7 @@ public class PermPlayer extends GModel {
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
     @Getter @BasicField public String name;
-    @BasicField public String group;
+    @Getter @BasicField public String group;
     @Getter @BasicField public List<String> permissions;
 
     @SuppressWarnings("unused")
@@ -52,11 +52,6 @@ public class PermPlayer extends GModel {
     public void removeGroup() {
         this.group = null;
         save();
-    }
-
-    public PermGroup getGroup() {
-        if (this.group == null) return null;
-        return GearzPermissions.getInstance().getGroup(this.group);
     }
 
     @SuppressWarnings("unused")
