@@ -86,6 +86,3 @@ formats:
    sign-line-2: "&1<status>"
    sign-no-servers: "&cNo Servers"
    sign-add-server: "[display]"
-blastoff:
-   distance: 15
-resource-pack-link: "http://four.tbnr.pw/tbnr_tex.zip"
