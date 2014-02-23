@@ -61,6 +61,8 @@ hub-modules:
     isEnabled: true
   displaysigns:
     isEnabled: true
+  headcommnad:
+    isEnabled: true
 formats:
    world-teleport: "&aYou've been teleported to &e<world>&a!"
    snowball-hit: "&aYou have hit &3<player>&a with a snowball to earn XP! &3(You have &b<hits>&3 hits)."
