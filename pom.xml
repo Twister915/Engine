@@ -23,6 +23,7 @@
         <module>GearzPermissions</module>
         <module>GearzBungeePermissions</module>
         <module>GearzBukkitPermissions</module>
+        <module>GearzHub</module>
     </modules>
 
     <properties>
