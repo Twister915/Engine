@@ -235,9 +235,7 @@ public abstract class GearzPermissions {
         }
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
-            System.out.println("Groups found");
             for (String entry : group.getPermissions()) {
-                System.out.println("Found group perm: " + entry);
                 String[] s = entry.split(",");
                 String permission = s[0];
                 boolean value = Boolean.valueOf(s[1]);
@@ -245,7 +243,6 @@ public abstract class GearzPermissions {
             }
         }
         for (String entry : permPlayer.getPermissions()) {
-            System.out.println("Found player perm: " + entry);
             String[] s = entry.split(",");
             String permission = s[0];
             boolean value = Boolean.valueOf(s[1]);
@@ -399,14 +396,10 @@ public abstract class GearzPermissions {
     public List<PermGroup> getAllGroups(PermPlayer permPlayer) {
         List<PermGroup> allGroups = new ArrayList<>();
         String groupString = permPlayer.getGroup();
-        System.out.println("Found group for " + permPlayer.getName() + " to be " + groupString);
         if (groupString == null) return allGroups;
         PermGroup permGroup = getGroup(groupString);
-        System.out.println("String aitn null");
         if (permGroup == null) return allGroups;
-        System.out.println("Neither is the group object");
         allGroups.add(permGroup);
-        System.out.println("Size: " + allGroups.size());
         if (permGroup.getInheritances() != null) {
             for (String inheritedGroup : permGroup.getInheritances()) {
                 if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));
