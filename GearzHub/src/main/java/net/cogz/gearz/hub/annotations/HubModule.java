@@ -70,6 +70,6 @@ public class HubModule implements Listener, TCommandHandler {
 
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
-        GearzHub.getInstance().handleCommandStatus(status, sender, senderType);
+        GearzHub.handleCommandStatus(status, sender);
     }
 }

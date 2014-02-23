@@ -36,7 +36,7 @@ public class Spawn implements Listener, TCommandHandler {
     @EventHandler
     @SuppressWarnings("unused")
     public void onJoin(TPlayerJoinEvent event) {
-        event.getPlayer().teleport(GearzHub.getInstance().getSpawn().getSpawn());
+        event.getPlayer().teleport(GearzHub.getInstance().getSpawnHandler().getSpawn());
     }
 
     @TCommand(

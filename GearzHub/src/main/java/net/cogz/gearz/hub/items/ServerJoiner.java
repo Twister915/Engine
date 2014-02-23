@@ -190,7 +190,7 @@ public class ServerJoiner extends HubItem {
 
         @Override
         public void onGUIOpen(InventoryGUI gui, Player player) {
-            player.sendMessage(ChatColor.GREEN + "Lising servers for " + ChatColor.DARK_BLUE + this.type);
+            player.sendMessage(ChatColor.GREEN + "Listing servers for " + ChatColor.DARK_BLUE + this.type);
         }
 
         @Override

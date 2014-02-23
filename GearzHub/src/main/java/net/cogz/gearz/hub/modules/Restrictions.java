@@ -27,8 +27,8 @@ public class Restrictions extends HubModule implements Listener {
         Player player = event.getPlayer();
         if (event.getPlayer().hasPermission("gearz.hub.fall")) return;
         if (player.getLocation().getY() > 0) return;
-        player.teleport(GearzHub.getInstance().getSpawn().getSpawn());
-        player.playSound(GearzHub.getInstance().getSpawn().getSpawn(), Sound.CHICKEN_EGG_POP, 20, 1);
+        player.teleport(GearzHub.getInstance().getSpawnHandler().getSpawn());
+        player.playSound(GearzHub.getInstance().getSpawnHandler().getSpawn(), Sound.CHICKEN_EGG_POP, 20, 1);
         player.sendMessage(GearzHub.getInstance().getFormat("tpd-spawn", true, new String[]{"<prefix>", GearzHub.getInstance().getChatPrefix()}));
     }
 
