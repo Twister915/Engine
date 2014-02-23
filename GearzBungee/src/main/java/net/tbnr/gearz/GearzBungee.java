@@ -27,6 +27,7 @@ import net.tbnr.gearz.punishments.IPBanHandler;
 import net.tbnr.gearz.punishments.LoginHandler;
 import net.tbnr.gearz.punishments.PunishCommands;
 import net.tbnr.gearz.punishments.UnPunishCommands;
+import net.tbnr.util.FileUtil;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
 import net.tbnr.util.bungee.command.TCommandStatus;
@@ -53,7 +54,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     /**
      * Stores the static strings file loaded into memory
      */
-    private Properties strings;
+    @Getter private Properties strings;
     /**
      * Responder object, in it's own thread
      */
@@ -160,6 +161,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         listModule = new ListModule();
         registerCommandHandler(listModule);
         registerEvents(listModule);
+        if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
         this.strings = new Properties();
         reloadStrings();
         this.helpMeModule = new HelpMe();
@@ -185,6 +187,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         AnnouncerModule announcerModule = new AnnouncerModule(getConfig().getBoolean("announcer.enabled", false));
         registerCommandHandler(announcerModule);
         registerCommandHandler(new StatsModule());
+        registerCommandHandler(new PropertiesManager());
         channelManager = new ChannelManager();
         if (getConfig().getBoolean("channels.enabled", false)) {
             getLogger().info("Channels enabled...");
@@ -208,12 +211,21 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
-    private void reloadStrings() {
+    public void reloadStrings() {
         try {
-            this.strings.load(getResourceAsStream("strings.properties"));
+            this.strings.load(new FileInputStream(getDataFolder() + File.separator + "strings.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void saveStrings() {
+        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"));
+    }
+
+    public void resetStrings() {
+        saveStrings();
+        reloadStrings();
     }
 
     @Override
