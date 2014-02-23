@@ -85,6 +85,7 @@ public class ServerDisplaySigns extends HubModule implements Listener {
         this.signs.put(sign.getLocation(), serverSign);
         GearzHub.getInstance().getConfig().set("signs", signs);
         GearzHub.getInstance().saveConfig();
+        serverSign.update();
         event.getPlayer().sendMessage(ChatColor.GOLD + "Setup a sign for " + lines[1]);
     }
 
