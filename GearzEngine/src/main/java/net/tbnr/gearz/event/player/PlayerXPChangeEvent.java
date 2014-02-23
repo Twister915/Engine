@@ -1,7 +1,8 @@
 package net.tbnr.gearz.event.player;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.tbnr.gearz.player.GearzPlayer;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -11,35 +12,17 @@ import org.bukkit.event.HandlerList;
  * Time: 5:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class PlayerXPChangeEvent extends Event {
+public final class PlayerXPChangeEvent extends GearzPlayerEvent {
+	@Getter(value = AccessLevel.PUBLIC)
     private final Integer oldXp;
+	@Getter(value = AccessLevel.PUBLIC)
     private final Integer newXp;
-    private final GearzPlayer player;
     private static final HandlerList handlers = new HandlerList();
 
     public PlayerXPChangeEvent(Integer oldXp, Integer newXp, GearzPlayer player) {
+	    super(player);
         this.oldXp = oldXp;
         this.newXp = newXp;
-        this.player = player;
-    }
-
-    /**
-     * Get the player this event relates to.
-     *
-     * @return A GearzPlayer object
-     */
-    public GearzPlayer getPlayer() {
-        return player;
-    }
-
-    @SuppressWarnings("unused")
-    public Integer getNewXp() {
-        return newXp;
-    }
-
-    @SuppressWarnings("unused")
-    public Integer getOldXp() {
-        return oldXp;
     }
 
     @Override

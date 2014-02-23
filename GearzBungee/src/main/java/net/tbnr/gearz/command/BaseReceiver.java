@@ -3,7 +3,6 @@ package net.tbnr.gearz.command;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 
 import java.util.HashMap;

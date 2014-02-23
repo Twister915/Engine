@@ -1,7 +1,6 @@
 package net.tbnr.gearz.event.game;
 
 import net.tbnr.gearz.game.GearzGame;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -11,15 +10,14 @@ import org.bukkit.event.HandlerList;
  * Time: 9:03 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class GameStartEvent extends Event {
-    private final GearzGame game;
+public final class GameStartEvent extends GearzGameEvent {
     /*
     Event code
      */
     private static final HandlerList handlers = new HandlerList();
 
     public GameStartEvent(GearzGame game) {
-        this.game = game;
+        super(game);
     }
 
     public HandlerList getHandlers() {
@@ -28,9 +26,5 @@ public final class GameStartEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-    public GearzGame getGame() {
-        return game;
     }
 }

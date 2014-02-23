@@ -1,21 +1,19 @@
 package net.tbnr.gearz.event.player;
 
-import lombok.*;
 import net.tbnr.gearz.game.GearzGame;
 import net.tbnr.gearz.player.GearzPlayer;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-@EqualsAndHashCode(callSuper = false)
-@Data
-@AllArgsConstructor
-public final class PlayerGameRespawnEvent extends Event {
-    @Setter(AccessLevel.NONE) private GearzPlayer player;
-    @Setter(AccessLevel.NONE) private GearzGame game;
-    /*
+public final class PlayerGameRespawnEvent extends GearzPlayerGameEvent {
+	/*
     Event code
     */
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
+
+	public PlayerGameRespawnEvent(GearzPlayer player, GearzGame game) {
+		super(player, game);
+	}
+
     @Override
     public HandlerList getHandlers() {
         return handlers;

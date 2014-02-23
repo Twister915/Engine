@@ -1,7 +1,7 @@
 package net.tbnr.gearz.event.player;
 
+import lombok.Getter;
 import net.tbnr.gearz.player.GearzPlayer;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -11,15 +11,16 @@ import org.bukkit.event.HandlerList;
  * Time: 2:31 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class PlayerChangeDonorPointsEvent extends Event {
+public final class PlayerChangeDonorPointsEvent extends GearzPlayerEvent {
+	@Getter
     private final Integer oldPoint;
+	@Getter
     private final Integer newPoint;
-    private final GearzPlayer player;
 
     public PlayerChangeDonorPointsEvent(Integer current_points, Integer newPoint, GearzPlayer player) {
+	    super(player);
         this.oldPoint = current_points;
         this.newPoint = newPoint;
-        this.player = player;
     }
 
     /*
@@ -33,19 +34,5 @@ public final class PlayerChangeDonorPointsEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-    @SuppressWarnings("unused")
-    public Integer getOldPoint() {
-        return oldPoint;
-    }
-
-    @SuppressWarnings("unused")
-    public Integer getNewPoint() {
-        return newPoint;
-    }
-
-    public GearzPlayer getPlayer() {
-        return player;
     }
 }
