@@ -3,7 +3,7 @@ package net.cogz.gearz.hub;
 import com.mongodb.DBObject;
 import lombok.Getter;
 import net.cogz.gearz.hub.modules.MultiserverCannon;
-import net.cogz.gearz.hub.modules.ServerDisplaySigns;
+import net.cogz.gearz.hub.modules.ServerDisplaySign;
 import net.lingala.zip4j.exception.ZipException;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.GearzException;
@@ -40,7 +40,6 @@ public class GearzHub extends TPlugin {
 
     public GearzHub() {
         ConfigurationSerialization.registerClass(MultiserverCannon.class);
-        ConfigurationSerialization.registerClass(ServerDisplaySigns.ServerDisplaySign.class);
     }
 
     public static GearzHub getInstance() {
