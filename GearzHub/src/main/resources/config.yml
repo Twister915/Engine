@@ -80,7 +80,7 @@ formats:
    command-status: "&7[&6TBNR&7] &cThe command returned an error: &4<status>"
    servers-full: "&cAll &3<server>&c servers are full at the moment. Please try again later!"
    sign-line-0: "&0[&c<type>&0]"
-   sign-line-1: "&c<on>&4/&c<max>
+   sign-line-1: "&c<on>&4/&c<max>"
    sign-line-2: "&1<status>"
    sign-no-servers: "&cNo Servers"
    sign-add-server: "[display]"
