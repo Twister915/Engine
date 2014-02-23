@@ -22,8 +22,8 @@ public class PermGroup extends GModel {
     @Getter @BasicField public String suffix;
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
-    @Getter @BasicField public List<String> permissions = new ArrayList<>();
-    @Getter @BasicField public List<String> inheritances = new ArrayList<>();
+    @Getter @BasicField public List<String> permissions;
+    @Getter @BasicField public List<String> inheritances;
     @Getter @BasicField public boolean isDefault;
 
     @SuppressWarnings("unused")
@@ -42,6 +42,7 @@ public class PermGroup extends GModel {
 
     protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
+        if (this.permissions == null) permissions = new ArrayList<>();
         if (this.permissions.contains(permission) || this.permissions.contains(perm + "," + !value)) return;
         this.permissions.add(permission);
         save();
