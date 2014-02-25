@@ -83,7 +83,6 @@ public class ChannelManager {
             channel.setLogged(logged);
             registerChannel(channel);
         }
-        System.out.println("FINISHED");
     }
 
     public void unregisterChannels() {
