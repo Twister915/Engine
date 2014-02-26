@@ -18,9 +18,7 @@ import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Jake on 1/16/14.
@@ -40,6 +38,8 @@ public class ChannelManager {
 
     @Getter
     boolean ircEnabled = false;
+
+    private Map<ProxiedPlayer, Channel> playerChannels = new HashMap<>();
 
     public ChannelManager() {
         enabled = GearzBungee.getInstance().getConfig().getBoolean("channels.enabled", false);
@@ -106,8 +106,7 @@ public class ChannelManager {
     private void unregisterChannel(Channel channel) {
         if (channels.contains(channel)) {
             for (ProxiedPlayer player : channel.getMembers()) {
-                GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
-                gearzPlayer.setChannel(getDefaultChannel());
+                setChannel(player, getDefaultChannel());
             }
             channels.remove(channel);
         }
@@ -127,7 +126,7 @@ public class ChannelManager {
 
     public Channel getCurrentChannel(ProxiedPlayer proxiedPlayer) {
         GearzPlayer target = GearzPlayerManager.getGearzPlayer(proxiedPlayer);
-        return target.getChannel();
+        return getChannel(proxiedPlayer);
     }
 
     public Channel sendMessage(ProxiedPlayer sender, String message) {
@@ -187,5 +186,26 @@ public class ChannelManager {
         }
         chanFormat = ChatColor.translateAlternateColorCodes('&', chanFormat);
         return chanFormat;
+    }
+
+    public void setChannel(ProxiedPlayer player, Channel channel) {
+        Channel playerChannel = this.playerChannels.get(player);
+        if (playerChannel != null && playerChannel.getName().equals(channel.getName())) {
+            throw new IllegalStateException("Already on this channel!");
+        }
+        if (playerChannel != null) {
+            playerChannel.removeMember(player);
+        }
+
+        this.playerChannels.put(player, channel);
+        channel.addMember(player);
+    }
+
+    public void removeChannel(ProxiedPlayer player) {
+        this.playerChannels.remove(player);
+    }
+
+    public Channel getChannel(ProxiedPlayer player) {
+        return this.playerChannels.get(player);
     }
 }

@@ -26,11 +26,9 @@ public class ChannelCommand implements TCommandHandler {
 
         GearzPlayer target = GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender);
         if (channel.hasPermission() && !target.getProxiedPlayer().hasPermission(channel.getListeningPermission())) {
-            sender.sendMessage("DAFUQ");
             return TCommandStatus.PERMISSIONS;
-
         }
-        target.setChannel(channel);
+        GearzBungee.getInstance().getChannelManager().setChannel((ProxiedPlayer) sender, channel);
         sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
         return TCommandStatus.SUCCESSFUL;
     }
@@ -52,13 +50,12 @@ public class ChannelCommand implements TCommandHandler {
     @TCommand(name = "modbroadcast", aliases = {"mb"}, usage = "/mb <message>", permission = "gearz.modbroadcast", senders = {TCommandSender.Player})
     public TCommandStatus modbroadcast(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length == 0) {
-            GearzPlayer player = GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender);
             Channel channel = GearzBungee.getInstance().getChannelManager().getChannelByName("staff");
             if (channel == null) {
                 return TCommandStatus.INVALID_ARGS;
             }
             try {
-                player.setChannel(channel);
+                GearzBungee.getInstance().getChannelManager().setChannel((ProxiedPlayer) sender, channel);
             } catch (IllegalArgumentException e) {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("already-on-channel"));
             }
@@ -79,7 +76,7 @@ public class ChannelCommand implements TCommandHandler {
                 return TCommandStatus.INVALID_ARGS;
             }
             try {
-                player.setChannel(channel);
+                GearzBungee.getInstance().getChannelManager().setChannel((ProxiedPlayer) sender, channel);
             } catch (IllegalArgumentException e) {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("already-on-channel"));
             }
