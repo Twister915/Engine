@@ -103,7 +103,7 @@ public class PermissionsCommands implements TCommandHandler {
             case "removegroup":
                 if (!sender.hasPermission("gearz.permissions.player.removegroup")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                PermGroup grp = player.getGroup();
+                PermGroup grp = permsManager.getGroup(player.getGroup());
                 if (grp == null) {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
                     return TCommandStatus.SUCCESSFUL;
@@ -314,6 +314,7 @@ public class PermissionsCommands implements TCommandHandler {
                     return TCommandStatus.SUCCESSFUL;
                 }
                 permsManager.addInheritance(group, toAdd);
+                group.save();
                 return TCommandStatus.SUCCESSFUL;
             case "removeinheritance":
                 if (!sender.hasPermission("gearz.permissions.group.inheritance")) return TCommandStatus.PERMISSIONS;
@@ -324,6 +325,7 @@ public class PermissionsCommands implements TCommandHandler {
                     return TCommandStatus.SUCCESSFUL;
                 }
                 permsManager.addInheritance(group, toRemove);
+                group.save();
                 return TCommandStatus.SUCCESSFUL;
             default:
                 return TCommandStatus.INVALID_ARGS;

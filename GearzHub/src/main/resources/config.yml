@@ -1,0 +1,88 @@
+hide-stream: true
+welcome-messages: true
+join-message: "&a<player>&6 has joined the game!"
+quit-message: "&a<player>&6 has left the game!"
+tpd-spawn: "<prefix>&cYou have been teleported to spawn!"
+flight-toggled: "<prefix>&3Flight mode has been &a<result>&3!"
+prefix: "&8[&6&lTBNR&8] "
+warped-to: "<prefix>&3You have been teleported to &a<warp>&3!"
+cant-drop: "<prefix>&cYou can't drop that!"
+hub-items:
+    warpstar:
+       isEnabled: true
+       properties:
+          name: "&a&oWarp Star!&7 - &6&lClick Me!"
+    shop:
+        isEnabled: true
+        properties:
+            name: "&6&lShop!&7 - &5&lClick Me!"
+    magicclock:
+       isEnabled: true
+       properties:
+          name: "&d&oMagic Stick!&7 - &6&lClick Me!"
+          toggleOn: "<prefix>&cThe Other Players are Now Hidden"
+          cooldown: "<prefix>&cYou have to wait another 3 seconds before you can use this item again"
+          toggleOff: "<prefix>&aThe Other Players are Now Shown"
+    speedup:
+       isEnabled: true
+       properties:
+          name: "&e&oSpeed Up!&7 - &6&lClick Me!"
+          toggleOn: "<prefix>&cYou now have speed"
+          cooldown: "<prefix>&cYou have to wait another 3 seconds before you can use this item again"
+          toggleOff: "<prefix>&aYour Speed has Now been taken Away!"
+          speed-level: 4
+          jump-level: 3
+hub-modules:
+  blastoff:
+    isEnabled: true
+    properties:
+      distance: 15
+  bouncypads:
+    isEnabled: true
+  coloredsigns:
+    isEnabled: true
+  loginmessages:
+    isEnabled: true
+  servercannons:
+    isEnabled: true
+  texturepack:
+    isEnabled: true
+    properties:
+      url: "http://four.tbnr.pw/tbnr_tex.zip"
+  restrictions:
+    isEnabled: true
+  signedit:
+    isEnabled: true
+  snowballexp:
+    isEnabled: true
+  fireworkpads:
+    isEnabled: true
+  warpstar:
+    isEnabled: true
+  displaysigns:
+    isEnabled: true
+  headcommnad:
+    isEnabled: true
+formats:
+   world-teleport: "&aYou've been teleported to &e<world>&a!"
+   snowball-hit: "&aYou have hit &3<player>&a with a snowball to earn XP! &3(You have &b<hits>&3 hits)."
+   no-snowball-shake: "&3You can't get a snowball from this character now!"
+   no-snowball-have: "&3This character doesn't have a snowball!"
+   snowball-shake: "&3You took a snowball from &a<player>&3!"
+   snowball-shaken: "&3You had one of your snowballs taken by &a<player>&3!"
+   snowball-evade: "&a<player>&3 evaded your snowball!"
+   first-join-snowball: "&3Welcome to TBNR Hub. You have 32 snowballs, use them wisely!"
+   snowball-hitby: "&aYou have been hit by &3<player>&a with a snowball! &3(You have been hit &b<hitbys>&3 times)."
+   server-label: "&e&lConnect to &2- &c<server>&e&l!"
+   connecting: "&4Connecting to &c<server>&4..."
+   world-list: "&bWorlds you can teleport to &e<worlds>&b."
+   welcome-message: "&3Welcome &a<player>&3 to &6TBNR&3!"
+   blastoff-loading: "&e&lLoading server info for &c<server>&e&l!"
+   blastoff-topline: "&0[&cServers&0]"
+   command-status: "&7[&6TBNR&7] &cThe command returned an error: &4<status>"
+   servers-full: "&cAll &3<server>&c servers are full at the moment. Please try again later!"
+   sign-line-0: "&a&l<type>"
+   sign-line-1: "&b<on>&4/&a<max>"
+   sign-line-2: "&f<status>"
+   sign-no-servers: "&cNo Servers"
+   sign-add-server: "[display]"
