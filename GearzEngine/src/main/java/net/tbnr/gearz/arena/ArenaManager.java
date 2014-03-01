@@ -15,6 +15,7 @@ import com.mongodb.*;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.GearzException;
 import org.bson.types.ObjectId;
+import org.bukkit.Bukkit;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -50,7 +51,12 @@ public final class ArenaManager {
      * @param gameId The game identifier
      */
     public ArenaManager(String gameId, Class<? extends Arena> arenaClass) throws GearzException {
-        this.collection = Gearz.getInstance().getMongoDB().getCollection("arena_v2_" + gameId);
+        try {
+            this.collection = Gearz.getInstance().getMongoDB().getCollection("arena_v2_" + gameId);
+        } catch (NullPointerException ex) {
+            Bukkit.shutdown();
+            throw new GearzException("Cannot start ArenaManager! Not connected to Mongo!");
+        }
         this.arenaClass = arenaClass;
         try {
             reloadArenas();
