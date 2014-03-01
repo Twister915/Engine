@@ -11,6 +11,7 @@
 
 package net.tbnr.gearz.game;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import com.mongodb.BasicDBObject;
 import lombok.*;
 import net.tbnr.gearz.Gearz;
@@ -193,7 +194,8 @@ public abstract class GearzGame implements Listener {
             return;
         }
         this.gamePreStart();
-        for (GearzPlayer player : this.getPlayers()) {
+        HashSet<GearzPlayer> players1 = this.getPlayers();
+        for (GearzPlayer player : players1) {
             Bukkit.getPluginManager().callEvent(new PlayerGameEnterEvent(this, player));
             makePlayer(player);
         }
@@ -211,7 +213,7 @@ public abstract class GearzGame implements Listener {
                 gearzPlayer.sendException(t);
             }
         }
-        for (GearzPlayer player2 : this.getPlayers()) {
+        for (GearzPlayer player2 : players1) {
             try {
                 Location location = playerRespawn(player2);
                 player2.getTPlayer().teleport(location);
@@ -220,6 +222,12 @@ public abstract class GearzGame implements Listener {
                 //player2.sendException(t);
             }
         }
+        //Ghosting player fix hopefully
+        List<Player> playerEntityList = getPlayerEntityList(players1);
+        for (GearzPlayer player : players1) {
+            ProtocolLibrary.getProtocolManager().updateEntity(player.getPlayer(), playerEntityList);
+        }
+
         for (Entity e : this.arena.getWorld().getEntitiesByClasses(LivingEntity.class)) {
             if (e instanceof Player) {
                 continue;
@@ -228,6 +236,7 @@ public abstract class GearzGame implements Listener {
                 e.remove();
             }
         }
+        this.arena.cleanupDrops();
         this.tracker.startGame();
         Bukkit.getPluginManager().callEvent(new GameStartEvent(this));
     }
@@ -288,6 +297,14 @@ public abstract class GearzGame implements Listener {
             data.put("points-earned", pointsEarned);
             this.metrics.done(data);
         }
+    }
+
+    private List<Player> getPlayerEntityList(HashSet<GearzPlayer> players) {
+        ArrayList<Player> players1 = new ArrayList<>();
+        for (GearzPlayer player : players) {
+            players1.add(player.getPlayer());
+        }
+        return players1;
     }
 
     public final void disable() {

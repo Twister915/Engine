@@ -4,6 +4,7 @@ authors: [Twister915, xIGBClutchIx, Thecraftgod, pokuit]
 description: o, dem gearz
 main: net.tbnr.gearz.Gearz
 depend: [ProtocolLib]
+soft-depend: [Votifier]
 load: STARTUP
 commands:
   nick:
