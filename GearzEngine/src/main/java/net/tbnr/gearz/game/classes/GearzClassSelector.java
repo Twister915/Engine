@@ -14,7 +14,7 @@ package net.tbnr.gearz.game.classes;
 import lombok.Getter;
 import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.gearz.player.GearzPlayer;
-import net.tbnr.util.InventoryGUI;
+import net.tbnr.util.inventory.InventoryGUI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

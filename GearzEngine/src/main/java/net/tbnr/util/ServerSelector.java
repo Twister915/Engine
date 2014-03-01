@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.server.Server;
+import net.tbnr.util.inventory.InventoryGUI;
+import net.tbnr.util.inventory.InventoryRefresher;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
