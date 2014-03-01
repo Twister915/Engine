@@ -23,6 +23,10 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 
 /**
  * Created by Jake on 1/18/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ChannelCommand implements TCommandHandler {
 

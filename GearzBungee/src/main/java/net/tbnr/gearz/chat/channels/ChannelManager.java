@@ -33,6 +33,10 @@ import java.util.*;
 
 /**
  * Created by Jake on 1/16/14.
+ *
+ * Purpose Of File:
+ *
+ * Latest Change:
  */
 public class ChannelManager {
     @Getter
