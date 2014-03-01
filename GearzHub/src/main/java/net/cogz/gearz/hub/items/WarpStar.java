@@ -5,7 +5,7 @@ import net.cogz.gearz.hub.annotations.HubItem;
 import net.cogz.gearz.hub.annotations.HubItemMeta;
 import net.cogz.gearz.hub.items.warpstar.WarpStarConfig;
 import net.tbnr.gearz.player.GearzPlayer;
-import net.tbnr.util.InventoryGUI;
+import net.tbnr.util.inventory.InventoryGUI;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;

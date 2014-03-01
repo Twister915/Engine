@@ -7,7 +7,7 @@ import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.ColoringUtils;
-import net.tbnr.util.InventoryGUI;
+import net.tbnr.util.inventory.InventoryGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
