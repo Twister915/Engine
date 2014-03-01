@@ -53,7 +53,7 @@
         </repository>
         <repository>
             <id>votifier</id>
-            <url>http://repo.sacredlabyrinth.net:8081/artifactory/remote-repos</url>
+            <url>http://repo.sacredlabyrinth.net:8081/artifactory/remote-repos/</url>
         </repository>
     </repositories>
 	
