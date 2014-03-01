@@ -69,7 +69,7 @@ public class ChatManager implements Listener, TCommandHandler {
 
         if (GearzBungee.getInstance().getChat().isPlayerInConversation(player)) return;
 
-        if (GearzBungee.getInstance().getChat().isMuted()) {
+        if (GearzBungee.getInstance().getChat().isMuted() && !player.hasPermission("gearz.mute.bypass")) {
             event.setCancelled(true);
             player.sendMessage(GearzBungee.getInstance().getFormat("chat-muted"));
             return;

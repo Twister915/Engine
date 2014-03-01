@@ -45,7 +45,7 @@ public class ChannelsListener implements Listener {
         ProxiedPlayer sender = (ProxiedPlayer) event.getSender();
 
         if (GearzBungee.getInstance().getChat().isPlayerInConversation(sender)) return;
-        if (GearzBungee.getInstance().getChat().isMuted()) {
+        if (GearzBungee.getInstance().getChat().isMuted() && !sender.hasPermission("gearz.mute.bypass")) {
             event.setCancelled(true);
             sender.sendMessage(GearzBungee.getInstance().getFormat("chat-muted"));
             return;
