@@ -94,7 +94,7 @@ public final class TPlayer {
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
         if (TPlayerManager.getInstance().getCollection() == null) return;
-        
+
         this.playerDocument = TPlayer.getPlayerObject(player.getName());
         if (this.playerDocument == null) {
             this.playerDocument = new BasicDBObject("username", player.getName()); //So we didn't find it, create our own, and set the username var.
@@ -163,7 +163,7 @@ public final class TPlayer {
      * @param pitch  The pitch.
      */
     public void playSound(Sound sound, int volume, int pitch) {
-        if(!this.isOnline()) return;
+        if (!this.isOnline()) return;
         this.getPlayer().playSound(getPlayer().getLocation(), sound, volume, pitch);
     }
 
@@ -419,22 +419,24 @@ public final class TPlayer {
      */
     void disconnected() {
         DBObject playerDoc = getPlayerDocument();
-        Object punishObject = getPlayerObject(getPlayerName()).get("punishments");
-        if (punishObject instanceof BasicDBList) {
-            BasicDBList punishList = (BasicDBList) punishObject;
-            getPlayerDocument().put("punishments", punishList);
+        DBObject playerDocument1 = getPlayerDocument();
+        Object object = getPlayerObject(getPlayerName()).get("punishments");
+        if (!(object instanceof BasicDBList)) {
+            object = new BasicDBList();
+            BasicDBList bans = (BasicDBList) object;
+            playerDocument1.put("punishments", bans);
         }
 
         Object frObject = getPlayerObject(getPlayerName()).get("friends");
         if (frObject instanceof BasicDBList) {
             BasicDBList friends = (BasicDBList) frObject;
-            getPlayerDocument().put("friends", friends);
+            playerDoc.put("friends", friends);
         }
 
         Object frqObject = getPlayerObject(getPlayerName()).get("friend_requests");
         if (frqObject instanceof BasicDBList) {
             BasicDBList friendRequests = (BasicDBList) frqObject;
-            getPlayerDocument().put("friend_requests", friendRequests);
+            playerDoc.put("friend_requests", friendRequests);
         }
 
         getPlayerDocument().put("online", false);
@@ -453,6 +455,7 @@ public final class TPlayer {
     /**
      * Saves the player document to the database. :D
      */
+
     public void save() {
         TPlayerManager.getInstance().getCollection().save(this.playerDocument);
     }
