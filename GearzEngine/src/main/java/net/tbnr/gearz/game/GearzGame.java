@@ -224,8 +224,8 @@ public abstract class GearzGame implements Listener {
         }
         //Ghosting player fix hopefully
         List<Player> playerEntityList = getPlayerEntityList(players1);
-        for (GearzPlayer player : players1) {
-            ProtocolLibrary.getProtocolManager().updateEntity(player.getPlayer(), playerEntityList);
+        for (Player player : playerEntityList) {
+            ProtocolLibrary.getProtocolManager().updateEntity(player, playerEntityList);
         }
 
         for (Entity e : this.arena.getWorld().getEntitiesByClasses(LivingEntity.class)) {
