@@ -41,11 +41,11 @@ public class Converter implements GUtility {
     Map<Integer, String> playerMap = new HashMap<>();
 
     public Converter() throws Exception {
-        username = "root";
-        password = "5D3ecgJZ";
-        mysqlDb = "tbnr2";
+        username = "bukkitu";
+        password = "bukkit123";
+        mysqlDb = "bukkitdb";
         port = 3306;
-        host = "one.tbnr.pw";
+        host = "localhost";
         enable();
     }
 

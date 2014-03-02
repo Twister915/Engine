@@ -25,7 +25,6 @@ import net.tbnr.gearz.player.GearzPlayerUtils;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.gearz.server.ServerManagerHelper;
-import net.tbnr.gearz.votifier.VotifierMaster;
 import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
@@ -35,7 +34,6 @@ import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.tyrannyofheaven.bukkit.zPermissions.ZPermissionsService;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -100,8 +98,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         Gearz.random = new Random();
     }
 
-    @Getter private VotifierMaster votifierMaster;
-
     @Override
     public void enable() {
 
@@ -111,8 +107,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
         //Setup zPermissions bridge
 
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        Plugin zPermissions = pluginManager.getPlugin("zPermissions");
+        Plugin zPermissions = Bukkit.getPluginManager().getPlugin("zPermissions");
         if (zPermissions != null) {
             ZPermissionsService service = null;
             try {
@@ -215,17 +210,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
         //ClearChat
         registerCommands(new ClearChat());
-
-        //Votifier hooks
-        Plugin votifier = pluginManager.getPlugin("Votifier");
-        if (votifier != null && votifier.isEnabled()) {
-            this.votifierMaster = new VotifierMaster();
-            registerEvents(votifierMaster);
-            getLogger().info("Hooked Votifier! You can now register Votifier listeners safely!");
-        }
-        else {
-            getLogger().warning("Votifier not found on the server. Ignoring, but keep in mind that this server cannot receive votes.");
-        }
 
         //Silk Touch 32 listener for effects
         EnchantmentEffect.addEnchantmentListener();

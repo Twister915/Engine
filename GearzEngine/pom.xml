@@ -51,10 +51,6 @@
             <id>tyrannyofheaven.org</id>
             <url>http://maven.tyrannyofheaven.org/</url>
         </repository>
-        <repository>
-            <id>votifier</id>
-            <url>http://repo.sacredlabyrinth.net:8081/artifactory/remote-repos</url>
-        </repository>
     </repositories>
 	
     <dependencies>
@@ -111,11 +107,6 @@
             <artifactId>zPermissions</artifactId>
             <version>[0.9.8,)</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vexsoftware</groupId>
-            <artifactId>votifier</artifactId>
-            <version>1.9</version>
         </dependency>
     </dependencies>
 
