@@ -143,6 +143,12 @@ public class Channel implements ChannelInterface {
                     receiver.sendMessage(message);
                 }
             } else {
+                if (sender.getServer().getInfo() == null) {
+                    ProxyServer.getInstance().broadcast("NULL 1");
+                }
+                if (receiver.getServer().getInfo() == null) {
+                    ProxyServer.getInstance().broadcast("NULL 2");
+                }
                 if (sender.getServer().getInfo().getName().equals(receiver.getServer().getInfo().getName())) {
                     if (this.hasPermission()) {
                         if (receiver.hasPermission(getListeningPermission())) {
