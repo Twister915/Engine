@@ -116,16 +116,17 @@ public abstract class GearzPermissions {
      *
      * @param player Player who joined
      */
-    public void onJoin(String player) {
+    public PermPlayer onJoin(String player) {
         GModel one = new PermPlayer(this.database, player).findOne();
         if (one == null) {
             one = new PermPlayer(this.database, player);
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
-        if (!(one instanceof PermPlayer)) return;
+        if (!(one instanceof PermPlayer)) return null;
         this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
         reloadPlayer(player);
+        return (PermPlayer) one;
     }
 
     /**
@@ -225,10 +226,8 @@ public abstract class GearzPermissions {
     public void setGroup(String player, String group) {
         PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, player).findOne();
         if (permPlayer == null) {
-            onJoin(player);
+            permPlayer = onJoin(player);
         }
-        if (permPlayer == null) return;
-        if (permPlayer.getGroup() == null) return;
         PermGroup permGroup = getGroup(group);
         permPlayer.setGroup(permGroup);
         permPlayer.save();
