@@ -19,6 +19,7 @@ import net.tbnr.util.PermissionsDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -56,13 +57,13 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
         return Gearz.getInstance().getMongoDB();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onPlayerJoin(PlayerJoinEvent event) {
         onJoin(event.getPlayer().getName());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onPlayerQuit(PlayerQuitEvent event) {
         onQuit(event.getPlayer().getName());

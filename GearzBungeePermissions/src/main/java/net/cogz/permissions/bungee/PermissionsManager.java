@@ -19,6 +19,7 @@ import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
@@ -54,7 +55,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
         return GearzBungee.getInstance().getMongoDB();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onPostLogin(ServerConnectEvent event) {
         if (!this.playersAlreadyConnected.contains(event.getPlayer())) {
@@ -63,7 +64,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onLeave(PlayerDisconnectEvent event) {
         this.playersAlreadyConnected.remove(event.getPlayer());

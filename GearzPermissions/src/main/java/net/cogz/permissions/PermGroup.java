@@ -13,6 +13,7 @@ package net.cogz.permissions;
 
 import com.mongodb.DB;
 import com.mongodb.DBObject;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
@@ -27,6 +28,7 @@ import java.util.List;
  *
  * Latest Change:
  */
+@EqualsAndHashCode(of = {"name", "prefix", "nameColor", "tabColor", "suffix"}, callSuper = false)
 public class PermGroup extends GModel {
     @Getter @BasicField public String name;
     @Getter @BasicField public String prefix;

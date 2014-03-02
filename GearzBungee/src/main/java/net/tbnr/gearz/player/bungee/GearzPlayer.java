@@ -83,7 +83,7 @@ public final class GearzPlayer {
      * @throws PlayerNotFoundException This occurs when there is no database object for that player, can be used as a hook
      *                                 for retrying the find.
      */
-    private void loadDocument() throws PlayerNotFoundException {
+    public void loadDocument() throws PlayerNotFoundException {
         DBObject object = new BasicDBObject("username", this.username);
         DBObject cursor = getCollection().findOne(object);
         if (cursor != null) {
@@ -520,7 +520,7 @@ public final class GearzPlayer {
         return this.username;
     }
 
-    private void save() {
+    public void save() {
         getCollection().save(this.playerDocument);
     }
 }

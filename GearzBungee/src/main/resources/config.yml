@@ -1,6 +1,6 @@
 database:
   db: gearz_test
-  host: one.tbnr.pw
+  host: oxford.tbnr.pw
   port: 27017
 announcer:
   enabled: true

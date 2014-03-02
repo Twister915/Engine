@@ -252,15 +252,19 @@ public abstract class GearzPermissions {
                 perms.put(permission, value);
             }
         }
-        for (String entry : permPlayer.getPermissions()) {
-            String[] s = entry.split(",");
-            String permission = s[0];
-            boolean value = Boolean.valueOf(s[1]);
-            perms.put(permission, value);
+        if (permPlayer.getPermissions() != null) {
+            for (String entry : permPlayer.getPermissions()) {
+                String[] s = entry.split(",");
+                String permission = s[0];
+                boolean value = Boolean.valueOf(s[1]);
+                perms.put(permission, value);
+            }
         }
+
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
+
     }
 
     /**
@@ -409,12 +413,32 @@ public abstract class GearzPermissions {
         if (groupString == null) return allGroups;
         PermGroup permGroup = getGroup(groupString);
         if (permGroup == null) return allGroups;
-        allGroups.add(permGroup);
-        if (permGroup.getInheritances() != null) {
-            for (String inheritedGroup : permGroup.getInheritances()) {
-                if (!allGroups.contains(getGroup(inheritedGroup))) allGroups.add(getGroup(inheritedGroup));
+        List<PermGroup> totalGroups = getInheritedGroups(permGroup);
+        totalGroups.add(permGroup);
+        return totalGroups;
+    }
+
+    /**
+     * Gets all inherited groups in a recursive fashion.
+     *
+     * @param group Group to resolve inheritances for.
+     * @return List of inherited groups.
+     */
+    private List<PermGroup> getInheritedGroups(PermGroup group) {
+        List<PermGroup> inheritedGroups = new ArrayList<>();
+        for (String inheritance : group.inheritances) {
+            PermGroup group1 = getGroup(inheritance);
+            if (group1 == null) continue;
+            if (group1.equals(group)) throw new IllegalStateException("Circular resolution error!");
+            if (!(group1.inheritances == null || group1.inheritances.size() < 0)) {
+                for (PermGroup permGroup : getInheritedGroups(group1)) {
+                    if (permGroup.equals(group)) throw new IllegalStateException("Circular resolution error!");
+                    if (!(inheritedGroups.contains(permGroup))) inheritedGroups.add(permGroup);
+                }
             }
+            if (!(inheritedGroups.contains(group1))) inheritedGroups.add(group1);
         }
-        return allGroups;
+        if (inheritedGroups.contains(group)) inheritedGroups.remove(group);
+        return inheritedGroups;
     }
 }

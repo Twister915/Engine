@@ -23,6 +23,7 @@ import net.tbnr.gearz.GearzBungee;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -86,7 +87,7 @@ public final class GearzPlayerManager implements Listener {
     }
 
     public List<ProxiedPlayer> getMatchedPlayers(String start) {
-        List<ProxiedPlayer> palyerList = new ArrayList<>();
+        List<ProxiedPlayer> playerList = new ArrayList<>();
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
             if (proxiedPlayer.getName().toLowerCase().equals(start.toLowerCase())) {
                 List<ProxiedPlayer> needleMatch = new ArrayList<>();
@@ -94,9 +95,9 @@ public final class GearzPlayerManager implements Listener {
                 return needleMatch;
             }
             if (proxiedPlayer.getName().toLowerCase().startsWith(start.toLowerCase())) {
-                palyerList.add(proxiedPlayer);
+                playerList.add(proxiedPlayer);
             }
         }
-        return palyerList;
+        return playerList;
     }
 }

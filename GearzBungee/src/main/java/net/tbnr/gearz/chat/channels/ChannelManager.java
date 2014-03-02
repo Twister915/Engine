@@ -22,8 +22,6 @@ import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.chat.Filter;
 import net.tbnr.gearz.chat.channels.irc.Connection;
 import net.tbnr.gearz.modules.PlayerInfoModule;
-import net.tbnr.gearz.player.bungee.GearzPlayer;
-import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 
 import java.io.BufferedWriter;
@@ -140,7 +138,6 @@ public class ChannelManager {
     }
 
     public Channel getCurrentChannel(ProxiedPlayer proxiedPlayer) {
-        GearzPlayer target = GearzPlayerManager.getGearzPlayer(proxiedPlayer);
         return getChannel(proxiedPlayer);
     }
 
@@ -186,20 +183,25 @@ public class ChannelManager {
 
     private String formatMessage(String message, ProxiedPlayer player) {
         String chanFormat = getCurrentChannel(player).getFormat();
-        chanFormat = chanFormat.replace("%message%", ChatColor.RESET + message).replace("%player%", player.getDisplayName());
         PermissionsDelegate perms = GearzBungee.getInstance().getPermissionsDelegate();
+        chanFormat = chanFormat.replace("%player%", player.getDisplayName()).replace("%message%", ChatColor.RESET + ChatColor.stripColor(message));
         if (perms != null) {
             String prefix = perms.getPrefix(player.getName().toLowerCase());
             String suffix = perms.getSuffix(player.getName().toLowerCase());
+            String nameColor = perms.getNameColor(player.getName().toLowerCase());
             if (prefix == null) prefix = "";
             else prefix = ChatColor.translateAlternateColorCodes('&', prefix);
             if (suffix == null) suffix = "";
             else suffix = ChatColor.translateAlternateColorCodes('&', suffix);
-            chanFormat = chanFormat.replace("%prefix%", prefix).replace("%suffix%", suffix);
+            if (nameColor == null) nameColor = "";
+            else nameColor = ChatColor.translateAlternateColorCodes('&', nameColor);
+            chanFormat = chanFormat.replace("%prefix%", prefix).replace("%suffix%", suffix).replace("%namecolor%", nameColor);
         } else {
-            chanFormat = chanFormat.replace("%suffix%", "").replace("%prefix%", "");
+            chanFormat = chanFormat.replace("%suffix%", "").replace("%prefix%", "").replace("%namecolor%", "");
         }
-        chanFormat = ChatColor.translateAlternateColorCodes('&', chanFormat);
+        if (player.hasPermission("gearz.chat.colors")) {
+            chanFormat = ChatColor.translateAlternateColorCodes('&', chanFormat);
+        }
         return chanFormat;
     }
 
