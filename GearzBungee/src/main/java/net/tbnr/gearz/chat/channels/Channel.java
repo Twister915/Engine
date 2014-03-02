@@ -134,6 +134,7 @@ public class Channel implements ChannelInterface {
     @Override
     public void sendMessage(String message, ProxiedPlayer sender) {
         for (ProxiedPlayer receiver : ProxyServer.getInstance().getPlayers()) {
+            if (receiver.getServer() == null) continue;
             if (this.isCrossServer()) {
                 if (this.hasPermission()) {
                     if (receiver.hasPermission(getListeningPermission())) {
@@ -143,13 +144,6 @@ public class Channel implements ChannelInterface {
                     receiver.sendMessage(message);
                 }
             } else {
-                ProxyServer.getInstance().broadcast(receiver.getName());
-                if (sender.getServer().getInfo() == null) {
-                    ProxyServer.getInstance().broadcast("NULL 1");
-                }
-                if (receiver.getServer().getInfo() == null) {
-                    ProxyServer.getInstance().broadcast("NULL 2");
-                }
                 if (sender.getServer().getInfo().getName().equals(receiver.getServer().getInfo().getName())) {
                     if (this.hasPermission()) {
                         if (receiver.hasPermission(getListeningPermission())) {
