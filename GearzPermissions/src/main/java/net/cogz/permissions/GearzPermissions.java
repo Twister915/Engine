@@ -228,6 +228,7 @@ public abstract class GearzPermissions {
             onJoin(player);
         }
         if (permPlayer == null) return;
+        System.out.println("CONFIRMED");
         PermGroup permGroup = getGroup(group);
         permPlayer.setGroup(permGroup);
         permPlayer.save();
