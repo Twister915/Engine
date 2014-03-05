@@ -21,17 +21,13 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.chat.channels.Channel;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
-import net.tbnr.gearz.punishments.LoginHandler;
-import net.tbnr.gearz.punishments.PunishmentType;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,9 +48,8 @@ public class ChatManager implements Listener, TCommandHandler {
     }
 
     private final Map<String, SpyType> spies = new HashMap<>();
-    public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     @SuppressWarnings("unused")
     public void onChat(ChatEvent event) {
         if (GearzBungee.getInstance().getChannelManager().isEnabled()) return;
@@ -75,17 +70,6 @@ public class ChatManager implements Listener, TCommandHandler {
             return;
         }
 
-        if (GearzBungee.getInstance().getChat().isPlayerMuted(player.getName())) {
-            LoginHandler.MuteData muteData = GearzBungee.getInstance().getChat().getMute(player.getName());
-            if (muteData.getPunishmentType() == PunishmentType.MUTE) {
-                player.sendMessage(GearzBungee.getInstance().getFormat("muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}));
-            } else if (muteData.getPunishmentType() == PunishmentType.TEMP_MUTE) {
-                player.sendMessage(GearzBungee.getInstance().getFormat("temp-muted", false, false, new String[]{"<reason>", muteData.getReason()}, new String[]{"<issuer>", muteData.getIssuer()}, new String[]{"<end>", longReadable.format(muteData.getEnd())}));
-            }
-            event.setCancelled(true);
-            return;
-        }
-
         Filter.FilterData filterData = Filter.filter(event.getMessage(), player);
         if (filterData.isCancelled()) {
             event.setCancelled(true);
@@ -95,7 +79,7 @@ public class ChatManager implements Listener, TCommandHandler {
         event.setMessage(filterData.getMessage());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onSpy(ChatEvent event) {
         if (!(event.getSender() instanceof ProxiedPlayer)) return;
         String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", ((ProxiedPlayer) event.getSender()).getName()}, new String[]{"<server>", ((ProxiedPlayer) event.getSender()).getServer().getInfo().getName()});

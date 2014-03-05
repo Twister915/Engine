@@ -41,7 +41,7 @@ public class ChannelManager {
     public boolean enabled = false;
 
     @Getter
-    private List<Channel> channels = new ArrayList<>();
+    private final List<Channel> channels = new ArrayList<>();
 
     @Getter
     Connection connection;
@@ -52,7 +52,7 @@ public class ChannelManager {
     @Getter
     boolean ircEnabled = false;
 
-    private Map<ProxiedPlayer, Channel> playerChannels = new HashMap<>();
+    private final Map<ProxiedPlayer, Channel> playerChannels = new HashMap<>();
 
     public ChannelManager() {
         enabled = GearzBungee.getInstance().getConfig().getBoolean("channels.enabled", false);

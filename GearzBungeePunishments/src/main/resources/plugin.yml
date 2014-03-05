@@ -1,0 +1,5 @@
+name: GearzBungeePunishments
+version: 1.0
+author: Jake0oo0
+main: net.cogz.punishments.bungee.GearzBungeePunishments
+depends: ['GearzBungee']

@@ -1,24 +1,13 @@
-/*
- * Copyright (c) 2014.
- * Cogz Development LLC USA
- * All Right reserved
- *
- * This software is the confidential and proprietary information of Cogz Development, LLC.
- * ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use it only in accordance
- * with the terms of the license agreement you entered into with Cogz LLC.
- */
-
-package net.tbnr.gearz.punishments;
+package net.cogz.punishments;
 
 import lombok.Getter;
 
 /**
- * Created by Jake on 1/4/14.
+ * Created by jake on 3/4/14.
  *
- * Purpose Of File: Enum For Punishment's
+ * Purpose Of File:
  *
- * Latest Change: Correct the punishments that are kickable
+ * Latest Change:
  */
 public enum PunishmentType {
     PERMANENT_BAN("banned", true),

@@ -49,7 +49,7 @@ public class MotdHandler implements Listener, TCommandHandler {
     private List<String> motd;
     private Integer index;
     private String favicon;
-    private List<StaticMOTD> staticMotds = new LinkedList<>();
+    private final List<StaticMOTD> staticMotds = new LinkedList<>();
     private static final ChatColor[] motdPrefixColors = {ChatColor.RED, ChatColor.BLUE, ChatColor.GREEN, ChatColor.RED, ChatColor.YELLOW, ChatColor.GOLD};
 
     public MotdHandler() {

@@ -21,10 +21,7 @@ import org.bson.types.ObjectId;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Models you create should extend this class
@@ -390,12 +387,13 @@ public abstract class GModel {
                 (o instanceof ObjectId) ||
                 (o instanceof Double) ||
                 (o instanceof Character) ||
-                (o instanceof Short);
+                (o instanceof Short) ||
+                (o instanceof Date);
     }
 
     /**
-     * Processes a list into a {@link BasicDBList}
      *
+     * Processes a list into a {@link BasicDBList}
      * @param l The {@link List} object
      * @return The {@link BasicDBList} object.
      */

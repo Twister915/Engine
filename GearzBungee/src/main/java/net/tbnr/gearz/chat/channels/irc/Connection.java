@@ -28,9 +28,9 @@ import java.util.concurrent.TimeUnit;
  * Latest Change:
  */
 public class Connection {
-    String name;
-    String server;
-    String login;
+    final String name;
+    final String server;
+    final String login;
     String password;
     @Setter @Getter
     public boolean printInput = false;

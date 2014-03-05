@@ -29,12 +29,6 @@ import java.util.Map;
  */
 @SuppressWarnings("FieldCanBeLocal")
 public abstract class GearzPermissions {
-    public static GearzPermissions instance;
-
-    public static GearzPermissions getInstance() {
-        return instance;
-    }
-
     /**
      * Players who are online with their names.
      */

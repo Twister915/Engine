@@ -34,10 +34,6 @@ import net.tbnr.gearz.friends.FriendCommands;
 import net.tbnr.gearz.modules.*;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
-import net.tbnr.gearz.punishments.IPBanHandler;
-import net.tbnr.gearz.punishments.LoginHandler;
-import net.tbnr.gearz.punishments.PunishCommands;
-import net.tbnr.gearz.punishments.UnPunishCommands;
 import net.tbnr.util.FileUtil;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
@@ -100,9 +96,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     private HelpMe helpMeModule;
-
-    @Getter
-    private IPBanHandler ipBanHandler;
 
     @Getter
     private ShuffleModule shuffleModule;
@@ -182,10 +175,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         PlayerInfoModule infoModule = new PlayerInfoModule();
         registerCommandHandler(infoModule);
         registerEvents(infoModule);
-        registerEvents(new LoginHandler());
-        registerCommandHandler(new PunishCommands());
-        registerCommandHandler(new UnPunishCommands());
-        this.ipBanHandler = new IPBanHandler(getMongoDB().getCollection("ipbans"));
         this.shuffleModule = new ShuffleModule();
         registerEvents(this.shuffleModule);
         registerCommandHandler(this.shuffleModule);

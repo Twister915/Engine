@@ -35,6 +35,8 @@
         <module>GearzBungeePermissions</module>
         <module>GearzBukkitPermissions</module>
         <module>GearzHub</module>
+        <module>GearzPunishments</module>
+        <module>GearzBungeePunishments</module>
     </modules>
 
     <properties>
