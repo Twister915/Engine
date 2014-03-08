@@ -81,6 +81,17 @@ public class ErrorHandler {
     }
 
     /**
+     * Reports an error with a binding.
+     *
+     * @param key Easy reference to find error in a certain spot
+     * @param error      The error itself.
+     */
+    @SuppressWarnings("unused")
+    public static void reportError(String key, String error) {
+        storeErrorReport(BasicDBObjectBuilder.start("server", key).add("error", error).get());
+    }
+
+    /**
      * Reports an error
      *
      * @param player The player to report the error on

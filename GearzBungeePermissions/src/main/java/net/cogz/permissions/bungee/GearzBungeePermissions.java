@@ -16,6 +16,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.activerecord.GModel;
+import net.tbnr.util.ErrorHandler;
 import net.tbnr.util.TPluginBungee;
 
 import java.util.concurrent.TimeUnit;
@@ -47,6 +48,7 @@ public class GearzBungeePermissions extends TPluginBungee {
                 try {
                     GearzBungeePermissions.getInstance().getPermsManager().reload();
                 } catch (Exception ex) {
+                    ErrorHandler.reportError(ex);
                     ex.printStackTrace();
                     GearzBungeePermissions.getInstance().getLogger().severe(ex.getMessage());
                 }
