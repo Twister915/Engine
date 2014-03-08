@@ -142,14 +142,19 @@ public class ChannelManager {
     }
 
     public Channel sendMessage(ProxiedPlayer sender, String message) {
-        final Channel channel = getCurrentChannel(sender);
-        if (channel.isFiltered()) {
+        Channel original = getCurrentChannel(sender);
+        if (original == null) {
+            setChannel(sender, getDefaultChannel());
+            original = getCurrentChannel(sender);
+        }
+        if (original.isFiltered()) {
             Filter.FilterData filterData = Filter.filter(message, sender);
             if (filterData.isCancelled()) {
-                return channel;
+                return original;
             }
             message = filterData.getMessage();
         }
+        final Channel channel = original;
         if (channel.isIRCLinked() || channel.isLogged()) {
             final String toSend = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', GearzBungee.getInstance().getConfig().getString("irc.format").replace("%server%", PlayerInfoModule.getServerForBungee(sender.getServer().getInfo()).getGame()).replace("%message%", message).replace("%sender%", sender.getName())));
             ProxyServer.getInstance().getScheduler().runAsync(GearzBungee.getInstance(), new Runnable() {
