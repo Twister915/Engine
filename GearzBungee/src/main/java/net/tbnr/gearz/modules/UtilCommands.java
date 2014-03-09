@@ -37,8 +37,9 @@ public class UtilCommands implements TCommandHandler, Listener {
     }
 
     @TCommand(name = "help", permission = "gearz.help", senders = {TCommandSender.Player}, usage = "")
-         @SuppressWarnings("unused")
-         public TCommandStatus help(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
+    @SuppressWarnings("unused")
+    public TCommandStatus help(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
+        sender.sendMessage(GearzBungee.getInstance().getFormat("about-prefix", false) + GearzBungee.getInstance().getFormat("about-info", false));
         return TCommandStatus.SUCCESSFUL;
     }
 

@@ -19,7 +19,6 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.TabExecutor;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
@@ -30,7 +29,6 @@ import net.tbnr.gearz.chat.channels.ChannelManager;
 import net.tbnr.gearz.chat.channels.ChannelsListener;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
-import net.tbnr.gearz.friends.FriendCommands;
 import net.tbnr.gearz.modules.*;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
@@ -53,7 +51,7 @@ import java.util.concurrent.TimeUnit;
  * - Help command
  */
 @SuppressWarnings({"NullArgumentToVariableArgMethod", "FieldCanBeLocal", "UnusedDeclaration"})
-public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee, TabExecutor {
+public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
     /**
      * Gearz Instance
      */
@@ -202,12 +200,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         }
         this.chatManager = new ChatManager();
         registerCommandHandler(new ClearChat());
-        if (getConfig().getBoolean("friends.enabled", false)) {
-            registerCommandHandler(new FriendCommands());
-            getLogger().info("Friends enabled!");
-        } else {
-            getLogger().warning("Friends disabled!");
-        }
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -461,11 +453,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         }
         player1.sendMessage(GearzBungee.getInstance().getFormat("connecting", true, true));
         player1.connect(serverInfo);
-    }
-
-    @Override
-    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        return getUserNames();
     }
 
     public List<String> getUserNames() {

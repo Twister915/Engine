@@ -11,6 +11,7 @@
 
 package net.tbnr.gearz.netcommand;
 
+import net.tbnr.gearz.server.Server;
 import org.bukkit.entity.Player;
 
 /**
@@ -20,5 +21,9 @@ import org.bukkit.entity.Player;
 public final class BouncyUtils {
     public static void sendPlayerToServer(Player player, String server) {
         NetCommand.withName("send").withArg("player", player.getName()).withArg("server", server).send();
+    }
+
+    public static void sendPlayerToServer(Player player, Server server) {
+        sendPlayerToServer(player, server.getBungee_name());
     }
 }

@@ -40,7 +40,6 @@ public final class TPlayerManager implements Listener {
     private DBCollection collection = null;
     private DB database = null;
     private static TPlayerManager instance;
-
     public static String getUsernameForID(ObjectId id) {
         DBCollection collection1 = instance.collection;
         DBObject id1 = collection1.findOne(new BasicDBObject("_id", id));

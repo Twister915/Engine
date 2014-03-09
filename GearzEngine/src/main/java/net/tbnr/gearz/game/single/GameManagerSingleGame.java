@@ -183,6 +183,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(final TPlayerJoinEvent event) {
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length);
+        ServerManager.addPlayer(event.getPlayer().getPlayerName());
         event.getPlayer().resetPlayer();
         final GearzPlayer gearzPlayer = GearzPlayer.playerFromTPlayer(event.getPlayer());
         event.setJoinMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
@@ -218,6 +219,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     @SuppressWarnings("unused")
     public void onLeave(TPlayerDisconnectEvent event) {
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length - 1);
+        ServerManager.removePlayer(event.getPlayer().getPlayerName());
         event.setQuitMessage(Gearz.getInstance().getFormat("formats.leave-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
         GearzPlayer player = GearzPlayer.playerFromTPlayer(event.getPlayer());
         if (this.runningGame != null) {

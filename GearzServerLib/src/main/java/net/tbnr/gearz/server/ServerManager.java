@@ -89,6 +89,25 @@ public class ServerManager {
         return (Server) one;
     }
 
+    public static void addPlayer(String name) {
+        Server thisServer = getThisServer();
+        thisServer.getOnlinePlayers().add(name);
+        thisServer.save();
+    }
+
+    public static void removePlayer(String name) {
+        Server thisServer = getThisServer();
+        thisServer.getOnlinePlayers().remove(name);
+        thisServer.save();
+    }
+
+    public static Server getServerByPlayer(String name) {
+        for (Server server : getAllServers()) {
+            if (server.getOnlinePlayers().contains(name)) return server;
+        }
+        return null;
+    }
+
     public static void setStatusString(String str) {
         Server thisServer = getThisServer();
         thisServer.setStatusString(str);

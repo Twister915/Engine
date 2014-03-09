@@ -438,13 +438,6 @@ public final class TPlayer {
      * Called by the TPlayerManager when the player disconnects. Do not call otherwise
      */
     void disconnected() {
-        Object object = getPlayerObject(getPlayerName()).get("punishments");
-        if (object instanceof BasicDBList) {
-            object = new BasicDBList();
-            BasicDBList bans = (BasicDBList) object;
-            this.playerDocument.put("punishments", bans);
-        }
-
         this.playerDocument.put("online", false);
         Object o = getPlayerDocument().get("time-online");
         if (o == null) o = 0l;

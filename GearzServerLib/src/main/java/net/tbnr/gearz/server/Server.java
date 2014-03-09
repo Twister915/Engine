@@ -19,6 +19,8 @@ import lombok.ToString;
 import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
 
+import java.util.List;
+
 /**
  * Created by Joey on 12/17/13.
  *
@@ -48,6 +50,8 @@ public final class Server extends GModel {
     private Integer port;
     @BasicField
     private Integer maximumPlayers;
+    @BasicField
+    private List<String> onlinePlayers;
 
     public Server() {
         super();

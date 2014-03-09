@@ -1,0 +1,11 @@
+name: GearzBukkitFriends
+version: 1.0
+authors: [Jake0oo0]
+description: Bukkit Friends Plugin
+main: net.cogz.friends.bukkit.GearzBukkitFriends
+depend: [Gearz]
+commands:
+  friend:
+    description: Friend management command
+  friends:
+    description: Friend list command
