@@ -143,11 +143,7 @@ public abstract class GearzPermissions {
     }
 
     public PermPlayer getOfflinePlayer(String player) {
-        GModel one = new PermPlayer(this.database, player).findOne();
-        if (one == null || !(one instanceof PermPlayer)) {
-            return null;
-        }
-        return (PermPlayer) one;
+        return onJoin(player);
     }
 
     /**
@@ -248,18 +244,26 @@ public abstract class GearzPermissions {
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
+                try {
                 String[] s = entry.split(",");
                 String permission = s[0];
                 boolean value = Boolean.valueOf(s[1]);
                 perms.put(permission, value);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    //ignore -- continue
+                }
             }
         }
         if (permPlayer.getPermissions() != null) {
             for (String entry : permPlayer.getPermissions()) {
-                String[] s = entry.split(",");
-                String permission = s[0];
-                boolean value = Boolean.valueOf(s[1]);
-                perms.put(permission, value);
+                try {
+                    String[] s = entry.split(",");
+                    String permission = s[0];
+                    boolean value = Boolean.valueOf(s[1]);
+                    perms.put(permission, value);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    //ignore -- continue
+                }
             }
         }
 
