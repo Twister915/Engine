@@ -142,6 +142,14 @@ public abstract class GearzPermissions {
         return this.players.get(player);
     }
 
+    public PermPlayer getOfflinePlayer(String player) {
+        GModel one = new PermPlayer(this.database, player).findOne();
+        if (one == null || !(one instanceof PermPlayer)) {
+            return null;
+        }
+        return (PermPlayer) one;
+    }
+
     /**
      * Get a group by name
      *
