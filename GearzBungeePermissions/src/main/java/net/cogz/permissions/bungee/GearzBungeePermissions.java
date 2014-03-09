@@ -48,7 +48,7 @@ public class GearzBungeePermissions extends TPluginBungee {
                 try {
                     GearzBungeePermissions.getInstance().getPermsManager().reload();
                 } catch (Exception ex) {
-                    ErrorHandler.reportError(ex);
+                    ErrorHandler.reportError("permissions", ex);
                     ex.printStackTrace();
                     GearzBungeePermissions.getInstance().getLogger().severe(ex.getMessage());
                 }

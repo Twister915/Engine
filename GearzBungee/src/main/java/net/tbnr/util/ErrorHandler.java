@@ -84,11 +84,11 @@ public class ErrorHandler {
      * Reports an error with a binding.
      *
      * @param key Easy reference to find error in a certain spot
-     * @param error      The error itself.
+     * @param ex      The error itself.
      */
     @SuppressWarnings("unused")
-    public static void reportError(String key, String error) {
-        storeErrorReport(BasicDBObjectBuilder.start("server", key).add("error", error).get());
+    public static void reportError(String key, Exception ex) {
+        storeErrorReport(BasicDBObjectBuilder.start("server", key).add("error", formatException(ex)).get());
     }
 
     /**
