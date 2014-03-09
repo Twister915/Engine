@@ -249,15 +249,35 @@ public final class TPlayer {
         }
     }
 
-    public Integer getCurrentPotionLevel(PotionEffectType effectType) {
-        Integer level = -1;
-        for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
-            if (!effect.getType().equals(effectType)) continue;
-            level = effect.getAmplifier();
-            break;
-        }
-        return level;
-    }
+	/**
+	 * Get's The Level of a certain type of potion
+	 * @param effectType ~ The Type of potion
+	 * @return the potion level OR -1 if potion not active
+	 */
+	public Integer getCurrentPotionLevel(PotionEffectType effectType) {
+		Integer level = -1;
+		for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
+			if (!effect.getType().equals(effectType)) continue;
+			level = effect.getAmplifier();
+			break;
+		}
+		return level;
+	}
+
+	/**
+	 * Get's the Duration of a certain type of potion
+	 * @param type ~ The type of the potion
+	 * @return the potion duration OR -1 if potion not active
+	 */
+	public Integer getCurrentPotionDuration(PotionEffectType type) {
+		Integer level = -1;
+		for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
+			if (!effect.getType().equals(type)) continue;
+			level = effect.getDuration();
+			break;
+		}
+		return level;
+	}
 
     /**
      * Test is player has certain potion effect
