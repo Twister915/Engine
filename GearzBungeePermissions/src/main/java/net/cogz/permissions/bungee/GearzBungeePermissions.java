@@ -13,7 +13,6 @@ package net.cogz.permissions.bungee;
 
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.util.ErrorHandler;

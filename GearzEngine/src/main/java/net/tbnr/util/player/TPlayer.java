@@ -447,7 +447,6 @@ public final class TPlayer {
 
         this.playerDocument.put("online", false);
         Object o = getPlayerDocument().get("time-online");
-
         if (o == null) o = 0l;
         if (!(o instanceof Long)) return;
         long timeOnline = (Long) o;

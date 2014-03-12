@@ -336,6 +336,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     public void onVotingDone(Map<Votable, Integer> data, VotingSession ses) {
         onVotingDone(data, ses, false);
     }
+
     public void onVotingDone(Map<Votable, Integer> data, VotingSession ses, boolean override) {
         if (!(ses instanceof InventoryBarVotingSession)) {
             return;

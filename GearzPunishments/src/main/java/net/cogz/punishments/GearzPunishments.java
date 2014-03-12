@@ -13,7 +13,7 @@ import java.util.*;
  * Latest Change:
  */
 public abstract class GearzPunishments {
-    List<String> mutedPlayers = new ArrayList<>();
+    public Map<String, Punishment> mutedPlayers = new LinkedHashMap<>();
     public DB database;
 
     public abstract DB getDB();
@@ -93,10 +93,6 @@ public abstract class GearzPunishments {
                 return punishment;
             } else if (type == PunishmentType.TEMP_MUTE && new Date().before(punishment.end)) {
                 return punishment;
-            } else {
-                if (this.mutedPlayers.contains(player)) {
-                    this.mutedPlayers.remove(player);
-                }
             }
         }
         return null;
@@ -111,11 +107,15 @@ public abstract class GearzPunishments {
     public void loadMute(String player) {
         Punishment mute = getValidMute(player);
         if (mute == null) return;
-        this.mutedPlayers.add(player);
+        this.mutedPlayers.put(player, mute);
     }
 
     public boolean isPlayerLocalMuted(String player) {
-        return this.mutedPlayers.contains(player);
+        return this.mutedPlayers.containsKey(player);
+    }
+
+    public Punishment getLocalMute(String player) {
+        return this.mutedPlayers.get(player);
     }
 
     public boolean isIpBanned(String ip) {
@@ -158,7 +158,7 @@ public abstract class GearzPunishments {
     }
 
     public boolean onChat(String player) {
-        return isPlayerLocalMuted(player);
+        return isPlayerMuted(player);
     }
 
     public void punishPlayer(String player, String issuer, String reason, PunishmentType type, Date end) {
@@ -174,13 +174,13 @@ public abstract class GearzPunishments {
             punishment.end = end;
         }
         punishment.time = new Date();
-        punishment.save();
         if (punishment.getPunishmentType().isKickable()) {
             kickPlayer(player, punishment);
         }
         if (type == PunishmentType.MUTE || type == PunishmentType.TEMP_MUTE) {
-            this.mutedPlayers.add(player);
+            this.mutedPlayers.put(player, punishment);
         }
+        punishment.save();
     }
 
     public void appealPunishment(Punishment punishment) {
