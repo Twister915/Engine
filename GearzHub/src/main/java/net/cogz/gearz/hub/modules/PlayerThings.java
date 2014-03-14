@@ -2,6 +2,8 @@ package net.cogz.gearz.hub.modules;
 
 import net.cogz.gearz.hub.annotations.HubModule;
 import net.cogz.gearz.hub.annotations.HubModuleMeta;
+import net.tbnr.gearz.server.ServerManager;
+import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerJoinEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,10 +34,16 @@ public class PlayerThings extends HubModule implements Listener {
     @EventHandler
     public void onJoin(TPlayerJoinEvent event) {
         Player player = event.getPlayer().getPlayer();
+        ServerManager.addPlayer(event.getPlayer().getPlayerName());
         if (player.hasPermission("gearz.flight")) {
             player.setAllowFlight(true);
         }
         player.setResourcePack(rescPackLink);
+    }
+
+    @EventHandler
+    public void onQuit(TPlayerDisconnectEvent event) {
+        ServerManager.removePlayer(event.getPlayer().getPlayerName());
     }
 
     @EventHandler
