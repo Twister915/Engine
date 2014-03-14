@@ -344,11 +344,8 @@ public class PunishmentCommands implements TCommandHandler {
     public void broadcastPunishment(ServerInfo server, String issuer, String target, PunishmentType punishmentType, String reason) {
         for (ProxiedPlayer proxiedPlayer : server.getPlayers()) {
             if (proxiedPlayer.getServer() == null) continue;
-<<<<<<< HEAD:GearzBungeePunishments/src/main/java/net/cogz/punishments/bungee/PunishmentCommands.java
             proxiedPlayer.sendMessage(GearzBungeePunishments.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", PlayerInfoModule.getServerForBungee(server).getGame().toUpperCase()}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}, new String[]{"<reason>", reason}));
-=======
             proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", PlayerInfoModule.getServerForBungee(server).getGame()}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}, new String[]{"<reason>", reason}));
->>>>>>> Fix Permissions Stuff:GearzBungee/src/main/java/net/tbnr/gearz/punishments/PunishCommands.java
         }
     }
 
