@@ -219,7 +219,7 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
                 handler.handleCommandStatus(TCommandStatus.WRONG_TARGET, sender, type);
                 return true;
             }
-            if (!sender.hasPermission(meta.permission())) {
+            if (!meta.permission().equals("") && !sender.hasPermission(meta.permission())) {
                 handler.handleCommandStatus(TCommandStatus.PERMISSIONS, sender, type);
                 return true;
             }

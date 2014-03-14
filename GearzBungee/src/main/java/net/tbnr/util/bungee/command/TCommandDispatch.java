@@ -182,7 +182,7 @@ public class TCommandDispatch {
                 handler.handleCommandStatus(TCommandStatus.WRONG_TARGET, sender, typesender);
                 return;
             }
-            if (!sender.hasPermission(meta.permission())) {
+            if (!meta.permission().equals("") && !sender.hasPermission(meta.permission())) {
                 handler.handleCommandStatus(TCommandStatus.PERMISSIONS, sender, typesender);
                 return;
             }
