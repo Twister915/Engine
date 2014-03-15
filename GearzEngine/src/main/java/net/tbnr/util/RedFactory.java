@@ -21,6 +21,7 @@ import net.tbnr.gearz.packets.wrapper.WrapperPlayServerAnimation.Animations;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -134,6 +135,7 @@ public class RedFactory implements GUtility, Listener {
 
 	@EventHandler
 	void onPlayerLeaveEvent(TPlayerDisconnectEvent event) {
+		Bukkit.getServer().broadcastMessage("personLeft");
 		if(!redPlayers.contains(event.getPlayer())) return;
 		redPlayers.remove(event.getPlayer());
 	}
