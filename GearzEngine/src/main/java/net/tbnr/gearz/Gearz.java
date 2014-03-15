@@ -243,7 +243,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             }
         }, 1);
 
-	    new RedFactory();
+	    registerEvents(new RedFactory());
     }
 
     @Override

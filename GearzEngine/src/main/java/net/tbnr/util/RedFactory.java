@@ -18,8 +18,11 @@ import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerAnimation;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerAnimation.Animations;
 import net.tbnr.util.player.TPlayer;
+import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ import java.util.logging.Logger;
  * <p/>
  * Latest Change:
  */
-public class RedFactory implements GUtility {
+public class RedFactory implements GUtility, Listener {
 	private static final boolean debug = false; //TODO use gearz debug mode
 	private static final Logger log = null; //TODO get logger
 
@@ -124,5 +127,11 @@ public class RedFactory implements GUtility {
 		WrapperPlayServerAnimation fakeHit = new WrapperPlayServerAnimation();
 		fakeHit.setAnimation(Animations.DAMAGE_ANIMATION);
 		return fakeHit;
+	}
+
+	@EventHandler
+	void onPlayerLeaveEvent(TPlayerDisconnectEvent event) {
+		if(!redPlayers.contains(event.getPlayer())) return;
+		redPlayers.remove(event.getPlayer());
 	}
 }
