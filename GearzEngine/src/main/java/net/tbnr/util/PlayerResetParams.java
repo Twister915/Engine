@@ -12,8 +12,6 @@
 package net.tbnr.util;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import net.tbnr.util.player.TPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.inventory.ItemStack;

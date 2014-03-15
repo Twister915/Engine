@@ -2,22 +2,24 @@ package net.cogz.gearz.hub;
 
 import com.mongodb.DBObject;
 import lombok.Getter;
+import net.cogz.gearz.hub.annotations.HubItems;
+import net.cogz.gearz.hub.annotations.HubModules;
 import net.cogz.gearz.hub.modules.MultiserverCannon;
-import net.cogz.gearz.hub.modules.ServerDisplaySign;
 import net.lingala.zip4j.exception.ZipException;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.GearzException;
 import net.tbnr.gearz.arena.ArenaManager;
-import net.cogz.gearz.hub.annotations.HubItems;
-import net.cogz.gearz.hub.annotations.HubModules;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.TPlugin;
 import net.tbnr.util.command.TCommandStatus;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.io.IOException;
 import java.net.SocketException;
 

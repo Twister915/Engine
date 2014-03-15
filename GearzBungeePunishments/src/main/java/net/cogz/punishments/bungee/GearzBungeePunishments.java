@@ -2,7 +2,6 @@ package net.cogz.punishments.bungee;
 
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ProxyServer;
 import net.tbnr.util.FileUtil;
 import net.tbnr.util.TPluginBungee;
 
@@ -10,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jake on 3/5/14.

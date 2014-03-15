@@ -11,7 +11,10 @@
 
 package net.tbnr.gearz.player.bungee;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;

@@ -1,9 +1,9 @@
 package net.cogz.gearz.hub.modules;
 
-import net.cogz.gearz.hub.annotations.HubModule;
-import net.tbnr.gearz.Gearz;
 import net.cogz.gearz.hub.GearzHub;
+import net.cogz.gearz.hub.annotations.HubModule;
 import net.cogz.gearz.hub.annotations.HubModuleMeta;
+import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
 import net.tbnr.gearz.server.Server;

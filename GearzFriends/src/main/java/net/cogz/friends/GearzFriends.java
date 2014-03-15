@@ -1,6 +1,8 @@
 package net.cogz.friends;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBList;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 import java.util.ArrayList;
 import java.util.List;
