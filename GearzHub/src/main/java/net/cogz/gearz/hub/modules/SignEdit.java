@@ -1,7 +1,7 @@
 package net.cogz.gearz.hub.modules;
 
-import net.cogz.gearz.hub.annotations.HubModule;
 import net.cogz.gearz.hub.GearzHub;
+import net.cogz.gearz.hub.annotations.HubModule;
 import net.cogz.gearz.hub.annotations.HubModuleMeta;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
