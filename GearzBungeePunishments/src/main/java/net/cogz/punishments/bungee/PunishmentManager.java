@@ -17,11 +17,7 @@ import net.tbnr.gearz.GearzBungee;
 import java.text.SimpleDateFormat;
 
 /**
- * Created by jake on 3/5/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Bungee Side Permissions Manager
  */
 public class PunishmentManager extends GearzPunishments implements Listener {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");

@@ -21,11 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by jake on 3/6/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Commands to manage the punishing of players
  */
 public class PunishmentCommands implements TCommandHandler {
     private PunishmentManager manager;
@@ -264,10 +260,24 @@ public class PunishmentCommands implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
+    /**
+     * Uses the GearzBungee string compile method
+     *
+     * @param args args to compile
+     * @param min minimum arg
+     * @param max maximum arg
+     * @return the string compiled from the parameters
+     */
     public static String compile(String[] args, int min, int max) {
         return GearzBungee.getInstance().compile(args, min, max);
     }
 
+    /**
+     * Parses milliseconds from a time string
+     *
+     * @param time time string to parse
+     * @return the amount of milliseconds parsed
+     */
     public long parseTime(String time) {
         long timeReturn;
         try {
@@ -278,6 +288,13 @@ public class PunishmentCommands implements TCommandHandler {
         return timeReturn;
     }
 
+    /**
+     * Parses milliseconds from a time string
+     * @param time the time strnig to parse
+     * @param future whether or not future times are supported
+     * @return the milliseconds parsed from a time string
+     * @throws Exception thrown when no time is found at all
+     */
     public static long parseDateDiff(String time, boolean future) throws Exception {
         Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?", Pattern.CASE_INSENSITIVE);
         Matcher m = timePattern.matcher(time);
@@ -341,6 +358,15 @@ public class PunishmentCommands implements TCommandHandler {
         return c.getTimeInMillis();
     }
 
+    /**
+     * Broadcasts a punishment
+     *
+     * @param server server to broadcast to
+     * @param issuer issuer of the punishment
+     * @param target the punished player
+     * @param punishmentType the type of punishment
+     * @param reason the reason for the punishment
+     */
     public void broadcastPunishment(ServerInfo server, String issuer, String target, PunishmentType punishmentType, String reason) {
         for (ProxiedPlayer proxiedPlayer : server.getPlayers()) {
             if (proxiedPlayer.getServer() == null) continue;

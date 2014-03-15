@@ -9,11 +9,7 @@ import net.tbnr.gearz.activerecord.GModel;
 import java.util.Date;
 
 /**
- * Created by jake on 3/4/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Stores data about a player's Punishment
  */
 @ToString
 public class Punishment extends GModel {
@@ -44,6 +40,10 @@ public class Punishment extends GModel {
         this.punished = punished;
     }
 
+    /**
+     * Returns the PunishmentType from the string stored in the database
+     * @return the PunishmentType of this punishment instance
+     */
     public PunishmentType getPunishmentType() {
         return PunishmentType.valueOf(type);
     }

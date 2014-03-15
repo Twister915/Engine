@@ -14,11 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * Created by jake on 3/6/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Commands to remove punishments for players
  */
 public class UnPunishCommands implements TCommandHandler {
     private PunishmentManager manager;

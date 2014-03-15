@@ -11,16 +11,12 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Created by jake on 3/5/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Bungee Punishments Plugin
  */
 public class GearzBungeePunishments extends TPluginBungee {
     @Getter private Properties strings;
     @Getter public static GearzBungeePunishments instance;
-    PunishmentManager punishmentManager;
+    private PunishmentManager punishmentManager;
 
     @Override
     protected void start() {
