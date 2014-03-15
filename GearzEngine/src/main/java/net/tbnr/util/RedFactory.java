@@ -43,10 +43,8 @@ public class RedFactory implements GUtility, Listener {
 	private static final Logger log = null; //TODO get logger
 
 	private static ArrayList<TPlayer> redPlayers = new ArrayList<TPlayer>();
-	private static WrapperPlayServerAnimation wrapperPlayServerAnimation;
 
 	public RedFactory() {
-		wrapperPlayServerAnimation = getWrapper();
 		start();
 	}
 
@@ -100,21 +98,20 @@ public class RedFactory implements GUtility, Listener {
 
 				// loop through the player list
 				for (TPlayer tPlayer : redPlayersClone) {
+					Player p = tPlayer.getPlayer();
 
-					WrapperPlayServerAnimation wrapper = wrapperPlayServerAnimation;
-					wrapper.setEntityID(tPlayer.getPlayer().getEntityId());
+					WrapperPlayServerAnimation wrapper = new WrapperPlayServerAnimation();
+					wrapper.setAnimation(Animations.DAMAGE_ANIMATION);
+					wrapper.setEntityID(p.getEntityId());
 
 					try {
-						Player p = tPlayer.getPlayer();
 						if (p == null || !p.isValid()) continue;
 
 						for (Player pl : p.getWorld().getPlayers()) {
-							if(pl.equals(p)) continue;
+							if(pl.equals(p) || pl.getLocation().distanceSquared(p.getLocation()) > 2500) continue;
 
 							// only send if the player is in range
-							if (pl.getLocation().distance(p.getLocation()) <= 50) {
-								wrapper.sendPacket(pl);
-							}
+							wrapper.sendPacket(pl);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -122,12 +119,6 @@ public class RedFactory implements GUtility, Listener {
 				}
 			}
 		}.runTaskTimer(Gearz.getInstance(), 0, 20);
-	}
-
-	private static WrapperPlayServerAnimation getWrapper() {
-		WrapperPlayServerAnimation fakeHit = new WrapperPlayServerAnimation();
-		fakeHit.setAnimation(Animations.DAMAGE_ANIMATION);
-		return fakeHit;
 	}
 
 	@EventHandler
