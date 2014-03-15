@@ -23,11 +23,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 /**
- * Created by Jake on 1/24/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Commands to manage player
+ * and group permissions
  */
 public class PermissionsCommands implements TCommandHandler {
 

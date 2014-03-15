@@ -53,6 +53,11 @@ public class PermGroup extends GModel {
         super(database, dBobject);
     }
 
+    /**
+     * Adds a permission to a group
+     * @param perm permission to add
+     * @param value value to set permission to
+     */
     protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
         if (this.permissions == null) permissions = new ArrayList<>();
@@ -61,16 +66,30 @@ public class PermGroup extends GModel {
         save();
     }
 
+    /**
+     * Removes a group permission
+     * @param perm permission to remove
+     */
     protected void removePermission(String perm) {
         this.permissions.remove(perm);
         save();
     }
 
+    /**
+     * Adds a group inheritance
+     *
+     * @param permGroup group to add as an inheritance
+     */
     public void addInheritance(PermGroup permGroup) {
         this.inheritances.add(permGroup.getName());
         save();
     }
 
+    /**
+     * Removes a group inheritance
+     *
+     * @param permGroup group to remove as a inheritance
+     */
     public void removeInheritance(PermGroup permGroup) {
         if (this.inheritances.contains(permGroup.getName())) {
             this.inheritances.remove(permGroup.getName());
@@ -78,6 +97,12 @@ public class PermGroup extends GModel {
         save();
     }
 
+    /**
+     * Whether or not a group has a permission
+     *
+     * @param perm permission to check
+     * @return whether or not a group has a permission
+     */
     public boolean hasPermission(String perm) {
         for (String string : this.permissions) {
             String[] s = string.split(",");

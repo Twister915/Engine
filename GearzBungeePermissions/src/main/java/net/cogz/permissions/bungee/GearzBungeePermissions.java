@@ -21,11 +21,7 @@ import net.tbnr.util.TPluginBungee;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Jake on 1/24/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Bungee Side Permissions Plugin
  */
 @SuppressWarnings("FieldCanBeLocal")
 public class GearzBungeePermissions extends TPluginBungee {

@@ -28,11 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jake on 1/24/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Bungee Specific Permissions API
  */
 public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
     private final List<ProxiedPlayer> playersAlreadyConnected = new ArrayList<>();

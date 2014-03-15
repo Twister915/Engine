@@ -21,11 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Jake on 1/23/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Gearz Permissions API
+ * Supports many types of
+ * MetaData and permissions
  */
 @SuppressWarnings("FieldCanBeLocal")
 public abstract class GearzPermissions {

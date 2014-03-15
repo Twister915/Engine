@@ -23,11 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Jake on 2/2/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Converter for zPerms Permissions to
+ * the Gearz permissions API
  */
 public class Converter implements GUtility {
     String username;
@@ -49,7 +46,12 @@ public class Converter implements GUtility {
         enable();
     }
 
-    public void doStuff() throws SQLException {
+    /**
+     * Loads and converts the old permissions data
+     *
+     * @throws SQLException If there is an error with receiving data
+     */
+    public void loadData() throws SQLException {
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         Connection connection = connectionPool.getConnection();
         PreparedStatement groupSelect = connection.prepareStatement("SELECT * FROM entities WHERE is_group='1'");
@@ -103,6 +105,9 @@ public class Converter implements GUtility {
         }
     }
 
+    /**
+     * Loads SQL Connection
+     */
     public void enable() {
         BoneCPConfig config = new BoneCPConfig();
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + mysqlDb);
@@ -117,7 +122,7 @@ public class Converter implements GUtility {
             e.printStackTrace();
         }
         try {
-            doStuff();
+            loadData();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -55,21 +55,38 @@ public class PermPlayer extends GModel {
         this.name = name.toLowerCase();
     }
 
+    /**
+     * Sets a players group
+     *
+     * @param group group to set to
+     */
     public void setGroup(PermGroup group) {
         this.group = group.getName();
         save();
     }
 
+    /**
+     * Sets the players group to null
+     */
     public void removeGroup() {
         this.group = null;
         save();
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * Returns whether or not a player is in a group
+     * @param group group to check for membership
+     * @return whether or not a player is in a group
+     */
     public boolean isPlayerInGroup(PermGroup group) {
         return this.group.equals(group.getName());
     }
 
+    /**
+     * Adds a permission to a player
+     * @param perm permission to add
+     * @param value value to set permission to
+     */
     protected void addPermission(String perm, boolean value) {
         String permission = perm + "," + value;
         if (this.permissions == null) permissions = new ArrayList<>();
@@ -78,11 +95,21 @@ public class PermPlayer extends GModel {
         save();
     }
 
+    /**
+     * Removes a player permission
+     * @param perm permission to remove
+     */
     public void removePermission(String perm) {
         this.permissions.remove(perm);
         save();
     }
 
+    /**
+     * Whether or not a player has a permission
+     *
+     * @param perm permission to check
+     * @return whether or not a player has a permission
+     */
     public boolean hasPermission(String perm) {
         for (String string : this.permissions) {
             String[] s = string.split(",");

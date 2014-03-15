@@ -5,11 +5,7 @@ import net.tbnr.gearz.command.NetCommandHandler;
 import java.util.HashMap;
 
 /**
- * Created by jake on 2/15/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Manages permissions reloads for BungeeCord
  */
 public class ReloadReceiver {
     @NetCommandHandler(args = {"reload"}, name = "permissions")

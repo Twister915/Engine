@@ -18,11 +18,7 @@ import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 
 /**
- * Created by Jake on 1/24/14.
- *
- * Purpose Of File:
- *
- * Latest Change:
+ * Bukkit Side Permissions Plugin
  */
 public final class GearzBukkitPermissions extends TPlugin {
     @Getter private static GearzBukkitPermissions instance;
