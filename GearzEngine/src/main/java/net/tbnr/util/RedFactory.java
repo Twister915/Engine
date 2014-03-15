@@ -101,7 +101,6 @@ public class RedFactory implements GUtility, Listener {
 
 					WrapperPlayServerAnimation wrapper = wrapperPlayServerAnimation;
 					wrapper.setEntityID(tPlayer.getPlayer().getEntityId());
-					PacketContainer packetContainer = wrapper.getHandle();
 
 					try {
 						Player p = tPlayer.getPlayer();
@@ -111,8 +110,8 @@ public class RedFactory implements GUtility, Listener {
 							if(pl.equals(p)) continue;
 
 							// only send if the player is in range
-							if (pl.getLocation().distanceSquared(p.getLocation()) <= 2500) {
-								protocolManager.sendServerPacket(pl, packetContainer);
+							if (pl.getLocation().distance(p.getLocation()) <= 50) {
+								wrapper.sendPacket(pl);
 							}
 						}
 					} catch (Exception e) {
