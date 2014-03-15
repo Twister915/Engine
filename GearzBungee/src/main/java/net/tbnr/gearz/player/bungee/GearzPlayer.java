@@ -129,7 +129,7 @@ public final class GearzPlayer {
         } catch (PlayerNotFoundException e) {
             return;
         }
-        Object nick = playerDocument.get("nickname");
+        Object nick = playerDocument.get("gearz_nickname");
         if (nick == null || !(nick instanceof String)) return;
         String nickname = (String) nick;
         setNickname(nickname);
