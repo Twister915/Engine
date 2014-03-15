@@ -124,7 +124,6 @@ public class RedFactory implements GUtility, Listener {
 
 	@EventHandler
 	void onPlayerLeaveEvent(TPlayerDisconnectEvent event) {
-		Bukkit.getServer().broadcastMessage("personLeft");
 		if(!redPlayers.contains(event.getPlayer())) return;
 		redPlayers.remove(event.getPlayer());
 	}
