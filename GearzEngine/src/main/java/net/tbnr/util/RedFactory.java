@@ -14,6 +14,7 @@ package net.tbnr.util;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.reflect.cloning.Cloner;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerAnimation;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerAnimation.Animations;
@@ -40,7 +41,7 @@ public class RedFactory implements GUtility, Listener {
 	private static final boolean debug = false; //TODO use gearz debug mode
 	private static final Logger log = null; //TODO get logger
 
-	private static List<TPlayer> redPlayers = new ArrayList<>();
+	private static ArrayList<TPlayer> redPlayers = new ArrayList<TPlayer>();
 	private static ProtocolManager protocolManager;
 	private static WrapperPlayServerAnimation wrapperPlayServerAnimation;
 
@@ -96,8 +97,11 @@ public class RedFactory implements GUtility, Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+
+				ArrayList<TPlayer> redPlayersClone = (ArrayList<TPlayer>) redPlayers.clone();
+
 				// loop through the player list
-				for (TPlayer tPlayer : redPlayers) {
+				for (TPlayer tPlayer : redPlayersClone) {
 
 					WrapperPlayServerAnimation wrapper = wrapperPlayServerAnimation;
 					wrapper.setEntityID(tPlayer.getPlayer().getEntityId());
