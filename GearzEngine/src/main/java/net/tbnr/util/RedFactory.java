@@ -98,7 +98,7 @@ public class RedFactory implements GUtility, Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
+				Bukkit.getServer().broadcastMessage("fjkasasfjkfas");
 				ArrayList<TPlayer> redPlayersClone = (ArrayList<TPlayer>) redPlayers.clone();
 
 				// loop through the player list
