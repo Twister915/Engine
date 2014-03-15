@@ -46,8 +46,8 @@ formats:
   h2p-book-title: "&aHow to play &3<game>&a."
   voted-for: "&3You have voted for &a<map>&3."
   command-status: "&7[&6TBNR&7] &cThe command returned an error: &4<status>"
-game-strings: #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version>
-              #<author>, <description>, and <key>
+game-strings:
+  #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version> <author>, <description>, and <key>
   prefix: "<s>&l«<p><gn><s>&l»&r<s> "
   game-cancelled: "<p><gname><s> will not begin because <p><reason><s>." #passed "<reason>" from the event
   game-start: "<s>A new game of <p><gname><s> is starting now!"
