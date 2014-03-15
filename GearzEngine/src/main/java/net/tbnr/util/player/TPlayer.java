@@ -20,10 +20,7 @@ import lombok.Getter;
 import lombok.ToString;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
-import net.tbnr.util.IPUtils;
-import net.tbnr.util.PlayerResetParams;
-import net.tbnr.util.RandomUtils;
-import net.tbnr.util.TPlugin;
+import net.tbnr.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -720,4 +717,16 @@ public final class TPlayer {
         IPUtils.getPing(getPlayer().getAddress().getAddress(), eventHandler);
 
     }
+
+	public void flashRed() {
+		RedFactory.addRed(this);
+	}
+
+	public void stopFlashRed() {
+		RedFactory.removeRed(this);
+	}
+
+	public boolean isFlashingRed() {
+		return RedFactory.isRed(this);
+	}
 }
