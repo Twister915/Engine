@@ -27,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -100,9 +101,9 @@ public class RedFactory implements GUtility, Listener {
 				for (TPlayer tPlayer : redPlayersClone) {
 					Player p = tPlayer.getPlayer();
 
-					WrapperPlayServerAnimation wrapper = new WrapperPlayServerAnimation();
-					wrapper.setAnimation(Animations.DAMAGE_ANIMATION);
-					wrapper.setEntityID(p.getEntityId());
+					WeakReference<WrapperPlayServerAnimation> wrapper = new WeakReference<WrapperPlayServerAnimation>(new WrapperPlayServerAnimation());
+					wrapper.get().setAnimation(Animations.DAMAGE_ANIMATION);
+					wrapper.get().setEntityID(p.getEntityId());
 
 					try {
 						if (p == null || !p.isValid()) continue;
@@ -111,7 +112,7 @@ public class RedFactory implements GUtility, Listener {
 							if(pl.equals(p) || pl.getLocation().distanceSquared(p.getLocation()) > 2500) continue;
 
 							// only send if the player is in range
-							wrapper.sendPacket(pl);
+							wrapper.get().sendPacket(pl);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
