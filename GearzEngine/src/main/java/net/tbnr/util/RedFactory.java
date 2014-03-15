@@ -108,7 +108,7 @@ public class RedFactory implements GUtility {
 							if(pl.equals(p)) continue;
 
 							// only send if the player is in range
-							if (pl.getLocation().distance(p.getLocation()) <= 50) {
+							if (pl.getLocation().distanceSquared(p.getLocation()) <= 2500) {
 								protocolManager.sendServerPacket(pl, packetContainer);
 							}
 						}
