@@ -34,7 +34,7 @@ formats:
   join-message: "&a&l> &b<player>&6 joined &b<game> lobby&6!"
   leave-message: "&c&l< &b<player>&6 left &b<game> lobby&6!"
   nickname-too-long: "&cThe nickname you have supplied is longer than 16 characters"
-  game-full: "&aThe game is full! Donate to get into a full game!"
+  game-full: "&aThe game is full! Get A Premium/VIP to get into a full game!"
   game-kick: "&aThe game has ended!"
   game-kick-premium: "&aYou have been kicked to make room for a donor."
   map-loading: "&3The map &a<map>&3 was chosen. Please wait for it to load! (There will be a lot of lag, don't worry though)"
