@@ -92,7 +92,7 @@ public final class TPlayerManager implements Listener {
         return instance;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.LOW)
     @SuppressWarnings("unused")
     public void onLogin(PlayerJoinEvent event) {
         if(event.getPlayer() == null) return;
