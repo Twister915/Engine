@@ -81,6 +81,7 @@ public class ChatManager implements Listener, TCommandHandler {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onSpy(ChatEvent event) {
+        if (event.getMessage().contains("\\")) return;
         if (!(event.getSender() instanceof ProxiedPlayer)) return;
         String m = GearzBungee.getInstance().getFormat("spy-message", false, false, new String[]{"<message>", event.getMessage()}, new String[]{"<sender>", ((ProxiedPlayer) event.getSender()).getName()}, new String[]{"<server>", ((ProxiedPlayer) event.getSender()).getServer().getInfo().getName()});
         for (Map.Entry<String, SpyType> p : this.spies.entrySet()) {
