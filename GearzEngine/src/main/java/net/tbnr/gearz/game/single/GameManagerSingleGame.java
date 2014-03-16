@@ -146,7 +146,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     @TCommand(
             usage = "/map",
             senders = {TCommandSender.Player, TCommandSender.Console},
-            permission = "gearz.map",
+            permission = "",
             name = "map")
     @SuppressWarnings("unused")
     public TCommandStatus mapCommand(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
@@ -160,7 +160,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             return TCommandStatus.SUCCESSFUL;
         }
 
-        sender.sendMessage(format("game-strings.map-lore-map-title", this.getGameMeta(), new String[]{"<name>", this.runningGame.getArena().getName()}));
+        sender.sendMessage(format("game-strings.map-title", this.getGameMeta(), new String[]{"<name>", this.runningGame.getArena().getName()}));
         sender.sendMessage(format("game-strings.map-lore-author", this.getGameMeta(), new String[]{"<author>", this.runningGame.getArena().getAuthors()}));
         sender.sendMessage(format("game-strings.map-lore-description", this.getGameMeta(), new String[]{"<description>", this.runningGame.getArena().getDescription()}));
 
