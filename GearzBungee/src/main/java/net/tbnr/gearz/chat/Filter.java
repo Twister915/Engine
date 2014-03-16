@@ -91,6 +91,13 @@ public class Filter {
             return filterData;
         }
 
+        if (filterData.getMessage().matches("connected with an ([^\\s]+) using MineChat")) {
+            player.sendMessage(GearzBungee.getInstance().getFormat("minechat-banned"));
+            player.disconnect(GearzBungee.getInstance().getFormat("minechat-banned"));
+            filterData.setCancelled(true);
+            return filterData;
+        }
+
         if (filterData.getMessage().length() == 1 && !(filterData.getMessage().equalsIgnoreCase("k"))) {
             player.sendMessage(GearzBungee.getInstance().getFormat("chat-short"));
             filterData.setCancelled(true);
