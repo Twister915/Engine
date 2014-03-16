@@ -65,6 +65,9 @@ public class ListModule implements TCommandHandler, Listener {
                 multiMessage.add(formatPlayerList(ProxyServer.getInstance().getPlayers()));
             } else if (args[0].equalsIgnoreCase("staff")) {
                 multiMessage.add(GearzBungee.getInstance().getFormat("list-server-title", false, false, new String[]{"<server>", "Staff"}, new String[]{"<online>", String.valueOf(staff.size())}) + formatPlayerList(staff));
+            } else if (args[0].equalsIgnoreCase("server") && type == TCommandSender.Player) {
+                Collection<ProxiedPlayer> thisServer = ((ProxiedPlayer) sender).getServer().getInfo().getPlayers();
+                multiMessage.add(GearzBungee.getInstance().getFormat("list-server-title", false, false, new String[]{"<server>", "This Server"}, new String[]{"<online>", String.valueOf(thisServer.size())}) + formatPlayerList(thisServer));
             }
         } else {
             shouldShowMoreMessage = true;
