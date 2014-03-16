@@ -189,7 +189,7 @@ public class ChannelManager {
     private String formatMessage(String message, ProxiedPlayer player) {
         String chanFormat = getCurrentChannel(player).getFormat();
         PermissionsDelegate perms = GearzBungee.getInstance().getPermissionsDelegate();
-        chanFormat = chanFormat.replace("%player%", player.getDisplayName()).replace("%message%", ChatColor.RESET + ChatColor.stripColor(message));
+        chanFormat = chanFormat.replace("%player%", player.getDisplayName());
         if (perms != null) {
             String prefix = perms.getPrefix(player.getName().toLowerCase());
             String suffix = perms.getSuffix(player.getName().toLowerCase());
@@ -204,9 +204,8 @@ public class ChannelManager {
         } else {
             chanFormat = chanFormat.replace("%suffix%", "").replace("%prefix%", "").replace("%namecolor%", "");
         }
-        if (player.hasPermission("gearz.chat.colors")) {
-            chanFormat = ChatColor.translateAlternateColorCodes('&', chanFormat);
-        }
+        chanFormat = ChatColor.translateAlternateColorCodes('&', chanFormat);
+        chanFormat = chanFormat.replace("%message%", ChatColor.stripColor(message));
         return chanFormat;
     }
 
