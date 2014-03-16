@@ -68,6 +68,14 @@ public class ListModule implements TCommandHandler, Listener {
             } else if (args[0].equalsIgnoreCase("server") && type == TCommandSender.Player) {
                 Collection<ProxiedPlayer> thisServer = ((ProxiedPlayer) sender).getServer().getInfo().getPlayers();
                 multiMessage.add(GearzBungee.getInstance().getFormat("list-server-title", false, false, new String[]{"<server>", "This Server"}, new String[]{"<online>", String.valueOf(thisServer.size())}) + formatPlayerList(thisServer));
+            } else if (args[0].equalsIgnoreCase("refresh") && sender.hasPermission("gearz.list.refresh")) {
+                List<ProxiedPlayer> toRemove = new ArrayList<>();
+                for (ProxiedPlayer staff : this.staff) {
+                    if (staff.getServer() == null) {
+                        toRemove.add(staff);
+                    }
+                }
+                this.staff.removeAll(toRemove);
             }
         } else {
             shouldShowMoreMessage = true;
