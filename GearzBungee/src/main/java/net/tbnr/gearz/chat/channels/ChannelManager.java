@@ -205,6 +205,7 @@ public class ChannelManager {
             chanFormat = chanFormat.replace("%suffix%", "").replace("%prefix%", "").replace("%namecolor%", "");
         }
         chanFormat = ChatColor.translateAlternateColorCodes('&', chanFormat);
+        chanFormat = chanFormat.replace("%reset%", ChatColor.RESET + "");
         chanFormat = chanFormat.replace("%message%", ChatColor.stripColor(message));
         return chanFormat;
     }
