@@ -1,10 +1,9 @@
 package net.cogz.friends;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,8 +23,9 @@ public abstract class GearzFriends {
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
         for (Object o : friendsList) {
-            if (!(o instanceof String)) continue;
-            String friend = (String) o;
+            if (!(o instanceof BasicDBObject)) continue;
+            BasicDBObject friendObject = (BasicDBObject) o;
+            String friend = friendObject.getString("name");
             friends.add(friend);
         }
         return friends;
@@ -42,7 +42,10 @@ public abstract class GearzFriends {
         if (!hasRequest(toUpdate, toAdd)) {
             throw new FriendRequestException("no request found");
         } else {
-            friendsList.add(toAdd);
+            DBObject newFriend = new BasicDBObjectBuilder()
+                    .add("name", toAdd)
+                    .add("added", new Date()).get();
+            friendsList.add(newFriend);
             if (primary) {
                 addFriendRequest(toAdd, toUpdate);
                 addFriend(toAdd, toUpdate, false);
@@ -61,10 +64,11 @@ public abstract class GearzFriends {
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
         for (Object object : friendsList) {
-            if (!(object instanceof String)) continue;
-            String s = (String) object;
+            if (!(object instanceof BasicDBObject)) continue;
+            BasicDBObject friend = (BasicDBObject) object;
+            String s = friend.getString("name");
             if (s.equals(toRemove)) {
-                friendsList.remove(toRemove);
+                friendsList.remove(friend);
                 if (primary) {
                     removeFriend(toRemove, toUpdate, false);
                 }
@@ -89,9 +93,10 @@ public abstract class GearzFriends {
         if (friendsObj == null || !(friendsObj instanceof BasicDBList)) return false;
         BasicDBList friendsList = (BasicDBList) friendsObj;
         for (Object object : friendsList) {
-            if (!(object instanceof String)) continue;
-            String nameObj = (String) object;
-            if (nameObj.equals(toCheck)) return true;
+            if (!(object instanceof BasicDBObject)) continue;
+            BasicDBObject friend = (BasicDBObject) object;
+            String name = friend.getString("name");
+            if (name.equals(toCheck)) return true;
         }
         return false;
     }
@@ -105,24 +110,28 @@ public abstract class GearzFriends {
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
         for (Object o : friendsList) {
-            if (!(o instanceof String)) continue;
-            String friend = (String) o;
-            friends.add(friend);
+            if (!(o instanceof BasicDBObject)) continue;
+            BasicDBObject friend = (BasicDBObject) o;
+            String name = friend.getString("name");
+            friends.add(name);
         }
         return friends;
     }
 
-    public void addFriendRequest(String reciever, String from) {
-        DBObject playerDocument = getPlayerDocument(reciever);
+    public void addFriendRequest(String receiver, String from) {
+        DBObject playerDocument = getPlayerDocument(receiver);
         Object friendsObj = playerDocument.get("friend_requests");
         if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
             friendsObj = new BasicDBList();
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
-        if (friendsList.contains(from)) {
+        if (hasRequest(receiver, from)) {
             throw new IllegalStateException("Friend request exists for that player");
         } else {
-            friendsList.add(from);
+            DBObject newRequest = new BasicDBObjectBuilder()
+                    .add("name", from)
+                    .add("sent", new Date()).get();
+            friendsList.add(newRequest);
         }
         playerDocument.put("friend_requests", friendsList);
         getCollection().save(playerDocument);
@@ -135,8 +144,18 @@ public abstract class GearzFriends {
             friendsObj = new BasicDBList();
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
-        if (friendsList.contains(toDeny)) {
-            friendsList.remove(toDeny);
+        if (hasRequest(player, toDeny)) {
+            for (Object object : friendsList) {
+                if (!(object instanceof BasicDBObject)) continue;
+                BasicDBObject friend = (BasicDBObject) object;
+                String s = friend.getString("name");
+                if (s.equals(toDeny)) {
+                    friendsList.remove(friend);
+                    playerDocument.put("friend_requests", friendsList);
+                    getCollection().save(playerDocument);
+                    return;
+                }
+            }
         } else {
             throw new IllegalStateException("No friend request from that player");
         }
@@ -151,9 +170,12 @@ public abstract class GearzFriends {
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
         for (Object object : friendsList) {
-            if (!(object instanceof String)) continue;
-            String nameObj = (String) object;
-            if (nameObj.equals(fromPlayer)) return true;
+            if (!(object instanceof BasicDBObject)) continue;
+            BasicDBObject friend = (BasicDBObject) object;
+            String s = friend.getString("name");
+            if (s.equals(fromPlayer)) {
+                return true;
+            }
         }
         return false;
     }
