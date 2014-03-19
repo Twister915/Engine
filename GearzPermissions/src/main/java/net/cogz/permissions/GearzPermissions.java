@@ -324,6 +324,9 @@ public abstract class GearzPermissions {
      */
     public String getPrefix(PermPlayer player) {
         String prefix = null;
+        if (player == null) {
+            System.out.println("[HERE] Player is null!");
+        }
         if (player.getGroup() != null) {
             PermGroup permGroup = getGroup(player.getGroup());
             prefix = permGroup.getPrefix();
