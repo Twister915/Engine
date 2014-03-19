@@ -103,27 +103,25 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                 break;
             case "remove":
                 if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                if (target == null) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null"));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                if (target.getName().equals(sender.getName())) {
+                if (args[1].equals(sender.getName())) {
                     sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-self", false));
                     return TCommandStatus.SUCCESSFUL;
                 }
                 try {
-                    manager.removeFriend(sender.getName(), args[0], true);
+                    manager.removeFriend(sender.getName(), args[1], true);
                 } catch (IllegalStateException e) {
                     sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-not"));
                     return TCommandStatus.SUCCESSFUL;
                 }
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove", false, new String[]{"<player>", target.getName()}));
-                target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove-victim", false, new String[]{"<player>", sender.getName()}));
+                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove", false, new String[]{"<player>", args[1]}));
+                if (target != null) {
+                    target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove-victim", false, new String[]{"<player>", sender.getName()}));
+                }
                 break;
             case "deny":
                 if (args.length != 2) return TCommandStatus.INVALID_ARGS;
                 try {
-                    manager.denyFriendRequest(sender.getName(), args[0]);
+                    manager.denyFriendRequest(sender.getName(), args[1]);
                 } catch (IllegalStateException e) {
                     sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-no-request", false));
                     return TCommandStatus.SUCCESSFUL;
@@ -191,7 +189,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
             try {
                 page = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.formats.not-a-number", false));
+                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.not-a-number", false));
                 return TCommandStatus.SUCCESSFUL;
             }
         }
@@ -199,7 +197,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
         try {
             sendFriendsList((Player) sender, friends, page);
         } catch (IllegalArgumentException e) {
-            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.formats.page-null", false));
+            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.page-null", false));
             return TCommandStatus.SUCCESSFUL;
         }
         return TCommandStatus.SUCCESSFUL;

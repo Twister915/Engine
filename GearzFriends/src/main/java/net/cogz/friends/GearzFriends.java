@@ -60,7 +60,7 @@ public abstract class GearzFriends {
         DBObject playerDocument = getPlayerDocument(toUpdate);
         Object friendsObj = playerDocument.get("friends");
         if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
-            return;
+            throw new IllegalStateException("That player is not your friend");
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
         for (Object object : friendsList) {
