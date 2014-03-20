@@ -15,7 +15,7 @@ public abstract class GearzPunishments {
     /**
      * Players that are muted
      */
-    public Map<String, Punishment> mutedPlayers = new LinkedHashMap<>();
+    public Map<String, Punishment> mutedPlayers = new HashMap<>();
     /**
      * Database where punishments are stored
      */
