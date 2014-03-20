@@ -174,6 +174,11 @@ public abstract class GearzPunishments {
      * @return whether or not a player is local muted
      */
     public boolean isPlayerLocalMuted(String player) {
+        if (this.mutedPlayers.containsKey(player)) {
+            System.out.println("Contained and muted");
+        } else {
+            System.out.println("Not contained, not muted.");
+        }
         return this.mutedPlayers.containsKey(player);
     }
 
@@ -261,7 +266,7 @@ public abstract class GearzPunishments {
      * @return whether or not a player is muted
      */
     public boolean onChat(String player) {
-        return isPlayerMuted(player);
+        return isPlayerLocalMuted(player);
     }
 
     /**

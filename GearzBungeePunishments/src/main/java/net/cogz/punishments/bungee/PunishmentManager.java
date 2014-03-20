@@ -28,8 +28,11 @@ public class PunishmentManager extends GearzPunishments implements Listener {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
         boolean muted = onChat(player.getName());
         if (muted) {
-            Punishment mute = getValidMute(player.getName());
-            if (mute == null) return;
+            Punishment mute = getLocalMute(player.getName());
+            if (mute == null) {
+                System.out.println("It's null");
+                return;
+            }
             if (mute.getPunishmentType() == PunishmentType.MUTE) {
                 player.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted", false, false, new String[]{"<reason>", mute.reason}, new String[]{"<issuer>", mute.issuer}));
             } else if (mute.getPunishmentType() == PunishmentType.TEMP_MUTE) {
