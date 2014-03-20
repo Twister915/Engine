@@ -177,6 +177,10 @@ public abstract class GearzPunishments {
         if (this.mutedPlayers.containsKey(player)) {
             System.out.println("Contained and muted");
         } else {
+            for (String p : mutedPlayers.keySet()) {
+                System.out.println("Contained: " + p);
+                System.out.println("Searched for: " + player);
+            }
             System.out.println("Not contained, not muted.");
         }
         return this.mutedPlayers.containsKey(player);
