@@ -22,6 +22,7 @@ import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.chat.Filter;
 import net.tbnr.gearz.chat.channels.irc.Connection;
 import net.tbnr.gearz.modules.PlayerInfoModule;
+import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 
 import java.io.BufferedWriter;
@@ -189,7 +190,7 @@ public class ChannelManager {
     private String formatMessage(String message, ProxiedPlayer player) {
         String chanFormat = getCurrentChannel(player).getFormat();
         PermissionsDelegate perms = GearzBungee.getInstance().getPermissionsDelegate();
-        chanFormat = chanFormat.replace("%player%", player.getDisplayName());
+        chanFormat = chanFormat.replace("%player%", GearzPlayerManager.getGearzPlayer(player).getNickname());
         if (perms != null) {
             String prefix = perms.getPrefix(player.getName().toLowerCase());
             String suffix = perms.getSuffix(player.getName().toLowerCase());

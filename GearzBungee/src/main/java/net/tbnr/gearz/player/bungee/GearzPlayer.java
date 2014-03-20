@@ -35,7 +35,7 @@ public final class GearzPlayer {
      * The player's username
      */
     private final String username;
-    @Getter @Setter public String nickname;
+    @Setter public String nickname;
     /**
      * The player document
      */
@@ -134,6 +134,14 @@ public final class GearzPlayer {
         String nickname = (String) nick;
         setNickname(nickname);
         getProxiedPlayer().setDisplayName(nickname);
+    }
+
+    public String getNickname() {
+        if (this.nickname != null) {
+            return this.nickname;
+        } else {
+            return this.username;
+        }
     }
 
     public List<String> getIgnoredUsers() {
