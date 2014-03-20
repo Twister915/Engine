@@ -299,6 +299,7 @@ public abstract class GearzPunishments {
             kickPlayer(player, punishment);
         }
         if (type == PunishmentType.MUTE || type == PunishmentType.TEMP_MUTE) {
+            System.out.println("Applied mute to: " + player);
             this.mutedPlayers.put(player, punishment);
         }
         punishment.save();
