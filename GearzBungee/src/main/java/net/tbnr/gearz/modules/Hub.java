@@ -74,7 +74,7 @@ public class Hub implements TCommandHandler, Listener {
         return false;
     }
 
-    @TCommand(aliases = {"leave", "done", "back"}, usage = "/hub", senders = {TCommandSender.Player}, permission = "gearz.hub", name = "hub")
+    @TCommand(aliases = {"leave", "done", "back", "lobby"}, usage = "/hub", senders = {TCommandSender.Player}, permission = "gearz.hub", name = "hub")
     @SuppressWarnings("unused")
     public TCommandStatus hubCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;

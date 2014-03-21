@@ -45,7 +45,7 @@ public class ServerModule implements TCommandHandler, Listener {
     /server [game] [number] - connects you to said server
      */
     @SuppressWarnings("UnusedParameters")
-    @TCommand(name = "server", aliases = {"servers", "join"}, permission = "gearz.server", senders = {TCommandSender.Player}, usage = "/server")
+    @TCommand(name = "server", aliases = {"servers", "join", "s", "serv"}, permission = "gearz.server", senders = {TCommandSender.Player}, usage = "/server")
     public TCommandStatus server(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;
         Server thisServer = null;
