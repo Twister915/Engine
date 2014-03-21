@@ -157,6 +157,9 @@ public abstract class GearzPunishments {
      */
     public void unMute(String player) {
         Punishment punishment = getValidMute(player);
+        if (this.mutedPlayers.containsKey(player)) {
+            this.mutedPlayers.remove(player);
+        }
         punishment.valid = false;
         punishment.save();
     }
