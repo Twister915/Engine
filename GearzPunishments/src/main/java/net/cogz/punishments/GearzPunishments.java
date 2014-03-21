@@ -30,15 +30,17 @@ public abstract class GearzPunishments {
 
     /**
      * Kicks a player from the server
-     * @param player player to kick
+     *
+     * @param player     player to kick
      * @param punishment punishment to kick for
      */
     public abstract void kickPlayer(String player, Punishment punishment);
 
     /**
      * Gets a list of a player's punishments
+     *
      * @param player player to check
-     * @param valid valid punishments only
+     * @param valid  valid punishments only
      * @return a list of punishments
      */
     public List<Punishment> getPunishmentsByPlayer(String player, boolean valid) {
@@ -98,6 +100,7 @@ public abstract class GearzPunishments {
 
     /**
      * Unbans a player
+     *
      * @param player player to unban
      */
     public void unBan(String player) {
@@ -108,6 +111,7 @@ public abstract class GearzPunishments {
 
     /**
      * Checks if a player is muted
+     *
      * @param player player to check
      * @return whether or not the player is muted
      */
@@ -148,6 +152,7 @@ public abstract class GearzPunishments {
 
     /**
      * Unmutes a player
+     *
      * @param player player to unmute
      */
     public void unMute(String player) {
@@ -184,7 +189,20 @@ public abstract class GearzPunishments {
      * @return the player's local mute
      */
     public Punishment getLocalMute(String player) {
-        return this.mutedPlayers.get(player);
+        Punishment punishment = this.mutedPlayers.get(player);
+        if (punishment.getPunishmentType() != PunishmentType.MUTE && punishment.getPunishmentType() != PunishmentType.TEMP_MUTE) {
+            return null;
+        }
+        PunishmentType type = punishment.getPunishmentType();
+        if (!punishment.valid) {
+            return null;
+        }
+        if (type == PunishmentType.MUTE) {
+            return punishment;
+        } else if (type == PunishmentType.TEMP_MUTE && new Date().before(punishment.end)) {
+            return punishment;
+        }
+        return null;
     }
 
     /**
@@ -206,14 +224,16 @@ public abstract class GearzPunishments {
 
     /**
      * Gets the valid ban for an IP
+     *
      * @param ip ip to
      * @return the ip's valid ban
      */
     public Punishment getValidIpBan(String ip) {
         List<Punishment> punishments = getPunishmentsByPlayer(ip, true);
         for (Punishment punishment : punishments) {
-            if (punishment.getPunishmentType() != PunishmentType.IP_BAN)
+            if (punishment.getPunishmentType() != PunishmentType.IP_BAN) {
                 continue;
+            }
             if (!punishment.valid) continue;
             return punishment;
 
@@ -270,8 +290,8 @@ public abstract class GearzPunishments {
      * @param player player to punish
      * @param issuer issuer of the punishment
      * @param reason reason for punishment
-     * @param type type of punishment
-     * @param end when the punishment ends
+     * @param type   type of punishment
+     * @param end    when the punishment ends
      */
     public void punishPlayer(String player, String issuer, String reason, PunishmentType type, Date end) {
         Punishment punishment = new Punishment(this.database);
