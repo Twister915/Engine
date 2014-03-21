@@ -90,7 +90,7 @@ public abstract class GearzPunishments {
             if (!(m instanceof Punishment)) continue;
             Punishment punishmentFound = (Punishment) m;
             if (valid && !punishmentFound.valid) continue;
-            if (type != punishment.getPunishmentType()) continue;
+            if (type != punishmentFound.getPunishmentType()) continue;
             punishments.add(punishmentFound);
         }
         return punishments;

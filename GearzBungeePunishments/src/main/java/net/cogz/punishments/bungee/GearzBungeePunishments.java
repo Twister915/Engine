@@ -20,15 +20,15 @@ public class GearzBungeePunishments extends TPluginBungee {
     @Override
     protected void start() {
         GearzBungeePunishments.instance = this;
+        if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
+        this.strings = new Properties();
+        reloadStrings();
         PunishmentManager punishmentManager = new PunishmentManager();
         punishmentManager.database = punishmentManager.getDB();
         registerCommandHandler(new UnPunishCommands(punishmentManager));
         registerCommandHandler(new PunishmentCommands(punishmentManager));
         registerEvents(punishmentManager);
         punishmentManager.loadIpBans();
-        if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
-        this.strings = new Properties();
-        reloadStrings();
     }
 
     @Override
