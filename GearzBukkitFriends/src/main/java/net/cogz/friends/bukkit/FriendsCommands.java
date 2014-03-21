@@ -69,8 +69,10 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
             sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-usehelp", false));
             return TCommandStatus.SUCCESSFUL;
         }
-
-        Player target = Bukkit.getPlayerExact(args[1]);
+        Player target = null;
+        if (args.length == 2) {
+            target = Bukkit.getPlayerExact(args[1]);
+        }
         switch (args[0]) {
             case "add":
                 if (args.length != 2) return TCommandStatus.INVALID_ARGS;
