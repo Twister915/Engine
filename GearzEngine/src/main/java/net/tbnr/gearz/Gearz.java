@@ -329,6 +329,11 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return (this.isGameServer() ? this.gamePlugins.get(0).getGameManager().getGameMeta().key() : null);
     }
 
+    @Override
+    public String getShortGame() {
+        return (this.isGameServer() ? this.gamePlugins.get(0).getGameManager().getGameMeta().shortName() : null);
+    }
+
     public static String getBungeeName2() {
         return bungeeName2;
     }

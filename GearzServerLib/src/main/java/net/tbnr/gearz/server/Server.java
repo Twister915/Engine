@@ -35,6 +35,8 @@ public final class Server extends GModel {
     @BasicField
     private String game;
     @BasicField
+    private String shortGame;
+    @BasicField
     private String bungee_name;
     @BasicField
     private Integer number;

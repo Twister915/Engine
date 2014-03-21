@@ -23,6 +23,8 @@ public interface ServerManagerHelper {
 
     public String getGame();
 
+    public String getShortGame();
+
     public boolean isGameServer();
 
 }

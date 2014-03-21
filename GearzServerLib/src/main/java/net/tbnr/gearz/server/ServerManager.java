@@ -53,6 +53,7 @@ public class ServerManager {
         }
         Server serv = new Server();
         serv.setGame(currentGame);
+        serv.setShortGame(helper.getShortGame());
         serv.setBungee_name(helper.getBungeeName());
         serv.setNumber(current);
         ServerManager.server = serv;
@@ -64,7 +65,7 @@ public class ServerManager {
         List<Server> servers = new ArrayList<>();
         for (Server m : all) {
             if (m.getGame() == null) continue;
-            if (m.getGame().equals(game)) {
+            if (m.getGame().equals(game) || m.getShortGame().equals(game)) {
                 servers.add(m);
             }
         }

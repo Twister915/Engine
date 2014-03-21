@@ -59,7 +59,8 @@ public class ServerModule implements TCommandHandler, Listener {
         if (args.length != 2)
             player.sendMessage(GearzBungee.getInstance().getFormat("server-connected", false, false, new String[]{"<server>", thisServer.getGame()}, new String[]{"<number>", String.valueOf(thisServer.getNumber())}));
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("lobby")) {
+            if (args[0].equalsIgnoreCase("lobby") || args[0].equalsIgnoreCase("hub")) {
+                player.sendMessage(GearzBungee.getInstance().getFormat("use-lobby", false));
                 return TCommandStatus.SUCCESSFUL;
             }
             List<Server> serversWithGame = ServerManager.getServersWithGame(args[0].toLowerCase());
