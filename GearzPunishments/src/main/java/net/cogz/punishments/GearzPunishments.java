@@ -40,27 +40,6 @@ public abstract class GearzPunishments {
      */
     public abstract void kickPlayer(String player, Punishment punishment);
 
-    public List<Punishment> getPunishmentsByPlayer(String player, boolean valid, PunishmentType ... types) {
-        if (this.allPunishments.containsKey(player)) {
-            return this.allPunishments.get(player);
-        }
-        Punishment punishment = new Punishment(getDB(), player);
-        List<GModel> found = punishment.findAll();
-        List<Punishment> punishments = new ArrayList<>();
-        for (GModel m : found) {
-            if (!(m instanceof Punishment)) continue;
-            Punishment punishmentFound = (Punishment) m;
-            if (valid && !punishmentFound.valid) continue;
-            for (PunishmentType type : types) {
-                if (punishment.getPunishmentType() == type) break;
-            }
-            if (!punishmentFound.punished.equals(player)) continue;
-            punishments.add(punishmentFound);
-        }
-        this.allPunishments.put(player, punishments);
-        return punishments;
-    }
-
     /**
      * Gets a list of a player's punishments
      *

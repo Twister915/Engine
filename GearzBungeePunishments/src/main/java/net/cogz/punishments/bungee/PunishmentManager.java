@@ -43,6 +43,13 @@ public class PunishmentManager extends GearzPunishments implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PreLoginEvent event) {
+        String ipAddress = event.getConnection().getAddress().getHostName();
+        boolean ipBanned = isLocalIpBanned(ipAddress);
+        if (ipBanned) {
+            Punishment punishment = getValidLocalIpBan(ipAddress);
+            event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punishment.issuer}));
+            return;
+        }
         String player = event.getConnection().getName();
         boolean banned = onJoin(player);
         if (banned) {
@@ -55,13 +62,6 @@ public class PunishmentManager extends GearzPunishments implements Listener {
             }
             cleanUpPunishmentMap(player);
         } else {
-            String ipAddress = event.getConnection().getAddress().getHostName();
-            boolean ipBanned = isLocalIpBanned(ipAddress);
-            if (ipBanned) {
-                Punishment punishment = getValidLocalIpBan(ipAddress);
-                event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punishment.issuer}));
-                return;
-            }
             loadMute(player);
             cleanUpPunishmentMap(player);
         }
