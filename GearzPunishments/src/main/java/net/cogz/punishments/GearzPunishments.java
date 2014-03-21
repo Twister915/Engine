@@ -174,15 +174,6 @@ public abstract class GearzPunishments {
      * @return whether or not a player is local muted
      */
     public boolean isPlayerLocalMuted(String player) {
-        if (this.mutedPlayers.containsKey(player)) {
-            System.out.println("Contained and muted");
-        } else {
-            for (String p : mutedPlayers.keySet()) {
-                System.out.println("Contained: " + p);
-                System.out.println("Searched for: " + player);
-            }
-            System.out.println("Not contained, not muted.");
-        }
         return this.mutedPlayers.containsKey(player);
     }
 
@@ -299,7 +290,6 @@ public abstract class GearzPunishments {
             kickPlayer(player, punishment);
         }
         if (type == PunishmentType.MUTE || type == PunishmentType.TEMP_MUTE) {
-            System.out.println("Applied mute to: " + player);
             this.mutedPlayers.put(player, punishment);
         }
         punishment.save();

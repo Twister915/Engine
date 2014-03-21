@@ -25,7 +25,7 @@ public class GearzBungeePunishments extends TPluginBungee {
         punishmentManager.database = punishmentManager.getDB();
         registerCommandHandler(new UnPunishCommands(punishmentManager));
         registerCommandHandler(new PunishmentCommands(punishmentManager));
-        registerEvents(new PunishmentManager());
+        registerEvents(this.punishmentManager);
         if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
         this.strings = new Properties();
         reloadStrings();

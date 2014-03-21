@@ -30,7 +30,6 @@ public class PunishmentManager extends GearzPunishments implements Listener {
         if (muted) {
             Punishment mute = getLocalMute(player.getName());
             if (mute == null) {
-                System.out.println("It's null");
                 return;
             }
             if (mute.getPunishmentType() == PunishmentType.MUTE) {
