@@ -16,16 +16,15 @@ import java.util.Properties;
 public class GearzBungeePunishments extends TPluginBungee {
     @Getter private Properties strings;
     @Getter public static GearzBungeePunishments instance;
-    private PunishmentManager punishmentManager;
 
     @Override
     protected void start() {
         GearzBungeePunishments.instance = this;
-        this.punishmentManager = new PunishmentManager();
+        PunishmentManager punishmentManager = new PunishmentManager();
         punishmentManager.database = punishmentManager.getDB();
         registerCommandHandler(new UnPunishCommands(punishmentManager));
         registerCommandHandler(new PunishmentCommands(punishmentManager));
-        registerEvents(this.punishmentManager);
+        registerEvents(punishmentManager);
         if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
         this.strings = new Properties();
         reloadStrings();

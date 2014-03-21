@@ -15,9 +15,6 @@ import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Bungee Side Permissions Manager
  */
@@ -51,13 +48,15 @@ public class PunishmentManager extends GearzPunishments implements Listener {
             event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punishment.issuer}));
             return;
         }
-        //List<Punishment> allPunishments = getPunishmentsByPlayer(event.getConnection().getName(), true, PunishmentType.PERMANENT_BAN, PunishmentType.MUTE, PunishmentType.TEMP_BAN, PunishmentType.TEMP_MUTE);
-        boolean banned = onJoin(event.getConnection().getName());
+        String player = event.getConnection().getName();
+        boolean banned = onJoin(player);
         if (!banned) {
-            loadMute(event.getConnection().getName());
+            loadMute(player);
+            cleanUpPunishmentMap(player);
             return;
         }
-        Punishment punishment = getValidBan(event.getConnection().getName());
+        Punishment punishment = getValidBan(player);
+        cleanUpPunishmentMap(player);
         PunishmentType punishmentType = punishment.getPunishmentType();
         if (punishmentType == PunishmentType.PERMANENT_BAN) {
             event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}));

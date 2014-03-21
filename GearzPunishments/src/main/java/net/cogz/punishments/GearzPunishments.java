@@ -16,6 +16,8 @@ public abstract class GearzPunishments {
      * Players that are muted
      */
     public Map<String, Punishment> mutedPlayers = new HashMap<>();
+
+    private Map<String, List<Punishment>> allPunishments = new HashMap<>();
     /**
      * Database where punishments are stored
      */
@@ -37,6 +39,9 @@ public abstract class GearzPunishments {
     public abstract void kickPlayer(String player, Punishment punishment);
 
     public List<Punishment> getPunishmentsByPlayer(String player, boolean valid, PunishmentType ... types) {
+        if (this.allPunishments.containsKey(player)) {
+            return this.allPunishments.get(player);
+        }
         Punishment punishment = new Punishment(getDB(), player);
         List<GModel> found = punishment.findAll();
         List<Punishment> punishments = new ArrayList<>();
@@ -50,6 +55,7 @@ public abstract class GearzPunishments {
             if (!punishmentFound.punished.equals(player)) continue;
             punishments.add(punishmentFound);
         }
+        this.allPunishments.put(player, punishments);
         return punishments;
     }
 
@@ -72,6 +78,17 @@ public abstract class GearzPunishments {
             punishments.add(punishmentFound);
         }
         return punishments;
+    }
+
+    /**
+     * Removes players punishments from list
+     *
+     * @param player player to remove
+     */
+    public void cleanUpPunishmentMap(String player) {
+        if (this.allPunishments.containsKey(player)) {
+            this.allPunishments.remove(player);
+        }
     }
 
     /**
