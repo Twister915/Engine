@@ -15,6 +15,7 @@ import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 
 import java.text.SimpleDateFormat;
+
 /**
  * Bungee Side Permissions Manager
  */
@@ -42,26 +43,27 @@ public class PunishmentManager extends GearzPunishments implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PreLoginEvent event) {
-        boolean ipBanned = isIpBanned(event.getConnection().getAddress().getHostName());
-        if (ipBanned) {
-            Punishment punishment = getValidIpBan(event.getConnection().getAddress().getHostName());
-            event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punishment.issuer}));
-            return;
-        }
         String player = event.getConnection().getName();
         boolean banned = onJoin(player);
-        if (!banned) {
+        if (banned) {
+            Punishment punishment = getValidBan(player);
+            PunishmentType punishmentType = punishment.getPunishmentType();
+            if (punishmentType == PunishmentType.PERMANENT_BAN) {
+                event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}));
+            } else if (punishmentType == PunishmentType.TEMP_BAN) {
+                event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<date>", longReadable.format(punishment.end)}));
+            }
+            cleanUpPunishmentMap(player);
+        } else {
+            boolean ipBanned = isIpBanned(event.getConnection().getAddress().getHostName());
+            if (ipBanned) {
+                Punishment punishment = getValidIpBan(event.getConnection().getAddress().getHostName());
+                event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punishment.issuer}));
+                cleanUpPunishmentMap(event.getConnection().getAddress().getHostName());
+                return;
+            }
             loadMute(player);
             cleanUpPunishmentMap(player);
-            return;
-        }
-        Punishment punishment = getValidBan(player);
-        cleanUpPunishmentMap(player);
-        PunishmentType punishmentType = punishment.getPunishmentType();
-        if (punishmentType == PunishmentType.PERMANENT_BAN) {
-            event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}));
-        } else if (punishmentType == PunishmentType.TEMP_BAN) {
-            event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<date>", longReadable.format(punishment.end)}));
         }
     }
 
