@@ -18,6 +18,8 @@ public abstract class GearzPunishments {
     public Map<String, Punishment> mutedPlayers = new HashMap<>();
 
     private Map<String, List<Punishment>> allPunishments = new HashMap<>();
+
+    private Map<String, Punishment> ipBans = new HashMap<>();
     /**
      * Database where punishments are stored
      */
@@ -75,6 +77,20 @@ public abstract class GearzPunishments {
             Punishment punishmentFound = (Punishment) m;
             if (valid && !punishmentFound.valid) continue;
             if (!punishmentFound.punished.equals(player)) continue;
+            punishments.add(punishmentFound);
+        }
+        return punishments;
+    }
+
+    public List<Punishment> getPunishmentsByType(PunishmentType type, boolean valid) {
+        Punishment punishment = new Punishment(getDB());
+        List<GModel> found = punishment.findAll();
+        List<Punishment> punishments = new ArrayList<>();
+        for (GModel m : found) {
+            if (!(m instanceof Punishment)) continue;
+            Punishment punishmentFound = (Punishment) m;
+            if (valid && !punishmentFound.valid) continue;
+            if (type != punishment.getPunishmentType()) continue;
             punishments.add(punishmentFound);
         }
         return punishments;
@@ -278,6 +294,14 @@ public abstract class GearzPunishments {
         return null;
     }
 
+    public boolean isLocalIpBanned(String ip) {
+        return this.ipBans.containsKey(ip);
+    }
+
+    public Punishment getValidLocalIpBan(String ip) {
+        return this.ipBans.get(ip);
+    }
+
     /**
      * Unbans an IP
      *
@@ -286,6 +310,7 @@ public abstract class GearzPunishments {
     public void unIpBan(String ip) {
         Punishment punishment = getValidIpBan(ip);
         punishment.valid = false;
+        this.ipBans.remove(ip);
         punishment.save();
     }
 
@@ -349,6 +374,9 @@ public abstract class GearzPunishments {
         if (type == PunishmentType.MUTE || type == PunishmentType.TEMP_MUTE) {
             this.mutedPlayers.put(player, punishment);
         }
+        if (type == PunishmentType.IP_BAN) {
+            this.ipBans.put(player, punishment);
+        }
         punishment.save();
     }
 
@@ -364,6 +392,15 @@ public abstract class GearzPunishments {
         PunishmentType type = punishment.getPunishmentType();
         if (type == PunishmentType.MUTE || type == PunishmentType.TEMP_MUTE) {
             this.mutedPlayers.remove(punishment.punished);
+        }
+        if (type == PunishmentType.IP_BAN) {
+            this.ipBans.remove(punishment.punished);
+        }
+    }
+
+    public void loadIpBans() {
+        for (Punishment punishment : getPunishmentsByType(PunishmentType.IP_BAN, true)) {
+            this.ipBans.put(punishment.punished, punishment);
         }
     }
 }

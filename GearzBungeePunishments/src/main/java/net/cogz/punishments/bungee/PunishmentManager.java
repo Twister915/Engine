@@ -55,11 +55,11 @@ public class PunishmentManager extends GearzPunishments implements Listener {
             }
             cleanUpPunishmentMap(player);
         } else {
-            boolean ipBanned = isIpBanned(event.getConnection().getAddress().getHostName());
+            String ipAddress = event.getConnection().getAddress().getHostName();
+            boolean ipBanned = isLocalIpBanned(ipAddress);
             if (ipBanned) {
-                Punishment punishment = getValidIpBan(event.getConnection().getAddress().getHostName());
+                Punishment punishment = getValidLocalIpBan(ipAddress);
                 event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punishment.issuer}));
-                cleanUpPunishmentMap(event.getConnection().getAddress().getHostName());
                 return;
             }
             loadMute(player);

@@ -25,6 +25,7 @@ public class GearzBungeePunishments extends TPluginBungee {
         registerCommandHandler(new UnPunishCommands(punishmentManager));
         registerCommandHandler(new PunishmentCommands(punishmentManager));
         registerEvents(punishmentManager);
+        punishmentManager.loadIpBans();
         if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
         this.strings = new Properties();
         reloadStrings();
