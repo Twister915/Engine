@@ -11,18 +11,19 @@
 
 package net.tbnr.util.bungee.command;
 
+import com.google.common.collect.ImmutableSet;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import net.tbnr.util.ErrorHandler;
 import net.tbnr.util.TPluginBungee;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * This is the dispatcher for all commands. It will handle commands and dispatch them to the proper methods.
@@ -221,7 +222,7 @@ public class TCommandDispatch {
     /**
      * BungeeCommandDelegate represents a "Command" that can serve as any command to send calls back to the dispatcher. :D
      */
-    private class BungeeCommandDelegate extends Command {
+    private class BungeeCommandDelegate extends Command implements TabExecutor {
         public BungeeCommandDelegate(TCommand command, TCommandDispatch dispatch) {
             super(command.name(), null, command.aliases());
             this.command = command;
@@ -239,6 +240,25 @@ public class TCommandDispatch {
                 ErrorHandler.reportError(ex);
                 commandSender.sendMessage(ChatColor.RED + "Very low level error. Cannot continue!");
             }
+        }
+
+        @Override
+        public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+            if (args.length > 2 || args.length == 0) {
+                return ImmutableSet.of();
+            }
+
+            Set<String> matches = new HashSet<>();
+            if (args.length == 1) {
+                String search = args[0].toLowerCase();
+                for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+                    if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
+                        matches.add(player.getName());
+                    }
+                }
+            }
+
+            return matches;
         }
     }
 }
