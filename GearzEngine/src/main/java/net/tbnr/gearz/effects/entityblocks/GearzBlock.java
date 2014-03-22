@@ -5,9 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by George on 04/02/14.
  * <p/>
@@ -46,12 +43,6 @@ import java.util.List;
 
 	public GearzBlock register() {
 		return GearzBlockManager.registerBlock(this);
-	}
-
-	public EntityBlock[] gearzBlock2Entities() {
-		List<EntityBlock> entityBlockList = new ArrayList<>();
-		entityBlockList.add(new EntityBlock(location, type, data));
-		return entityBlockList.toArray(new EntityBlock[entityBlockList.size()]);
 	}
 
 }
