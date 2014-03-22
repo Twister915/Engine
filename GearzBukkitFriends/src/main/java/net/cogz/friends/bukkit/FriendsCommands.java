@@ -159,11 +159,11 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                 return TCommandStatus.SUCCESSFUL;
             case "join":
                 if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                if (target == null) {
+                Server server = ServerManager.getServerByPlayer(args[1]);
+                if (server == null) {
                     sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
                     return TCommandStatus.SUCCESSFUL;
                 }
-                Server server = ServerManager.getServerByPlayer(target.getName());
                 if (server.equals(ServerManager.getThisServer())) {
                     sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-same-server", false));
                 } else if (server.isCanJoin()) {
