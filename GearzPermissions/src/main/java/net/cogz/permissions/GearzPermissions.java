@@ -72,7 +72,6 @@ public abstract class GearzPermissions {
      * Reloads all the data from the database
      */
     public void reload() {
-        System.out.println("STARTING RELOAD: " + System.currentTimeMillis());
         this.database = getDatabase();
         int checks = 0;
         while (this.database == null) {
@@ -98,12 +97,9 @@ public abstract class GearzPermissions {
             group.save();
             throw new UnsupportedOperationException("Invalid default group! New one created..");
         }
-        System.out.println("STARTING JOINS: " + System.currentTimeMillis());
-        this.players = new HashMap<>();
         for (String s : onlinePlayers()) {
             onJoin(s);
         }
-        System.out.println("END RELOAD: " + System.currentTimeMillis());
     }
 
     /**
@@ -327,11 +323,6 @@ public abstract class GearzPermissions {
      */
     public String getPrefix(PermPlayer player) {
         String prefix = null;
-        System.out.println("CALLED");
-        System.out.println(player.toString());
-        if (player == null) {
-            System.out.println("[HERE] Player is null!");
-        }
         if (player.getGroup() != null) {
             PermGroup permGroup = getGroup(player.getGroup());
             prefix = permGroup.getPrefix();
