@@ -61,6 +61,6 @@ public final class PlayerListener implements Listener {
 				EntityBlock.newBlock(event.getPlayer().getLocation(), Material.DIAMOND_BLOCK, (byte)0).showBlock(event.getPlayer());
 			}
 
-		}.runTaskLater(Gearz.getInstance(), 2000);
+		}.runTaskLater(Gearz.getInstance(), 40);
 	}
 }
