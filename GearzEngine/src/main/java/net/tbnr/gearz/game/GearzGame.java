@@ -22,9 +22,11 @@ import net.tbnr.gearz.event.game.GameEndEvent;
 import net.tbnr.gearz.event.game.GamePreStartEvent;
 import net.tbnr.gearz.event.game.GameStartEvent;
 import net.tbnr.gearz.event.player.*;
+import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.RandomUtils;
+import net.tbnr.util.ServerSelector;
 import net.tbnr.util.inventory.InventoryGUI;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
@@ -595,6 +597,8 @@ public abstract class GearzGame implements Listener {
         }
         player.setHideStats(false);
         player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("spectator-chooser"));
+        player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("server-book"));
+
         spectatorGui.updateContents(getPlayersForMenu());
         RandomUtils.setPlayerCollision(player.getPlayer(), false);
     }
@@ -874,6 +878,45 @@ public abstract class GearzGame implements Listener {
         }
         if (isSpectating(player)) {
             if (event.getPlayer().getItemInHand().getType() == Material.BOOK && event.getAction() != Action.PHYSICAL) {
+                if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(getFormat("server-book"))) {
+                    ServerSelector serverSelector = new ServerSelector(this.getGameMeta().key(), new ServerSelector.SelectorCallback() {
+                        @Override
+                        public void onItemSelect(ServerSelector selector, InventoryGUI.InventoryGUIItem item, Player player) {
+                            /**
+                             * The reason you need to test as the person could have the selector
+                             * open for a while, and he clicks the last item while a server is restarting
+                             * so the server is no longer online and therefore is not in the servers list
+                             * Though the inventory is already open so it's not updated
+                             * Therefore it causes and IndexOutOfBoundsException
+                             * @see java.lang.IndexOutOfBoundsException
+                             */
+                            net.tbnr.gearz.server.Server server;
+                            try {
+                                server = selector.getServers().get(
+                                        /** if */item.getSlot() > selector.getServers().size() ?
+                                        /** true */0 : /** false */item.getSlot()
+                                );
+                            } catch (IndexOutOfBoundsException e) {
+                                selector.update();
+                                return;
+                            }
+                            BouncyUtils.sendPlayerToServer(player, server);
+                        }
+
+                        @Override
+                        public void onSelectorOpen(ServerSelector selector, Player player) {
+
+                        }
+
+                        @Override
+                        public void onSelectorClose(ServerSelector selector, Player player) {
+
+                        }
+                    });
+                    serverSelector.open(player.getPlayer());
+                    event.setCancelled(true);
+                    return;
+                }
                 spectatorGui.open(player.getPlayer());
                 event.setCancelled(true);
                 return;
