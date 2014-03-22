@@ -19,10 +19,16 @@ import java.lang.reflect.InvocationTargetException;
  * <p/>
  * Latest Change:
  */
-public class EntityBlock extends GearzBlock {
+public class EntityBlock {
 
-	EntityBlock(Location location, Material material, byte data) {
-		super(location, material, data);
+	Location location;
+	Material type;
+	byte data;
+
+	private EntityBlock(Location location, Material material, byte data) {
+		this.location = location;
+		this.type = material;
+		this.data = data;
 	}
 
 	public int showBlock(Player player) {
@@ -59,8 +65,11 @@ public class EntityBlock extends GearzBlock {
 		return newEntityID;
 	}
 
-	@Override
-	public GearzBlock register() {
+	public static EntityBlock newBlock(Location location, Material material, byte data) {
+		return new EntityBlock(location, material, data).register();
+	}
+
+	private EntityBlock register() {
 		return EntityBlockManager.registerBlock(this);
 	}
 }

@@ -11,14 +11,18 @@
 
 package net.tbnr.gearz;
 
+import net.tbnr.gearz.effects.entityblocks.EntityBlock;
 import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.player.TPlayerJoinEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,4 +51,16 @@ public final class PlayerListener implements Listener {
             Bukkit.shutdown();
         }
     }
+
+	@EventHandler
+	public void onEntityBlockTest(final PlayerJoinEvent event) {
+		new BukkitRunnable() {
+
+			@Override
+			public void run() {
+				EntityBlock.newBlock(event.getPlayer().getLocation(), Material.DIAMOND_BLOCK, (byte)0).showBlock(event.getPlayer());
+			}
+
+		}.runTaskLater(Gearz.getInstance(), 2000);
+	}
 }

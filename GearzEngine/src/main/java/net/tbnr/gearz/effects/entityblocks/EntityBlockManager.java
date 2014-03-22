@@ -21,7 +21,7 @@ import java.util.List;
  * <p/>
  * Latest Change:
  */
-public class EntityBlockManager extends GearzBlockManager {
+public class EntityBlockManager {
 
 	private static List<EntityBlock> regBlocks = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class EntityBlockManager extends GearzBlockManager {
 		return regBlocks.contains(b);
 	}
 
-	public static GearzBlock registerBlock(EntityBlock entityBlock) {
+	public static EntityBlock registerBlock(EntityBlock entityBlock) {
 		if(isRegistered(entityBlock)) {
 			return regBlocks.get(regBlocks.indexOf(entityBlock));
 		}
