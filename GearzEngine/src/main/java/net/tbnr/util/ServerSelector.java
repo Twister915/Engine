@@ -148,7 +148,7 @@ public class ServerSelector implements Listener {
         Wool wool = new Wool(color);
         ItemStack itemStack = wool.toItemStack(1);
 
-        String serverName = Gearz.getInstance().getFormat("formats.blastoff-itemname", true, new String[]{"<game>", server.getGame()}, new String[]{"<number>", server.getNumber().toString()});
+        String serverName = Gearz.getInstance().getFormat("formats.selector-name", true, new String[]{"<game>", server.getGame()}, new String[]{"<number>", server.getNumber().toString()});
 
         itemStack.setAmount(server.getPlayerCount() == null ? 1 : Math.max(1, server.getPlayerCount()));
         return new InventoryGUI.InventoryGUIItem(itemStack, serverName);
