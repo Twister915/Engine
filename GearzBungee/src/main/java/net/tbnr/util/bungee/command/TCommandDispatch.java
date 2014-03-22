@@ -256,6 +256,13 @@ public class TCommandDispatch {
                         matches.add(player.getName());
                     }
                 }
+            } else if (args.length == 2) {
+                String search = args[1].toLowerCase();
+                for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+                    if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
+                        matches.add(player.getName());
+                    }
+                }
             }
 
             return matches;
