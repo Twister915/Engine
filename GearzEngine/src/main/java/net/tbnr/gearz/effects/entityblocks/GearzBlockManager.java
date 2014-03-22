@@ -1,8 +1,5 @@
 package net.tbnr.gearz.effects.entityblocks;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,39 +10,19 @@ import java.util.List;
  * <p/>
  * Latest Change:
  */
-public final class GearzBlockManager {
+public class GearzBlockManager {
 
 	private static List<GearzBlock> regBlocks = new ArrayList<>();
-
-	public static GearzBlock registerBlock(Block b) {
-		GearzBlock gearzBlock = getGearzBlock(b);
-		if(gearzBlock != null) return gearzBlock;
-		gearzBlock = new GearzBlock(b);
-		regBlocks.add(gearzBlock);
-		return gearzBlock;
-	}
 
 	public static boolean isRegistered(GearzBlock b) {
 		return regBlocks.contains(b);
 	}
 
-	public static boolean isRegistered(Location l) {
-		return getGearzBlock(l) != null;
-	}
-
-	private static GearzBlock getGearzBlock(Block b) {
-		return getGearzBlock(b.getLocation());
-	}
-
-	private static GearzBlock getGearzBlock(Location l) {
-		Location gearzLocation;
-		for(GearzBlock gearzBlock : regBlocks) {
-			gearzLocation = gearzBlock.getBlock().getLocation();
-			if(gearzLocation.getBlockX() != l.getBlockX()) continue;
-			if(gearzLocation.getBlockY() != l.getBlockY()) continue;
-			if(gearzLocation.getBlockZ() != l.getBlockZ()) continue;
-			return gearzBlock;
+	public static GearzBlock registerBlock(GearzBlock gearzBlock) {
+		if(isRegistered(gearzBlock)) {
+			return regBlocks.get(regBlocks.indexOf(gearzBlock));
 		}
-		return null;
+		regBlocks.add(gearzBlock);
+		return gearzBlock;
 	}
 }

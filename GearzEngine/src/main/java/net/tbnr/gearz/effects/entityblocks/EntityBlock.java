@@ -1,13 +1,16 @@
 package net.tbnr.gearz.effects.entityblocks;
 
-import net.tbnr.util.EntityUtil;
-import org.bukkit.Bukkit;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import net.tbnr.gearz.packets.wrapper.WrapperPlayServerEntityMetadata;
+import net.tbnr.gearz.packets.wrapper.WrapperPlayServerSpawnEntity;
+import net.tbnr.gearz.packets.wrapper.WrapperPlayServerSpawnEntity.ObjectTypes;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Minecart;
-import org.reflections.Reflections;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
-import java.util.UUID;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by George on 04/02/14.
@@ -18,32 +21,46 @@ import java.util.UUID;
  */
 public class EntityBlock extends GearzBlock {
 
-	private final UUID UUID;
-
-	EntityBlock(Location location) {
-		super(location);
-		this.UUID = spawnMinecart();
-		giveNBTData();
+	EntityBlock(Location location, Material material, byte data) {
+		super(location, material, data);
 	}
 
-	public UUID spawnMinecart() {
-		return block.getWorld().spawnEntity(block.getLocation(), EntityType.MINECART).getUniqueId();
+	public int showBlock(Player player) {
+		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+
+		// Use a counter to get new entity IDs
+		int newEntityID = 1000;
+
+		// Give the illusion of containing a portal block
+		WrapperPlayServerSpawnEntity spawnVehicle = new WrapperPlayServerSpawnEntity();
+		WrapperPlayServerEntityMetadata entityMeta = new WrapperPlayServerEntityMetadata();
+		WrappedDataWatcher watcher = new WrappedDataWatcher();
+
+		spawnVehicle.setEntityID(newEntityID);
+		spawnVehicle.setType(ObjectTypes.MINECART);
+		spawnVehicle.setX(player.getLocation().getX());
+		spawnVehicle.setY(player.getLocation().getY());
+		spawnVehicle.setZ(player.getLocation().getZ());
+
+		watcher.setObject(20, type.getId() | (data << 16));
+		watcher.setObject(21, 6);
+		watcher.setObject(22, (byte)1);
+
+		// Initialize packet
+		entityMeta.setEntityMetadata(watcher.getWatchableObjects());
+		entityMeta.setEntityId(newEntityID);
+
+		try {
+			manager.sendServerPacket(player, spawnVehicle.getHandle());
+			manager.sendServerPacket(player, entityMeta.getHandle());
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return newEntityID;
 	}
 
-	public void giveNBTData() {
-
-		final String NMS_PATH =
-			"net.minecraft.server."+
-			(Bukkit.getServer() != null ?
-					Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] :
-					"UNKNOWN"
-			);
-
-		Minecart m = (Minecart) EntityUtil.UUID2Entity(UUID);
-
-
-		EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) entity).getHandle();
-		AttributeInstance attributes = nmsEntity.a(GenericAttributes.d);
+	@Override
+	public GearzBlock register() {
+		return EntityBlockManager.registerBlock(this);
 	}
-
 }

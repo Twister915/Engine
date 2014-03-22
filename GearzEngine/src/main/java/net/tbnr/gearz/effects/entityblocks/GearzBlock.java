@@ -1,7 +1,6 @@
 package net.tbnr.gearz.effects.entityblocks;
 
 import lombok.Data;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,38 +15,42 @@ import java.util.List;
  * <p/>
  * Latest Change: created it and added base functions
  * <p/>
- * Important Information: To get a GearzBlock from a block use the {@link #block2GearzBlock(Block block)}
+ * Important Information: As soon as you make the gearz block use the {@link #register()} method
+ * For Example: GearzBlock b = new GearzBlock(location, type, data).register();
+ * Save the register command as your reference to the block
  * <p/>
+ *
  * Do not try to invoke the constructor!
  */
 @Data public class GearzBlock {
-
-	// The reason I'm keeping all the type and data is because I might change the bukkit block to air
 
 	protected Material type;
 
 	protected Byte data;
 
-	@Getter
-	protected final Block block;
+	protected Location location;
 
-	GearzBlock(Block block)	{
-		this.type = block.getType();
-		this.data = block.getData();
-		this.block = block;
-	}
-
-	GearzBlock(Location l) {
+	public GearzBlock(Location l) {
 		this(l.getBlock());
 	}
 
-	public static GearzBlock block2GearzBlock(Block block) {
-		return GearzBlockManager.registerBlock(block);
+	public GearzBlock(Block block)	{
+		this(block.getLocation(), block.getType(), block.getData());
+	}
+
+	public GearzBlock(Location location, Material type, Byte data) {
+		this.location = location;
+		this.type = type;
+		this.data = data;
+	}
+
+	public GearzBlock register() {
+		return GearzBlockManager.registerBlock(this);
 	}
 
 	public EntityBlock[] gearzBlock2Entities() {
 		List<EntityBlock> entityBlockList = new ArrayList<>();
-		entityBlockList.add(new EntityBlock(new Location(block.getWorld(), block.getX()-0.25, block.getY()-0.25, block.getZ()-0.25)));
+		entityBlockList.add(new EntityBlock(location, type, data));
 		return entityBlockList.toArray(new EntityBlock[entityBlockList.size()]);
 	}
 
