@@ -167,7 +167,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                 if (server.equals(ServerManager.getThisServer())) {
                     sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-same-server", false));
                 } else if (server.isCanJoin()) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join", false, new String[]{"<server>", server.getGame()}));
+                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join", false, new String[]{"<server>", server.getGame()}, new String[]{"<player>", args[1]}));
                     BouncyUtils.sendPlayerToServer((Player) sender, server);
                 } else {
                     sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join-bad", false));
