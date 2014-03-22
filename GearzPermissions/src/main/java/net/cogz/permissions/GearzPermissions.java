@@ -30,7 +30,7 @@ public abstract class GearzPermissions {
     /**
      * Players who are online with their names.
      */
-    private Map<String, PermPlayer> players = new HashMap<>();
+    public Map<String, PermPlayer> players = new HashMap<>();
     /**
      * All groups
      */

@@ -182,10 +182,15 @@ public class PermissionsCommands implements TCommandHandler {
         if (!sender.hasPermission("gearz.permissions")) return TCommandStatus.PERMISSIONS;
         switch (args[0]) {
             case "reload":
+            case "refresh":
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.reload"));
                 GearzBukkitPermissions.getInstance().getPermsManager().reload();
                 NetCommand.withName("permissions").withArg("reload", true).send();
                 return TCommandStatus.SUCCESSFUL;
+            case "online":
+                for (String string : GearzBukkitPermissions.getInstance().getPermsManager().players.keySet()) {
+                    sender.sendMessage(string);
+                }
             default:
                 return TCommandStatus.INVALID_ARGS;
         }
