@@ -3,6 +3,7 @@ package net.tbnr.gearz.effects.entityblocks;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import lombok.Setter;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerEntityMetadata;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerSpawnEntity;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerSpawnEntity.ObjectTypes;
@@ -22,7 +23,9 @@ import java.lang.reflect.InvocationTargetException;
 public class EntityBlock {
 
 	Location location;
+	@Setter
 	Material type;
+	@Setter
 	byte data;
 	static int entityIDLevel = 1000;
 	float yaw;
