@@ -64,7 +64,7 @@ public class EntityBlock {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		newEntityID++;
+		entityIDLevel++;
 		return newEntityID;
 	}
 
