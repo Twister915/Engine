@@ -56,6 +56,7 @@ public class EntityBlock {
 		spawnVehicle.setY(location.getY());
 		spawnVehicle.setZ(location.getZ());
 		spawnVehicle.setYaw(yaw);
+		spawnVehicle.setPitch(pitch);
 
 		watcher.setObject(20, type.getId() | (data << 16));
 		watcher.setObject(21, offsetY);
