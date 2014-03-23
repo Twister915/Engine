@@ -75,9 +75,6 @@ public class ChannelCommand implements TCommandHandler {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("already-on-channel"));
             }
             sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
-        } else {
-            String message = GearzBungee.getInstance().compile(args, 0, args.length);
-            GearzBungee.getInstance().getChannelManager().getChannelByName("staff").sendMessage(message, (ProxiedPlayer) sender);
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -85,7 +82,6 @@ public class ChannelCommand implements TCommandHandler {
     @TCommand(name = "default", aliases = {"def", "d"}, usage = "/default <message>", permission = "", senders = {TCommandSender.Player})
     public TCommandStatus def(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length == 0) {
-            GearzPlayer player = GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender);
             Channel channel = GearzBungee.getInstance().getChannelManager().getChannelByName("default");
             if (channel == null) {
                 return TCommandStatus.INVALID_ARGS;
@@ -96,9 +92,6 @@ public class ChannelCommand implements TCommandHandler {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("already-on-channel"));
             }
             sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
-        } else {
-            String message = GearzBungee.getInstance().compile(args, 0, args.length);
-            GearzBungee.getInstance().getChannelManager().getChannelByName("default").sendMessage(message, (ProxiedPlayer) sender);
         }
         return TCommandStatus.SUCCESSFUL;
     }
