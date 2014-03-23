@@ -61,7 +61,7 @@ public final class PlayerListener implements Listener {
 			@Override
 			public void run() {
 				//Earth
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(16, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.LIGHT_BLUE.getWoolData(), 180, 180)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(16, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.LIGHT_BLUE.getWoolData(), 11.25, 11.25)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.LIME.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
