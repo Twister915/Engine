@@ -59,7 +59,8 @@ public final class PlayerListener implements Listener {
 
 			@Override
 			public void run() {
-				Location l = event.getPlayer().getLocation().subtract(0, 9, 0);
+				Location l = event.getPlayer().getLocation().clone();
+				l = l.subtract(0, 9, 0);
 				EntityBlock.newBlock(event.getPlayer().getLocation(), Material.LOG, (byte)0).showBlock(event.getPlayer());
 			}
 
