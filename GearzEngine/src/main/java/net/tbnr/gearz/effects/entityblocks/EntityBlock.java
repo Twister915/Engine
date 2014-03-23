@@ -46,9 +46,9 @@ public class EntityBlock {
 
 		spawnVehicle.setEntityID(newEntityID);
 		spawnVehicle.setType(ObjectTypes.MINECART);
-		spawnVehicle.setX(player.getLocation().getX());
-		spawnVehicle.setY(player.getLocation().getY());
-		spawnVehicle.setZ(player.getLocation().getZ());
+		spawnVehicle.setX(location.getX());
+		spawnVehicle.setY(location.getY());
+		spawnVehicle.setZ(location.getZ());
 
 		watcher.setObject(20, type.getId() | (data << 16));
 		watcher.setObject(21, 160);
