@@ -11,6 +11,7 @@
 
 package net.tbnr.gearz.effects.entityblocks;
 
+import net.tbnr.gearz.Gearz;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -27,6 +28,7 @@ public class EntityBlockUtil {
 
 	public static EntityBlock[] createSphere(int radius, Location center, Material type, byte b, double xSparsity, double ySparsity) {
 		ArrayList<EntityBlock> blocks = new ArrayList<>();
+		Gearz.getInstance().getLogger().info("testing");
 		//pitch
 		//for(int i = 0, l = 360; i < l; i+=xSparsity) {
 			//yaw
