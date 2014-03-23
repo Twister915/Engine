@@ -22,15 +22,16 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class EntityBlock {
 
-	Location location;
+	private Location location;
 	@Setter
-	Material type;
+	private Material type;
 	@Setter
-	byte data;
+	private byte data;
 	static int entityIDLevel = 1000;
-	float yaw;
-	int offsetY;
-	float pitch;
+	private int entityID;
+	private float yaw;
+	private int offsetY;
+	private float pitch;
 
 	private EntityBlock(Location location, Material material, byte data, float yaw, float pitch, int offsetY) {
 		this.location = location;
@@ -39,21 +40,22 @@ public class EntityBlock {
 		this.yaw = yaw;
 		this.pitch = pitch;
 		this.offsetY = offsetY;
+		if(entityIDLevel >= 500000) entityIDLevel = 1000;
+		entityID = entityIDLevel++;
 	}
 
 	public int showBlock(Player player) {
-		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
-		// Use a counter to get new entity IDs
-		int newEntityID = entityIDLevel;
-		if(newEntityID >= 500000) newEntityID = 1000;
+		if(player.getLocation().distanceSquared(location) > 1024) return entityID;
+
+		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
 		// Give the illusion of containing a portal block
 		WrapperPlayServerSpawnEntity spawnVehicle = new WrapperPlayServerSpawnEntity();
 		WrapperPlayServerEntityMetadata entityMeta = new WrapperPlayServerEntityMetadata();
 		WrappedDataWatcher watcher = new WrappedDataWatcher();
 
-		spawnVehicle.setEntityID(newEntityID);
+		spawnVehicle.setEntityID(this.entityID);
 		spawnVehicle.setType(ObjectTypes.MINECART);
 		spawnVehicle.setX(location.getX());
 		spawnVehicle.setY(location.getY());
@@ -67,7 +69,7 @@ public class EntityBlock {
 
 		// Initialize packet
 		entityMeta.setEntityMetadata(watcher.getWatchableObjects());
-		entityMeta.setEntityId(newEntityID);
+		entityMeta.setEntityId(this.entityID);
 
 		try {
 			manager.sendServerPacket(player, spawnVehicle.getHandle());
@@ -76,8 +78,14 @@ public class EntityBlock {
 			e.printStackTrace();
 		}
 		entityIDLevel++;
-		return newEntityID;
+		return entityID;
 	}
+
+	/*public static void destroyBlock(Player p) {
+
+		if()
+		WrapperPlayServerEntityDestroy destroyVehicle = new WrapperPlayServerEntityDestroy();
+	}*/
 
 	public static EntityBlock newBlock(Location location, Material material, byte data, float yaw, float pitch, int offsetY) {
 		return new EntityBlock(location, material, data, yaw, pitch, offsetY).register();
