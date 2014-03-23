@@ -66,15 +66,15 @@ public final class PlayerListener implements Listener {
 					entityBlock.showBlock(event.getPlayer());
 				}
 				//Sun
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(160, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 1)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(160, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(140, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 1)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(140, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(120, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 1)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(120, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
