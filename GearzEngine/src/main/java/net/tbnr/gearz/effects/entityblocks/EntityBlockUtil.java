@@ -29,7 +29,7 @@ public class EntityBlockUtil {
 		ArrayList<EntityBlock> blocks = new ArrayList<>();
 		for(int i = 0, l = 360; i < l; i++) {
 			for(int i2 = 0, l2 = 360; i2 < l2; i2++) {
-				blocks.add(EntityBlock.newBlock(center, type, b, (float) i, (float) i2, radius));
+				blocks.add(EntityBlock.newBlock(center, type, b, (float) i2, (float) i, radius));
 			}
 		}
 		return blocks.toArray(new EntityBlock[blocks.size()]);
