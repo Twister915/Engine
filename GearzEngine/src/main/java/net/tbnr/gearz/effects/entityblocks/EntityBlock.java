@@ -50,7 +50,7 @@ public class EntityBlock {
 		spawnVehicle.setZ(player.getLocation().getZ());
 
 		watcher.setObject(20, type.getId() | (data << 16));
-		watcher.setObject(21, 16);
+		watcher.setObject(21, 160);
 		watcher.setObject(22, (byte)1);
 		for(int i = 0, l = 22; i < l; i ++) {
 			Object obj = watcher.getObject(i);
