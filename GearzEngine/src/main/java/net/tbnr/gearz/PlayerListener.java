@@ -62,6 +62,7 @@ public final class PlayerListener implements Listener {
 				Location l = event.getPlayer().getLocation().clone();
 				Location l2 = new Location(l.getWorld(), l.getBlockX(), 1, l.getBlockZ());
 				Gearz.getInstance().getLogger().info(l2.getBlockY()+"");
+				event.getPlayer().sendBlockChange(l2, Material.AIR, (byte)0);
 				EntityBlock.newBlock(l2, Material.LOG, (byte)0).showBlock(event.getPlayer());
 			}
 
