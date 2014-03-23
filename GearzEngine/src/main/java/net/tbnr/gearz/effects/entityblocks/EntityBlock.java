@@ -53,7 +53,9 @@ public class EntityBlock {
 		watcher.setObject(21, 6);
 		watcher.setObject(22, (byte)1);
 		for(int i = 0, l = 22; i < l; i ++) {
-			Gearz.getInstance().getLogger().info(watcher.getObject(i).toString());
+			Object obj = watcher.getObject(i);
+			if(obj == null) continue;
+			Gearz.getInstance().getLogger().info(obj.toString());
 		}
 
 		// Initialize packet
