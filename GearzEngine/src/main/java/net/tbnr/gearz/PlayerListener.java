@@ -59,11 +59,10 @@ public final class PlayerListener implements Listener {
 
 			@Override
 			public void run() {
-				Location l = event.getPlayer().getLocation().clone();
-				Location l2 = new Location(l.getWorld(), l.getBlockX(), 1, l.getBlockZ());
-				Gearz.getInstance().getLogger().info(l2.getBlockY()+"");
-				event.getPlayer().sendBlockChange(l2, Material.AIR, (byte)0);
-				EntityBlock.newBlock(l2, Material.LOG, (byte)0).showBlock(event.getPlayer());
+				Location l = event.getPlayer().getLocation();
+				EntityBlock.newBlock(l, Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.subtract(1, 1, 1), Material.DIAMOND_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.add(1,1,1), Material.EMERALD_BLOCK, (byte)0).showBlock(event.getPlayer());
 			}
 
 		}.runTaskLater(Gearz.getInstance(), 40);
