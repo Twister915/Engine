@@ -43,7 +43,7 @@ public class EntityBlock {
 
 		// Use a counter to get new entity IDs
 		int newEntityID = entityIDLevel;
-		if(newEntityID >= 5000) newEntityID = 1000;
+		if(newEntityID >= 500000) newEntityID = 1000;
 
 		// Give the illusion of containing a portal block
 		WrapperPlayServerSpawnEntity spawnVehicle = new WrapperPlayServerSpawnEntity();
