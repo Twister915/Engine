@@ -59,9 +59,8 @@ public final class PlayerListener implements Listener {
 
 			@Override
 			public void run() {
-				Location l = event.getPlayer().getLocation();
-				l.subtract(0, 9, 0);
-				EntityBlock.newBlock(event.getPlayer().getLocation(), Material.WOOD, (byte)0).showBlock(event.getPlayer());
+				Location l = event.getPlayer().getLocation().subtract(0, 9, 0);
+				EntityBlock.newBlock(event.getPlayer().getLocation(), Material.LOG, (byte)0).showBlock(event.getPlayer());
 			}
 
 		}.runTaskLater(Gearz.getInstance(), 40);
