@@ -33,7 +33,7 @@ public class EntityBlockUtil {
 			for(int i2 = 0, l2 = 180; i2 < l2; i2+=ySparsity) {
 				//if(l2 <= 90) {
 					//EntityBlock.newBlock(center of sphere, type of block, data of block, yaw of minecart, pitch of minecart, y-offset (radius));
-					blocks.add(EntityBlock.newBlock(center, type, b, (float) i2, (float) i, radius));
+					blocks.add(EntityBlock.newBlock(center, type, b, (float) i2, 0, radius));
 			//	}
 			}
 	//	}
