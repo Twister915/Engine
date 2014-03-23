@@ -78,9 +78,22 @@ public final class PlayerListener implements Listener {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
-				//Venus
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(40, event.getPlayer().getLocation().clone().add(20, 20, 0), Material.WOOL, DyeColor.RED.getWoolData(), 16)) {
+				//Mercury
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(40, event.getPlayer().getLocation().clone().add(30, 20, 0), Material.WOOL, DyeColor.RED.getWoolData(), 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
+					entityBlock.showBlock(event.getPlayer());
+				}
+				//Venus
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(70, event.getPlayer().getLocation().clone().add(20, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
+					if(Gearz.getRandom().nextInt(11) <= 1) {
+						entityBlock.setData((byte)12);
+						entityBlock.setType(Material.STAINED_GLASS);
+					}
+					entityBlock.showBlock(event.getPlayer());
+				}
+				//Mars
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(75, event.getPlayer().getLocation().clone().add(-10, 20, 0), Material.WOOL, DyeColor.RED.getWoolData(), 16)) {
+					if(Gearz.getRandom().nextInt(11) <= 0) entityBlock.setData(DyeColor.WHITE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
 			}
