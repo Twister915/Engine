@@ -24,6 +24,7 @@ public class EntityBlock {
 	Location location;
 	Material type;
 	byte data;
+	static int entityIDLevel = 1000;
 
 	private EntityBlock(Location location, Material material, byte data) {
 		this.location = location;
@@ -35,7 +36,8 @@ public class EntityBlock {
 		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
 		// Use a counter to get new entity IDs
-		int newEntityID = 1000;
+		int newEntityID = entityIDLevel;
+		if(newEntityID >= 5000) newEntityID = 1000;
 
 		// Give the illusion of containing a portal block
 		WrapperPlayServerSpawnEntity spawnVehicle = new WrapperPlayServerSpawnEntity();
@@ -62,6 +64,7 @@ public class EntityBlock {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		newEntityID++;
 		return newEntityID;
 	}
 
