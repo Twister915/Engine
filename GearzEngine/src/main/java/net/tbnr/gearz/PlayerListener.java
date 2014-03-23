@@ -61,20 +61,20 @@ public final class PlayerListener implements Listener {
 			@Override
 			public void run() {
 				//Earth
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(60, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.LIGHT_BLUE.getWoolData(), 12)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(60, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.LIGHT_BLUE.getWoolData(), 13, 14)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.LIME.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
 				//Sun
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(160, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(160, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16, 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(140, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(140, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16, 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(120, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(120, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16, 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}

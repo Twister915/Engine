@@ -25,12 +25,12 @@ import java.util.ArrayList;
  */
 public class EntityBlockUtil {
 
-	public static EntityBlock[] createSphere(int radius, Location center, Material type, byte b, int density) {
+	public static EntityBlock[] createSphere(int radius, Location center, Material type, byte b, int xSparsity, int ySparsity) {
 		ArrayList<EntityBlock> blocks = new ArrayList<>();
 		//pitch
-		for(int i = 0, l = 360; i < l; i+=density) {
+		for(int i = 0, l = 360; i < l; i+=xSparsity) {
 			//yaw
-			for(int i2 = 0, l2 = 180; i2 < l2; i2+=density) {
+			for(int i2 = 0, l2 = 180; i2 < l2; i2+=ySparsity) {
 				//EntityBlock.newBlock(center of sphere, type of block, data of block, yaw of minecart, pitch of minecart, y-offset (radius));
 				blocks.add(EntityBlock.newBlock(center, type, b, (float) i2, (float) i, radius));
 			}
