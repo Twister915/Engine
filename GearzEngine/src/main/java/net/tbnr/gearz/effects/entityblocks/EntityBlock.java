@@ -3,7 +3,6 @@ package net.tbnr.gearz.effects.entityblocks;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerEntityMetadata;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerSpawnEntity;
@@ -53,14 +52,13 @@ public class EntityBlock {
 		watcher.setObject(20, type.getId() | (data << 16));
 		watcher.setObject(21, 6);
 		watcher.setObject(22, (byte)1);
+		for(int i = 0, l = 22; i < l; i ++) {
+			Gearz.getInstance().getLogger().info(watcher.getObject(i).toString());
+		}
 
 		// Initialize packet
 		entityMeta.setEntityMetadata(watcher.getWatchableObjects());
 		entityMeta.setEntityId(newEntityID);
-
-		for(WrappedWatchableObject obj: watcher.getWatchableObjects()) {
-			Gearz.getInstance().getLogger().info(obj.getTypeID()+"");
-		}
 
 		try {
 			manager.sendServerPacket(player, spawnVehicle.getHandle());
