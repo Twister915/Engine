@@ -61,6 +61,7 @@ public final class PlayerListener implements Listener {
 			public void run() {
 				Location l = event.getPlayer().getLocation().clone();
 				l = l.subtract(0, 9, 0);
+				Gearz.getInstance().getLogger().info(l.getBlockY()+"");
 				EntityBlock.newBlock(event.getPlayer().getLocation(), Material.LOG, (byte)0).showBlock(event.getPlayer());
 			}
 
