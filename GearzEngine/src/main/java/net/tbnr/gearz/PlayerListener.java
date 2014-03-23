@@ -12,11 +12,12 @@
 package net.tbnr.gearz;
 
 import net.tbnr.gearz.effects.entityblocks.EntityBlock;
+import net.tbnr.gearz.effects.entityblocks.EntityBlockUtil;
 import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.player.TPlayerJoinEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -59,18 +60,9 @@ public final class PlayerListener implements Listener {
 
 			@Override
 			public void run() {
-				Location l = event.getPlayer().getLocation();
-				EntityBlock.newBlock(l, Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().add(0.25, 0.25, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().subtract(0.25, 0.25, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().add(0, 0.25, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().add(0.25, 0.25, 0), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().add(0.25, 0, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().subtract(0.25, 0, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().add(0, 0, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().add(0.25, 0, 0), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().subtract(1, 1, 1), Material.DIAMOND_BLOCK, (byte)0).showBlock(event.getPlayer());
-				EntityBlock.newBlock(l.clone().add(1, 1 , 1), Material.EMERALD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(5, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.RED.getWoolData())) {
+					entityBlock.showBlock(event.getPlayer());
+				}
 			}
 
 		}.runTaskLater(Gearz.getInstance(), 40);

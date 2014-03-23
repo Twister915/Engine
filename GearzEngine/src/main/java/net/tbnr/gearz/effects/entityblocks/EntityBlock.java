@@ -25,11 +25,17 @@ public class EntityBlock {
 	Material type;
 	byte data;
 	static int entityIDLevel = 1000;
+	float yaw;
+	int offsetY;
+	float pitch;
 
-	private EntityBlock(Location location, Material material, byte data) {
+	private EntityBlock(Location location, Material material, byte data, float yaw, float pitch, int offsetY) {
 		this.location = location;
 		this.type = material;
 		this.data = data;
+		this.yaw = yaw;
+		this.pitch = pitch;
+		this.offsetY = offsetY;
 	}
 
 	public int showBlock(Player player) {
@@ -49,9 +55,10 @@ public class EntityBlock {
 		spawnVehicle.setX(location.getX());
 		spawnVehicle.setY(location.getY());
 		spawnVehicle.setZ(location.getZ());
+		spawnVehicle.setYaw(yaw);
 
 		watcher.setObject(20, type.getId() | (data << 16));
-		watcher.setObject(21, 160);
+		watcher.setObject(21, offsetY);
 		watcher.setObject(22, (byte)1);
 
 		// Initialize packet
@@ -68,8 +75,8 @@ public class EntityBlock {
 		return newEntityID;
 	}
 
-	public static EntityBlock newBlock(Location location, Material material, byte data) {
-		return new EntityBlock(location, material, data).register();
+	public static EntityBlock newBlock(Location location, Material material, byte data, float yaw, float pitch, int offsetY) {
+		return new EntityBlock(location, material, data, yaw, pitch, offsetY).register();
 	}
 
 	private EntityBlock register() {
