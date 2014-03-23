@@ -79,7 +79,7 @@ public final class PlayerListener implements Listener {
 					entityBlock.showBlock(event.getPlayer());
 				}
 				//Venus
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(30, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.RED.getWoolData(), 16)) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(40, event.getPlayer().getLocation().clone().add(20, 20, 0), Material.WOOL, DyeColor.RED.getWoolData(), 16)) {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
