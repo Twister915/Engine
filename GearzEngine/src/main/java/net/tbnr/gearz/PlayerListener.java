@@ -61,6 +61,14 @@ public final class PlayerListener implements Listener {
 			public void run() {
 				Location l = event.getPlayer().getLocation();
 				EntityBlock.newBlock(l, Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().add(0.25, 0.25, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().subtract(0.25, 0.25, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().add(0, 0.25, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().add(0.25, 0.25, 0), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().add(0.25, 0, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().subtract(0.25, 0, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().add(0, 0, 0.25), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
+				EntityBlock.newBlock(l.clone().add(0.25, 0, 0), Material.GOLD_BLOCK, (byte)0).showBlock(event.getPlayer());
 				EntityBlock.newBlock(l.clone().subtract(1, 1, 1), Material.DIAMOND_BLOCK, (byte)0).showBlock(event.getPlayer());
 				EntityBlock.newBlock(l.clone().add(1, 1 , 1), Material.EMERALD_BLOCK, (byte)0).showBlock(event.getPlayer());
 			}
