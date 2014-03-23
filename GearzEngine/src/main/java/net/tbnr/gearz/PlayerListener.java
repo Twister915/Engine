@@ -60,7 +60,7 @@ public final class PlayerListener implements Listener {
 
 			@Override
 			public void run() {
-				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(60, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.RED.getWoolData())) {
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(60, event.getPlayer().getLocation().clone().add(0, 20, 0), Material.WOOL, DyeColor.RED.getWoolData(), 10)) {
 					entityBlock.showBlock(event.getPlayer());
 				}
 			}

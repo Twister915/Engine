@@ -25,10 +25,10 @@ import java.util.ArrayList;
  */
 public class EntityBlockUtil {
 
-	public static EntityBlock[] createSphere(int radius, Location center, Material type, byte b) {
+	public static EntityBlock[] createSphere(int radius, Location center, Material type, byte b, int density) {
 		ArrayList<EntityBlock> blocks = new ArrayList<>();
-		for(int i = 0, l = 360; i < l; i+=5) {
-			for(int i2 = 0, l2 = 360; i2 < l2; i2+=5) {
+		for(int i = 0, l = 360; i < l; i+=density) {
+			for(int i2 = 0, l2 = 360; i2 < l2; i2+=density) {
 				blocks.add(EntityBlock.newBlock(center, type, b, (float) i2, (float) i, radius));
 			}
 		}
