@@ -64,6 +64,10 @@ public final class PlayerListener implements Listener {
 					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.LIME.getWoolData());
 					entityBlock.showBlock(event.getPlayer());
 				}
+				for(EntityBlock entityBlock : EntityBlockUtil.createSphere(160, event.getPlayer().getLocation().clone().add(40, 20, 0), Material.WOOL, DyeColor.YELLOW.getWoolData(), 16)) {
+					if(Gearz.getRandom().nextInt(11) <= 1) entityBlock.setData(DyeColor.ORANGE.getWoolData());
+					entityBlock.showBlock(event.getPlayer());
+				}
 			}
 
 		}.runTaskLater(Gearz.getInstance(), 40);
