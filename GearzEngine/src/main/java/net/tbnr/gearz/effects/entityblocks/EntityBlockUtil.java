@@ -27,8 +27,8 @@ public class EntityBlockUtil {
 
 	public static EntityBlock[] createSphere(int radius, Location center, Material type, byte b) {
 		ArrayList<EntityBlock> blocks = new ArrayList<>();
-		for(int i = 0, l = 360; i < l; i++) {
-			for(int i2 = 0, l2 = 360; i2 < l2; i2++) {
+		for(int i = 0, l = 360; i < l; i+=5) {
+			for(int i2 = 0, l2 = 360; i2 < l2; i2+=5) {
 				blocks.add(EntityBlock.newBlock(center, type, b, (float) i2, (float) i, radius));
 			}
 		}
