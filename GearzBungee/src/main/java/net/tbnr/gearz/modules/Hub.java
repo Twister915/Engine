@@ -29,7 +29,6 @@ import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,17 +53,7 @@ public class Hub implements TCommandHandler, Listener {
 
     public ServerInfo getAHubServer() {
         if (hubServers.size() < 1) return null;
-        int x = 0;
-        List<Integer> attempts = new ArrayList<>();
-        ServerInfo info = null;
-        while (info == null && attempts.size() < hubServers.size()) {
-            while (attempts.contains(x)) {
-                x = GearzBungee.getRandom().nextInt(hubServers.size());
-            }
-            info = ProxyServer.getInstance().getServerInfo(hubServers.get(x).getBungee_name());
-            attempts.add(x);
-        }
-        return info;
+        return ProxyServer.getInstance().getServerInfo(hubServers.get(GearzBungee.getRandom().nextInt(hubServers.size())).getBungee_name());
     }
 
     public static boolean isHubServer(ServerInfo info) {
@@ -140,7 +129,6 @@ public class Hub implements TCommandHandler, Listener {
     @Data
     @RequiredArgsConstructor
     static class HubServerReloadTask implements Runnable {
-
         @NonNull private final Hub hubManager;
 
         @Override
