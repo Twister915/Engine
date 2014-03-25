@@ -26,8 +26,10 @@ public class SettingsRegistry implements BaseSettingsRegistry {
     @Override
     public BaseSetting getSetting(String query) {
         for (BaseSetting setting : this.settings) {
-            if (setting.getName().equals(query)) return setting;
-            if (setting.getAliases().contains(query)) return setting;
+            if (setting.getName().equalsIgnoreCase(query)) return setting;
+            for (String alias : setting.getAliases()) {
+                if (alias.equalsIgnoreCase(query)) return setting;
+            }
         }
         return null;
     }
