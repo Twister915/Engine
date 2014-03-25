@@ -35,30 +35,30 @@ public class UnPunishCommands implements TCommandHandler {
         if (args.length != 1) return TCommandStatus.INVALID_ARGS;
         if (args[0].matches(".*([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}).*")) {
             if (!manager.isIpBanned(args[0])) {
-                sender.sendMessage(GearzBungee.getInstance().getFormat("no-punishment", false, false));
+                sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("no-punishment", false, false));
                 return TCommandStatus.SUCCESSFUL;
             }
             Punishment punishment = manager.getValidIpBan(args[0]);
-            sender.sendMessage(GearzBungee.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punishment.issuer}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punishment.issuer}));
         }
 
         GearzPlayer gearzTarget;
         try {
             gearzTarget = new GearzPlayer(args[0]);
         } catch (GearzPlayer.PlayerNotFoundException e) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("null-player", false, false));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("null-player", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
 
         List<Punishment> punishments = manager.getPunishmentsByPlayer(gearzTarget.getName(), true);
         if (punishments == null) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("no-punishment", false, false));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("no-punishment", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
-        sender.sendMessage(GearzBungee.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", gearzTarget.getName()}));
+        sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", gearzTarget.getName()}));
         int x = 0;
         for (Punishment punishment : punishments) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punishment.issuer}, new String[]{"<id>", x + ""}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punishment.issuer}, new String[]{"<id>", x + ""}));
             x++;
         }
         return TCommandStatus.SUCCESSFUL;
