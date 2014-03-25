@@ -179,7 +179,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         return GearzGame.formatUsingMeta(meta, Gearz.getInstance().getFormat(s, true, strings));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(PlayerLoginEvent event) {
         if (Bukkit.getOnlinePlayers().length < this.gameMeta.maxPlayers()) return;
         if (this.runningGame != null && this.runningGame.isRunning()) {
