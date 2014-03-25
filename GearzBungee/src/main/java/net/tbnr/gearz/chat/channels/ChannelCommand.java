@@ -71,7 +71,7 @@ public class ChannelCommand implements TCommandHandler {
             }
             try {
                 GearzBungee.getInstance().getChannelManager().setChannel((ProxiedPlayer) sender, channel);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalStateException e) {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("already-on-channel"));
             }
             sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
@@ -88,7 +88,7 @@ public class ChannelCommand implements TCommandHandler {
             }
             try {
                 GearzBungee.getInstance().getChannelManager().setChannel((ProxiedPlayer) sender, channel);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalStateException e) {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("already-on-channel"));
             }
             sender.sendMessage(GearzBungee.getInstance().getFormat("switched", false, false, new String[]{"<channel>", channel.getName()}));
