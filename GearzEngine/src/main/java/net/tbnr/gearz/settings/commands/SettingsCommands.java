@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * Created by Jake on 1/26/14.
+ * Commands to manage player settings
  */
 public class SettingsCommands implements TCommandHandler {
 

@@ -7,7 +7,7 @@ import net.tbnr.gearz.Gearz;
 import org.bukkit.entity.Player;
 
 /**
- * Created by Jake on 1/26/14.
+ * Settings Data Class
  */
 public class PlayerSettings {
     /**
