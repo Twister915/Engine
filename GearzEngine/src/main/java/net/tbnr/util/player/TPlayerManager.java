@@ -14,8 +14,6 @@ package net.tbnr.util.player;
 import com.mongodb.*;
 import lombok.NonNull;
 import net.tbnr.gearz.Gearz;
-import net.tbnr.gearz.settings.PlayerSettings;
-import net.tbnr.gearz.settings.SettingsRegistration;
 import net.tbnr.util.player.cooldowns.TCooldownManager;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
@@ -111,11 +109,7 @@ public final class TPlayerManager implements Listener {
         }
         TPlayerDisconnectEvent tPlayerDisconnectEvent = new TPlayerDisconnectEvent(players.get(event.getPlayer().getName()));
         Bukkit.getPluginManager().callEvent(tPlayerDisconnectEvent);
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
-                player.sendMessage(tPlayerDisconnectEvent.getQuitMessage());
-            }
-        }
+        event.setQuitMessage(tPlayerDisconnectEvent.getQuitMessage());
         players.get(event.getPlayer().getName()).disconnected();
         players.remove(event.getPlayer().getName());
     }

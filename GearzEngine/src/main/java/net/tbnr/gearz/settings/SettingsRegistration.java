@@ -1,5 +1,6 @@
 package net.tbnr.gearz.settings;
 
+import com.google.common.collect.Lists;
 import net.gearz.settings.SettingBuilder;
 import net.gearz.settings.base.BaseSetting;
 import net.gearz.settings.base.BaseSettingsRegistry;
@@ -24,6 +25,8 @@ public final class SettingsRegistration {
     public static BaseSetting JOIN_MESSAGES = new SettingBuilder()
             .name("JoinMessages")
             .type(new BooleanType())
-            .defaultValue(false)
-            .description("Toggle the display of join messages.").get();
+            .defaultValue(true)
+            .description("Toggle the display of join messages.")
+            .aliases(Lists.newArrayList("jm"))
+            .get();
 }
