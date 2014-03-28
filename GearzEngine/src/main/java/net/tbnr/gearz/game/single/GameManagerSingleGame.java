@@ -203,6 +203,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         ServerManager.addPlayer(event.getPlayer().getPlayerName());
         event.getPlayer().resetPlayer();
         final GearzPlayer gearzPlayer = GearzPlayer.playerFromTPlayer(event.getPlayer());
+        event.setJoinMessage(null);
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
                 player.sendMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
