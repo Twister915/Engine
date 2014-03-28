@@ -11,9 +11,6 @@
 
 package net.tbnr.util.player;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,15 +19,12 @@ import net.gearz.settings.SettingsManager;
 import net.gearz.settings.base.BaseSetting;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
+import net.tbnr.gearz.settings.PlayerSettings;
 import net.tbnr.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import net.tbnr.gearz.settings.PlayerSettings;
-import net.tbnr.util.IPUtils;
-import net.tbnr.util.PlayerResetParams;
-import net.tbnr.util.TPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -44,9 +38,6 @@ import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
 import java.util.*;
 
 import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.ParticleEffect;
@@ -145,6 +136,7 @@ public final class TPlayer {
             SettingsManager settingsManager = PlayerSettings.getManager(getPlayer());
             if (!values.containsKey(key)) continue;
             settingsManager.setValue(setting, values.get(key));
+            System.out.println(setting.toString() + " : " + values.get(key));
         }
     }
 
@@ -165,7 +157,10 @@ public final class TPlayer {
                 return;
             }
         }
-        DBObject setting = new BasicDBObjectBuilder().add("name", toSet.getName()).add("value", value).get();
+        DBObject setting = new BasicDBObjectBuilder()
+                .add("name", toSet.getName())
+                .add("value", value)
+                .get();
         settings.add(setting);
         dbObject.put("settings", settings);
         save();
