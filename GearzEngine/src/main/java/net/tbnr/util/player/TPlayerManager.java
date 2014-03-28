@@ -100,11 +100,7 @@ public final class TPlayerManager implements Listener {
         if (event.getPlayer() == null) return;
         TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.getPlayer(event.getPlayer()));
         Bukkit.getPluginManager().callEvent(tPlayerJoinEvent);
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
-                player.sendMessage(tPlayerJoinEvent.getJoinMessage());
-            }
-        }
+        event.setJoinMessage(tPlayerJoinEvent.getJoinMessage());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

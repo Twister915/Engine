@@ -24,6 +24,8 @@ import net.tbnr.gearz.game.*;
 import net.tbnr.gearz.game.voting.*;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.gearz.server.ServerManager;
+import net.tbnr.gearz.settings.PlayerSettings;
+import net.tbnr.gearz.settings.SettingsRegistration;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
@@ -201,7 +203,11 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         ServerManager.addPlayer(event.getPlayer().getPlayerName());
         event.getPlayer().resetPlayer();
         final GearzPlayer gearzPlayer = GearzPlayer.playerFromTPlayer(event.getPlayer());
-        event.setJoinMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
+                player.sendMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
+            }
+        }
         spawn(gearzPlayer);
         if (this.runningGame == null) {
             this.votingSession.addPlayer(gearzPlayer);
