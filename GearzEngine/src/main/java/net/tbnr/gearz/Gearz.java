@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.tbnr.gearz.activerecord.GModel;
+import net.tbnr.gearz.config.GearzConfig;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
@@ -95,6 +96,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Getter @Setter
     public PermissionsDelegate permissionsDelegate;
 
+    @Getter GearzConfig databaseConfig;
+
     public Gearz() {
         Gearz.instance = this;
         Gearz.random = new Random();
@@ -171,6 +174,9 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
                 });
             }
         }
+        this.databaseConfig = new GearzConfig(this, "database.yml");
+        this.databaseConfig.getConfig().options().copyDefaults(true);
+        this.databaseConfig.saveDefaultConfig();
 
         //Reset all players for the EnderBar
         EnderBar.resetPlayers();
@@ -187,7 +193,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         }
 
         //Setup the Jedis pool so we can communicate with BungeeCord using our NetCommand system.
-        this.jedisPool = new JedisPool(getConfig().getString("redis.host"), getConfig().getInt("redis.port"));
+        this.jedisPool = new JedisPool(getDatabaseConfig().getConfig().getString("redis.host"), getDatabaseConfig().getConfig().getInt("redis.port"));
 
         //Setup an array to hold a list of all Gearz plugins.
         this.gamePlugins = new ArrayList<>();
@@ -252,6 +258,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public void disable() {
+        saveConfig();
+        getDatabaseConfig().saveConfig();
         ServerManager.getThisServer().remove();
         NetCommand.withName("disconnect").withArg("name", Gearz.bungeeName2);
         EnderBar.resetPlayers();
@@ -293,7 +301,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public TPlayerManager.AuthenticationDetails getAuthDetails() {
-        return new TPlayerManager.AuthenticationDetails(getConfig().getString("database.host"), getConfig().getInt("database.port"), getConfig().getString("database.database"), getConfig().getString("database.collection"));
+        return new TPlayerManager.AuthenticationDetails(getDatabaseConfig().getConfig().getString("database.host"), getDatabaseConfig().getConfig().getInt("database.port"), getDatabaseConfig().getConfig().getString("database.database"), getDatabaseConfig().getConfig().getString("database.collection"));
     }
 
 
