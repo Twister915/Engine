@@ -174,9 +174,22 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         }
         DBObject playerDocument = player.getPlayerDocument();
         BasicDBList ips = (BasicDBList) playerDocument.get("ips");
-        if (ips == null) ips = new BasicDBList();
+        if (ips == null) {
+            ips = new BasicDBList();
+        }
         String hostString = event.getPlayer().getAddress().getHostString();
-        if (!ips.contains(hostString)) ips.add(hostString);
+        if (!ips.contains(hostString)) {
+            ips.add(hostString);
+        }
+        BasicDBList usernames = (BasicDBList) playerDocument.get("usernames");
+        if (usernames == null) {
+            usernames = new BasicDBList();
+        }
+        String currentUsername = event.getPlayer().getName();
+        if (!usernames.contains(currentUsername)) {
+            usernames.add(currentUsername);
+        }
+        playerDocument.put("usernames", usernames);
         playerDocument.put("ips", ips);
         playerDocument.put("uuid", event.getPlayer().getUUID());
         /*Location location = lookupService == null ? null : lookupService.getLocation(event.getPlayer().getAddress().getAddress());
@@ -184,6 +197,4 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             playerDocument.put("last_location", location.countryCode + "|" + location.region + "|" + location.city + "|" + location.postalCode);*/
         GearzPlayer.getCollection().save(playerDocument);
     }
-
-
 }

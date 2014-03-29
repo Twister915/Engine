@@ -15,7 +15,6 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
@@ -179,6 +178,20 @@ public final class GearzPlayer {
 
     public String getName() {
         return this.username;
+    }
+
+    public List<String> getUsernameHistory() {
+        List<String> usernames = new ArrayList<>();
+        BasicDBList usernamesObject = (BasicDBList) playerDocument.get("usernames");
+        if (usernamesObject == null) {
+            return usernames;
+        }
+        for (Object object : usernamesObject) {
+            if (!(object instanceof String)) continue;
+            String name = (String) object;
+            usernames.add(name);
+        }
+        return usernames;
     }
 
     public void save() {

@@ -160,6 +160,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         registerCommandHandler(hub);
         registerCommandHandler(new UtilCommands());
         registerCommandHandler(new ServerModule());
+        registerCommandHandler(new PlayerHistoryModule());
         listModule = new ListModule();
         registerCommandHandler(listModule);
         registerEvents(listModule);
