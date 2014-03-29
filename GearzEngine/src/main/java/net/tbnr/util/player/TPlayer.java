@@ -132,6 +132,7 @@ public final class TPlayer {
             values.put(key, value);
         }
         for (BaseSetting setting : PlayerSettings.getRegistry().getSettings()) {
+            System.out.println("Called");
             String key = setting.getName().replace(" ", "").toLowerCase();
             SettingsManager settingsManager = PlayerSettings.getManager(getPlayer());
             if (!values.containsKey(key)) continue;
