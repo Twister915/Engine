@@ -12,6 +12,7 @@
 package net.tbnr.gearz;
 
 import com.mongodb.BasicDBList;
+import com.sun.corba.se.impl.activation.CommandHandler;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
@@ -19,6 +20,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
@@ -35,6 +37,7 @@ import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 import net.tbnr.util.FileUtil;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
+import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandStatus;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -106,16 +109,16 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     @Setter
-    private boolean whitelisted;
+    private boolean whitelisted = false;
 
     @Getter
     private ChannelManager channelManager;
 
     @Getter
-    public SimpleDateFormat readable;
+    private SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
     @Getter
-    public ChatManager chatManager;
+    private ChatManager chatManager;
 
     @Setter @Getter
     private PermissionsDelegate permissionsDelegate;
@@ -135,59 +138,102 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Override
     protected void start() {
+        //Load config
         this.getConfig().options().copyDefaults(true);
         this.saveDefaultConfig();
+
+        //Set instance
         GearzBungee.instance = this;
-        readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-        whitelisted = false;
-        GModel.setDefaultDatabase(this.getMongoDB());
-        this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("database.host"));
-        //this.responder = new ServerResponder();
-        this.dispatch = new NetCommandDispatch();
-        this.getDispatch().registerNetCommands(new BaseReceiver());
-        this.playerManager = new GearzPlayerManager();
-        registerEvents(this.playerManager);
-        MotdHandler motdHandler = new MotdHandler();
-        registerEvents(motdHandler);
-        registerCommandHandler(motdHandler);
-        this.chatUtils = new ChatManager();
-        this.chat = new Chat();
-        registerCommandHandler(new Messaging());
-        registerEvents(this.chatUtils);
-        registerCommandHandler(this.chatUtils);
-        hub = new Hub();
-        registerEvents(hub);
-        registerCommandHandler(hub);
-        registerCommandHandler(new UtilCommands());
-        registerCommandHandler(new ServerModule());
-        registerCommandHandler(new PlayerHistoryModule());
-        listModule = new ListModule();
-        registerCommandHandler(listModule);
-        registerEvents(listModule);
+
+        //Load properties
         if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
         this.strings = new Properties();
         reloadStrings();
+
+        //Setup redis and database
+        GModel.setDefaultDatabase(this.getMongoDB());
+        this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("database.host"));
+        this.dispatch = new NetCommandDispatch();
+        this.getDispatch().registerNetCommands(new BaseReceiver());
+
+        //New player manager
+        this.playerManager = new GearzPlayerManager();
+
+        //MOTD Handler
+        MotdHandler motdHandler = new MotdHandler();
+
+        //Chat utilities and storage classes
+        this.chatUtils = new ChatManager();
+        this.chat = new Chat();
+        this.channelManager = new ChannelManager();
+        this.chatManager = new ChatManager();
+
+        //Online player manager
+        this.listModule = new ListModule();
+
+        //Hub server manager
+        this.hub = new Hub();
+
+        //Helpme manager
         this.helpMeModule = new HelpMe();
         this.helpMeModule.registerReminderTask(30);
-        registerCommandHandler(this.helpMeModule);
-        registerEvents(this.helpMeModule);
+
+        //Player info module
         PlayerInfoModule infoModule = new PlayerInfoModule();
-        registerCommandHandler(infoModule);
-        registerEvents(infoModule);
+
+        //Game shuffle module
         this.shuffleModule = new ShuffleModule();
-        registerEvents(this.shuffleModule);
-        registerCommandHandler(this.shuffleModule);
+
+        //Report module
         ReportModule.ReportManager reportManager = new ReportModule.ReportManager(getMongoDB().getCollection("reports"));
         ReportModule reportModule = new ReportModule(reportManager);
-        registerCommandHandler(reportModule);
+
+        //Bungee whitelist module
         WhitelistModule whitelistModule = new WhitelistModule();
-        registerEvents(whitelistModule);
-        registerCommandHandler(whitelistModule);
+
+        //Bungee announcer module
         AnnouncerModule announcerModule = new AnnouncerModule(getConfig().getBoolean("announcer.enabled", false));
-        registerCommandHandler(announcerModule);
-        registerCommandHandler(new StatsModule());
-        registerCommandHandler(new PropertiesManager());
-        channelManager = new ChannelManager();
+
+        TCommandHandler[] commandHandlers = {
+                motdHandler,
+                new Messaging(),
+                this.chatUtils,
+                this.hub,
+                new UtilCommands(),
+                new ServerModule(),
+                new PlayerHistoryModule(),
+                this.listModule,
+                this.helpMeModule,
+                infoModule,
+                this.shuffleModule,
+                reportModule,
+                whitelistModule,
+                new StatsModule(),
+                new PropertiesManager(),
+                announcerModule,
+                new ClearChat()
+        };
+
+        Listener[] listeners = {
+                this.playerManager,
+                motdHandler,
+                this.chatUtils,
+                this.hub,
+                this.listModule,
+                this.helpMeModule,
+                infoModule,
+                this.shuffleModule,
+                whitelistModule,
+        };
+
+        for (TCommandHandler handler : commandHandlers) {
+            registerCommandHandler(handler);
+        }
+
+        for (Listener listener : listeners) {
+            registerEvents(listener);
+        }
+
         if (getConfig().getBoolean("channels.enabled", false)) {
             getLogger().info("Channels enabled...");
             registerEvents(new ChannelsListener());
@@ -199,8 +245,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             registerCommandHandler(modBroadcast);
             getLogger().info("Channels disabled...");
         }
-        this.chatManager = new ChatManager();
-        registerCommandHandler(new ClearChat());
+
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
