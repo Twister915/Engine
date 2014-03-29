@@ -11,39 +11,17 @@
 
 package net.tbnr.gearz.packets;
 
-import lombok.RequiredArgsConstructor;
-import org.bukkit.Location;
-
 /**
  * <p/>
  * Latest Change:
  * <p/>
  *
  * @author George
- * @since 26/03/14
+ * @since 28/03/14
  */
-@RequiredArgsConstructor
-public class FakeMinecart {
+public class FakeEntityManager {
 
-	private final Location spawnLocation;
+	public static int id = 1000;
 
-	public void setBlockInside() {
-
-	}
-
-	public void removeBlockInside() {
-
-	}
-
-	public void setYOffset() {
-
-	}
-
-	public void setPitch() {
-
-	}
-
-	public void setYaw() {
-
-	}
+	public void
 }

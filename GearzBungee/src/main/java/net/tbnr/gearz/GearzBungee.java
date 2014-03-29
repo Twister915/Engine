@@ -462,4 +462,8 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         }
         return users;
     }
+
+	public void serverPing(ServerPing test) {
+		test.
+	}
 }
