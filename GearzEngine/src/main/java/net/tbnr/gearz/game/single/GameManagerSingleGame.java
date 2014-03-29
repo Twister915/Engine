@@ -11,6 +11,7 @@
 
 package net.tbnr.gearz.game.single;
 
+import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import lombok.NonNull;
 import net.lingala.zip4j.exception.ZipException;
@@ -32,10 +33,7 @@ import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
 import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerJoinEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Instrument;
-import org.bukkit.Material;
-import org.bukkit.Note;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -161,11 +159,15 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             sender.sendMessage(Gearz.getInstance().getFormat("game-strings.not-running", false));
             return TCommandStatus.SUCCESSFUL;
         }
+        List<String> toBox = new ArrayList<>();
+        toBox.add(format("game-strings.map-lore-author", this.getGameMeta(), new String[]{"<author>", this.runningGame.getArena().getAuthors()}));
+        toBox.add(format("game-strings.map-lore-description", this.getGameMeta(), new String[]{"<description>", this.runningGame.getArena().getDescription()}));
 
+        List<String> toSend = Gearz.getInstance().boxMessage(ChatColor.DARK_BLUE, toBox);
         sender.sendMessage(format("game-strings.map-title", this.getGameMeta(), new String[]{"<name>", this.runningGame.getArena().getName()}));
-        sender.sendMessage(format("game-strings.map-lore-author", this.getGameMeta(), new String[]{"<author>", this.runningGame.getArena().getAuthors()}));
-        sender.sendMessage(format("game-strings.map-lore-description", this.getGameMeta(), new String[]{"<description>", this.runningGame.getArena().getDescription()}));
-
+        for (String msg : toSend) {
+            sender.sendMessage(msg);
+        }
         return TCommandStatus.SUCCESSFUL;
     }
 
