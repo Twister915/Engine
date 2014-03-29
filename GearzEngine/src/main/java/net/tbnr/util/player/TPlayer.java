@@ -127,13 +127,15 @@ public final class TPlayer {
         for (Object object : settings) {
             if (!(object instanceof BasicDBObject)) continue;
             BasicDBObject setting = (BasicDBObject) object;
-            String key = setting.getString("name").toLowerCase();
+            String key = setting.getString("name");
             Object value = setting.get("value");
+            System.out.println("Found: " + key + " : " + value);
             values.put(key, value);
         }
         for (BaseSetting setting : PlayerSettings.getRegistry().getSettings()) {
             System.out.println("Called");
-            String key = setting.getName().replace(" ", "").toLowerCase();
+            String key = setting.getName().replace(" ", "");
+            System.out.println("Found: " + key + " :sdf");
             SettingsManager settingsManager = PlayerSettings.getManager(getPlayer());
             if (!values.containsKey(key)) continue;
             settingsManager.setValue(setting, values.get(key));
