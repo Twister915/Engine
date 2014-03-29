@@ -113,7 +113,7 @@ public final class TPlayer {
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
         //this.getPlayer().setScoreboard(this.scoreboard);
-        loadSettings();
+        //loadSettings();
     }
 
     public void loadSettings() {
