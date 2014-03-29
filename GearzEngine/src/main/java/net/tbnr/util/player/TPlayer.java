@@ -127,7 +127,7 @@ public final class TPlayer {
         for (Object object : settings) {
             if (!(object instanceof BasicDBObject)) continue;
             BasicDBObject setting = (BasicDBObject) object;
-            String key = setting.getString("name");
+            String key = setting.getString("name").toLowerCase();
             Object value = setting.get("value");
             values.put(key, value);
         }
