@@ -16,9 +16,10 @@ import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
+import net.tbnr.gearz.game.MinigameMeta;
 import net.tbnr.gearz.game.GearzGame;
-import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
+import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.TPlugin;
 import net.tbnr.util.command.TCommandHandler;
@@ -87,6 +88,10 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugi
 
         //Log that the gamemanager is set up
         Gearz.getInstance().debug("GameManager setup!");
+
+		//Save the game in the database
+		MinigameMeta model = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
+		model.save();
 
         //Register the game and events
         Gearz.getInstance().registerGame(this);
