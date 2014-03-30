@@ -1,7 +1,11 @@
 package net.cogz.punishments;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import net.tbnr.gearz.activerecord.GModel;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 
@@ -41,21 +45,21 @@ public abstract class GearzPunishments {
     public abstract void kickPlayer(String player, Punishment punishment);
 
     /**
-     * Gets a list of a player's punishments
+     * Gets a list of a uuid's punishments
      *
-     * @param player player to check
+     * @param uuid uuid to check
      * @param valid  valid punishments only
      * @return a list of punishments
      */
-    public List<Punishment> getPunishmentsByPlayer(String player, boolean valid) {
-        Punishment punishment = new Punishment(getDB(), player);
+    public List<Punishment> getPunishmentsByUUID(String uuid, boolean valid) {
+        Punishment punishment = new Punishment(getDB(), uuid);
         List<GModel> found = punishment.findAll();
         List<Punishment> punishments = new ArrayList<>();
         for (GModel m : found) {
             if (!(m instanceof Punishment)) continue;
             Punishment punishmentFound = (Punishment) m;
             if (valid && !punishmentFound.valid) continue;
-            if (!punishmentFound.punished.equals(player)) continue;
+            if (!punishmentFound.punished.equals(uuid)) continue;
             punishments.add(punishmentFound);
         }
         return punishments;
@@ -93,14 +97,14 @@ public abstract class GearzPunishments {
      * @return whether or not the player is banned
      */
     public boolean isPlayerBanned(String player) {
-        List<Punishment> punishments = getPunishmentsByPlayer(player, true);
+        List<Punishment> punishments = getPunishmentsByUUID(player, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.PERMANENT_BAN && punishment.getPunishmentType() != PunishmentType.TEMP_BAN)
                 continue;
             if (!punishment.valid) continue;
             PunishmentType type = punishment.getPunishmentType();
             if (type == PunishmentType.PERMANENT_BAN) return true;
-            else if (type == PunishmentType.TEMP_BAN && new Date().before(punishment.end)) return true;
+            else if (new Date().before(punishment.end)) return true;
         }
         return false;
     }
@@ -112,7 +116,7 @@ public abstract class GearzPunishments {
      * @return latest ban for the player
      */
     public Punishment getValidBan(String player) {
-        List<Punishment> punishments = getPunishmentsByPlayer(player, true);
+        List<Punishment> punishments = getPunishmentsByUUID(player, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.PERMANENT_BAN && punishment.getPunishmentType() != PunishmentType.TEMP_BAN)
                 continue;
@@ -120,7 +124,7 @@ public abstract class GearzPunishments {
             if (!punishment.valid) continue;
             if (type == PunishmentType.PERMANENT_BAN) {
                 return punishment;
-            } else if (type == PunishmentType.TEMP_BAN && new Date().before(punishment.end)) {
+            } else if (new Date().before(punishment.end)) {
                 return punishment;
             }
         }
@@ -145,14 +149,14 @@ public abstract class GearzPunishments {
      * @return whether or not the player is muted
      */
     public boolean isPlayerMuted(String player) {
-        List<Punishment> punishments = getPunishmentsByPlayer(player, true);
+        List<Punishment> punishments = getPunishmentsByUUID(player, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.MUTE && punishment.getPunishmentType() != PunishmentType.TEMP_MUTE)
                 continue;
             if (!punishment.valid) continue;
             PunishmentType type = punishment.getPunishmentType();
             if (type == PunishmentType.MUTE) return true;
-            else if (type == PunishmentType.TEMP_MUTE && new Date().before(punishment.end)) return true;
+            else if (new Date().before(punishment.end)) return true;
         }
         return false;
     }
@@ -164,7 +168,7 @@ public abstract class GearzPunishments {
      * @return latest and valid mute for the player
      */
     public Punishment getValidMute(String player) {
-        List<Punishment> punishments = getPunishmentsByPlayer(player, true);
+        List<Punishment> punishments = getPunishmentsByUUID(player, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.MUTE && punishment.getPunishmentType() != PunishmentType.TEMP_MUTE)
                 continue;
@@ -172,7 +176,7 @@ public abstract class GearzPunishments {
             if (!punishment.valid) continue;
             if (type == PunishmentType.MUTE) {
                 return punishment;
-            } else if (type == PunishmentType.TEMP_MUTE && new Date().before(punishment.end)) {
+            } else if (new Date().before(punishment.end)) {
                 return punishment;
             }
         }
@@ -231,7 +235,7 @@ public abstract class GearzPunishments {
         }
         if (type == PunishmentType.MUTE) {
             return punishment;
-        } else if (type == PunishmentType.TEMP_MUTE && new Date().before(punishment.end)) {
+        } else if (new Date().before(punishment.end)) {
             return punishment;
         }
         return null;
@@ -244,7 +248,7 @@ public abstract class GearzPunishments {
      * @return whether or not a ip is banned
      */
     public boolean isIpBanned(String ip) {
-        List<Punishment> punishments = getPunishmentsByPlayer(ip, true);
+        List<Punishment> punishments = getPunishmentsByUUID(ip, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.IP_BAN)
                 continue;
@@ -261,7 +265,7 @@ public abstract class GearzPunishments {
      * @return the ip's valid ban
      */
     public Punishment getValidIpBan(String ip) {
-        List<Punishment> punishments = getPunishmentsByPlayer(ip, true);
+        List<Punishment> punishments = getPunishmentsByUUID(ip, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.IP_BAN) {
                 continue;
@@ -296,22 +300,22 @@ public abstract class GearzPunishments {
     /**
      * Called when a player joins the server
      *
-     * @param player player that joined
+     * @param uuid player that joined
      * @return whether or not a player is banned
      */
-    public boolean onJoin(String player) {
-        return isPlayerBanned(player);
+    public boolean onJoin(String uuid) {
+        return isPlayerBanned(uuid);
     }
 
     /**
      * Called when a player leaves the server
      * Manages removal of local mutes
      *
-     * @param player player that left
+     * @param uuid player that left
      */
-    public void onQuit(String player) {
-        if (isPlayerLocalMuted(player)) {
-            this.mutedPlayers.remove(player);
+    public void onQuit(String uuid) {
+        if (isPlayerLocalMuted(uuid)) {
+            this.mutedPlayers.remove(uuid);
         }
     }
 
@@ -328,8 +332,8 @@ public abstract class GearzPunishments {
     /**
      * Punishes a player with the specific parameters
      *
-     * @param player player to punish
-     * @param issuer issuer of the punishment
+     * @param player uuid to punish
+     * @param issuer uuid of the issuer of the punishment
      * @param reason reason for punishment
      * @param type   type of punishment
      * @param end    when the punishment ends

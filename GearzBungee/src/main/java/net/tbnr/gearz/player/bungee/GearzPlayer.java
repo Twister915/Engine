@@ -16,7 +16,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import lombok.NonNull;
-import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
@@ -34,37 +33,47 @@ public final class GearzPlayer {
      * The player's username
      */
     private final String username;
-    @Setter public String nickname;
+    private final String uuid;
+    private String nickname;
     /**
      * The player document
      */
     private DBObject playerDocument;
 
     private GearzPlayer(@NonNull DBObject object) throws PlayerNotFoundException {
-        String username1;
         try {
-            username1 = (String) object.get("username");
+            this.username = (String) object.get("username");
+            this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
             throw new PlayerNotFoundException("Invalid document");
         }
         this.playerDocument = object;
-        this.username = username1;
         updateNickname();
     }
 
     /**
-     * Creates a player from a proxied player
+     * Deprecated in palce of GearzPlayer(ProxiedPlayer)
      *
-     * @param player The proxied player. :o
+     * @param player player's name
+     * @throws PlayerNotFoundException thrown when the player is not found
      */
-
+    @Deprecated
     public GearzPlayer(String player) throws PlayerNotFoundException {
         this.username = player;
+        this.uuid = player;
         loadDocument();
     }
 
+    /**
+     * Creates a GearzPlayer from a ProxiedPlayer
+     *
+     * @param player player to get the GearzPlayer for
+     * @throws PlayerNotFoundException thrown when a player is not found
+     */
     public GearzPlayer(ProxiedPlayer player) throws PlayerNotFoundException {
-        this(player.getName());
+        this.username = player.getName();
+        this.uuid = player.getUUID();
+        loadDocument();
     }
 
     public static GearzPlayer getById(ObjectId id) throws PlayerNotFoundException {
@@ -81,7 +90,7 @@ public final class GearzPlayer {
      *                                 for retrying the find.
      */
     public void loadDocument() throws PlayerNotFoundException {
-        DBObject object = new BasicDBObject("username", this.username);
+        DBObject object = new BasicDBObject("uuid", this.uuid);
         DBObject cursor = getCollection().findOne(object);
         if (cursor != null) {
             this.playerDocument = cursor;
@@ -143,37 +152,8 @@ public final class GearzPlayer {
         }
     }
 
-    public List<String> getIgnoredUsers() {
-        List<String> ignores = new ArrayList<>();
-        Object ignoreObj = getPlayerDocument().get("ignored");
-        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) return ignores;
-        BasicDBList ignoreList = (BasicDBList) ignoreObj;
-        for (Object obj : ignoreList) {
-            if (!(obj instanceof String)) continue;
-            ignoreList.add(obj);
-        }
-        return ignores;
-    }
-
-    public void ignorePlayer(ProxiedPlayer player) {
-        Object ignoreObj = getPlayerDocument().get("ignored");
-        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) {
-            ignoreObj = new BasicDBList();
-        }
-        BasicDBList ignoreList = (BasicDBList) ignoreObj;
-        ignoreList.add(player.getName());
-        getPlayerDocument().put("ignored", ignoreList);
-    }
-
-    public void unignorePlayer(ProxiedPlayer player) {
-        Object ignoreObj = getPlayerDocument().get("ignored");
-        if (ignoreObj == null || !(ignoreObj instanceof BasicDBList)) {
-            ignoreObj = new BasicDBList();
-        }
-        BasicDBList ignoreList = (BasicDBList) ignoreObj;
-        if (!ignoreList.contains(player.getName())) return;
-        ignoreList.remove(player.getName());
-        getPlayerDocument().put("ignored", ignoreList);
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getName() {

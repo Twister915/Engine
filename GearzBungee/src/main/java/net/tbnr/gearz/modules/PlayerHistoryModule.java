@@ -1,6 +1,8 @@
 package net.tbnr.gearz.modules;
 
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.util.bungee.command.TCommand;
@@ -26,7 +28,8 @@ public class PlayerHistoryModule implements TCommandHandler {
         }
         GearzPlayer target;
         try {
-            target = new GearzPlayer(args[0]);
+            ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(args[0]);
+            target = new GearzPlayer(proxiedPlayer);
         } catch (GearzPlayer.PlayerNotFoundException e) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("no-matches", false, false));
             return TCommandStatus.SUCCESSFUL;

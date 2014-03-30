@@ -50,7 +50,7 @@ public class UnPunishCommands implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        List<Punishment> punishments = manager.getPunishmentsByPlayer(gearzTarget.getName(), true);
+        List<Punishment> punishments = manager.getPunishmentsByUUID(gearzTarget.getName(), true);
         if (punishments == null) {
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("no-punishment", false, false));
             return TCommandStatus.SUCCESSFUL;
@@ -172,7 +172,7 @@ public class UnPunishCommands implements TCommandHandler {
             return TCommandStatus.INVALID_ARGS;
         }
 
-        List<Punishment> punishments = manager.getPunishmentsByPlayer(gearzTarget.getName(), true);
+        List<Punishment> punishments = manager.getPunishmentsByUUID(gearzTarget.getName(), true);
         if (punishments == null || punishments.size() == 0) {
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("null-punishment", false, false));
             return TCommandStatus.SUCCESSFUL;

@@ -164,7 +164,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         ProxiedPlayer player = event.getPlayer();
         GearzPlayer gearzPlayer;
         try {
-            gearzPlayer = new GearzPlayer(player.getName());
+            gearzPlayer = new GearzPlayer(event.getPlayer());
         } catch (GearzPlayer.PlayerNotFoundException e) {
             return;
         }
