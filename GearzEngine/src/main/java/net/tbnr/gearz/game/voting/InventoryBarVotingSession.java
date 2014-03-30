@@ -288,7 +288,6 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
         if (Gearz.getInstance().showDebug()) {
             Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<InventoryBarVotingSession|213>--------< removePlayer has been CAUGHT for: " + gearzPlayer.getUsername());
         }
-	    Gearz.getInstance().getLogger().info("I don't care about debugs.... remove Player .... JAFfA");
         this.players.remove(gearzPlayer);
         Votable remove = this.votes.remove(gearzPlayer);
         updateVotable(getSlotFor(remove));

@@ -12,10 +12,14 @@
 package net.cogz.permissions.bukkit;
 
 import com.mongodb.DB;
+import com.mongodb.DBObject;
 import net.cogz.permissions.GearzPermissions;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.activerecord.GModel;
+import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.PermissionsDelegate;
+import net.tbnr.util.player.TPlayer;
+import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,8 +53,27 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public DB getDatabase() {
-        GModel.setDefaultDatabase(Gearz.getInstance().getMongoDB());
         return Gearz.getInstance().getMongoDB();
+    }
+
+    @Override
+    public String getUUID(String player) {
+        return (String) getPlayerDocument(player).get("uuid");
+    }
+
+    public boolean isPlayerOnline(String player) {
+        return Bukkit.getPlayerExact(player) != null;
+    }
+
+    public DBObject getPlayerDocument(String player) {
+        if (isPlayerOnline(player)) {
+            Player bukkitPlayer = Bukkit.getPlayerExact(player);
+            bukkitPlayer.getName();
+            TPlayer tPlayer = TPlayerManager.getInstance().getPlayer(bukkitPlayer);
+            return tPlayer.getPlayerDocument();
+        } else {
+            return TPlayer.getPlayerObject(player);
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

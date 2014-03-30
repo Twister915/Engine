@@ -55,10 +55,6 @@ public class PermissionsCommands implements TCommandHandler {
             case "set":
                 if (!sender.hasPermission("gearz.permissions.player.set")) return TCommandStatus.PERMISSIONS;
                 if (args.length < 3 || args.length > 4) return TCommandStatus.INVALID_ARGS;
-                if (player == null) {
-                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
                 boolean value = true;
                 if (args.length == 4) {
                     value = Boolean.parseBoolean(args[3]);
@@ -71,20 +67,12 @@ public class PermissionsCommands implements TCommandHandler {
             case "unset":
                 if (!sender.hasPermission("gearz.permissions.player.remove")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
-                if (player == null) {
-                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-perm", false, new String[]{"<oermission>", args[2]}, new String[]{"<player>", args[0]}));
                 player.removePermission(args[2]);
                 return TCommandStatus.SUCCESSFUL;
             case "check":
                 if (!sender.hasPermission("gearz.permissions.player.check")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
-                if (player == null) {
-                    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
                 if (player.hasPermission(args[2])) {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.check-player-perm-value", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}, new String[]{"<value>", true + ""}));
                 } else {
@@ -187,10 +175,6 @@ public class PermissionsCommands implements TCommandHandler {
                 GearzBukkitPermissions.getInstance().getPermsManager().reload();
                 NetCommand.withName("permissions").withArg("reload", true).send();
                 return TCommandStatus.SUCCESSFUL;
-            case "online":
-                for (String string : GearzBukkitPermissions.getInstance().getPermsManager().players.keySet()) {
-                    sender.sendMessage(string);
-                }
             default:
                 return TCommandStatus.INVALID_ARGS;
         }

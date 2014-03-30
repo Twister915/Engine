@@ -159,25 +159,21 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         return sdf.format(new Date(mills - TimeZone.getDefault().getRawOffset()));
     }
 
-    @Override
-    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
-        GearzBungee.handleCommandStatus(status, sender);
-    }
-
     @EventHandler
     public void onPlayerJoin(PostLoginEvent event) {
-        GearzPlayer player;
+        ProxiedPlayer player = event.getPlayer();
+        GearzPlayer gearzPlayer;
         try {
-            player = new GearzPlayer(event.getPlayer().getName());
+            gearzPlayer = new GearzPlayer(player.getName());
         } catch (GearzPlayer.PlayerNotFoundException e) {
             return;
         }
-        DBObject playerDocument = player.getPlayerDocument();
+        DBObject playerDocument = gearzPlayer.getPlayerDocument();
         BasicDBList ips = (BasicDBList) playerDocument.get("ips");
         if (ips == null) {
             ips = new BasicDBList();
         }
-        String hostString = event.getPlayer().getAddress().getHostString();
+        String hostString = player.getAddress().getHostString();
         if (!ips.contains(hostString)) {
             ips.add(hostString);
         }
@@ -185,16 +181,21 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         if (usernames == null) {
             usernames = new BasicDBList();
         }
-        String currentUsername = event.getPlayer().getName();
+        String currentUsername = player.getName();
         if (!usernames.contains(currentUsername)) {
             usernames.add(currentUsername);
         }
         playerDocument.put("usernames", usernames);
         playerDocument.put("ips", ips);
-        playerDocument.put("uuid", event.getPlayer().getUUID());
-        /*Location location = lookupService == null ? null : lookupService.getLocation(event.getPlayer().getAddress().getAddress());
-        if (location != null)
-            playerDocument.put("last_location", location.countryCode + "|" + location.region + "|" + location.city + "|" + location.postalCode);*/
+        if (!playerDocument.containsField("uuid")) {
+            playerDocument.put("uuid", player.getUUID());
+        }
+        playerDocument.put("current_username", player.getName());
         GearzPlayer.getCollection().save(playerDocument);
+    }
+
+    @Override
+    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
+        GearzBungee.handleCommandStatus(status, sender);
     }
 }
