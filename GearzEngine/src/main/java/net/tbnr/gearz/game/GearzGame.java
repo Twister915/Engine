@@ -71,7 +71,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     private final GameMeta gameMeta;
     private final GearzPlugin<PlayerType> plugin;
     private final Integer id;
-    private final GearzMetrics metrics;
+    private final GearzMetrics<PlayerType> metrics;
     @Getter(AccessLevel.PROTECTED) private final PvPTracker<PlayerType> tracker;
     @Getter(AccessLevel.PROTECTED) private final GearzPlayerProvider<PlayerType> playerProvider;
     @Getter private boolean running;

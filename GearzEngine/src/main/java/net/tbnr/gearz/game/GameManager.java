@@ -18,10 +18,10 @@ import org.bukkit.event.Listener;
 /**
  * Move GameManager into an interface to support multiple types of GameManagers.
  */
-public interface GameManager<PlayerType> extends Listener {
+public interface GameManager<PlayerType extends GearzPlayer> extends Listener {
     public GameMeta getGameMeta();
 
-    public GearzPlugin getPlugin();
+    public GearzPlugin<PlayerType> getPlugin();
 
     public void beginGame(Integer id) throws GameStartException;
 

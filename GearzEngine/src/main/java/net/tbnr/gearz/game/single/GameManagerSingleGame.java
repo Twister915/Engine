@@ -59,7 +59,7 @@ import java.util.*;
 /**
  *
  */
-public class GameManagerSingleGame<PlayerType extends GearzPlayer> implements GameManager<PlayerType>, Listener, VotingHandler, TCommandHandler {
+public final class GameManagerSingleGame<PlayerType extends GearzPlayer> implements GameManager<PlayerType>, Listener, VotingHandler, TCommandHandler {
     private final Class<? extends GearzGame<PlayerType>> gearzGameClass;
     private GameLobby gameLobby;
     private GameMeta gameMeta;
