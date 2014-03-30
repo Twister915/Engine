@@ -1,6 +1,7 @@
 package net.cogz.friends;
 
 import com.mongodb.*;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,11 @@ public abstract class GearzFriends {
     public abstract DBCollection getCollection();
 
     public abstract DBObject getPlayerDocument(String player);
+
+    public DBObject getById(ObjectId id) {
+        DBObject query = new BasicDBObject("_id", id);
+        return getCollection().findOne(query);
+    }
 
     public List<String> getPlayerFriends(String player) {
         List<String> friends = new ArrayList<>();
