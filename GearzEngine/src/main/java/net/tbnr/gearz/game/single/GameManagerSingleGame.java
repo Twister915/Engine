@@ -11,8 +11,8 @@
 
 package net.tbnr.gearz.game.single;
 
-import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
+import lombok.Getter;
 import lombok.NonNull;
 import net.lingala.zip4j.exception.ZipException;
 import net.tbnr.gearz.Gearz;
@@ -58,17 +58,19 @@ import java.util.*;
 /**
  *
  */
-public final class GameManagerSingleGame implements GameManager, Listener, VotingHandler, TCommandHandler {
-    private final Class<? extends GearzGame> gearzGameClass;
+public class GameManagerSingleGame<PlayerType extends GearzPlayer> implements GameManager<PlayerType>, Listener, VotingHandler, TCommandHandler {
+    private final Class<? extends GearzGame<PlayerType>> gearzGameClass;
     private GameLobby gameLobby;
     private GameMeta gameMeta;
     private GearzPlugin plugin;
     private InventoryBarVotingSession votingSession;
-    private GearzGame runningGame;
+    private GearzGame<PlayerType> runningGame;
+    @Getter private final GearzPlayerProvider<PlayerType> playerProvider;
     private List<String> priorities = new ArrayList<>();
 
-    public GameManagerSingleGame(Class<? extends GearzGame> gameClass, GearzPlugin plugin) throws GearzException {
+    public GameManagerSingleGame(Class<? extends GearzGame<PlayerType>> gameClass, GearzPlugin plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
         this.gearzGameClass = gameClass;
+        this.playerProvider = playerProvider;
         GameMeta gameMeta1 = gameClass.getAnnotation(GameMeta.class);
         if (gameMeta1 == null) {
             throw new GearzException("Invalid Game Class");
@@ -190,7 +192,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             event.setResult(PlayerLoginEvent.Result.KICK_FULL);
             return;
         }
-        GearzPlayer personToKick = candidateForKicking(event.getPlayer());
+        PlayerType personToKick = candidateForKicking(event.getPlayer());
         if(personToKick != null) {
             personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
         } else {
@@ -204,7 +206,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length);
         ServerManager.addPlayer(event.getPlayer().getPlayerName());
         event.getPlayer().resetPlayer();
-        final GearzPlayer gearzPlayer = GearzPlayer.playerFromTPlayer(event.getPlayer());
+        final PlayerType gearzPlayer = playerProvider.getPlayerFromTPlayer(event.getPlayer());
         event.setJoinMessage(null);
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
@@ -249,13 +251,13 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
                 player.sendMessage(Gearz.getInstance().getFormat("formats.leave-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
             }
         }
-        GearzPlayer player = GearzPlayer.playerFromTPlayer(event.getPlayer());
+        PlayerType player = playerProvider.getPlayerFromTPlayer(event.getPlayer());
         if (this.runningGame != null) {
             this.runningGame.playerLeft(player);
 			if(this.runningGame.isHideStream()) event.setQuitMessage(null);
         } else {
             if (this.votingSession.isVoting()) {
-                votingSession.removePlayer(GearzPlayer.playerFromTPlayer(event.getPlayer()));
+                votingSession.removePlayer(player);
             }
             if (Bukkit.getOnlinePlayers().length < getGameMeta().maxPlayers()) {
                 ServerManager.setOpenForJoining(true);
@@ -290,15 +292,15 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     @SuppressWarnings("unused")
     public void beginGame(Integer id, Arena arena) throws GameStartException {
         this.votingSession.endSession();
-        List<GearzPlayer> players = new ArrayList<>();
+        List<PlayerType> players = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
-            GearzPlayer player = GearzPlayer.playerFromPlayer(p);
+            PlayerType player = playerProvider.getPlayerFromPlayer(p);
             if (Gearz.getInstance().showDebug()) {
                 Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GameManagerSingleGame|183>--------< beginGame / player loop has been CAUGHT for: " + player.toString());
             }
             players.add(player);
         }
-        GearzGame game;
+        GearzGame<PlayerType> game;
         try {
             game = gearzGameClass.getConstructor(List.class, Arena.class, GearzPlugin.class, GameMeta.class, Integer.class).newInstance(players, arena, this.plugin, this.gameMeta, 0);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
@@ -307,7 +309,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
         }
         this.runningGame = game;
         String format = Gearz.getInstance().getFormat("formats.map-loading", false, new String[]{"<map>", arena.getName()});
-        for (GearzPlayer p : game.allPlayers()) {
+        for (PlayerType p : game.allPlayers()) {
             p.getTPlayer().sendMessage(format);
             p.getPlayer().playNote(p.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.A));
         }
@@ -320,7 +322,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             Bukkit.shutdown();
         }
         String format2 = Gearz.getInstance().getFormat("formats.map-loaded", false, new String[]{"<map>", runningGame.getArena().getName()});
-        for (GearzPlayer p : runningGame.allPlayers()) {
+        for (PlayerType p : runningGame.allPlayers()) {
             if (p.getPlayer() == null) {
                 continue;
             }
@@ -358,7 +360,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     }
 
     @Override
-    public void spawn(GearzPlayer player) {
+    public void spawn(PlayerType player) {
         player.getTPlayer().teleport(this.gameLobby.pointToLocation(this.gameLobby.spawnPoints.next()));
     }
 
@@ -426,7 +428,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             return;
         }
         if (event.getPlayer().getLocation().getY() < 0) {
-            spawn(GearzPlayer.playerFromPlayer(event.getPlayer()));
+            spawn(playerProvider.getPlayerFromPlayer(event.getPlayer()));
         }
     }
 
@@ -489,8 +491,8 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
      * Get the person on the server with lower priority then them if no player lower it returns null
      * @return GearzPlayer ~ player with lower priority then them
      */
-    private GearzPlayer candidateForKicking(@NonNull Player p) {
-        GearzPlayer candidate = null;
+    private PlayerType candidateForKicking(@NonNull Player p) {
+        PlayerType candidate = null;
         ArrayList<Player> players = new ArrayList<>();
         Collections.addAll(players, Bukkit.getOnlinePlayers());
         Integer integer = priorityForPlayer(p);
@@ -501,7 +503,7 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
             Player wannaBe = players.get(i);
             if (p.getName().equals(wannaBe.getName())) continue;
             if(integer < priorityForPlayer(wannaBe.getPlayer()) || event.isAbsolutePriority()) {
-                candidate = GearzPlayer.playerFromPlayer(wannaBe);
+                candidate = playerProvider.getPlayerFromPlayer(p);
                 break;
             }
         }

@@ -11,9 +11,7 @@
 
 package net.tbnr.gearz.player;
 
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.event.player.PlayerChangeDonorPointsEvent;
 import net.tbnr.gearz.event.player.PlayerLevelChangeEvent;
@@ -34,17 +32,17 @@ import java.util.HashMap;
  * @returns no re
  */
 @EqualsAndHashCode(of = {"username"}, doNotUseGetters = true)
-@ToString(exclude = {"hideStats", "game"})
-public final class GearzPlayer {
-    private final TPlayer player;
-    private final String username;
-    private boolean hideStats;
-    private static final Integer magic_number = 7;
-    private GearzGame game;
-    private static HashMap<TPlayer, GearzPlayer> players;
-    private static final boolean scoreboard;
+@ToString(exclude = {"game"})
+public class GearzPlayer {
+    @Getter private final TPlayer tPlayer;
+    @Getter private final String username;
+    //private boolean hideStats;
+    //private static final Integer magic_number = 7;
+    @Getter @Setter private GearzGame game;
+    //private static HashMap<TPlayer, GearzPlayer> players;
+    //private static final boolean scoreboard;
 
-    static {
+    /*static {
         GearzPlayer.players = new HashMap<>();
         scoreboard = Gearz.getInstance().getConfig().getBoolean("scoreboard");
     }
@@ -90,15 +88,15 @@ public final class GearzPlayer {
     @SuppressWarnings("unused")
     public boolean areStatsHidden() {
         return this.hideStats;
-    }
+    }*/
 
-    private GearzPlayer(@NonNull TPlayer player) {
-        this.player = player;
+    protected GearzPlayer(@NonNull TPlayer player) {
+        this.tPlayer = player;
         this.username = player.getPlayerName();
-        GearzPlayer.players.put(player, this);
+        //GearzPlayer.players.put(player, this);
     }
 
-    public void addXp(int xp) {
+    /*public void addXp(int xp) {
         Integer current_xp = getXP();
         Integer newXp = Math.max(0, current_xp + xp);
         this.player.store(Gearz.getInstance(), new GPlayerXP(newXp));
@@ -225,109 +223,98 @@ public final class GearzPlayer {
 
     public static void removePlayer(TPlayer player) {
         GearzPlayer.players.remove(player);
-    }
+    }*/
 
-    public GearzGame getGame() {
-        return game;
-    }
+//    public static class GPlayerXP implements TPlayerStorable {
+//        private final Integer xp;
+//
+//        public GPlayerXP(Integer xp) {
+//            this.xp = xp;
+//        }
+//
+//        @Override
+//        public String getName() {
+//            return "gearz-xp";
+//        }
+//
+//        @Override
+//        public Object getValue() {
+//            return xp;
+//        }
+//    }
+//
+//    public static class GPlayerLevel implements TPlayerStorable {
+//        private final Integer level;
+//
+//        public GPlayerLevel(Integer level) {
+//            this.level = level;
+//        }
+//
+//        @Override
+//        public String getName() {
+//            return "gearz-level";
+//        }
+//
+//        @Override
+//        public Object getValue() {
+//            return level;
+//        }
+//    }
 
-    public void setGame(GearzGame game) {
-        this.game = game;
-    }
+//    public static class GPlayerPoints implements TPlayerStorable {
+//        private final Integer points;
+//
+//        public GPlayerPoints(Integer points) {
+//            this.points = points;
+//        }
+//
+//        @Override
+//        public String getName() {
+//            return "gearz-points";
+//        }
+//
+//        @Override
+//        public Object getValue() {
+//            return points;
+//        }
+//    }
+//
+//    public TPlayer getTPlayer() {
+//        return this.player;
+//    }
+//
+//
+//    public static class GPlayerDonorPoints implements TPlayerStorable {
+//        private final Integer points;
+//
+//        public GPlayerDonorPoints(Integer newPoint) {
+//            points = newPoint;
+//        }
+//
+//        @Override
+//        public String getName() {
+//            return "gearz-dpoints";
+//        }
+//
+//        @Override
+//        public Object getValue() {
+//            return points;
+//        }
+//    }
 
-    @SuppressWarnings("unused")
-    public String getUsername() {
-        return username;
-    }
-
-    public static class GPlayerXP implements TPlayerStorable {
-        private final Integer xp;
-
-        public GPlayerXP(Integer xp) {
-            this.xp = xp;
-        }
-
-        @Override
-        public String getName() {
-            return "gearz-xp";
-        }
-
-        @Override
-        public Object getValue() {
-            return xp;
-        }
-    }
-
-    public static class GPlayerLevel implements TPlayerStorable {
-        private final Integer level;
-
-        public GPlayerLevel(Integer level) {
-            this.level = level;
-        }
-
-        @Override
-        public String getName() {
-            return "gearz-level";
-        }
-
-        @Override
-        public Object getValue() {
-            return level;
-        }
-    }
-
-    public static class GPlayerPoints implements TPlayerStorable {
-        private final Integer points;
-
-        public GPlayerPoints(Integer points) {
-            this.points = points;
-        }
-
-        @Override
-        public String getName() {
-            return "gearz-points";
-        }
-
-        @Override
-        public Object getValue() {
-            return points;
-        }
-    }
-
-    public TPlayer getTPlayer() {
-        return this.player;
+    public void sendException(Throwable t) {
+        getTPlayer().sendMessage(ChatColor.RED + "Error: " + ChatColor.WHITE + t.getMessage());
     }
 
     public Player getPlayer() {
-        return this.player.getPlayer();
-    }
-
-    public static class GPlayerDonorPoints implements TPlayerStorable {
-        private final Integer points;
-
-        public GPlayerDonorPoints(Integer newPoint) {
-            points = newPoint;
-        }
-
-        @Override
-        public String getName() {
-            return "gearz-dpoints";
-        }
-
-        @Override
-        public Object getValue() {
-            return points;
-        }
-    }
-
-    public void sendException(Throwable t) {
-        getPlayer().sendMessage(ChatColor.RED + "Error: " + ChatColor.WHITE + t.getMessage());
+        return this.tPlayer.getPlayer();
     }
 
     public boolean isValid() {
+        Player player = this.tPlayer.getPlayer();
         if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzPlayer|279>--------< isValid has been CAUGHT for: " + this.username + " and it returned: " + this.player.getPlayer());
+            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzPlayer|279>--------< isValid has been CAUGHT for: " + this.username + " and it returned: " + player);
         }
-        return this.player.getPlayer() != null && this.player.isOnline();
+        return player != null && this.tPlayer.isOnline();
     }
 }

@@ -36,8 +36,6 @@ import net.tbnr.util.inventory.InventoryRefresher;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.tyrannyofheaven.bukkit.zPermissions.ZPermissionsService;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -109,71 +107,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         //** ENABLE **
         //This method is a bit confusing. Let's comment/clean it up a bit <3
 
-
-        //Setup zPermissions bridge
-
-        Plugin zPermissions = Bukkit.getPluginManager().getPlugin("zPermissions");
-        if (zPermissions != null) {
-            ZPermissionsService service = null;
-            try {
-                service = Bukkit.getServicesManager().load(ZPermissionsService.class);
-            }
-            catch (NoClassDefFoundError ignored) {}
-            if (service != null) {
-                final ZPermissionsService finalService = service;
-                this.setPermissionsDelegate(new PermissionsDelegate() {
-                    @Override
-                    public String getPrefix(String player) {
-                        String group = getGroup(player);
-                        String prefix = getPlayerData(player, "prefix", "");
-                        if (prefix == null || prefix.equals("")) prefix = getGroupData(group, "prefix", group);
-                        return prefix;
-                    }
-
-                    @Override
-                    public String getSuffix(String player) {
-                        return "";
-                    }
-
-                    @Override
-                    public String getTabColor(String player) {
-                        String group = getGroup(player);
-                        String suffix = getPlayerData(player, "suffix", "");
-                        if (suffix == null || suffix.equals("")) suffix = getGroupData(group, "suffix", group);
-                        return suffix;
-                    }
-
-                    @Override
-                    public String getNameColor(String player) {
-                        return null;
-                    }
-
-                    @Override
-                    public List<String> getValidPermissions(String player) {
-                        return null;
-                    }
-
-                    @Override
-                    public List<String> getAllPermissions(String player) {
-                        return null;
-                    }
-
-                    private String getPlayerData(String player, String node, String defaultVal) {
-                        String playerMetadata = finalService.getPlayerMetadata(player, node, String.class);
-                        if (playerMetadata == null) return defaultVal;
-                        return playerMetadata;
-                    }
-                    private String getGroupData(String group, String node, String defaultVal) {
-                        String groupMetadata = finalService.getGroupMetadata(group, node, String.class);
-                        if (groupMetadata == null) return defaultVal;
-                        return groupMetadata;
-                    }
-                    private String getGroup(String player) {
-                        return finalService.getPlayerPrimaryGroup(player);
-                    }
-                });
-            }
-        }
         this.databaseConfig = new GearzConfig(this, "database.yml");
         this.databaseConfig.getConfig().options().copyDefaults(true);
         this.databaseConfig.saveDefaultConfig();

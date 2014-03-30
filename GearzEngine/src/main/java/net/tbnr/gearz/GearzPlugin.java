@@ -17,7 +17,9 @@ import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.gearz.game.GearzGame;
+import net.tbnr.gearz.game.GearzPlayerProvider;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
+import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.TPlugin;
 import net.tbnr.util.command.TCommandHandler;
 import org.bukkit.Bukkit;
@@ -29,12 +31,12 @@ import org.bukkit.Bukkit;
  * Time: 1:30 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class GearzPlugin extends TPlugin {
-    private GameManager gameManager;
-    private ArenaManager arenaManager;
+public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugin {
+    private GameManager<PlayerType> gameManager;
+    private ArenaManager arenaManager   ;
     private GameMeta meta;
 
-    public GameManager getGameManager() {
+    public GameManager<PlayerType> getGameManager() {
         return this.gameManager;
     }
 
@@ -46,7 +48,7 @@ public abstract class GearzPlugin extends TPlugin {
         return this.meta;
     }
 
-    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame> game) throws GearzException {
+    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType>> game) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
 
         if (meta == null) throw new GearzException("No GameMeta found!");
@@ -74,7 +76,7 @@ public abstract class GearzPlugin extends TPlugin {
 
         //If the game mod is single then register it as a single game
         if (game_mode.equalsIgnoreCase("SINGLE")) {
-            this.gameManager = new GameManagerSingleGame(game, this);
+            this.gameManager = new GameManagerSingleGame<>(game, this, getPlayerProvider());
         } else {
             throw new GearzException("Invalid defined game mode");
         }
@@ -95,4 +97,6 @@ public abstract class GearzPlugin extends TPlugin {
     public void disable() {
         if (this.gameManager != null) this.gameManager.disable();
     }
+
+    protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();
 }

@@ -26,33 +26,33 @@ import java.util.Map;
  * Used to track kill stats, etc.
  */
 @RequiredArgsConstructor
-public final class PvPTracker {
+public final class PvPTracker<PlayerType extends GearzPlayer> {
     @NonNull
-    private final GearzGame game;
-    private HashMap<GearzPlayer, PvPPlayer> playerTrackers;
+    private final GearzGame<PlayerType> game;
+    private HashMap<PlayerType, PvPPlayer<PlayerType>> playerTrackers;
 
     void startGame() {
         this.playerTrackers = new HashMap<>();
-        for (GearzPlayer player : game.getPlayers()) {
-            this.playerTrackers.put(player, new PvPPlayer(player));
+        for (PlayerType player : game.getPlayers()) {
+            this.playerTrackers.put(player, new PvPPlayer<PlayerType>(player));
         }
     }
 
-    void trackKill(GearzPlayer killer, GearzPlayer dead) {
+    void trackKill(PlayerType killer, PlayerType dead) {
         this.playerTrackers.get(killer).logKill(dead);
         this.playerTrackers.get(dead).logDeath(killer);
     }
 
     void saveKills() {
-        for (final Map.Entry<GearzPlayer, PvPPlayer> entry : playerTrackers.entrySet()) {
-            final GearzPlayer player = entry.getKey();
-            final PvPPlayer playerTracker = entry.getValue();
-            PlayerList deaths = PlayerList.loadPlayerList(PlayerListKey.Deaths, player);
-            PlayerList kills = PlayerList.loadPlayerList(PlayerListKey.Kills, player);
-            for (final GearzPlayer killer : playerTracker.getDeaths()) {
+        for (final Map.Entry<PlayerType, PvPPlayer<PlayerType>> entry : playerTrackers.entrySet()) {
+            final PlayerType player = entry.getKey();
+            final PvPPlayer<PlayerType> playerTracker = entry.getValue();
+            PlayerList<PlayerType> deaths = PlayerList.loadPlayerList(PlayerListKey.Deaths, player);
+            PlayerList<PlayerType> kills = PlayerList.loadPlayerList(PlayerListKey.Kills, player);
+            for (final PlayerType killer : playerTracker.getDeaths()) {
                 deaths.addPlayer(killer);
             }
-            for (final GearzPlayer slain : playerTracker.getKills()) {
+            for (final PlayerType slain : playerTracker.getKills()) {
                 kills.addPlayer(slain);
             }
             player.getTPlayer().store(Gearz.getInstance(), deaths);
@@ -61,7 +61,7 @@ public final class PvPTracker {
         }
     }
 
-    public Integer getKillstreakFor(GearzPlayer player) {
+    public Integer getKillstreakFor(PlayerType player) {
         return this.playerTrackers.get(player).getSequencedKills();
     }
 
@@ -69,16 +69,16 @@ public final class PvPTracker {
     @RequiredArgsConstructor
     @EqualsAndHashCode
     @ToString
-    private static final class PvPPlayer {
+    private static final class PvPPlayer<PlayerType2 extends GearzPlayer> {
         @NonNull private GearzPlayer player;
-        @Getter private List<GearzPlayer> kills = new ArrayList<>();
-        @Getter private List<GearzPlayer> deaths = new ArrayList<>();
+        @Getter private List<PlayerType2> kills = new ArrayList<>();
+        @Getter private List<PlayerType2> deaths = new ArrayList<>();
         @Getter private Integer sequencedKills = 0;
-        public void logKill(GearzPlayer killed) {
+        public void logKill(PlayerType2 killed) {
             this.sequencedKills++;
             this.kills.add(killed);
         }
-        public void logDeath(GearzPlayer killer) {
+        public void logDeath(PlayerType2 killer) {
             this.sequencedKills = 0;
             this.deaths.add(killer);
         }
@@ -92,23 +92,23 @@ public final class PvPTracker {
     @ToString
     @EqualsAndHashCode
     @RequiredArgsConstructor
-    public final static class PlayerList implements TPlayerStorable {
+    public final static class PlayerList<PlayerType2 extends GearzPlayer> implements TPlayerStorable {
         @NonNull
         private final String key;
         @NonNull
         private final BasicDBList players;
 
-        public static PlayerList loadPlayerList(PlayerListKey key, GearzPlayer player) {
+        public static <T extends GearzPlayer> PlayerList<T> loadPlayerList(PlayerListKey key, T player) {
             String key_string = (key == PlayerListKey.Kills) ? "kills" : "deaths";
             Object storable = player.getTPlayer().getStorable(Gearz.getInstance(), key_string);
             BasicDBList list = new BasicDBList();
             if (storable != null) {
                 list = (BasicDBList) storable;
             }
-            return new PlayerList(key_string, list);
+            return new PlayerList<>(key_string, list);
         }
 
-        public void addPlayer(GearzPlayer player) {
+        public void addPlayer(PlayerType2 player) {
             players.add(player.getTPlayer().getPlayerDocument().get("_id"));
         }
 
