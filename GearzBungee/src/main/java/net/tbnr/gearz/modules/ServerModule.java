@@ -152,7 +152,10 @@ public class ServerModule implements TCommandHandler, Listener {
                 for (Server server : ServerManager.getAllServers()) {
                     if (ProxyServer.getInstance().getServerInfo(server.getBungee_name()) != null) continue;
                     ProxyServer.getInstance().getLogger().info(server.toString());
-                    if (server.getAddress() == null || server.getPort() == null || server.getNumber() == null) continue;
+                    if (server.getAddress() == null || server.getPort() == null || server.getNumber() == null) {
+                        server.remove();
+                        continue;
+                    }
                     ProxyServer.getInstance().getServers().put(server.getBungee_name(), ProxyServer.getInstance().constructServerInfo(server.getBungee_name(), new InetSocketAddress(server.getAddress(), server.getPort()), GearzBungee.getInstance().getFormat("default-motd", false), false));
                 }
             }
