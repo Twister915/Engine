@@ -237,9 +237,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
         }
         stack.setItemMeta(bookMeta);
         gearzPlayer.getPlayer().getInventory().setItem(7, stack);
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GameManagerSingleGame|156>--------< TPlayerJoinEvent has been CAUGHT for: " + gearzPlayer.toString());
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<GameManagerSingleGame|156>--------< TPlayerJoinEvent has been CAUGHT for: " + gearzPlayer.toString());
     }
 
     @EventHandler
@@ -264,9 +262,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
                 ServerManager.setOpenForJoining(true);
             }
         }
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GameManagerSingleGame|155>--------< TPlayerDisconnectEvent has been CAUGHT for: " + player.toString());
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<GameManagerSingleGame|155>--------< TPlayerDisconnectEvent has been CAUGHT for: " + player.toString());
     }
 
     @EventHandler
@@ -286,9 +282,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
         List<PlayerType> players = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
             PlayerType player = playerProvider.getPlayerFromPlayer(p);
-            if (Gearz.getInstance().showDebug()) {
-                Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GameManagerSingleGame|183>--------< beginGame / player loop has been CAUGHT for: " + player.toString());
-            }
+            Gearz.getInstance().debug("GEARZ DEBUG ---<GameManagerSingleGame|183>--------< beginGame / player loop has been CAUGHT for: " + player.toString());
             players.add(player);
         }
         GearzGame<PlayerType> game;
@@ -329,8 +323,8 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
                 }
                 ServerManager.setOpenForJoining(true);
                 ServerManager.setStatusString("spectate");
-                Gearz.getInstance().getLogger().info("------> STARTING GEARZ GAME <-----");
-                Gearz.getInstance().getLogger().info(runningGame.toString());
+                Gearz.getInstance().debug("------> STARTING GEARZ GAME <-----");
+                Gearz.getInstance().debug(runningGame.toString());
             }
         }, 40L);
     }

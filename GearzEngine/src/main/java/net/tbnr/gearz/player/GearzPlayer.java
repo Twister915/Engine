@@ -45,9 +45,7 @@ public class GearzPlayer {
 
     public boolean isValid() {
         Player player = this.tPlayer.getPlayer();
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzPlayer|279>--------< isValid has been CAUGHT for: " + this.username + " and it returned: " + player);
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<GearzPlayer|279>--------< isValid has been CAUGHT for: " + this.username + " and it returned: " + player);
         return player != null && this.tPlayer.isOnline();
     }
 }

@@ -43,7 +43,7 @@ public final class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (event.getKickMessage().equalsIgnoreCase("zPermissions failed to initialize")) {
-            Gearz.getInstance().getLogger().info("zPermissions error detected, restarting server with hopes of a better server!");
+            Gearz.getInstance().debug("zPermissions error detected, restarting server with hopes of a better server!");
             Bukkit.shutdown();
         }
     }

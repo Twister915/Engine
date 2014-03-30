@@ -58,11 +58,11 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugi
 
 
         ///REGISTRATION
-        Gearz.getInstance().getLogger().info("Game starting registration! " + meta.longName() + " v" + meta.version() + " by " + meta.author() + "[" + meta.shortName() + "]");
+        Gearz.getInstance().debug("Game starting registration! " + meta.longName() + " v" + meta.version() + " by " + meta.author() + "[" + meta.shortName() + "]");
 
         //Create a new arena and assign it
         this.arenaManager = new ArenaManager(this.meta.key(), arenaClass);
-        Gearz.getInstance().getLogger().info("ArenaManager setup!");
+        Gearz.getInstance().debug("ArenaManager setup!");
 
         //Make a game register event fire it and check if it's cancelled
         GameRegisterEvent event = new GameRegisterEvent(arenaClass, game, meta, this);
@@ -86,7 +86,7 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugi
         if (this.gameManager instanceof TCommandHandler) registerCommands((TCommandHandler) this.gameManager);
 
         //Log that the gamemanager is set up
-        Gearz.getInstance().getLogger().info("GameManager setup!");
+        Gearz.getInstance().debug("GameManager setup!");
 
         //Register the game and events
         Gearz.getInstance().registerGame(this);

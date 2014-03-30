@@ -143,9 +143,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         }
 
         for (PlayerType player : players) {
-            if (Gearz.getInstance().showDebug()) {
-                Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGame|73>--------< <init> / player loop has been CAUGHT for: " + player.getUsername());
-            }
+            Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGame|73>--------< <init> / player loop has been CAUGHT for: " + player.getUsername());
         }
         this.tracker = new PvPTracker<>(this);
         this.spectators = new HashSet<>();
@@ -385,9 +383,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     }
 
     public final void addPlayer(PlayerType player) {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGame|334>--------< addPlayer has been CAUGHT for: " + player.getUsername());
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGame|334>--------< addPlayer has been CAUGHT for: " + player.getUsername());
         this.addedPlayers.add(player);
         this.endedPlayers.add(player);
         makeSpectator(player);
@@ -458,9 +454,8 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         ArrayList<InventoryGUI.InventoryGUIItem> items = new ArrayList<>();
         try {
             for (PlayerType player : getPlayers()) {
-                if (Gearz.getInstance().showDebug()) {
-                    Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGame|399>--------< getPlayersForMenu / player loop has been CAUGHT for: " + player.toString());
-                }
+                Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGame|399>--------< getPlayersForMenu / player loop has been CAUGHT for: " + player.toString());
+
                 if (!player.isValid()) {
                     continue;
                 }
@@ -480,12 +475,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                 items.add(new InventoryGUI.InventoryGUIItem(stack, player.getUsername()));
             }
         } catch (NullPointerException npe) {
-            if (Gearz.getInstance().showDebug()) {
-                Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGame|416>--------< getPlayersForMenu / player loop has thrown a npe: " + npe.toString());
-            }
-            if (Gearz.getInstance().showDebug()) {
-                Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGame|417>--------< getPlayersForMenu / player loop has thrown a npe: " + npe.getCause());
-            }
+            Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGame|417>--------< getPlayersForMenu / player loop has thrown a npe: " + npe.getCause());
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -587,9 +577,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         if (!this.isRunning()) {
             return;
         }
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGAme|483>--------< removePlayer has been CAUGHT for: " + player.getUsername());
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGAme|483>--------< removePlayer has been CAUGHT for: " + player.getUsername());
         GameStopCause cause = isSpectating(player) ? GameStopCause.GAME_END : GameStopCause.FORCED;
         playerLeft(player);
         stopGameForPlayer(player, cause);
@@ -597,9 +585,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     }
 
     public final void playerLeft(PlayerType player) {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());
         this.players.remove(player);
         this.spectators.remove(player);
         //this.pendingPoints.remove(player);
@@ -1219,7 +1205,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     public final void registerExternalListeners(Listener listener) {
         getPlugin().registerEvents(listener);
     }
-    
+
     protected final PlayerType resolvePlayer(Player player) {
         return this.playerProvider.getPlayerFromPlayer(player);
     }

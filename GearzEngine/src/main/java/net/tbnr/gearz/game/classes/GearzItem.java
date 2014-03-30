@@ -88,7 +88,7 @@ public final class GearzItem {
                         throw new GearzClassReadException("Invalid Enchantment " + x + " " + enchant_name + " " + level);
                     }
                     enchantmentMap.put(e, level);
-                    Gearz.getInstance().getLogger().info("Added enchant " + x + " " + e.getName() + ":" + level);
+                    Gearz.getInstance().debug("Added enchant " + x + " " + e.getName() + ":" + level);
                 } catch (JSONException e) {
                     throw GearzClass.exceptionFromJSON("Could not read enchantment " + x, e);
                 }
@@ -135,7 +135,7 @@ public final class GearzItem {
         if (this.enchantments != null) {
             for (Map.Entry<Enchantment, Integer> enchantmentIntegerEntry : this.enchantments.entrySet()) {
                 stack.addUnsafeEnchantment(enchantmentIntegerEntry.getKey(), enchantmentIntegerEntry.getValue());
-                Gearz.getInstance().getLogger().info("Assigned enchant " + enchantmentIntegerEntry.getKey().getName() + ":" + enchantmentIntegerEntry.getValue());
+                Gearz.getInstance().debug("Assigned enchant " + enchantmentIntegerEntry.getKey().getName() + ":" + enchantmentIntegerEntry.getValue());
             }
         }
         ItemMeta itemMeta1 = stack.getItemMeta();

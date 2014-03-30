@@ -204,9 +204,7 @@ public final class TPlayer {
      * @return The player object from Bukkit that this represents
      */
     public Player getPlayer() {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<TPlayer|120>--------< getPlayer has been CAUGHT for: " + this.playerName + " and got: " + Bukkit.getPlayerExact(this.playerName));
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<TPlayer|120>--------< getPlayer has been CAUGHT for: " + this.playerName + " and got: " + Bukkit.getPlayerExact(this.playerName));
         return Bukkit.getPlayerExact(this.playerName);
     }
 

@@ -12,7 +12,6 @@
 package net.tbnr.gearz;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.config.GearzConfig;
@@ -38,7 +37,6 @@ import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -255,5 +253,10 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             }
         }
         return fin == null ? null : fin.getHostAddress();
+    }
+
+    public void debug(String string) {
+        if (!showDebug()) return;
+        getLogger().info(string);
     }
 }
