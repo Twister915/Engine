@@ -82,6 +82,7 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugi
         }
 
         //if game manager is instance of TCommandHandler then register it's commands
+        //noinspection ConstantConditions
         if (this.gameManager instanceof TCommandHandler) registerCommands((TCommandHandler) this.gameManager);
 
         //Log that the gamemanager is set up

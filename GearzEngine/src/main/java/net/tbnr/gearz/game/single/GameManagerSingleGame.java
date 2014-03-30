@@ -62,14 +62,14 @@ import java.util.*;
 public final class GameManagerSingleGame<PlayerType extends GearzPlayer> implements GameManager<PlayerType>, Listener, VotingHandler, TCommandHandler {
     private final Class<? extends GearzGame<PlayerType>> gearzGameClass;
     private GameLobby gameLobby;
-    private GameMeta gameMeta;
-    private GearzPlugin plugin;
+    @Getter private GameMeta gameMeta;
+    @Getter private GearzPlugin<PlayerType> plugin;
     private InventoryBarVotingSession votingSession;
     private GearzGame<PlayerType> runningGame;
     @Getter private final GearzPlayerProvider<PlayerType> playerProvider;
     private List<String> priorities = new ArrayList<>();
 
-    public GameManagerSingleGame(Class<? extends GearzGame<PlayerType>> gameClass, GearzPlugin plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
+    public GameManagerSingleGame(Class<? extends GearzGame<PlayerType>> gameClass, GearzPlugin<PlayerType> plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
         this.gearzGameClass = gameClass;
         this.playerProvider = playerProvider;
         GameMeta gameMeta1 = gameClass.getAnnotation(GameMeta.class);
@@ -273,16 +273,6 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
     @SuppressWarnings("unused")
     public void onRespawn(PlayerRespawnEvent event) {
         event.setRespawnLocation(this.gameLobby.pointToLocation(this.gameLobby.spawnPoints.next()));
-    }
-
-    @Override
-    public GameMeta getGameMeta() {
-        return this.gameMeta;
-    }
-
-    @Override
-    public GearzPlugin getPlugin() {
-        return this.plugin;
     }
 
     @Override
