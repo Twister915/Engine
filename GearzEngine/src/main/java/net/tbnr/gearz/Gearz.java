@@ -21,7 +21,6 @@ import net.tbnr.gearz.effects.EnderBar;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.netcommand.NetCommand;
-import net.tbnr.gearz.player.ClearChat;
 import net.tbnr.gearz.player.GearzNickname;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
@@ -123,15 +122,11 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         //Generic player utils
         registerEvents(new PlayerListener());
         registerEvents(new EnderBar.EnderBarListeners());
-        registerCommands(new ClearChat());
         registerCommands(new SettingsCommands());
         new TabListener();
 
         //EnderBar utils
         registerEvents(new EnderBar.EnderBarListeners());
-
-        //ClearChat
-        registerCommands(new ClearChat());
 
         //Silk Touch 32 listener for effects
         EnchantmentEffect.addEnchantmentListener();
@@ -217,7 +212,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return new TPlayerManager.AuthenticationDetails(getDatabaseConfig().getConfig().getString("database.host"), getDatabaseConfig().getConfig().getInt("database.port"), getDatabaseConfig().getConfig().getString("database.database"), getDatabaseConfig().getConfig().getString("database.collection"));
     }
 
-
     public Jedis getJedisClient() {
         return jedisPool.getResource();
     }
@@ -234,19 +228,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @SuppressWarnings("unused")
     public boolean isGameServer() {
         return this.gamePlugins.size() > 0;
-    }
-
-    private static void delete(@NonNull File file) {
-        if (file.isDirectory()) {
-            try {
-                for (File f : file.listFiles()) {
-                    delete(f);
-                }
-            } catch (NullPointerException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (!file.delete()) Gearz.getInstance().getLogger().warning("File: " + file + " could not be deleted");
     }
 
     @Override

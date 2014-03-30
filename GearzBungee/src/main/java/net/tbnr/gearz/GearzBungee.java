@@ -12,7 +12,6 @@
 package net.tbnr.gearz;
 
 import com.mongodb.BasicDBList;
-import com.sun.corba.se.impl.activation.CommandHandler;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
@@ -24,7 +23,6 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.Chat;
 import net.tbnr.gearz.chat.ChatManager;
-import net.tbnr.gearz.chat.ClearChat;
 import net.tbnr.gearz.chat.Messaging;
 import net.tbnr.gearz.chat.channels.ChannelCommand;
 import net.tbnr.gearz.chat.channels.ChannelManager;
@@ -211,7 +209,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
                 new StatsModule(),
                 new PropertiesManager(),
                 announcerModule,
-                new ClearChat()
         };
 
         Listener[] listeners = {
