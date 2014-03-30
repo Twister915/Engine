@@ -302,7 +302,7 @@ public class GameManagerSingleGame<PlayerType extends GearzPlayer> implements Ga
         }
         GearzGame<PlayerType> game;
         try {
-            game = gearzGameClass.getConstructor(List.class, Arena.class, GearzPlugin.class, GameMeta.class, Integer.class).newInstance(players, arena, this.plugin, this.gameMeta, 0);
+            game = gearzGameClass.getConstructor(List.class, Arena.class, GearzPlugin.class, GameMeta.class, Integer.class, GearzPlayerProvider.class).newInstance(players, arena, this.plugin, this.gameMeta, 0, playerProvider);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
             return;

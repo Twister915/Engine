@@ -12,7 +12,6 @@
 package net.tbnr.gearz.game;
 
 import com.comphenix.protocol.ProtocolLibrary;
-import com.mongodb.BasicDBObject;
 import lombok.*;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.GearzPlugin;
@@ -50,7 +49,10 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * GearzGame is a class to represent a game.
@@ -62,9 +64,9 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     private final Arena arena;
     private final Set<PlayerType> players;
     private final Set<PlayerType> spectators;
-    private final Set<PlayerType> addedPlayers;
-    private final Set<PlayerType> endedPlayers;
-    private final InventoryGUI spectatorGui;
+    @Getter(AccessLevel.PROTECTED) private final Set<PlayerType> addedPlayers;
+    @Getter(AccessLevel.PROTECTED) private final Set<PlayerType> endedPlayers;
+    @Getter(AccessLevel.PROTECTED) private final InventoryGUI spectatorGui;
     private final GameMeta gameMeta;
     private final GearzPlugin<PlayerType> plugin;
     private final Integer id;
@@ -165,7 +167,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                 player.teleport(target.getLocation());
                 player.closeInventory();
                 player.sendMessage(getFormat("spectator-tp", new String[]{"<player>", target.getName()}));
-                TPlayer tPlayer = playerProvider.getPlayerFromPlayer(player).getTPlayer();
+                TPlayer tPlayer = resolvePlayer(player).getTPlayer();
                 tPlayer.playSound(Sound.ENDERMAN_TELEPORT);
                 tPlayer.playSound(Sound.ARROW_HIT);
             }
@@ -213,7 +215,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                 if (!p.isOnline()) {
                     continue;
                 }
-                PlayerType gearzPlayer = playerProvider.getPlayerFromPlayer(p.getPlayer());
+                PlayerType gearzPlayer = resolvePlayer(p.getPlayer());
                 gearzPlayer.sendException(t);
             }
         }
@@ -256,23 +258,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         }
         Bukkit.getPluginManager().callEvent(new PlayerGameLeaveEvent(player, this));
         player.getTPlayer().resetPlayer();
-//        if (cause == GameStopCause.GAME_END) {
-//            if (!this.addedPlayers.contains(player)) {
-//                int points = 0;
-//                if (this.pendingPoints.containsKey(player)) {
-//                    points = this.pendingPoints.get(player);
-//                }
-//                player.addPoints(points);
-//                player.addXp(xpForPlaying());
-//                player.getTPlayer().sendMessage(getFormat("xp-earned", new String[]{"<xp>", String.valueOf(xpForPlaying())}));
-//                player.getTPlayer().sendMessage(getFormat("points-earned", new String[]{"<points>", String.valueOf(points)}));
-//            }
-//        } else {
-//            player.getTPlayer().sendMessage(getFormat("game-void"));
-//        }
-//        if (player.isValid()) {
-//            player.setHideStats(false);
-//        }
         onPlayerGameEnd(player, cause);
         this.endedPlayers.add(player);
     }
@@ -367,18 +352,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             event.setCancelled(true);
         }
     }
-
-//    /**
-//     * Add Game Points
-//     *
-//     * @param player ~ (in PlayerType wrapper) the player to add points to
-//     * @param points ~ the amount of points to add
-//     */
-//    protected final void addGPoints(final PlayerType player, Integer points) {
-//        Integer cPend = this.pendingPoints.containsKey(player) ? this.pendingPoints.get(player) : 0;
-//        this.pendingPoints.put(player, cPend + points);
-//        player.getTPlayer().sendMessage(getFormat("points-added", new String[]{"<points>", String.valueOf(points)}));
-//    }
 
     /**
      * Get's the players which are playing the game
@@ -603,8 +576,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         if (this.spectators.contains(player)) {
             this.spectators.remove(player);
         }
-//        this.pendingPoints.put(player, 0);
-//        player.setHideStats(true);
         player.getTPlayer().resetPlayer();
         showForAll(player);
         onPlayerBecomePlayer(player);
@@ -750,7 +721,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
      */
     @EventHandler
     public final void onPlayerInteract(PlayerInteractEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (!isIngame(player)) {
             return;
         }
@@ -836,7 +807,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        PlayerType player = playerProvider.getPlayerFromPlayer((Player) event.getEntity().getShooter());
+        PlayerType player = resolvePlayer((Player) event.getEntity().getShooter());
         onSnowballThrow(player);
     }
 
@@ -850,7 +821,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
-        PlayerType player = playerProvider.getPlayerFromPlayer((Player) event.getEntity());
+        PlayerType player = resolvePlayer((Player) event.getEntity());
         if (!isIngame(player)) {
             return;
         }
@@ -885,7 +856,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                     return;
                 }
             }
-            PlayerType damager = playerProvider.getPlayerFromPlayer((Player) eventDamager);
+            PlayerType damager = resolvePlayer((Player) eventDamager);
             if (this.gameMeta.pvpMode() == GameMeta.PvPMode.NoPvP) {
                 damager.getTPlayer().sendMessage(getFormat("no-pvp-allowed"));
                 event.setCancelled(true);
@@ -897,7 +868,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                 return;
             }
             if (eventTarget instanceof Player) {
-                PlayerType target = playerProvider.getPlayerFromPlayer((Player) eventTarget);
+                PlayerType target = resolvePlayer((Player) eventTarget);
                 double damage = damageForHit(damager, target, event.getDamage());
                 if (isSpectating(target)) {
                     event.setCancelled(true);
@@ -930,7 +901,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                 event.setDamage(callingEvent2.getDamage());
             }
         } else if (eventDamager instanceof LivingEntity) {
-            PlayerType target = playerProvider.getPlayerFromPlayer((Player) eventTarget);
+            PlayerType target = resolvePlayer((Player) eventTarget);
             PlayerGameDamageEvent callingEvent = new PlayerGameDamageEvent(this, target, event.getDamage(), false);
             Bukkit.getPluginManager().callEvent(callingEvent);
             if (callingEvent.isCancelled()) {
@@ -943,7 +914,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     public void playerDied(PlayerDeathEvent event) {
         event.getEntity().setHealth(event.getEntity().getHealthScale());
         Player deadPlayer = event.getEntity();
-        final PlayerType dead = playerProvider.getPlayerFromPlayer(deadPlayer);
+        final PlayerType dead = resolvePlayer(deadPlayer);
         EntityDamageEvent.DamageCause cause = deadPlayer.getLastDamageCause().getCause();
         List<ItemStack> drops = event.getDrops();
         ItemStack[] itemStacks = drops.toArray(new ItemStack[drops.size()]);
@@ -956,7 +927,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             //Process a PvP/PvE encounter
             final EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
             if (deadPlayer.getKiller() != null) {
-                final PlayerType player = playerProvider.getPlayerFromPlayer(deadPlayer.getKiller());
+                final PlayerType player = resolvePlayer(deadPlayer.getKiller());
                 Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
                     @Override
                     public void run() {
@@ -1011,7 +982,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             return;
         }
-        PlayerType player = playerProvider.getPlayerFromPlayer((Player) event.getEntity());
+        PlayerType player = resolvePlayer((Player) event.getEntity());
         if (!isIngame(player)) {
             return;
         }
@@ -1065,7 +1036,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
-        PlayerType shooter = playerProvider.getPlayerFromPlayer((Player) event.getEntity());
+        PlayerType shooter = resolvePlayer((Player) event.getEntity());
         if (!isIngame(shooter)) {
             return;
         }
@@ -1082,7 +1053,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler
     public final void onBlockBreak(BlockBreakEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (!isIngame(player)) {
             return;
         }
@@ -1102,7 +1073,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler
     public final void onBlockPlace(BlockPlaceEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (!isIngame(player)) return;
         if (isSpectating(player)) {
             player.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
@@ -1117,7 +1088,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (!isIngame(player)) {
             return;
         }
@@ -1145,7 +1116,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (!isIngame(player)) {
             return;
         }
@@ -1158,7 +1129,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onItemDrop(PlayerDropItemEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (!isIngame(player)) return;
         if (isSpectating(player) || !canDropItem(player, event.getItemDrop().getItemStack())) event.setCancelled(true);
     }
@@ -1166,7 +1137,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onHunger(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
-        PlayerType player = playerProvider.getPlayerFromPlayer((Player) event.getEntity());
+        PlayerType player = resolvePlayer((Player) event.getEntity());
         if (!isIngame(player)) return;
         if (isSpectating(player)) event.setCancelled(true);
         if (!allowHunger(player)) event.setCancelled(true);
@@ -1174,7 +1145,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public final void onItemPickup(PlayerPickupItemEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (isSpectating(player)) {
             event.setCancelled(true);
             return;
@@ -1194,7 +1165,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler
     public final void onEggThrow(PlayerEggThrowEvent event) {
-        onEggThrow(playerProvider.getPlayerFromPlayer(event.getPlayer()), event);
+        onEggThrow(resolvePlayer(event.getPlayer()), event);
     }
 
     @EventHandler
@@ -1206,7 +1177,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler
     public final void onPlayerChat(AsyncPlayerChatEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (isSpectating(player)) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(getFormat("spectating-chat"));
@@ -1215,7 +1186,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     @EventHandler
     public final void onEXPChange(PlayerExpChangeEvent event) {
-        PlayerType player = playerProvider.getPlayerFromPlayer(event.getPlayer());
+        PlayerType player = resolvePlayer(event.getPlayer());
         if (!isIngame(player)) {
             return;
         }
@@ -1227,7 +1198,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBoat(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
-        PlayerType damager = playerProvider.getPlayerFromPlayer((Player) event.getDamager());
+        PlayerType damager = resolvePlayer((Player) event.getDamager());
         if (!isSpectating(damager)) return;
         event.setCancelled(true);
         damager.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
@@ -1251,6 +1222,10 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
 
     public final void registerExternalListeners(Listener listener) {
         getPlugin().registerEvents(listener);
+    }
+    
+    protected final PlayerType resolvePlayer(Player player) {
+        return this.resolvePlayer(player);
     }
 
     /**
