@@ -49,7 +49,6 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public DB getDatabase() {
-        GModel.setDefaultDatabase(Gearz.getInstance().getMongoDB());
         return Gearz.getInstance().getMongoDB();
     }
 
