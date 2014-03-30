@@ -64,7 +64,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
     private GameLobby gameLobby;
     @Getter private GameMeta gameMeta;
     @Getter private GearzPlugin<PlayerType> plugin;
-    private InventoryBarVotingSession votingSession;
+    private VotingSession votingSession;
     private GearzGame<PlayerType> runningGame;
     @Getter private final GearzPlayerProvider<PlayerType> playerProvider;
     private List<String> priorities = new ArrayList<>();
@@ -106,7 +106,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
                 ServerManager.setOpenForJoining(true);
             }
         }, 5L);
-        this.votingSession = new InventoryBarVotingSession(new ArrayList<GearzPlayer>(), plugin.getArenaManager().getRandomArenas(5), this, this);
+        this.votingSession = new VotingSession(new ArrayList<GearzPlayer>(), plugin.getArenaManager().getRandomArenas(5), this, this);
         this.votingSession.startSession(60);
         ConfigurationSection configurationSection = Gearz.getInstance().getConfig().getConfigurationSection("vote-boosts");
         HashMap<String, Integer> integerHashMap = new HashMap<>();
@@ -355,14 +355,13 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
     }
 
     public void onVotingDone(Map<Votable, Integer> data, VotingSession ses, boolean override) {
-        if (!(ses instanceof InventoryBarVotingSession)) {
+        if (ses == null) {
             return;
         }
-        InventoryBarVotingSession session = (InventoryBarVotingSession) ses;
         int length = Bukkit.getOnlinePlayers().length;
         if (!(this.gameMeta.maxPlayers() >= length && length >= this.gameMeta.minPlayers()) && !override) {
             Bukkit.broadcastMessage(GearzGame.formatUsingMeta(this.gameMeta, Gearz.getInstance().getFormat("game-strings.not-enough-players", true, new String[]{"<num>", String.valueOf(this.gameMeta.minPlayers() - length)})));
-            session.extendSession(60);
+            ses.extendSession(60);
             return;
         }
         int currentMax = 0;
@@ -386,7 +385,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
             this.beginGame(0, highestVotes);
         } catch (GameStartException e) {
             e.printStackTrace();
-            session.extendSession(60);
+            ses.extendSession(60);
         }
     }
 
