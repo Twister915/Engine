@@ -122,6 +122,11 @@
             <artifactId>AccountsClient</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>tc.oc</groupId>
+            <artifactId>tracker</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -146,6 +151,7 @@
                                     <exclude>com.comphenix.protocol</exclude>
                                     <exclude>org.primesoft</exclude>
                                     <exclude>rhino:js</exclude>
+                                    <exclude>tc.oc:tracker</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>
