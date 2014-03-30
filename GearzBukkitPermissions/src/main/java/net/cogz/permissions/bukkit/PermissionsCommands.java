@@ -175,10 +175,6 @@ public class PermissionsCommands implements TCommandHandler {
                 GearzBukkitPermissions.getInstance().getPermsManager().reload();
                 NetCommand.withName("permissions").withArg("reload", true).send();
                 return TCommandStatus.SUCCESSFUL;
-            case "online":
-                for (String string : GearzBukkitPermissions.getInstance().getPermsManager().players.keySet()) {
-                    sender.sendMessage(string);
-                }
             default:
                 return TCommandStatus.INVALID_ARGS;
         }
