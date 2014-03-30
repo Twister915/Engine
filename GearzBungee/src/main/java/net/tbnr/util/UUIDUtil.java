@@ -74,13 +74,16 @@ public class UUIDUtil implements Runnable {
         @Override
         public void run() {
             Profile[] profiles = httpProfileRepository.findProfilesByCriteria(new ProfileCriteria(username, AGENT));
-            uuid = profiles[0].getId();
-
+            if (profiles[0] == null) {
+                this.uuid = null;
+            } else {
+                uuid = profiles[0].getId();
+            }
             complete.set(true);
         }
     }
 
     public static interface UUIDCallback {
-        public void complete(String username, String UUID);
+        public void complete(String username, String uuid);
     }
 }

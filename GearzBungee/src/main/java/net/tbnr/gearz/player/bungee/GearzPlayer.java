@@ -15,6 +15,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import lombok.Getter;
 import lombok.NonNull;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -33,7 +34,7 @@ public final class GearzPlayer {
      * The player's username
      */
     private final String username;
-    private final String uuid;
+    @Getter private final String uuid;
     private String nickname;
     /**
      * The player document

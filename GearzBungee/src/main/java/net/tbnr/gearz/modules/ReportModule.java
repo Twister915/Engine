@@ -105,8 +105,9 @@ public class ReportModule implements TCommandHandler {
 
         GearzPlayer target;
         try {
-            target = new GearzPlayer(args[0]);
-        } catch (GearzPlayer.PlayerNotFoundException e) {
+            ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(args[0]);
+            target = new GearzPlayer(proxiedPlayer);
+        } catch (GearzPlayer.PlayerNotFoundException | NullPointerException e) {
             return TCommandStatus.INVALID_ARGS;
         }
 
