@@ -1,8 +1,6 @@
 package net.cogz.punishments.bungee;
 
 import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import net.cogz.punishments.GearzPunishments;
 import net.cogz.punishments.Punishment;
 import net.cogz.punishments.PunishmentType;
@@ -15,14 +13,14 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.player.bungee.GearzPlayer;
-import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 
 import java.text.SimpleDateFormat;
 
 /**
  * Bungee Side Permissions Manager
  */
+
+//todo punisher from uuid
 public class PunishmentManager extends GearzPunishments implements Listener {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
