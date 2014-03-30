@@ -18,11 +18,11 @@ import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.config.GearzConfig;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
+import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.gearz.player.ClearChat;
 import net.tbnr.gearz.player.GearzNickname;
-import net.tbnr.gearz.player.GearzPlayerUtils;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.gearz.server.ServerManagerHelper;
@@ -52,36 +52,22 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     /**
      * The Gearz instance.
      */
-    private static Gearz instance;
+    @Getter private static Gearz instance;
     /**
      * Stores the Random for Gearz
      */
     private static Random random;
-
     private static String bungeeName2;
     /**
      * Jedis pool
      */
     private JedisPool jedisPool;
-
-    public List<GearzPlugin> getGamePlugins() {
-        return gamePlugins;
-    }
-
-    private List<GearzPlugin> gamePlugins;
-
+    @Getter private List<GearzPlugin> gamePlugins;
     public static final String CHAN = "GEARZ_NETCOMMAND";
+    @Getter @Setter private boolean isLobbyServer;
+    @Getter InventoryRefresher inventoryRefresher;
 
-    @Getter
-    @Setter
-    private boolean isLobbyServer;
-
-    public static Gearz getInstance() {
-        return instance;
-    }
-
-    @Getter
-    InventoryRefresher inventoryRefresher;
+    @Getter @Setter private GearzPlayerProvider playerProvider;
 
     public boolean showDebug() {
         return false;
@@ -91,18 +77,17 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return random;
     }
 
-    @Getter @Setter
-    public PermissionsDelegate permissionsDelegate;
+    @Getter @Setter private PermissionsDelegate permissionsDelegate;
 
     @Getter GearzConfig databaseConfig;
 
     public Gearz() {
-        Gearz.instance = this;
         Gearz.random = new Random();
     }
 
     @Override
     public void enable() {
+        Gearz.instance = this;
 
         //** ENABLE **
         //This method is a bit confusing. Let's comment/clean it up a bit <3
@@ -134,11 +119,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         GearzNickname nicknameHandler = new GearzNickname();
         registerEvents(nicknameHandler);
         registerCommands(nicknameHandler);
-
-        //Setup the player utils commands and events
-        GearzPlayerUtils gearzPlayerUtils = new GearzPlayerUtils();
-        registerEvents(gearzPlayerUtils);
-        registerCommands(gearzPlayerUtils);
 
         //Generic player utils
         registerEvents(new PlayerListener());
@@ -272,10 +252,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Override
     public String getGame() {
         return (this.isGameServer() ? this.gamePlugins.get(0).getGameManager().getGameMeta().key() : null);
-    }
-
-    public static String getBungeeName2() {
-        return bungeeName2;
     }
 
     public String getBungeeName() {

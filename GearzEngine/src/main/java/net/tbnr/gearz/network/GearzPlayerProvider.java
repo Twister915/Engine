@@ -1,4 +1,4 @@
-package net.tbnr.gearz.game;
+package net.tbnr.gearz.network;
 
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.player.GearzPlayer;

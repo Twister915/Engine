@@ -23,6 +23,7 @@ import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.player.PlayerPriorityDetermineEvent;
 import net.tbnr.gearz.game.*;
 import net.tbnr.gearz.game.voting.*;
+import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.gearz.settings.PlayerSettings;
@@ -496,7 +497,7 @@ public class GameManagerSingleGame<PlayerType extends GearzPlayer> implements Ga
         ArrayList<Player> players = new ArrayList<>();
         Collections.addAll(players, Bukkit.getOnlinePlayers());
         Integer integer = priorityForPlayer(p);
-        PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(GearzPlayer.playerFromPlayer(p));
+        PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(getPlayerProvider().getPlayerFromPlayer(p));
         event = Gearz.getInstance().callEvent(event);
         if (event.isCancelled()) return null;
         for(int i = players.size()-1; i >= 0; i--) {

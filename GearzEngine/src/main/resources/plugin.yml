@@ -10,8 +10,6 @@ commands:
     description: Nickname.
   realname:
     description: Checks a player's real name.
-  xp:
-    description: Xp
   game:
     description: Game manager command
   map:

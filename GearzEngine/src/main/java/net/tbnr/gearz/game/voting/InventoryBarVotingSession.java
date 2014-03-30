@@ -124,7 +124,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
         if (votable == null) {
             return;
         }
-        voteFor(votable, GearzPlayer.playerFromPlayer(event.getPlayer()));
+        voteFor(votable, Gearz.getInstance().getPlayerProvider().getPlayerFromPlayer(event.getPlayer()));
     }
 
     @EventHandler
@@ -136,7 +136,7 @@ public final class InventoryBarVotingSession extends VotingSession implements Li
             return;
         }
         Player p = (Player) event.getWhoClicked();
-        if (!(this.players.contains(GearzPlayer.playerFromPlayer(p)))) {
+        if (!(this.players.contains(Gearz.getInstance().getPlayerProvider().getPlayerFromPlayer(p)))) {
             return;
         }
         event.setCancelled(true);

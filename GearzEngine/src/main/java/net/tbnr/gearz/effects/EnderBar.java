@@ -99,7 +99,7 @@ public final class EnderBar {
     public static class EnderBarListeners implements Listener {
         @EventHandler
         public void onPlayerMove(PlayerMoveEvent event) {
-            GearzPlayer gearzPlayer = GearzPlayer.playerFromPlayer(event.getPlayer());
+            GearzPlayer gearzPlayer = Gearz.getInstance().getPlayerProvider().getPlayerFromPlayer(event.getPlayer());
             if (!hasEnderBarFor(gearzPlayer)) {
                 return;
             }
@@ -115,7 +115,7 @@ public final class EnderBar {
 
         @EventHandler
         public void onPlayerRespawn(PlayerRespawnEvent event) {
-            final GearzPlayer player = GearzPlayer.playerFromPlayer(event.getPlayer());
+            final GearzPlayer player = Gearz.getInstance().getPlayerProvider().getPlayerFromPlayer(event.getPlayer());
             if (!hasEnderBarFor(player)) {
                 return;
             }

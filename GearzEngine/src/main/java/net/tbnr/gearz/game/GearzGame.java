@@ -22,6 +22,7 @@ import net.tbnr.gearz.event.game.GamePreStartEvent;
 import net.tbnr.gearz.event.game.GameStartEvent;
 import net.tbnr.gearz.event.player.*;
 import net.tbnr.gearz.netcommand.BouncyUtils;
+import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.RandomUtils;
@@ -111,10 +112,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             return valueOf(string.charAt(string.length()-1));
         }
     }
-    /**
-     * You only getSetting points if you leave on good terms
-     */
-    //private final HashMap<PlayerType, Integer> pendingPoints;
 
     public enum Explosion {
         NORMAL,
@@ -152,7 +149,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         }
         this.tracker = new PvPTracker<>(this);
         this.spectators = new HashSet<>();
-        //this.pendingPoints = new HashMap<>();
         this.endedPlayers = new HashSet<>();
         this.plugin = plugin;
         this.gameMeta = meta;
@@ -842,13 +838,13 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         }
         if (eventDamager instanceof Player || eventDamager instanceof Arrow || eventDamager instanceof ThrownPotion) {
             if (eventDamager instanceof Arrow) {
-                eventDamager = ((Arrow) eventDamager).getShooter();
+                eventDamager = (Entity) ((Arrow) eventDamager).getShooter();
                 if (!(eventDamager instanceof Player)) {
                     return;
                 }
             }
             if (eventDamager instanceof ThrownPotion) {
-                eventDamager = ((ThrownPotion) eventDamager).getShooter();
+                eventDamager = (Entity) ((ThrownPotion) eventDamager).getShooter();
                 if (!(eventDamager instanceof Player)) {
                     return;
                 }
@@ -1225,7 +1221,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     }
     
     protected final PlayerType resolvePlayer(Player player) {
-        return this.resolvePlayer(player);
+        return this.playerProvider.getPlayerFromPlayer(player);
     }
 
     /**

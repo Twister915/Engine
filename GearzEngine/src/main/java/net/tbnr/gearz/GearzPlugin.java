@@ -17,7 +17,7 @@ import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.gearz.game.GearzGame;
-import net.tbnr.gearz.game.GearzPlayerProvider;
+import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.TPlugin;
