@@ -104,9 +104,11 @@ public abstract class GearzPermissions {
      * @param player Player who joined
      */
     public PermPlayer onJoin(String player) {
-        GModel one = new PermPlayer(this.database, getUUID(player)).findOne();
+        GModel one = new PermPlayer(this.database, getUUID(player), player).findOne();
         if (one == null) {
-            one = new PermPlayer(this.database, getUUID(player), player);
+            String uuid = getUUID(player);
+            if (uuid == null) throw new IllegalArgumentException("Not a valid player");
+            one = new PermPlayer(this.database, uuid, player);
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
@@ -215,7 +217,7 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public void setGroup(String player, String group) {
-        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, getUUID(player)).findOne();
+        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, getUUID(player), player).findOne();
         if (permPlayer == null) {
             permPlayer = onJoin(player);
         }

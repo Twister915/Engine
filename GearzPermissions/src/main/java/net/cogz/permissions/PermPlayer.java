@@ -54,17 +54,13 @@ public class PermPlayer extends GModel {
 
     public PermPlayer(DB database, String uuid) {
         this(database);
-        this.uuid = uuid.toLowerCase();
+        this.uuid = uuid;
     }
 
     public PermPlayer(DB database, String uuid, String player) {
         this(database);
-        this.uuid = uuid.toLowerCase();
+        this.uuid = uuid;
         this.name = player;
-    }
-
-    public PermPlayer(DB database, UUID uuid) {
-        this(database, uuid.toString());
     }
 
     /**
