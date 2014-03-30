@@ -68,6 +68,8 @@ public abstract class GearzPermissions {
      */
     public abstract DB getDatabase();
 
+    public abstract String getUUID(String player);
+
     /**
      * Reloads all the data from the database
      */
@@ -102,9 +104,9 @@ public abstract class GearzPermissions {
      * @param player Player who joined
      */
     public PermPlayer onJoin(String player) {
-        GModel one = new PermPlayer(this.database, player).findOne();
+        GModel one = new PermPlayer(this.database, getUUID(player)).findOne();
         if (one == null) {
-            one = new PermPlayer(this.database, player);
+            one = new PermPlayer(this.database, getUUID(player), player);
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
@@ -213,7 +215,7 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public void setGroup(String player, String group) {
-        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, player).findOne();
+        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, getUUID(player)).findOne();
         if (permPlayer == null) {
             permPlayer = onJoin(player);
         }
@@ -261,7 +263,6 @@ public abstract class GearzPermissions {
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
-
     }
 
     /**

@@ -19,6 +19,7 @@ import net.tbnr.gearz.activerecord.GModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Jake on 1/24/14.
@@ -28,11 +29,12 @@ import java.util.List;
  * Latest Change:
  */
 public class PermPlayer extends GModel {
+    @Getter public String name;
     @Getter @BasicField public String prefix;
     @Getter @BasicField public String suffix;
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
-    @Getter @BasicField public String name;
+    @Getter @BasicField public String uuid;
     @Getter @BasicField public String group;
     @Getter @BasicField public List<String> permissions;
 
@@ -50,9 +52,19 @@ public class PermPlayer extends GModel {
         super(database, dBobject);
     }
 
-    public PermPlayer(DB database, String name) {
+    public PermPlayer(DB database, String uuid) {
         this(database);
-        this.name = name.toLowerCase();
+        this.uuid = uuid.toLowerCase();
+    }
+
+    public PermPlayer(DB database, String uuid, String player) {
+        this(database);
+        this.uuid = uuid.toLowerCase();
+        this.name = player;
+    }
+
+    public PermPlayer(DB database, UUID uuid) {
+        this(database, uuid.toString());
     }
 
     /**
