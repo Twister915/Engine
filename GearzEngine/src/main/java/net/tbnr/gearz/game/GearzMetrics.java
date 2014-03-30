@@ -46,13 +46,13 @@ public final class GearzMetrics<PlayerType extends GearzPlayer> {
         return gearzMetrics;
     }
 
-    public GearzMetrics startGame() {
+    public GearzMetrics<PlayerType> startGame() {
         this.gameStart = Calendar.getInstance().getTimeInMillis();
         this.players = game.allPlayers();
         return this;
     }
 
-    public GearzMetrics finishGame() {
+    public GearzMetrics<PlayerType> finishGame() {
         this.gameEnd = Calendar.getInstance().getTimeInMillis();
         return this;
     }
