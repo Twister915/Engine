@@ -47,6 +47,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -1164,6 +1165,11 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             event.setCancelled(true);
             event.getPlayer().sendMessage(getFormat("spectating-chat"));
         }
+    }
+
+    @EventHandler
+    public final void onPortalCreate(PortalCreateEvent event) {
+        event.setCancelled(!canCreatePortal());
     }
 
     @EventHandler
