@@ -220,7 +220,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                 player2.getTPlayer().teleport(location);
                 activatePlayer(player2);
             } catch (Throwable t) {
-                //player2.sendException(t);
+                //ignored
             }
         }
         //Ghosting player fix hopefully
@@ -907,7 +907,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             }
         }
         if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-            //Process a PvP/PvE encounter
             final EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
             if (deadPlayer.getKiller() != null) {
                 final PlayerType player = resolvePlayer(deadPlayer.getKiller());
@@ -987,12 +986,9 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         }
     }
 
-    //NOTICE Static Strings!
     @SafeVarargs
     protected final void displayWinners(PlayerType... players) {
         List<String> strings = new ArrayList<>();
-        //char[] emptyStrings = new char[64];
-        //Arrays.fill(emptyStrings, ' ');
         String line = ChatColor.GOLD.toString() + ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64);
         strings.add(line);
         for (int x = 0, l = progressiveWinColors.length; x < players.length; x++) {
@@ -1002,9 +998,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             ChatColor color = progressiveWinColors[index];
             strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(place) + NumberSuffixes.getForString(String.valueOf(place)).getSuffix() + " place.");
         }
-        /*while (strings.size() < 9) {
-            strings.add(" ");
-        }*/
         strings.add(line);
         for (PlayerType player : allPlayers()) {
             TPlayer tPlayer = player.getTPlayer();
@@ -1075,16 +1068,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         if (!isIngame(player)) {
             return;
         }
-        /** Comment out not needed because arrows and stuff go through spectators. Add back if wanted.
-        if (isSpectating(player)) {
-            if (event.getTo().add(0, -8, 0).getBlock().getType() != Material.AIR) {
-                event.getPlayer().setVelocity(player.getPlayer().getLocation().getDirection().add(new Vector(0, 8, 0)));
-                event.getPlayer().sendMessage(getFormat("spectator-hover"));
-                if (!event.getPlayer().getAllowFlight()) event.getPlayer().setAllowFlight(true);
-            }
-            return;
-        }
-         */
         if (!canMove(player)) {
             if (event.getTo().getBlock().getX() != event.getFrom().getBlock().getX() || event.getTo().getBlock().getZ() != event.getFrom().getBlock().getZ()) {
                 event.setTo(event.getFrom());
