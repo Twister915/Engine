@@ -1204,7 +1204,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
      *
      * @return GameMeta ~ the game's meta
      */
-    protected final GameMeta getGameMeta() {
+    public GameMeta getGameMeta() {
         return this.gameMeta;
     }
 
