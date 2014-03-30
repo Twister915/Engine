@@ -50,7 +50,7 @@ public class DeathMessageProcessor {
         return playerDeath;
     }
 
-    public void makeDefaults(PlayerDeath death) {
+    protected void makeDefaults(PlayerDeath death) {
         death.setEvent(death.getVictim().getLastDamageCause());
         if (death.getEvent() instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) death.getEvent();
@@ -66,7 +66,7 @@ public class DeathMessageProcessor {
         death.setAction(attack);
     }
 
-    public void processFire(FireEnchantTracker fire, PlayerDeath death) {
+    protected void processFire(FireEnchantTracker fire, PlayerDeath death) {
         Player p = death.getVictim();
         if (death.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
             if (fire.hasOriginalDamager(p)) {
@@ -77,7 +77,7 @@ public class DeathMessageProcessor {
 
     }
 
-    public void processGravity(SimpleGravityKillTracker gravity, PlayerDeath death) {
+    protected void processGravity(SimpleGravityKillTracker gravity, PlayerDeath death) {
         Player p = death.getVictim();
 
         if (gravity.attacks.containsKey(p)) {
@@ -93,7 +93,7 @@ public class DeathMessageProcessor {
         }
     }
 
-    public void processExplosives(ExplosiveTracker explosive, PlayerDeath death) {
+    protected void processExplosives(ExplosiveTracker explosive, PlayerDeath death) {
         if (death.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
             if (((EntityDamageByEntityEvent) death.getEvent()).getDamager() instanceof TNTPrimed) {
                 TNTPrimed tnt = (TNTPrimed) ((EntityDamageByEntityEvent) death.getEvent()).getDamager();
@@ -107,7 +107,7 @@ public class DeathMessageProcessor {
         }
     }
 
-    public void processItem(PlayerDeath death) {
+    protected void processItem(PlayerDeath death) {
         if (death.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             if (death.getCredited() != null) {
                 String weapon = "";
@@ -124,7 +124,7 @@ public class DeathMessageProcessor {
         }
     }
 
-    public void processProjectiles(ProjectileDistanceTracker tracker, PlayerDeath death) {
+    protected void processProjectiles(ProjectileDistanceTracker tracker, PlayerDeath death) {
         if (death.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
             EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) death.getEvent();
             Projectile projectile = (Projectile) event.getDamager();
@@ -138,7 +138,7 @@ public class DeathMessageProcessor {
         }
     }
 
-    public Integer round(double number) {
+    protected Integer round(double number) {
         return (int) Math.round(number);
     }
 }

@@ -21,6 +21,7 @@ import net.tbnr.gearz.event.game.GameEndEvent;
 import net.tbnr.gearz.event.game.GamePreStartEvent;
 import net.tbnr.gearz.event.game.GameStartEvent;
 import net.tbnr.gearz.event.player.*;
+import net.tbnr.gearz.game.tracker.DeathMessageProcessor;
 import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
@@ -62,7 +63,7 @@ import java.util.Set;
 @SuppressWarnings({"NullArgumentToVariableArgMethod", "DefaultFileTemplate", "UnusedDeclaration"})
 @EqualsAndHashCode(of = {"id", "arena", "players"}, doNotUseGetters = true, callSuper = false)
 @ToString(of = {"arena", "id", "running", "players", "spectators", "gameMeta"})
-public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDelegate<PlayerType> implements Listener {
+public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDelegate<PlayerType> implements Listener {
     private final Arena arena;
     private final Set<PlayerType> players;
     private final Set<PlayerType> spectators;
@@ -76,7 +77,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
     @Getter(AccessLevel.PROTECTED) private final PvPTracker<PlayerType> tracker;
     @Getter(AccessLevel.PROTECTED) private final GearzPlayerProvider<PlayerType> playerProvider;
     @Getter private boolean running;
-	@Getter private boolean hideStream;
+    @Getter private boolean hideStream;
     private final static ChatColor[] progressiveWinColors =
             {ChatColor.DARK_GREEN, ChatColor.GREEN,
                     ChatColor.DARK_AQUA, ChatColor.AQUA,
@@ -84,6 +85,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                     ChatColor.DARK_RED, ChatColor.RED,
                     ChatColor.DARK_PURPLE, ChatColor.LIGHT_PURPLE,
                     ChatColor.DARK_GRAY, ChatColor.GRAY};
+
     private static enum NumberSuffixes {
         ONE('1', "st"),
         TWO('2', "nd"),
@@ -97,20 +99,24 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             this.suffix = suffix;
             this.numberCharacter = numberCharacter;
         }
+
         public static NumberSuffixes valueOf(char chat) {
             for (NumberSuffixes numberSuffixes : NumberSuffixes.values()) {
                 if (numberSuffixes.getChar() == chat) return numberSuffixes;
             }
             return NumberSuffixes.OTHER;
         }
+
         public char getChar() {
             return this.numberCharacter;
         }
+
         public String getSuffix() {
             return this.suffix;
         }
+
         public static NumberSuffixes getForString(String string) {
-            return valueOf(string.charAt(string.length()-1));
+            return valueOf(string.charAt(string.length() - 1));
         }
     }
 
@@ -152,7 +158,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         this.plugin = plugin;
         this.gameMeta = meta;
         this.id = id;
-		this.hideStream = false;
+        this.hideStream = false;
         this.metrics = GearzMetrics.beginTracking(this);
         this.spectatorGui = new InventoryGUI(getPlayersForMenu(), ChatColor.RED + "Spectator menu.", new InventoryGUI.InventoryGUICallback() {
             @Override
@@ -305,15 +311,15 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         this.finishGame(false);
     }
 
-	/**
-	 * Stop the current game ~ normally on finish
-	 * @param hideStream whether or not to hide the join/leave stream
-	 */
-	protected final void finishGame(boolean hideStream) {
-		this.hideStream = hideStream;
-		stopGame(GameStopCause.GAME_END);
-	}
-
+    /**
+     * Stop the current game ~ normally on finish
+     *
+     * @param hideStream whether or not to hide the join/leave stream
+     */
+    protected final void finishGame(boolean hideStream) {
+        this.hideStream = hideStream;
+        stopGame(GameStopCause.GAME_END);
+    }
 
 
     @EventHandler
@@ -731,7 +737,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                             try {
                                 server = selector.getServers().get(
                                         /** if */item.getSlot() > selector.getServers().size() ?
-                                        /** true */0 : /** false */item.getSlot()
+                                                /** true */0 : /** false */item.getSlot()
                                 );
                             } catch (IndexOutOfBoundsException e) {
                                 selector.update();
@@ -907,7 +913,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
             }
         }
         if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-            final EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent)deadPlayer.getLastDamageCause();
+            final EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) deadPlayer.getLastDamageCause();
             if (deadPlayer.getKiller() != null) {
                 final PlayerType player = resolvePlayer(deadPlayer.getKiller());
                 Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
@@ -916,8 +922,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                         playerKilledPlayer(player, dead);
                     }
                 }, 2L);
-            }
-            else {
+            } else {
                 fakeDeath(dead);
                 Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
                     @Override
@@ -926,6 +931,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                     }
                 }, 2L);
             }
+            broadcast(new DeathMessageProcessor(event, this).processDeath().getDeathMessage());
             return;
         }
         fakeDeath(dead);
@@ -935,7 +941,7 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
                 onDeath(dead);
             }
         }, 2L);
-        broadcast(getFormat("solo-death", new String[]{"<victim>", dead.getPlayer().getDisplayName()}));
+        broadcast(new DeathMessageProcessor(event, this).processDeath().getDeathMessage());
     }
 
     private void playerKilledPlayer(final PlayerType damager, final PlayerType target) {
@@ -944,7 +950,6 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         this.playerKilled(target, damager);
         PlayerGameKillEvent event = new PlayerGameKillEvent(this, target, damager);
         Bukkit.getPluginManager().callEvent(event);
-        broadcast(getFormat("death-message", new String[]{"<killer>", damager.getPlayer().getDisplayName()}, new String[]{"<victim>", target.getPlayer().getDisplayName()}));
     }
 
     @EventHandler
@@ -992,8 +997,8 @@ public abstract class  GearzGame<PlayerType extends GearzPlayer> extends GameDel
         String line = ChatColor.GOLD.toString() + ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64);
         strings.add(line);
         for (int x = 0, l = progressiveWinColors.length; x < players.length; x++) {
-            int place = x+1;
-            float percentage = x == 0 ? 0f : (float)x/players.length;
+            int place = x + 1;
+            float percentage = x == 0 ? 0f : (float) x / players.length;
             int index = Double.valueOf(Math.floor(l * percentage)).intValue();
             ChatColor color = progressiveWinColors[index];
             strings.add("  " + color + players[x].getUsername() + ChatColor.GRAY + " - " + color + String.valueOf(place) + NumberSuffixes.getForString(String.valueOf(place)).getSuffix() + " place.");

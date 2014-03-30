@@ -46,7 +46,6 @@ public class PlayerDeath {
         return (killer instanceof Player) ? (Player) killer : null;
     }
 
-
     public EntityDamageEvent.DamageCause getCause() {
         return event.getCause();
     }
