@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 /**
  * Bungee Side Permissions Manager
  */
+
+//todo punisher from uuid
 public class PunishmentManager extends GearzPunishments implements Listener {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
@@ -89,6 +91,7 @@ public class PunishmentManager extends GearzPunishments implements Listener {
             formatKickPlayer(punishment.punished, GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
         }
     }
+
 
     public void formatKickPlayer(String player, String reason, String issuer) {
         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);

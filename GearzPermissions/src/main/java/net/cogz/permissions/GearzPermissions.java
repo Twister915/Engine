@@ -68,17 +68,13 @@ public abstract class GearzPermissions {
      */
     public abstract DB getDatabase();
 
+    public abstract String getUUID(String player);
+
     /**
      * Reloads all the data from the database
      */
     public void reload() {
         this.database = getDatabase();
-        int checks = 0;
-        while (this.database == null) {
-            this.database = getDatabase();
-            checks++;
-            if (checks >= 2000000) break;
-        }
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         this.groups = new HashMap<>();
         defaultGroup = null;
@@ -108,9 +104,11 @@ public abstract class GearzPermissions {
      * @param player Player who joined
      */
     public PermPlayer onJoin(String player) {
-        GModel one = new PermPlayer(this.database, player).findOne();
+        GModel one = new PermPlayer(this.database, getUUID(player), player).findOne();
         if (one == null) {
-            one = new PermPlayer(this.database, player);
+            String uuid = getUUID(player);
+            if (uuid == null) throw new IllegalArgumentException("Not a valid player");
+            one = new PermPlayer(this.database, uuid, player);
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
@@ -219,7 +217,7 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public void setGroup(String player, String group) {
-        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, player).findOne();
+        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, getUUID(player), player).findOne();
         if (permPlayer == null) {
             permPlayer = onJoin(player);
         }
@@ -267,7 +265,6 @@ public abstract class GearzPermissions {
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
-
     }
 
     /**

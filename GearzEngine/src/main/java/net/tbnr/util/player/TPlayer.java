@@ -56,6 +56,9 @@ public final class TPlayer {
      */
     @Getter
     private final String playerName;
+
+    @Getter
+    private final String uuid;
     /**
      * The database document representing the player.
      */
@@ -90,13 +93,14 @@ public final class TPlayer {
      */
     protected TPlayer(Player player) {
         this.playerName = player.getName();
+        this.uuid = player.getUniqueId().toString();
         this.timeJoined = Calendar.getInstance().getTimeInMillis();
 
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
         if (TPlayerManager.getInstance().getCollection() == null) return;
 
-        this.playerDocument = TPlayer.getPlayerObject(player.getName());
+        this.playerDocument = TPlayer.getPlayerObject(player.getUniqueId());
         if (this.playerDocument == null) {
             this.playerDocument = new BasicDBObject("username", player.getName()); //So we didn't find it, create our own, and set the username var.
             this.playerDocument.put("time-online", 0l); //Sets the online time to 0 so this var is present (long).
@@ -184,8 +188,8 @@ public final class TPlayer {
         save();
     }
 
-    public static DBObject getPlayerObject(String name) {
-        BasicDBObject query = new BasicDBObject("username", name); //Query the database for the player
+    public static DBObject getPlayerObject(UUID uuid) {
+        BasicDBObject query = new BasicDBObject("uuid", uuid.toString()); //Query the database for the player's UUID
         DBCursor cursor = TPlayerManager.getInstance().getCollection().find(query);
         if (cursor.hasNext()) {
             return cursor.next();
@@ -200,9 +204,7 @@ public final class TPlayer {
      * @return The player object from Bukkit that this represents
      */
     public Player getPlayer() {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<TPlayer|120>--------< getPlayer has been CAUGHT for: " + this.playerName + " and got: " + Bukkit.getPlayerExact(this.playerName));
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<TPlayer|120>--------< getPlayer has been CAUGHT for: " + this.playerName + " and got: " + Bukkit.getPlayerExact(this.playerName));
         return Bukkit.getPlayerExact(this.playerName);
     }
 
@@ -786,9 +788,7 @@ public final class TPlayer {
      * @see net.tbnr.util.IPUtils.PingCallbackEventHandler
      */
     public void getPing(IPUtils.PingCallbackEventHandler eventHandler) {
-
         IPUtils.getPing(getPlayer().getAddress().getAddress(), eventHandler);
-
     }
 
 	public void flashRed() {

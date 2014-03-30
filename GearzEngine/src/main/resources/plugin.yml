@@ -10,19 +10,10 @@ commands:
     description: Nickname.
   realname:
     description: Checks a player's real name.
-  xp:
-    description: Xp
   game:
     description: Game manager command
   map:
     description: Gives info about the map.
-  clearchat:
-    description: Clears chat
-    aliases: [cc, cchat, clearc]
-  clearmychat:
-    description: Clears senders chat
-    aliases: [cmc, cmychat]
-    description: Gives info about the map
   settings:
     description: Lists settings
   set:

@@ -28,6 +28,10 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The TPlugin class is used to represent a plugin! This will handle all the basics for you!
  */
@@ -47,11 +51,10 @@ public abstract class TPlugin extends JavaPlugin {
      *
      * @param listener The listener that you're registering
      */
-    public final void registerEvents(Listener listener) {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<TPlugin|37>--------< registerEvents has been called for" + listener);
-        }
+    public final <T extends Listener> T registerEvents(T listener) {
+        Gearz.getInstance().debug("GEARZ DEBUG ---<TPlugin|37>--------< registerEvents has been called for" + listener);
         Bukkit.getPluginManager().registerEvents(listener, this);
+        return listener;
     }
 
     /**
@@ -227,5 +230,32 @@ public abstract class TPlugin extends JavaPlugin {
             builder.append(" ");
         }
         return builder.toString();
+    }
+
+    public List<String> boxMessage(ChatColor firstColor, ChatColor secondColor, List<String> message) {
+        List<String> stringList = new ArrayList<>();
+        char[] chars = new char[50];
+        Arrays.fill(chars, ' ');
+        String result = new String(chars);
+        stringList.add(firstColor + "" + ChatColor.STRIKETHROUGH + result);
+        stringList.addAll(message);
+        stringList.add(secondColor + "" + ChatColor.STRIKETHROUGH + result);
+        return stringList;
+    }
+
+    public List<String> boxMessage(ChatColor firstColor, String... message) {
+        return boxMessage(firstColor, firstColor, Arrays.asList(message));
+    }
+
+    public List<String> boxMessage(String... message) {
+        return boxMessage(ChatColor.WHITE, message);
+    }
+
+    public List<String> boxMessage(ChatColor color, List<String> message) {
+        return boxMessage(color, color, message);
+    }
+
+    public List<String> boxMessage(List<String> message) {
+        return boxMessage(ChatColor.WHITE, message);
     }
 }

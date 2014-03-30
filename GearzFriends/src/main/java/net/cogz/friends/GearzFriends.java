@@ -1,6 +1,7 @@
 package net.cogz.friends;
 
 import com.mongodb.*;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,15 @@ public abstract class GearzFriends {
 
     public abstract DBObject getPlayerDocument(String player);
 
+    public DBObject getById(ObjectId id) {
+        DBObject query = new BasicDBObject("_id", id);
+        return getCollection().findOne(query);
+    }
+
+    public ObjectId getObjectId(DBObject object) {
+        return (ObjectId) object.get("_id");
+    }
+
     public List<String> getPlayerFriends(String player) {
         List<String> friends = new ArrayList<>();
         Object friendsObj = getPlayerDocument(player).get("friends");
@@ -24,15 +34,16 @@ public abstract class GearzFriends {
         BasicDBList friendsList = (BasicDBList) friendsObj;
         for (Object o : friendsList) {
             if (!(o instanceof BasicDBObject)) continue;
-            BasicDBObject friendObject = (BasicDBObject) o;
-            String friend = friendObject.getString("name");
-            friends.add(friend);
+            BasicDBObject friend = (BasicDBObject) o;
+            ObjectId id = friend.getObjectId("name");
+            DBObject friendObject = getById(id);
+            friends.add((String) friendObject.get("current_username"));
         }
         return friends;
     }
 
     public void addFriend(String toUpdate, String toAdd, boolean primary) throws FriendRequestException {
-        if (isFriend(toUpdate, toAdd)) throw new IllegalStateException("already added");
+        if (isFriend(toUpdate, toAdd)) throw new IllegalStateException("Already added");
         DBObject playerDocument = getPlayerDocument(toUpdate);
         Object friendsObj = playerDocument.get("friends");
         if (friendsObj == null || !(friendsObj instanceof BasicDBList)) {
@@ -40,11 +51,12 @@ public abstract class GearzFriends {
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
         if (!hasRequest(toUpdate, toAdd)) {
-            throw new FriendRequestException("no request found");
+            throw new FriendRequestException("No request found");
         } else {
             DBObject newFriend = new BasicDBObjectBuilder()
-                    .add("name", toAdd)
-                    .add("added", new Date()).get();
+                    .add("name", getObjectId(getPlayerDocument(toAdd)))
+                    .add("added", new Date())
+                    .get();
             friendsList.add(newFriend);
             if (primary) {
                 addFriendRequest(toAdd, toUpdate);
@@ -66,8 +78,9 @@ public abstract class GearzFriends {
         for (Object object : friendsList) {
             if (!(object instanceof BasicDBObject)) continue;
             BasicDBObject friend = (BasicDBObject) object;
-            String s = friend.getString("name");
-            if (s.equals(toRemove)) {
+            ObjectId s = friend.getObjectId("name");
+            DBObject toRemoveDocument = getPlayerDocument(toRemove);
+            if (s.equals(getObjectId(toRemoveDocument))) {
                 friendsList.remove(friend);
                 if (primary) {
                     removeFriend(toRemove, toUpdate, false);
@@ -95,8 +108,11 @@ public abstract class GearzFriends {
         for (Object object : friendsList) {
             if (!(object instanceof BasicDBObject)) continue;
             BasicDBObject friend = (BasicDBObject) object;
-            String name = friend.getString("name");
-            if (name.equals(toCheck)) return true;
+            DBObject toCheckDocument = getPlayerDocument(toCheck);
+            ObjectId name = friend.getObjectId("name");
+            if (name.equals(getObjectId(toCheckDocument))) {
+                return true;
+            }
         }
         return false;
     }
@@ -112,8 +128,9 @@ public abstract class GearzFriends {
         for (Object o : friendsList) {
             if (!(o instanceof BasicDBObject)) continue;
             BasicDBObject friend = (BasicDBObject) o;
-            String name = friend.getString("name");
-            friends.add(name);
+            ObjectId id = friend.getObjectId("name");
+            DBObject friendObject = getById(id);
+            friends.add((String) friendObject.get("current_username"));
         }
         return friends;
     }
@@ -129,8 +146,9 @@ public abstract class GearzFriends {
             throw new IllegalStateException("Friend request exists for that player");
         } else {
             DBObject newRequest = new BasicDBObjectBuilder()
-                    .add("name", from)
-                    .add("sent", new Date()).get();
+                    .add("name", getObjectId(getPlayerDocument(from)))
+                    .add("sent", new Date())
+                    .get();
             friendsList.add(newRequest);
         }
         playerDocument.put("friend_requests", friendsList);
@@ -148,8 +166,9 @@ public abstract class GearzFriends {
             for (Object object : friendsList) {
                 if (!(object instanceof BasicDBObject)) continue;
                 BasicDBObject friend = (BasicDBObject) object;
-                String s = friend.getString("name");
-                if (s.equals(toDeny)) {
+                DBObject toRemoveDocument = getPlayerDocument(toDeny);
+                ObjectId s = friend.getObjectId("name");
+                if (s.equals(getObjectId(toRemoveDocument))) {
                     friendsList.remove(friend);
                     playerDocument.put("friend_requests", friendsList);
                     getCollection().save(playerDocument);
@@ -172,8 +191,9 @@ public abstract class GearzFriends {
         for (Object object : friendsList) {
             if (!(object instanceof BasicDBObject)) continue;
             BasicDBObject friend = (BasicDBObject) object;
-            String s = friend.getString("name");
-            if (s.equals(fromPlayer)) {
+            DBObject toCheckDocument = getPlayerDocument(fromPlayer);
+            ObjectId name = friend.getObjectId("name");
+            if (name.equals(getObjectId(toCheckDocument))) {
                 return true;
             }
         }

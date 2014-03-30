@@ -216,37 +216,9 @@ public class ChatManager implements Listener, TCommandHandler {
                     chat.setMuted(true);
                 }
                 return TCommandStatus.SUCCESSFUL;
+            default:
+                return TCommandStatus.INVALID_ARGS;
         }
-        return TCommandStatus.SUCCESSFUL;
-    }
-
-    @TCommand(
-            name = "ignore",
-            usage = "/ignore <player>",
-            permission = "gearz.chat.ignore",
-            senders = {TCommandSender.Player})
-    @SuppressWarnings("unused")
-    public TCommandStatus ignore(CommandSender sender, TCommandSender type, TCommand command, String[] args) {
-        if (args.length < 1) return TCommandStatus.FEW_ARGS;
-        GearzPlayer player = GearzPlayerManager.getGearzPlayer((ProxiedPlayer) sender);
-        List<String> ignoredPlayers = player.getIgnoredUsers();
-        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
-        if (target == null) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("null-player"));
-            return TCommandStatus.SUCCESSFUL;
-        }
-        if (target.hasPermission("gearz.staff")) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("cant-ignore-staff"));
-            return TCommandStatus.SUCCESSFUL;
-        }
-        if (ignoredPlayers.contains(args[0])) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("unignored-player"));
-            player.unignorePlayer(target);
-        } else {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("ignored-player"));
-            player.ignorePlayer(target);
-        }
-        return TCommandStatus.SUCCESSFUL;
     }
 
     @Override

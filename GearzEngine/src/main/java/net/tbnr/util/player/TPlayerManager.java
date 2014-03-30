@@ -50,9 +50,7 @@ public final class TPlayerManager implements Listener {
     }
 
     public TPlayerManager(AuthenticationDetails details) {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<TPlayerManager|32>--------< TPlayerManager has been instantiated!");
-        }
+        Gearz.getInstance().debug("GEARZ DEBUG ---<TPlayerManager|32>--------< TPlayerManager has been instantiated!");
         TPlayerManager.instance = this;
         Plugin gearz = Bukkit.getPluginManager().getPlugin("Gearz");
         Logger logger;

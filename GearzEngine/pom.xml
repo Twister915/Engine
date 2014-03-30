@@ -48,8 +48,8 @@
             <url>http://repo.comphenix.net/content/groups/public</url>
         </repository>
         <repository>
-            <id>tyrannyofheaven.org</id>
-            <url>http://maven.tyrannyofheaven.org/</url>
+            <id>gearz-repo</id>
+            <url>http://dev.tbnr.net:8080/plugin/repository/everything</url>
         </repository>
     </repositories>
 	
@@ -57,7 +57,7 @@
         <dependency>
             <artifactId>bukkit</artifactId>
             <groupId>org.bukkit</groupId>
-            <version>1.7.2-R0.1-SNAPSHOT</version>
+            <version>1.7.5-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -103,15 +103,19 @@
             <version>1.3.1</version>
         </dependency>
         <dependency>
-            <groupId>org.tyrannyofheaven.bukkit</groupId>
-            <artifactId>zPermissions</artifactId>
-            <version>[0.9.8,)</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>net.tbnr.gearz</groupId>
             <artifactId>GearzSettings</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>AccountsClient</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>tc.oc</groupId>
+            <artifactId>tracker</artifactId>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -137,6 +141,7 @@
                                     <exclude>com.comphenix.protocol</exclude>
                                     <exclude>org.primesoft</exclude>
                                     <exclude>rhino:js</exclude>
+                                    <exclude>tc.oc:tracker</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>

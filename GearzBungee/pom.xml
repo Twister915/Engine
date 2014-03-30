@@ -95,6 +95,11 @@
             <artifactId>bungeeyaml</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>AccountsClient</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}-No-Dependencies</finalName>
@@ -128,6 +133,7 @@
                                     <include>com.maxmind.geoip:geoip-api</include>
                                     <include>net.craftminecraft.bungee:bungeeyaml</include>
                                     <include>net.tbnr.gearz:GearzActiveRecord</include>
+                                    <include>com.mojang:AccountsClient</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

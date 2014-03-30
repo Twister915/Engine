@@ -16,8 +16,11 @@ import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
+import net.tbnr.gearz.game.MinigameMeta;
 import net.tbnr.gearz.game.GearzGame;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
+import net.tbnr.gearz.network.GearzPlayerProvider;
+import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.TPlugin;
 import net.tbnr.util.command.TCommandHandler;
 import org.bukkit.Bukkit;
@@ -29,12 +32,12 @@ import org.bukkit.Bukkit;
  * Time: 1:30 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class GearzPlugin extends TPlugin {
-    private GameManager gameManager;
-    private ArenaManager arenaManager;
+public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugin {
+    private GameManager<PlayerType> gameManager;
+    private ArenaManager arenaManager   ;
     private GameMeta meta;
 
-    public GameManager getGameManager() {
+    public GameManager<PlayerType> getGameManager() {
         return this.gameManager;
     }
 
@@ -46,7 +49,7 @@ public abstract class GearzPlugin extends TPlugin {
         return this.meta;
     }
 
-    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame> game) throws GearzException {
+    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType>> game) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
 
         if (meta == null) throw new GearzException("No GameMeta found!");
@@ -56,11 +59,11 @@ public abstract class GearzPlugin extends TPlugin {
 
 
         ///REGISTRATION
-        Gearz.getInstance().getLogger().info("Game starting registration! " + meta.longName() + " v" + meta.version() + " by " + meta.author() + "[" + meta.shortName() + "]");
+        Gearz.getInstance().debug("Game starting registration! " + meta.longName() + " v" + meta.version() + " by " + meta.author() + "[" + meta.shortName() + "]");
 
         //Create a new arena and assign it
         this.arenaManager = new ArenaManager(this.meta.key(), arenaClass);
-        Gearz.getInstance().getLogger().info("ArenaManager setup!");
+        Gearz.getInstance().debug("ArenaManager setup!");
 
         //Make a game register event fire it and check if it's cancelled
         GameRegisterEvent event = new GameRegisterEvent(arenaClass, game, meta, this);
@@ -74,16 +77,21 @@ public abstract class GearzPlugin extends TPlugin {
 
         //If the game mod is single then register it as a single game
         if (game_mode.equalsIgnoreCase("SINGLE")) {
-            this.gameManager = new GameManagerSingleGame(game, this);
+            this.gameManager = new GameManagerSingleGame<>(game, this, getPlayerProvider());
         } else {
             throw new GearzException("Invalid defined game mode");
         }
 
         //if game manager is instance of TCommandHandler then register it's commands
+        //noinspection ConstantConditions
         if (this.gameManager instanceof TCommandHandler) registerCommands((TCommandHandler) this.gameManager);
 
         //Log that the gamemanager is set up
-        Gearz.getInstance().getLogger().info("GameManager setup!");
+        Gearz.getInstance().debug("GameManager setup!");
+
+		//Save the game in the database
+		MinigameMeta model = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
+		model.save();
 
         //Register the game and events
         Gearz.getInstance().registerGame(this);
@@ -95,4 +103,6 @@ public abstract class GearzPlugin extends TPlugin {
     public void disable() {
         if (this.gameManager != null) this.gameManager.disable();
     }
+
+    protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();
 }
