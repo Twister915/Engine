@@ -41,16 +41,16 @@ public class DeathMessageProcessor {
         ProjectileDistanceTracker projectile = tracker.getTracker(ProjectileDistanceTracker.class);
         FireEnchantTracker fire = tracker.getTracker(FireEnchantTracker.class);
 
-        makeDefaults(playerDeath);
+        processDefaults(playerDeath);
         processFire(fire, playerDeath);
         processGravity(gravity, playerDeath);
         processExplosives(explosive, playerDeath);
-        processItem(playerDeath);
+        processWeapon(playerDeath);
         processProjectiles(projectile, playerDeath);
         return playerDeath;
     }
 
-    protected void makeDefaults(PlayerDeath death) {
+    protected void processDefaults(PlayerDeath death) {
         death.setEvent(death.getVictim().getLastDamageCause());
         if (death.getEvent() instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) death.getEvent();
@@ -107,7 +107,7 @@ public class DeathMessageProcessor {
         }
     }
 
-    protected void processItem(PlayerDeath death) {
+    protected void processWeapon(PlayerDeath death) {
         if (death.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             if (death.getCredited() != null) {
                 String weapon = "";
