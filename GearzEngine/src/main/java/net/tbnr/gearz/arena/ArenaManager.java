@@ -162,16 +162,9 @@ public final class ArenaManager {
             BasicDBList list = new BasicDBList(); //Pour our list into the DB List object
             while (iterator.hasNext()) {
                 Object next = iterator.next();
-                if (next instanceof Point) { //Do some magic to store a point in the database
-                    DBObject embeddedObject = new BasicDBObject();
-                    Point p = (Point) next;
-                    embeddedObject.put("x", p.getX());
-                    embeddedObject.put("y", p.getY());
-                    embeddedObject.put("z", p.getZ());
-                    embeddedObject.put("pitch", p.getPitch());
-                    embeddedObject.put("yaw", p.getYaw());
-                    next = embeddedObject;
-                }
+                ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
+                if (serializerFor == null) continue;
+                serializerFor.getObjectFor(next);
                 list.add(next); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
             }
             objectBuilder.append(annotation.key(), list); //Put that in the database
@@ -234,19 +227,19 @@ public final class ArenaManager {
             }
             BasicDBList list = (BasicDBList) o;
             List<Object> list2 = new ArrayList<>();
+            ArenaFieldSerializer.SerializationDelegate serializer = null;
             for (Object lObject : list) {
                 if (lObject instanceof DBObject) {
                     DBObject lObject1 = (DBObject) lObject;
-                    if (!lObject1.containsField("x")) {
-                        continue;
-                    }
-                    Point point = new Point(getDouble(lObject1.get("x")), getDouble(lObject1.get("y")), getDouble(lObject1.get("z")), getFloat(lObject1.get("pitch")), getFloat(lObject1.get("yaw")));
-                    list2.add(point);
-                    continue;
+                    if (serializer == null) serializer = ArenaFieldSerializer.getSerializerFor(lObject1);
+                    else if (!ArenaFieldSerializer.getSerializerFor(lObject1).equals(serializer)) continue; //In case we have a rogue strange value
+                    list2.add(serializer.getObjectFor(lObject1));
                 }
-                list2.add(lObject);
             }
-            ArenaIterator iterator = new ArenaIterator<>(list2);
+            ArenaIterator iterator;
+            if (serializer == null) iterator = new PointIterator();
+            else //noinspection unchecked
+                iterator = serializer.getNewIterator(list2);
             iterator.setLoop(annotation.loop()); //Checks the annotation for this new looping thing. :D
             try {
                 field.set(arena, field.getType().cast(iterator));
@@ -255,32 +248,6 @@ public final class ArenaManager {
             }
         }
         return arena;
-    }
-
-    private static Double getDouble(Object o) {
-        if (o instanceof Double) {
-            return (Double) o;
-        }
-        if (o instanceof Integer) {
-            return ((Integer) o).doubleValue();
-        }
-        if (o instanceof Float) {
-            return ((Float) o).doubleValue();
-        }
-        return null;
-    }
-
-    private static Float getFloat(Object o) {
-        if (o instanceof Float) {
-            return (Float) o;
-        }
-        if (o instanceof Double) {
-            return ((Double) o).floatValue();
-        }
-        if (o instanceof Integer) {
-            return ((Integer) o).floatValue();
-        }
-        return null;
     }
 
     private static Integer getInt(Object o) {
