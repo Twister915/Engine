@@ -23,7 +23,17 @@ public enum ArenaFieldSerializer {
 
         @Override
         protected Point getObjectForInternal(DBObject object) {
-            return null;
+            try {
+                Integer x = (Integer) object.get("x");
+                Integer y = (Integer) object.get("y");
+                Integer z = (Integer) object.get("z");
+                Float pitch = (Float) object.get("pitch");
+                Float yaw = (Float) object.get("yaw");
+                return new Point(x, y, z, pitch, yaw);
+            }
+            catch (ClassCastException ex) {
+                return null;
+            }
         }
 
         @Override
@@ -45,7 +55,9 @@ public enum ArenaFieldSerializer {
 
         @Override
         protected Region getObjectForInternal(DBObject object) {
-            return null;
+            DBObject minimum = (DBObject) object.get("minimum");
+            DBObject maximum = (DBObject) object.get("maximum");
+            return new Region((Point)POINT.getDelegate().getObjectFor(minimum), (Point)POINT.getDelegate().getObjectFor(maximum));
         }
 
         @Override
