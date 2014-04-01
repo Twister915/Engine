@@ -1436,4 +1436,11 @@ public abstract class GearzGame implements Listener {
         if (!(event.getEntity() instanceof Arrow)) return;
         FireworkUtils.getRandomFirework(event.getEntity().getLocation());
     }
+
+    @EventHandler
+    public void onConsume(PlayerItemConsumeEvent event) {
+        if (event.getItem().getType() != Material.MUSHROOM_SOUP) return;
+        FireworkUtils.getRandomFirework(event.getPlayer().getLocation());
+        event.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Suprise!");
+    }
 }
