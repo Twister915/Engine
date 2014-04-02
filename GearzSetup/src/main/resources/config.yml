@@ -19,3 +19,4 @@ formats:
   selected: "&aPoint selected (&c<count>&a)"
   blocks-added: "&aAdded &c<num>&a points to the current field using skull selectors."
   complete-fail: "&cYou need to select two points!"
+  regions-prompt: "&aPlease use the diamond axe to select an area to add a region to the field: &c<field>"
