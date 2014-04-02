@@ -18,7 +18,6 @@ import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.effects.EnderBar;
-import net.tbnr.gearz.effects.FireworkUtils;
 import net.tbnr.gearz.event.game.GameEndEvent;
 import net.tbnr.gearz.event.game.GamePreStartEvent;
 import net.tbnr.gearz.event.game.GameStartEvent;
@@ -1429,18 +1428,5 @@ public abstract class GearzGame implements Listener {
                 player.getTPlayer().sendMessage(game.getFormat("spectator-ingame"));
             }
         }
-    }
-
-    @EventHandler
-    public void onProjectileHit(ProjectileHitEvent event) {
-        if (!(event.getEntity() instanceof Arrow)) return;
-        FireworkUtils.getRandomFirework(event.getEntity().getLocation());
-    }
-
-    @EventHandler
-    public void onConsume(PlayerItemConsumeEvent event) {
-        if (event.getItem().getType() != Material.MUSHROOM_SOUP) return;
-        FireworkUtils.getRandomFirework(event.getPlayer().getLocation());
-        event.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Suprise!");
     }
 }
