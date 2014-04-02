@@ -9,7 +9,7 @@ import java.util.List;
 
 @SuppressWarnings("unchecked")
 public enum ArenaFieldSerializer {
-    POINT(new SerializationDelegate<Point>(this) {
+    POINT(new SerializationDelegate<Point>() {
         @Override
         protected DBObject getObjectForInternal(Point p) {
             DBObject embeddedObject = new BasicDBObject();
@@ -40,8 +40,13 @@ public enum ArenaFieldSerializer {
         protected ArenaIterator<Point> getNewIterator(List<Point> values) throws GearzException {
             return new PointIterator(values);
         }
+
+        @Override
+        protected String getContainerName() {
+            return "POINT";
+        }
     }, Point.class),
-    REGION(new SerializationDelegate<Region>(this) {
+    REGION(new SerializationDelegate<Region>() {
         @Override
         protected DBObject getObjectForInternal(Region object) {
             SerializationDelegate delegate1 = ArenaFieldSerializer.POINT.getDelegate();
@@ -64,6 +69,11 @@ public enum ArenaFieldSerializer {
         protected ArenaIterator<Region> getNewIterator(List<Region> values) throws GearzException {
             return new RegionIterator(values);
         }
+
+        @Override
+        protected String getContainerName() {
+            return "REGION";
+        }
     }, Region.class);
 
     @Getter private final SerializationDelegate delegate;
@@ -75,22 +85,21 @@ public enum ArenaFieldSerializer {
     }
 
     static abstract class SerializationDelegate<T> {
-        private final ArenaFieldSerializer container;
-        protected SerializationDelegate(ArenaFieldSerializer serializer) {
-            this.container = serializer;
-        }
         protected abstract DBObject getObjectForInternal(T object);
         protected abstract T getObjectForInternal(DBObject object);
         protected abstract ArenaIterator<T> getNewIterator(List<T> values) throws GearzException;
         public DBObject getObjectFor(Object object) {
             try {
                 DBObject objectForInternal = getObjectForInternal((T) object);
-                objectForInternal.put("_TYPE", container.getClass().getSimpleName());
+                objectForInternal.put("_TYPE", getContainerName());
                 return objectForInternal;
             } catch (ClassCastException ex) {
                 return null;
             }
         }
+
+        protected abstract String getContainerName();
+
         public Object getObjectFor(DBObject object) {
             return getObjectForInternal(object);
         }

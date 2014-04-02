@@ -57,7 +57,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     }
 
     @Override
-    public String getUUID(String player) {
+    public String generateUUID(String player) {
         return (String) getPlayerDocument(player).get("uuid");
     }
 

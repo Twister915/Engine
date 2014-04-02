@@ -102,6 +102,7 @@ public final class TPlayer {
 
         this.playerDocument = TPlayer.getPlayerObject(player.getUniqueId());
         if (this.playerDocument == null) {
+            //TODO modify this so it supports "usernames"
             this.playerDocument = new BasicDBObject("username", player.getName()); //So we didn't find it, create our own, and set the username var.
             this.playerDocument.put("time-online", 0l); //Sets the online time to 0 so this var is present (long).
             this.playerDocument.put("first-join", Calendar.getInstance().getTimeInMillis());
@@ -114,6 +115,7 @@ public final class TPlayer {
         }
         this.playerDocument.put("last-seen", Calendar.getInstance().getTimeInMillis()); //Update last-seen
         this.playerDocument.put("online", true); //Update the online variable
+        //TODO add the current username (if it does not already exist) into the usernames collection
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
         //this.getPlayer().setScoreboard(this.scoreboard);
@@ -189,13 +191,22 @@ public final class TPlayer {
     }
 
     public static DBObject getPlayerObject(UUID uuid) {
-        BasicDBObject query = new BasicDBObject("uuid", uuid.toString()); //Query the database for the player's UUID
+        return getPlayerObject(uuid.toString());
+    }
+
+    public static DBObject getPlayerObject(String uuid) {
+        BasicDBObject query = new BasicDBObject("uuid", uuid); //Query the database for the player's UUID
         DBCursor cursor = TPlayerManager.getInstance().getCollection().find(query);
         if (cursor.hasNext()) {
             return cursor.next();
         } else {
             return null;
         }
+    }
+
+    public static DBObject getAnyPlayerWithUsername(String username) {
+        BasicDBObject query = new BasicDBObject("username", username); //TODO change to "usernames"
+        return TPlayerManager.getInstance().getCollection().findOne(query);
     }
 
     /**

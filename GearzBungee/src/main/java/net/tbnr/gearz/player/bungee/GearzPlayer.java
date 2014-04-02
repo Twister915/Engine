@@ -43,6 +43,7 @@ public final class GearzPlayer {
 
     private GearzPlayer(@NonNull DBObject object) throws PlayerNotFoundException {
         try {
+            //TODO modify this logic so it determines the current username based off of who's logged in with this UUID
             this.username = (String) object.get("username");
             this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {

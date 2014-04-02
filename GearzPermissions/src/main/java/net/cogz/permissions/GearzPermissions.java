@@ -68,7 +68,18 @@ public abstract class GearzPermissions {
      */
     public abstract DB getDatabase();
 
-    public abstract String getUUID(String player);
+    public abstract String generateUUID(String player);
+
+    private String getUUID(String player) {
+        if (!this.cachedUUIDs.containsKey(player)) {
+            String s = generateUUID(player);
+            this.cachedUUIDs.put(player, s);
+            return s;
+        }
+        return this.cachedUUIDs.get(player);
+    }
+
+    private Map<String, String> cachedUUIDs;
 
     /**
      * Reloads all the data from the database
@@ -236,6 +247,7 @@ public abstract class GearzPermissions {
         if (permPlayer == null) {
             return;
         }
+        if (!this.cachedUUIDs.containsKey(player)) this.cachedUUIDs.put()
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {

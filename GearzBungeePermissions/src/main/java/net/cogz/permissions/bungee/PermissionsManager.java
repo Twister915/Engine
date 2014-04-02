@@ -23,6 +23,7 @@ import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
+import net.tbnr.util.UUIDUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,11 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     @Override
     public DB getDatabase() {
         return GearzBungee.getInstance().getMongoDB();
+    }
+
+    @Override
+    public String generateUUID(String player) {
+        return null;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
