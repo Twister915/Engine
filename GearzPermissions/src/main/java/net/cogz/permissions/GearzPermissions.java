@@ -247,7 +247,6 @@ public abstract class GearzPermissions {
         if (permPlayer == null) {
             return;
         }
-        if (!this.cachedUUIDs.containsKey(player)) this.cachedUUIDs.put()
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
