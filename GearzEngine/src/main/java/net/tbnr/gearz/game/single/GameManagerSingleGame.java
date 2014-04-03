@@ -22,6 +22,7 @@ import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.player.PlayerPriorityDetermineEvent;
 import net.tbnr.gearz.game.*;
+import net.tbnr.gearz.game.classes.GearzAbstractClass;
 import net.tbnr.gearz.game.voting.*;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
@@ -59,17 +60,17 @@ import java.util.*;
 /**
  *
  */
-public final class GameManagerSingleGame<PlayerType extends GearzPlayer> implements GameManager<PlayerType>, Listener, VotingHandler, TCommandHandler {
-    private final Class<? extends GearzGame<PlayerType>> gearzGameClass;
+public final class GameManagerSingleGame<PlayerType extends GearzPlayer, AbstractClassType extends GearzAbstractClass<PlayerType>> implements GameManager<PlayerType, AbstractClassType>, Listener, VotingHandler, TCommandHandler {
+    private final Class<? extends GearzGame<PlayerType, AbstractClassType>> gearzGameClass;
     private GameLobby gameLobby;
     @Getter private GameMeta gameMeta;
-    @Getter private GearzPlugin<PlayerType> plugin;
+    @Getter private GearzPlugin<PlayerType, AbstractClassType> plugin;
     private VotingSession votingSession;
-    private GearzGame<PlayerType> runningGame;
+    private GearzGame<PlayerType, AbstractClassType> runningGame;
     @Getter private final GearzPlayerProvider<PlayerType> playerProvider;
     private List<String> priorities = new ArrayList<>();
 
-    public GameManagerSingleGame(Class<? extends GearzGame<PlayerType>> gameClass, GearzPlugin<PlayerType> plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
+    public GameManagerSingleGame(Class<? extends GearzGame<PlayerType, AbstractClassType>> gameClass, GearzPlugin<PlayerType, AbstractClassType> plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
         this.gearzGameClass = gameClass;
         this.playerProvider = playerProvider;
         GameMeta gameMeta1 = gameClass.getAnnotation(GameMeta.class);
@@ -285,7 +286,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer> impleme
             Gearz.getInstance().debug("GEARZ DEBUG ---<GameManagerSingleGame|183>--------< beginGame / player loop has been CAUGHT for: " + player.toString());
             players.add(player);
         }
-        GearzGame<PlayerType> game;
+        GearzGame<PlayerType, AbstractClassType> game;
         try {
             game = gearzGameClass.getConstructor(List.class, Arena.class, GearzPlugin.class, GameMeta.class, Integer.class, GearzPlayerProvider.class).newInstance(players, arena, this.plugin, this.gameMeta, 0, playerProvider);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {

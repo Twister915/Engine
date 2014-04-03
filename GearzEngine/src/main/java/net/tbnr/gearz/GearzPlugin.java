@@ -11,13 +11,17 @@
 
 package net.tbnr.gearz;
 
+import lombok.Getter;
 import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.game.GameRegisterEvent;
 import net.tbnr.gearz.game.GameManager;
 import net.tbnr.gearz.game.GameMeta;
-import net.tbnr.gearz.game.MinigameMeta;
 import net.tbnr.gearz.game.GearzGame;
+import net.tbnr.gearz.game.MinigameMeta;
+import net.tbnr.gearz.game.classes.GearzAbstractClass;
+import net.tbnr.gearz.game.classes.GearzClassResolver;
+import net.tbnr.gearz.game.classes.GearzClassSystem;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
@@ -32,24 +36,15 @@ import org.bukkit.Bukkit;
  * Time: 1:30 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugin {
-    private GameManager<PlayerType> gameManager;
-    private ArenaManager arenaManager   ;
-    private GameMeta meta;
+public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType extends GearzAbstractClass<PlayerType>> extends TPlugin {
+    @Getter private GameManager<PlayerType, ClassType> gameManager;
+    @Getter private ArenaManager arenaManager;
+    @Getter private GameMeta meta;
+    @Getter private GearzClassSystem<PlayerType, ClassType> classSystem;
 
-    public GameManager<PlayerType> getGameManager() {
-        return this.gameManager;
-    }
+    public boolean isClassEnabled() { return classSystem != null; }
 
-    public ArenaManager getArenaManager() {
-        return this.arenaManager;
-    }
-
-    protected GameMeta getMeta() {
-        return this.meta;
-    }
-
-    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType>> game) throws GearzException {
+    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game, GearzClassSystem<PlayerType, ClassType> classSystem) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
 
         if (meta == null) throw new GearzException("No GameMeta found!");
@@ -93,15 +88,26 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugi
 		MinigameMeta model = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
 		model.save();
 
+        //Setup the class resolver
+        this.classSystem = classSystem;
+
         //Register the game and events
         Gearz.getInstance().registerGame(this);
         registerEvents(this.gameManager);
+    }
 
+    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game) throws GearzException {
+        registerGame(arenaClass, game, null);
     }
 
     @Override
     public void disable() {
         if (this.gameManager != null) this.gameManager.disable();
+    }
+
+    public GearzClassResolver<PlayerType, ClassType> getClassResolver() {
+        if (getClassSystem() == null) return null;
+        return getClassSystem().getClassResolver();
     }
 
     protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();

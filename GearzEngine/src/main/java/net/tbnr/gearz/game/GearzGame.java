@@ -21,6 +21,9 @@ import net.tbnr.gearz.event.game.GameEndEvent;
 import net.tbnr.gearz.event.game.GamePreStartEvent;
 import net.tbnr.gearz.event.game.GameStartEvent;
 import net.tbnr.gearz.event.player.*;
+import net.tbnr.gearz.game.classes.GearzAbstractClass;
+import net.tbnr.gearz.game.classes.GearzClassResolver;
+import net.tbnr.gearz.game.classes.GearzClassable;
 import net.tbnr.gearz.game.tracker.DeathMessageProcessor;
 import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.network.GearzPlayerProvider;
@@ -52,10 +55,8 @@ import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * GearzGame is a class to represent a game.
@@ -63,7 +64,7 @@ import java.util.Set;
 @SuppressWarnings({"NullArgumentToVariableArgMethod", "DefaultFileTemplate", "UnusedDeclaration"})
 @EqualsAndHashCode(of = {"id", "arena", "players"}, doNotUseGetters = true, callSuper = false)
 @ToString(of = {"arena", "id", "running", "players", "spectators", "gameMeta"})
-public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDelegate<PlayerType> implements Listener {
+public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassType extends GearzAbstractClass<PlayerType>> extends GameDelegate<PlayerType> implements Listener, GearzClassable<PlayerType, AbstractClassType> {
     private final Arena arena;
     private final Set<PlayerType> players;
     private final Set<PlayerType> spectators;
@@ -71,7 +72,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
     @Getter(AccessLevel.PROTECTED) private final Set<PlayerType> endedPlayers;
     @Getter(AccessLevel.PROTECTED) private final InventoryGUI spectatorGui;
     private final GameMeta gameMeta;
-    private final GearzPlugin<PlayerType> plugin;
+    private final GearzPlugin<PlayerType, AbstractClassType> plugin;
     private final Integer id;
     private final GearzMetrics<PlayerType> metrics;
     @Getter(AccessLevel.PROTECTED) private final PvPTracker<PlayerType> tracker;
@@ -130,6 +131,9 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
         NONE
     }
 
+    //CLASS SECTION
+    @Getter private final Map<PlayerType, AbstractClassType> classInstances;
+
     /**
      * New game in this arena
      *
@@ -138,7 +142,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
      * @param plugin  The plugin that handles this Game.
      * @param meta    The meta of the game.
      */
-    public GearzGame(List<PlayerType> players, Arena arena, GearzPlugin<PlayerType> plugin, GameMeta meta, Integer id, final GearzPlayerProvider<PlayerType> playerProvider) {
+    public GearzGame(List<PlayerType> players, Arena arena, GearzPlugin<PlayerType, AbstractClassType> plugin, GameMeta meta, Integer id, final GearzPlayerProvider<PlayerType> playerProvider) {
         this.playerProvider = playerProvider;
         this.arena = arena;
         /*this.players = players;
@@ -155,6 +159,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
         this.tracker = new PvPTracker<>(this);
         this.spectators = new HashSet<>();
         this.endedPlayers = new HashSet<>();
+        this.classInstances = new HashMap<>();
         this.plugin = plugin;
         this.gameMeta = meta;
         this.id = id;
@@ -224,7 +229,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
             try {
                 Location location = playerRespawn(player2);
                 player2.getTPlayer().teleport(location);
-                activatePlayer(player2);
+                callActivatePlayer(player2);
             } catch (Throwable t) {
                 //ignored
             }
@@ -248,6 +253,12 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
         Bukkit.getPluginManager().callEvent(new GameStartEvent(this));
     }
 
+    private void callActivatePlayer(PlayerType player) {
+        AbstractClassType classFor = this.getClassFor(player);
+        if (classFor != null) classFor.onPlayerActivate();
+        this.activatePlayer(player);
+    }
+
     public final boolean isIngame(PlayerType player) {
         return this.allPlayers().contains(player);
     }
@@ -259,6 +270,12 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
         }
         Bukkit.getPluginManager().callEvent(new PlayerGameLeaveEvent(player, this));
         player.getTPlayer().resetPlayer();
+        AbstractClassType classFor = getClassFor(player);
+        if (classFor != null) {
+            classFor.deregisterClass();
+            classFor.onClassDeactivate();
+            classFor.onGameEndForPlayer();
+        }
         onPlayerGameEnd(player, cause);
         this.endedPlayers.add(player);
     }
@@ -449,6 +466,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
             }
             player2.hidePlayer(player3);
         }
+        this.classInstances.remove(player);
         onPlayerBecomeSpectator(player);
         player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("spectator-chooser"));
         player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("server-book"));
@@ -551,7 +569,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
                 new Runnable() {
                     @Override
                     public void run() {
-                        activatePlayer(player);
+                        callActivatePlayer(player);
                         Bukkit.getPluginManager().callEvent(respawnEvent);
                     }
                 },
@@ -572,8 +590,17 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
         player.getTPlayer().resetPlayer();
         showForAll(player);
         onPlayerBecomePlayer(player);
+        if (this.getClassResolver() != null) {
+            try {
+                updateClassFor(player);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
         player.setGame(this);
     }
+
+    protected abstract AbstractClassType constructClassType(Class<? extends AbstractClassType> classType, PlayerType player) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException;
 
     /**
      * Removes a player from the game, depending on if there spectating or not it will give different GameStopCause
@@ -690,7 +717,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
      *
      * @return Plugin ~ the plugin instance
      */
-    public final GearzPlugin getPlugin() {
+    public final GearzPlugin<PlayerType, AbstractClassType> getPlugin() {
         return this.plugin;
 
     }
@@ -1219,7 +1246,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
     @RequiredArgsConstructor
     private final class GameWins implements TPlayerStorable {
         @NonNull
-        private final GearzGame<PlayerType> game;
+        private final GearzGame<PlayerType, AbstractClassType> game;
         private Integer wins;
 
         @Override
@@ -1239,7 +1266,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
     private final class SpectatorReminder implements Runnable {
 
         @NonNull
-        private final GearzGame<PlayerType> game;
+        private final GearzGame<PlayerType, AbstractClassType> game;
 
         @Override
         public void run() {
@@ -1250,5 +1277,29 @@ public abstract class GearzGame<PlayerType extends GearzPlayer> extends GameDele
                 player.getTPlayer().sendMessage(game.getFormat("spectator-ingame"));
             }
         }
+    }
+
+    @Override
+    public AbstractClassType getClassFor(PlayerType player) {
+        return this.classInstances.get(player);
+    }
+
+    protected void updateClassFor(PlayerType player) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        AbstractClassType classFor = getClassFor(player);
+        if (classFor != null) {
+            classFor.deregisterClass();
+            classFor.onClassDeactivate();
+        }
+        AbstractClassType abstractClassType = constructClassType(getClassResolver().getClassForPlayer(player, this), player);
+        this.classInstances.put(player, abstractClassType);
+        abstractClassType.registerClass();
+        abstractClassType.onClassActivate();
+        if (classFor == null) abstractClassType.onGameStart();
+        abstractClassType.onPlayerActivate();
+    }
+
+    @Override
+    public GearzClassResolver<PlayerType, AbstractClassType> getClassResolver() {
+        return getPlugin().getClassResolver();
     }
 }

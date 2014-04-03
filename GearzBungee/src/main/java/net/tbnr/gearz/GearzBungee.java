@@ -160,7 +160,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         //MOTD Handler
         MotdHandler motdHandler = new MotdHandler();
 
-        //Chat utilities and storage classes
+        //Chat utilities and storage kits
         this.chatUtils = new ChatManager();
         this.chat = new Chat();
         this.channelManager = new ChannelManager();

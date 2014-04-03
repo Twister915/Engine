@@ -9,7 +9,7 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.game.classes;
+package net.tbnr.gearz.game.kits;
 
 import com.comphenix.protocol.utility.MinecraftReflection;
 import lombok.*;
@@ -35,7 +35,7 @@ import java.util.Map;
 @Data
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public final class GearzItem {
+public final class GearzKitItem {
     @Setter(AccessLevel.PACKAGE) @NonNull
     private Material material;
     @Setter(AccessLevel.PACKAGE) @NonNull
@@ -48,13 +48,13 @@ public final class GearzItem {
     private final GearzItemMeta itemMeta;
     private Integer slot;
 
-    static GearzItem fromJsonObject(JSONObject object) throws GearzClassReadException {
+    static GearzKitItem fromJsonObject(JSONObject object) throws GearzKitReadException {
         String materialName;
         Integer quantity = 1;
         try {
             materialName = object.getString("item_type");
         } catch (JSONException ex) {
-            throw GearzClass.exceptionFromJSON("Could not read class", ex);
+            throw GearzKit.exceptionFromJSON("Could not read class", ex);
         }
         try {
             quantity = object.getInt("quantity");
@@ -62,7 +62,7 @@ public final class GearzItem {
         }
         Material material = Material.getMaterial(materialName);
         if (material == null) {
-            throw new GearzClassReadException("Invalid Material Specified: " + materialName);
+            throw new GearzKitReadException("Invalid Material Specified: " + materialName);
         }
         JSONArray enchants = null;
         Short data = null;
@@ -85,12 +85,12 @@ public final class GearzItem {
                     int level = enchantObject.getInt("level");
                     Enchantment e = Enchantment.getByName(enchant_name);
                     if (e == null || level < 1) {
-                        throw new GearzClassReadException("Invalid Enchantment " + x + " " + enchant_name + " " + level);
+                        throw new GearzKitReadException("Invalid Enchantment " + x + " " + enchant_name + " " + level);
                     }
                     enchantmentMap.put(e, level);
                     Gearz.getInstance().debug("Added enchant " + x + " " + e.getName() + ":" + level);
                 } catch (JSONException e) {
-                    throw GearzClass.exceptionFromJSON("Could not read enchantment " + x, e);
+                    throw GearzKit.exceptionFromJSON("Could not read enchantment " + x, e);
                 }
             }
         }
@@ -116,16 +116,16 @@ public final class GearzItem {
                 itemMeta.setColor(color);
             }
         } catch (JSONException ex) {
-            throw GearzClass.exceptionFromJSON("Could not read meta", ex);
+            throw GearzKit.exceptionFromJSON("Could not read meta", ex);
         }
-        GearzItem gearzItem = new GearzItem(material, quantity, itemMeta);
+        GearzKitItem gearzKitItem = new GearzKitItem(material, quantity, itemMeta);
         if (enchantmentMap != null) {
-            gearzItem.setEnchantments(enchantmentMap);
+            gearzKitItem.setEnchantments(enchantmentMap);
         }
         if (data != null) {
-            gearzItem.setData(data);
+            gearzKitItem.setData(data);
         }
-        return gearzItem;
+        return gearzKitItem;
     }
 
     public ItemStack getItemStack() {

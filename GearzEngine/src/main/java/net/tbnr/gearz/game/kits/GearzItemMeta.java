@@ -9,7 +9,7 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.game.classes;
+package net.tbnr.gearz.game.kits;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

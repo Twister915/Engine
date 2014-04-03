@@ -7,7 +7,7 @@ import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
 import org.bukkit.ChatColor;
 
-public class MinigameMeta extends GModel {
+public final class MinigameMeta extends GModel {
 	@Getter @BasicField private String longName;
 	@Getter @BasicField private String shortName;
 	@Getter @BasicField private String version;
@@ -39,6 +39,7 @@ public class MinigameMeta extends GModel {
 	}
 
 	public MinigameMeta(DB database, GameMeta meta, String pluginClass, String gameClass) {
+        this(database);
 		this.longName = meta.longName();
 		this.shortName = meta.shortName();
 		this.version = meta.version();

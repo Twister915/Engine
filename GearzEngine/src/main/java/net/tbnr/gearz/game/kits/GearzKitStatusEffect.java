@@ -9,7 +9,7 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.game.classes;
+package net.tbnr.gearz.game.kits;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 @Data
 @AllArgsConstructor
-public final class GearzStatusEffect {
+public final class GearzKitStatusEffect {
     @Setter(AccessLevel.PACKAGE)
     private PotionEffectType potionEffectType;
     @Setter(AccessLevel.PACKAGE)
@@ -32,12 +32,12 @@ public final class GearzStatusEffect {
     @Setter(AccessLevel.PACKAGE)
     private boolean ambient;
 
-    static GearzStatusEffect fromJSONResource(JSONObject object) throws GearzClassReadException {
+    static GearzKitStatusEffect fromJSONResource(JSONObject object) throws GearzKitReadException {
         String name;
         try {
             name = object.getString("name");
         } catch (JSONException e) {
-            throw GearzClass.exceptionFromJSON("Name of Status Effect not defined!", e);
+            throw GearzKit.exceptionFromJSON("Name of Status Effect not defined!", e);
         }
         Integer amplification = 0;
         Integer length = Integer.MAX_VALUE;
@@ -53,13 +53,13 @@ public final class GearzStatusEffect {
                 ambient = object.getBoolean("ambient");
             }
         } catch (JSONException e) {
-            throw GearzClass.exceptionFromJSON("Invalid amplified or not found", e);
+            throw GearzKit.exceptionFromJSON("Invalid amplified or not found", e);
         }
         PotionEffectType type = PotionEffectType.getByName(name);
         if (type == null) {
-            throw new GearzClassReadException("Invalid Status Effect name supplied!");
+            throw new GearzKitReadException("Invalid Status Effect name supplied!");
         }
-        return new GearzStatusEffect(type, amplification, length, ambient);
+        return new GearzKitStatusEffect(type, amplification, length, ambient);
     }
 
     PotionEffect getPotionEffect() {
