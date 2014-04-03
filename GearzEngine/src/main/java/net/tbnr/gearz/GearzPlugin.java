@@ -22,6 +22,7 @@ import net.tbnr.gearz.game.MinigameMeta;
 import net.tbnr.gearz.game.classes.GearzAbstractClass;
 import net.tbnr.gearz.game.classes.GearzClassResolver;
 import net.tbnr.gearz.game.classes.GearzClassSystem;
+import net.tbnr.gearz.game.classes.MinigameClass;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
@@ -70,11 +71,21 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         if (this.arenaManager.getArenas().size() == 0) throw new GearzException("No Arenas Defined for this gamemode.");
         String game_mode = Gearz.getInstance().getConfig().getString("game_mode");
 
+        //Setup the class resolver
+        this.classSystem = classSystem;
+
         //If the game mod is single then register it as a single game
         if (game_mode.equalsIgnoreCase("SINGLE")) {
             this.gameManager = new GameManagerSingleGame<>(game, this, getPlayerProvider());
         } else {
             throw new GearzException("Invalid defined game mode");
+        }
+
+        //Save all the metas for the class in the database
+        GearzClassResolver<PlayerType, ClassType> classResolver = this.getClassResolver();
+        for (Class<? extends ClassType> aClass : classSystem.getClasses()) {
+            MinigameClass objectFor = MinigameClass.getObjectFor(this, classResolver.getClassMeta(aClass));
+            objectFor.save();
         }
 
         //if game manager is instance of TCommandHandler then register it's commands
@@ -87,9 +98,6 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
 		//Save the game in the database
 		MinigameMeta model = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
 		model.save();
-
-        //Setup the class resolver
-        this.classSystem = classSystem;
 
         //Register the game and events
         Gearz.getInstance().registerGame(this);

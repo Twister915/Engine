@@ -9,5 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface GearzClassMeta {
     String name();
+    String key();
     String[] description() default "";
 }

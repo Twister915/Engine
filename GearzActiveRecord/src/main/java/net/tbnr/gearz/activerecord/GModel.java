@@ -488,7 +488,7 @@ public abstract class GModel {
         String name;
         if (clazz.isAnnotationPresent(Collection.class)) {
             Collection annotation = clazz.getAnnotation(Collection.class);
-            name = annotation.name();
+            name = annotation.value();
         } else {
             name = clazz.getSimpleName().toLowerCase();
             name = name + "s";
