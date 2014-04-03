@@ -104,11 +104,11 @@ public final class TPlayerManager implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     @SuppressWarnings("unused")
     public void onDisconnect(PlayerQuitEvent event) {
-        if (!this.players.containsKey(event.getPlayer().getName())) {
+        if (!this.players.containsKey(event.getPlayer().getName()))
             return;
-        }
         TPlayerDisconnectEvent tPlayerDisconnectEvent = new TPlayerDisconnectEvent(players.get(event.getPlayer().getName()));
         Bukkit.getPluginManager().callEvent(tPlayerDisconnectEvent);
+	    Gearz.getInstance().getLogger().info("logout");
         event.setQuitMessage(tPlayerDisconnectEvent.getQuitMessage());
         players.get(event.getPlayer().getName()).disconnected();
         players.remove(event.getPlayer().getName());
