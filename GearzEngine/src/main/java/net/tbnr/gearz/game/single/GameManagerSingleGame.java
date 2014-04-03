@@ -182,23 +182,19 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onLogin(PlayerLoginEvent event) {
-        if (Bukkit.getOnlinePlayers().length < this.gameMeta.maxPlayers()) return;
-        if (this.runningGame != null && this.runningGame.isRunning()) {
-            event.setResult(PlayerLoginEvent.Result.KICK_FULL);
-            return;
-        }
-        GearzPlayer personToKick = candidateForKicking(event.getPlayer());
-        if(personToKick != null) {
-            personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
-        } else {
-            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(final TPlayerJoinEvent event) {
+        if (Bukkit.getOnlinePlayers().length >= this.gameMeta.maxPlayers()) {
+            if (this.runningGame != null && this.runningGame.isRunning()) {
+                event.getPlayer().getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
+                return;
+            }
+            GearzPlayer personToKick = candidateForKicking(event.getPlayer().getPlayer());
+            if (personToKick != null) {
+                personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
+            } else {
+                event.getPlayer().getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
+            }
+        }
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length);
         ServerManager.addPlayer(event.getPlayer().getPlayerName());
         event.getPlayer().resetPlayer();
