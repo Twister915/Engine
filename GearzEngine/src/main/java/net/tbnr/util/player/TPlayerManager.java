@@ -108,8 +108,8 @@ public final class TPlayerManager implements Listener {
             return;
         TPlayerDisconnectEvent tPlayerDisconnectEvent = new TPlayerDisconnectEvent(players.get(event.getPlayer().getName()));
         Bukkit.getPluginManager().callEvent(tPlayerDisconnectEvent);
-	    Gearz.getInstance().getLogger().info("logout");
         event.setQuitMessage(tPlayerDisconnectEvent.getQuitMessage());
+	    Gearz.getInstance().getLogger().info(tPlayerDisconnectEvent.getQuitMessage());
         players.get(event.getPlayer().getName()).disconnected();
         players.remove(event.getPlayer().getName());
     }

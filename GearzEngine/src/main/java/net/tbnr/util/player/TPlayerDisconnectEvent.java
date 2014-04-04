@@ -39,7 +39,6 @@ public final class TPlayerDisconnectEvent extends Event {
     public TPlayerDisconnectEvent(TPlayer player) {
         this.player = player;
         this.quitMessage = ChatColor.YELLOW + player.getPlayer().getName() + " has left the game.";
-
     }
 
     public TPlayer getPlayer() {
