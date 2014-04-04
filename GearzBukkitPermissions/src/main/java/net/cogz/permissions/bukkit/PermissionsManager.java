@@ -53,14 +53,14 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
         return Gearz.getInstance().getMongoDB();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerLoginEvent event) {
         onJoin(event.getPlayer().getName());
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         onQuit(event.getPlayer().getName());
     }
