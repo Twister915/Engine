@@ -238,15 +238,10 @@ public final class GameManagerSingleGame implements GameManager, Listener, Votin
     public void onLeave(TPlayerDisconnectEvent event) {
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length - 1);
         ServerManager.removePlayer(event.getPlayer().getPlayerName());
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
-                player.sendMessage(Gearz.getInstance().getFormat("formats.leave-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
-            }
-        }
         GearzPlayer player = GearzPlayer.playerFromTPlayer(event.getPlayer());
+	    event.setQuitMessage(Gearz.getInstance().getFormat("formats.leave-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
         if (this.runningGame != null) {
             this.runningGame.playerLeft(player);
-			if(this.runningGame.isHideStream()) event.setQuitMessage(null);
         } else {
             if (this.votingSession.isVoting()) {
                 votingSession.removePlayer(GearzPlayer.playerFromTPlayer(event.getPlayer()));
