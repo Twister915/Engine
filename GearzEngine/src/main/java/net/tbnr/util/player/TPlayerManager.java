@@ -93,7 +93,6 @@ public final class TPlayerManager implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     @SuppressWarnings("unused")
     public void onLogin(PlayerJoinEvent event) {
-        if (event.getPlayer() == null) return;
         TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.getPlayer(event.getPlayer()));
         Bukkit.getPluginManager().callEvent(tPlayerJoinEvent);
         event.setJoinMessage(tPlayerJoinEvent.getJoinMessage());

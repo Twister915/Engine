@@ -19,6 +19,7 @@ import net.tbnr.gearz.game.GameMeta;
 import net.tbnr.gearz.game.MinigameMeta;
 import net.tbnr.gearz.game.GearzGame;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
+import net.tbnr.gearz.network.GearzNetworkManagerPlugin;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.TPlugin;
@@ -105,4 +106,5 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer> extends TPlugi
     }
 
     protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();
+    protected abstract GearzNetworkManagerPlugin<PlayerType> getNetworkManager();
 }
