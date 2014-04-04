@@ -30,14 +30,14 @@ public final class GearzMetrics<PlayerType extends GearzPlayer> {
     @Getter @NonNull
     private DBCollection metricsCollection;
     @Getter @NonNull
-    private GearzGame<PlayerType> game;
+    private GearzGame<PlayerType, ?> game;
     @Getter
     private Long gameStart;
     @Getter
     private Long gameEnd;
     private Set<PlayerType> players;
 
-    public static <T extends GearzPlayer> GearzMetrics<T> beginTracking(GearzGame<T> game) {
+    public static <T extends GearzPlayer> GearzMetrics<T> beginTracking(GearzGame<T, ?> game) {
         DB mongoDB = game.getPlugin().getMongoDB();
         DBCollection metrics = mongoDB.getCollection("metrics");
         GearzMetrics<T> gearzMetrics = new GearzMetrics<>();

@@ -39,12 +39,4 @@ public final class PlayerListener implements Listener {
         event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         event.setKickMessage("You are not permitted to join this server at this time.");
     }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerLogin(PlayerLoginEvent event) {
-        if (event.getKickMessage().equalsIgnoreCase("zPermissions failed to initialize")) {
-            Gearz.getInstance().debug("zPermissions error detected, restarting server with hopes of a better server!");
-            Bukkit.shutdown();
-        }
-    }
 }

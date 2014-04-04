@@ -28,7 +28,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public final class PvPTracker<PlayerType extends GearzPlayer> {
     @NonNull
-    private final GearzGame<PlayerType> game;
+    private final GearzGame<PlayerType, ?> game;
     private HashMap<PlayerType, PvPPlayer<PlayerType>> playerTrackers;
 
     void startGame() {
