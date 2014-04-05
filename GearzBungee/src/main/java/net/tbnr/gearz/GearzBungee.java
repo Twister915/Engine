@@ -388,65 +388,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         return getFormat(key, true);
     }
 
-    public List<String> getData(String file) {
-        File f = new File(getDataFolder(), file);
-        if (!(f.canRead() && f.exists())) try {
-            boolean newFile = f.createNewFile();
-            if (!newFile) return null;
-            getData(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        BufferedReader stream;
-        try {
-            stream = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(f))));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-        List<String> lines = new ArrayList<>();
-        String line;
-        try {
-            while ((line = stream.readLine()) != null) {
-                lines.add(ChatColor.translateAlternateColorCodes('&', line));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return lines;
-    }
-
-    public static List<String> boxMessage(ChatColor firstColor, ChatColor secondColor, List<String> message) {
-        List<String> stringList = new ArrayList<>();
-        char[] chars = new char[50];
-        Arrays.fill(chars, ' ');
-        String result = new String(chars);
-        stringList.add(firstColor + "" + ChatColor.STRIKETHROUGH + result);
-        stringList.addAll(message);
-        stringList.add(secondColor + "" + ChatColor.STRIKETHROUGH + result);
-        return stringList;
-    }
-
-    public static List<String> boxMessage(ChatColor firstColor, String... message) {
-        return boxMessage(firstColor, firstColor, Arrays.asList(message));
-    }
-
-    @SuppressWarnings("unused")
-    public static List<String> boxMessage(String... message) {
-        return boxMessage(ChatColor.WHITE, message);
-    }
-
-    public static List<String> boxMessage(ChatColor color, List<String> message) {
-        return boxMessage(color, color, message);
-    }
-
-    @SuppressWarnings("unused")
-    public static List<String> boxMessage(List<String> message) {
-        return boxMessage(ChatColor.WHITE, message);
-    }
-
     public Jedis getJedisClient() {
         return this.pool.getResource();
     }
@@ -455,12 +396,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.pool.returnResource(client);
     }
 
-    /*
-        @SuppressWarnings("unused")
-        @Deprecated
-        public ServerResponder getResponder() {
-            return responder;
-        }*/
     public static void handleCommandStatus(TCommandStatus status, CommandSender sender) {
         String msgFormat = null;
         switch (status) {

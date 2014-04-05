@@ -13,12 +13,16 @@ package net.tbnr.util;
 
 import com.mongodb.*;
 import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.util.bungee.command.TCommandDispatch;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.cooldowns.TCooldownManager;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -105,4 +109,33 @@ public abstract class TPluginBungee extends ConfigurablePlugin {
     protected abstract void start();
 
     protected abstract void stop();
+
+    public static List<String> boxMessage(ChatColor firstColor, ChatColor secondColor, List<String> message) {
+        List<String> stringList = new ArrayList<>();
+        char[] chars = new char[50];
+        Arrays.fill(chars, ' ');
+        String result = new String(chars);
+        stringList.add(firstColor + "" + ChatColor.STRIKETHROUGH + result);
+        stringList.addAll(message);
+        stringList.add(secondColor + "" + ChatColor.STRIKETHROUGH + result);
+        return stringList;
+    }
+
+    public static List<String> boxMessage(ChatColor firstColor, String... message) {
+        return boxMessage(firstColor, firstColor, Arrays.asList(message));
+    }
+
+    @SuppressWarnings("unused")
+    public static List<String> boxMessage(String... message) {
+        return boxMessage(ChatColor.WHITE, message);
+    }
+
+    public static List<String> boxMessage(ChatColor color, List<String> message) {
+        return boxMessage(color, color, message);
+    }
+
+    @SuppressWarnings("unused")
+    public static List<String> boxMessage(List<String> message) {
+        return boxMessage(ChatColor.WHITE, message);
+    }
 }

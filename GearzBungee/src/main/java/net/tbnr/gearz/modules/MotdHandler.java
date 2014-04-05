@@ -26,6 +26,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.util.FileUtil;
 import net.tbnr.util.ImageToChatBungeeUtil;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
@@ -58,7 +59,7 @@ public class MotdHandler implements Listener, TCommandHandler {
     }
 
     public void reload() {
-        this.motd = GearzBungee.boxMessage(ChatColor.YELLOW, GearzBungee.getInstance().getData("motd.txt"));
+        this.motd = GearzBungee.boxMessage(ChatColor.YELLOW, FileUtil.getData("motd.txt", GearzBungee.getInstance()));
         File fav = new File("server-icon.png");
         if (fav.exists()) {
             try {
