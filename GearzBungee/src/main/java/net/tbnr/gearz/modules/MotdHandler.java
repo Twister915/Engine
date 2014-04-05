@@ -105,12 +105,6 @@ public class MotdHandler implements Listener, TCommandHandler {
         }
         motd = GearzBungee.getInstance().getFormat("motd-format", false, true, new String[]{"<motd>", motd},
                 new String[]{"<randomColor>", isStatic ? "" : motdPrefixColors[GearzBungee.getRandom().nextInt(motdPrefixColors.length)].toString()});
-        /*event.setResponse(new ServerPing(
-                ProxyServer.getInstance().getProtocolVersion(),
-                ProxyServer.getInstance().getGameVersion(),
-                motd,
-                ProxyServer.getInstance().getOnlineCount(),
-                GearzBungee.getInstance().getMaxPlayers())); - 1.6.4 */
         if (pingInfo == null) {
             event.setResponse(new ServerPing(event.getResponse().getVersion(), new ServerPing.Players(GearzBungee.getInstance().getMaxPlayers(), ProxyServer.getInstance().getOnlineCount(), event.getResponse().getPlayers().getSample()), motd, this.favicon));
         } else {
