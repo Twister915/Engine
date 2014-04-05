@@ -73,6 +73,7 @@ public abstract class TPlugin extends JavaPlugin {
     public final void onEnable() {
         try {
             this.saveDefaultConfig(); //save the config
+            this.initGearzConfigs();
             this.commandDispatch = new TCommandDispatch(this); //Create a new command dispatch
             if (TPlugin.playerManager == null && this instanceof TDatabaseMaster) {
                 TPlugin.playerManager = new TPlayerManager(((TDatabaseMaster) this).getAuthDetails());
@@ -109,6 +110,8 @@ public abstract class TPlugin extends JavaPlugin {
      * Plugins must implement this to be called on disable.
      */
     public abstract void disable();
+
+    public void initGearzConfigs() {}
 
     /**
      * Get command dispatch

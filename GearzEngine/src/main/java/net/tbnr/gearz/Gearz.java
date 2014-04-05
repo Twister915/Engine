@@ -89,12 +89,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         //** ENABLE **
         //This method is a bit confusing. Let's comment/clean it up a bit <3
 
-        if (this.databaseConfig == null) {
-            this.databaseConfig = new GearzConfig(this, "database.yml");
-            this.databaseConfig.getConfig().options().copyDefaults(true);
-            this.databaseConfig.saveDefaultConfig();
-        }
-
         //Reset all players for the EnderBar
         EnderBar.resetPlayers();
 
@@ -173,6 +167,13 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         EnderBar.resetPlayers();
     }
 
+    @Override
+    public void initGearzConfigs() {
+        this.databaseConfig = new GearzConfig(this, "database.yml");
+        this.databaseConfig.getConfig().options().copyDefaults(true);
+        this.databaseConfig.saveDefaultConfig();
+    }
+
     public void activatePermissionsFeatures() {
         registerEvents(new ColoredTablist());
     }
@@ -209,11 +210,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public TPlayerManager.AuthenticationDetails getAuthDetails() {
-        if (this.databaseConfig == null) {
-            this.databaseConfig = new GearzConfig(this, "database.yml");
-            this.databaseConfig.getConfig().options().copyDefaults(true);
-            this.databaseConfig.saveDefaultConfig();
-        }
         return new TPlayerManager.AuthenticationDetails(getDatabaseConfig().getConfig().getString("database.host"), getDatabaseConfig().getConfig().getInt("database.port"), getDatabaseConfig().getConfig().getString("database.database"), getDatabaseConfig().getConfig().getString("database.collection"));
     }
 
