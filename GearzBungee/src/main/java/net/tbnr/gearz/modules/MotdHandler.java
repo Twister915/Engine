@@ -66,7 +66,11 @@ public class MotdHandler implements Listener, TCommandHandler {
         for (String string : fakePlayerList) {
             listInfo.add(new ServerPing.PlayerInfo(string, string));
         }
-        this.pingInfo = listInfo.toArray(new ServerPing.PlayerInfo[listInfo.size()]);
+        if (listInfo.size() == 0){
+            this.pingInfo = null;
+        } else {
+            this.pingInfo = listInfo.toArray(new ServerPing.PlayerInfo[listInfo.size()]);
+        }
         File fav = new File("server-icon.png");
         if (fav.exists()) {
             try {
