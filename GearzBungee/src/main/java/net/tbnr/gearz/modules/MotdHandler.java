@@ -48,6 +48,7 @@ import java.util.List;
  */
 public class MotdHandler implements Listener, TCommandHandler {
     private List<String> motd;
+    private ServerPing.PlayerInfo[] pingInfo;
     private Integer index;
     private String favicon;
     private final List<StaticMOTD> staticMotds = new LinkedList<>();
@@ -60,6 +61,12 @@ public class MotdHandler implements Listener, TCommandHandler {
 
     public void reload() {
         this.motd = GearzBungee.boxMessage(ChatColor.YELLOW, FileUtil.getData("motd.txt", GearzBungee.getInstance()));
+        List<String> fakePlayerList = GearzBungee.boxMessage(ChatColor.YELLOW, FileUtil.getData("ping.txt", GearzBungee.getInstance()));
+        List<ServerPing.PlayerInfo> listInfo = new ArrayList<>();
+        for (String string : fakePlayerList) {
+            listInfo.add(new ServerPing.PlayerInfo(string, string));
+        }
+        this.pingInfo = (ServerPing.PlayerInfo[]) listInfo.toArray();
         File fav = new File("server-icon.png");
         if (fav.exists()) {
             try {
@@ -104,7 +111,11 @@ public class MotdHandler implements Listener, TCommandHandler {
                 motd,
                 ProxyServer.getInstance().getOnlineCount(),
                 GearzBungee.getInstance().getMaxPlayers())); - 1.6.4 */
-        event.setResponse(new ServerPing(event.getResponse().getVersion(), new ServerPing.Players(GearzBungee.getInstance().getMaxPlayers(), ProxyServer.getInstance().getOnlineCount(), event.getResponse().getPlayers().getSample()), motd, this.favicon));
+        if (pingInfo == null) {
+            event.setResponse(new ServerPing(event.getResponse().getVersion(), new ServerPing.Players(GearzBungee.getInstance().getMaxPlayers(), ProxyServer.getInstance().getOnlineCount(), event.getResponse().getPlayers().getSample()), motd, this.favicon));
+        } else {
+            event.setResponse(new ServerPing(event.getResponse().getVersion(), new ServerPing.Players(GearzBungee.getInstance().getMaxPlayers(), ProxyServer.getInstance().getOnlineCount(), this.pingInfo), motd, this.favicon));
+        }
     }
 
     @TCommand(
@@ -118,6 +129,7 @@ public class MotdHandler implements Listener, TCommandHandler {
         sendMotd(sender);
         return TCommandStatus.SUCCESSFUL;
     }
+
     @TCommand(
             name = "staticmotd",
             permission = "gearz.setmotd",
