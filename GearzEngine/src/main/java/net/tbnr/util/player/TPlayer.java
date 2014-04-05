@@ -123,18 +123,8 @@ public final class TPlayer {
         if (!usernames.contains(this.playerName)) {
             usernames.add(this.playerName);
         }
-        BasicDBList ips = (BasicDBList) playerDocument.get("ips");
-        if (ips == null) {
-            ips = new BasicDBList();
-        }
-        String hostString = player.getAddress().getHostString();
-        if (!ips.contains(hostString)) {
-            ips.add(hostString);
-        }
-        playerDocument.put("ips", ips);
         this.playerDocument.put("current_username", this.playerName);
         this.playerDocument.put("usernames", usernames);
-        this.playerDocument.put("ips", ips);
         //loadSettings();
     }
 
@@ -280,37 +270,35 @@ public final class TPlayer {
         }
     }
 
-    /**
-     * Gets The Level of a certain type of potion
-     *
-     * @param effectType ~ The Type of potion
-     * @return the potion level OR -1 if potion not active
-     */
-    public Integer getCurrentPotionLevel(PotionEffectType effectType) {
-        Integer level = -1;
-        for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
-            if (!effect.getType().equals(effectType)) continue;
-            level = effect.getAmplifier();
-            break;
-        }
-        return level;
-    }
+	/**
+	 * Gets The Level of a certain type of potion
+	 * @param effectType ~ The Type of potion
+	 * @return the potion level OR -1 if potion not active
+	 */
+	public Integer getCurrentPotionLevel(PotionEffectType effectType) {
+		Integer level = -1;
+		for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
+			if (!effect.getType().equals(effectType)) continue;
+			level = effect.getAmplifier();
+			break;
+		}
+		return level;
+	}
 
-    /**
-     * Gets the Duration of a certain type of potion
-     *
-     * @param type ~ The type of the potion
-     * @return the potion duration OR -1 if potion not active
-     */
-    public Integer getCurrentPotionDuration(PotionEffectType type) {
-        Integer level = -1;
-        for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
-            if (!effect.getType().equals(type)) continue;
-            level = effect.getDuration();
-            break;
-        }
-        return level;
-    }
+	/**
+	 * Gets the Duration of a certain type of potion
+	 * @param type ~ The type of the potion
+	 * @return the potion duration OR -1 if potion not active
+	 */
+	public Integer getCurrentPotionDuration(PotionEffectType type) {
+		Integer level = -1;
+		for (PotionEffect effect : this.getPlayer().getActivePotionEffects()) {
+			if (!effect.getType().equals(type)) continue;
+			level = effect.getDuration();
+			break;
+		}
+		return level;
+	}
 
     /**
      * Test is player has certain potion effect
@@ -320,6 +308,7 @@ public final class TPlayer {
      */
     public boolean hasPotionEffect(PotionEffectType e) {
         return e != null && getPlayer().hasPotionEffect(e);
+
     }
 
     /**
@@ -579,7 +568,7 @@ public final class TPlayer {
     }
 
     /**
-     * Sets a value of an {@link Object} via reflection
+     * sets a value of an {@link Object} via reflection
      *
      * @param instance  instance the class to use
      * @param fieldName the name of the {@link Field} to modify
@@ -750,17 +739,17 @@ public final class TPlayer {
         IPUtils.getPing(getPlayer().getAddress().getAddress(), eventHandler);
     }
 
-    public void flashRed() {
-        RedFactory.addRed(this);
-    }
+	public void flashRed() {
+		RedFactory.addRed(this);
+	}
 
-    public void stopFlashRed() {
-        RedFactory.removeRed(this);
-    }
+	public void stopFlashRed() {
+		RedFactory.removeRed(this);
+	}
 
-    public boolean isFlashingRed() {
-        return RedFactory.isRed(this);
-    }
+	public boolean isFlashingRed() {
+		return RedFactory.isRed(this);
+	}
 
     public void loadSettings() {
         DBObject dbObject = getPlayerDocument();
