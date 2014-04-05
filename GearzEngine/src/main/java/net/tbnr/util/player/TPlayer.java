@@ -123,8 +123,18 @@ public final class TPlayer {
         if (!usernames.contains(this.playerName)) {
             usernames.add(this.playerName);
         }
+        BasicDBList ips = (BasicDBList) playerDocument.get("ips");
+        if (ips == null) {
+            ips = new BasicDBList();
+        }
+        String hostString = player.getAddress().getHostString();
+        if (!ips.contains(hostString)) {
+            ips.add(hostString);
+        }
+        playerDocument.put("ips", ips);
         this.playerDocument.put("current_username", this.playerName);
         this.playerDocument.put("usernames", usernames);
+        this.playerDocument.put("ips", ips);
         //loadSettings();
     }
 

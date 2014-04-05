@@ -169,15 +169,6 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             return;
         }
         DBObject playerDocument = gearzPlayer.getPlayerDocument();
-        BasicDBList ips = (BasicDBList) playerDocument.get("ips");
-        if (ips == null) {
-            ips = new BasicDBList();
-        }
-        String hostString = player.getAddress().getHostString();
-        if (!ips.contains(hostString)) {
-            ips.add(hostString);
-        }
-        playerDocument.put("ips", ips);
         if (!playerDocument.containsField("uuid")) {
             playerDocument.put("uuid", player.getUniqueId().toString());
         }
