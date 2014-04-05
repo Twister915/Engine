@@ -28,11 +28,13 @@ import org.bukkit.entity.Player;
 public class GearzPlayer {
     @Getter protected final TPlayer tPlayer;
     @Getter protected final String username;
+    @Getter protected final String uuid;
     @Getter @Setter protected GearzGame game;
 
     protected GearzPlayer(@NonNull TPlayer player) {
         this.tPlayer = player;
         this.username = player.getPlayerName();
+        this.uuid = player.getUuid();
     }
 
     public void sendException(Throwable t) {

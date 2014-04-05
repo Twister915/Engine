@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
  *
  * Latest Change:
  */
-public class FriendManager extends GearzFriends {
+public class FriendsManager extends GearzFriends {
     @Override
     public DBCollection getCollection() {
         return Gearz.getInstance().getMongoDB().getCollection("users");

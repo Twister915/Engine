@@ -8,4 +8,4 @@ commands:
   friend:
     description: Friend management command
   friends:
-    description: Friend list command
+    description: Friends list command

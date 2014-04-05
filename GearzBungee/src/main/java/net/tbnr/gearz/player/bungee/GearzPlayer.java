@@ -56,7 +56,7 @@ public final class GearzPlayer {
             this.username = (String) object.get("current_username");
             this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
-            throw new PlayerNotFoundException("Invalid document");
+            throw new PlayerNotFoundException("Invalid DBObject");
         }
         this.playerDocument = object;
         updateNickname();
@@ -75,7 +75,7 @@ public final class GearzPlayer {
             this.username = (String) object.get("current_username");
             this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
-            throw new PlayerNotFoundException("Invalid document");
+            throw new PlayerNotFoundException("Invalid username");
         }
         this.playerDocument = object;
         updateNickname();
@@ -94,7 +94,7 @@ public final class GearzPlayer {
             this.username = (String) object.get("current_username");
             this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
-            throw new PlayerNotFoundException("Invalid document");
+            throw new PlayerNotFoundException("Invalid UUID");
         }
         this.playerDocument = object;
         updateNickname();

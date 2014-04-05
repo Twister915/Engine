@@ -58,6 +58,9 @@ public class UtilCommands implements TCommandHandler, Listener {
 
     public void kickPlayers(String message) {
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+            if (proxiedPlayer.hasPermission("gearz.kickall.bypass")) {
+                continue;
+            }
             proxiedPlayer.disconnect(message);
         }
     }
