@@ -52,7 +52,6 @@ public abstract class TPlugin extends JavaPlugin {
      * @param listener The listener that you're registering
      */
     public final <T extends Listener> T registerEvents(T listener) {
-        Gearz.getInstance().debug("GEARZ DEBUG ---<TPlugin|37>--------< registerEvents has been called for" + listener);
         Bukkit.getPluginManager().registerEvents(listener, this);
         return listener;
     }
