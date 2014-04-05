@@ -177,15 +177,6 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         if (!ips.contains(hostString)) {
             ips.add(hostString);
         }
-        BasicDBList usernames = (BasicDBList) playerDocument.get("usernames");
-        if (usernames == null) {
-            usernames = new BasicDBList();
-        }
-        String currentUsername = player.getName();
-        if (!usernames.contains(currentUsername)) {
-            usernames.add(currentUsername);
-        }
-        playerDocument.put("usernames", usernames);
         playerDocument.put("ips", ips);
         if (!playerDocument.containsField("uuid")) {
             playerDocument.put("uuid", player.getUniqueId().toString());
