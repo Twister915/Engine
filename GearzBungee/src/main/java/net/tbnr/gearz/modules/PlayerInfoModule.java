@@ -120,7 +120,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             public void run() {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("playerinfo-header", false, false, new String[]{"<target>", player.getName()}));
                 sender.sendMessage(formatData("IP", player.getAddress().getHostString()));
-                sender.sendMessage(formatData("UUID", player.getUUID()));
+                sender.sendMessage(formatData("UUID", player.getUniqueId().toString()));
                 Server serverForBungee = getServerForBungee(player.getServer().getInfo());
                 sender.sendMessage(formatData("Server", serverForBungee.getGame() + serverForBungee.getNumber()));
                 sender.sendMessage(formatData("Server State", serverForBungee.getStatusString()));
@@ -188,7 +188,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         playerDocument.put("usernames", usernames);
         playerDocument.put("ips", ips);
         if (!playerDocument.containsField("uuid")) {
-            playerDocument.put("uuid", player.getUUID());
+            playerDocument.put("uuid", player.getUniqueId().toString());
         }
         playerDocument.put("current_username", player.getName());
         GearzPlayer.getCollection().save(playerDocument);

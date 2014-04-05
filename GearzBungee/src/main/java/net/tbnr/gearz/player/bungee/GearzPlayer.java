@@ -24,10 +24,13 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.UUID;
 
 /**
- * Used to access the database, disconnect, etc.
+ * Stores information about a GearzPlayer
+ * which is the object used to access the
+ * a player's player document and store
+ * other vital information about them.
  */
 public final class GearzPlayer {
     /**
@@ -41,10 +44,16 @@ public final class GearzPlayer {
      */
     private DBObject playerDocument;
 
+    /**
+     * This will return a GearzPlayer with the player's UUID
+     * and it's last known username in the Gearz database
+     *
+     * @param object DBObject to search for
+     * @throws PlayerNotFoundException thrown if a username or uuid is not found
+     */
     private GearzPlayer(@NonNull DBObject object) throws PlayerNotFoundException {
         try {
-            //TODO modify this logic so it determines the current username based off of who's logged in with this UUID
-            this.username = (String) object.get("username");
+            this.username = (String) object.get("current_username");
             this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
             throw new PlayerNotFoundException("Invalid document");
@@ -61,21 +70,48 @@ public final class GearzPlayer {
      */
     @Deprecated
     public GearzPlayer(String player) throws PlayerNotFoundException {
-        this.username = player;
-        this.uuid = player;
-        loadDocument();
+        DBObject object = new BasicDBObject("current_username", player);
+        try {
+            this.username = (String) object.get("current_username");
+            this.uuid = (String) object.get("uuid");
+        } catch (ClassCastException ex) {
+            throw new PlayerNotFoundException("Invalid document");
+        }
+        this.playerDocument = object;
+        updateNickname();
+    }
+
+    /**
+     * This will create a GearzPlayer with the UUID passed and the
+     * last known username for the player in the Gearz database
+     *
+     * @param uuid uuid to search for
+     * @throws PlayerNotFoundException thrown if a username or uuid is not found
+     */
+    public GearzPlayer(UUID uuid) throws PlayerNotFoundException {
+        DBObject object = new BasicDBObject("uuid", uuid.toString());
+        try {
+            this.username = (String) object.get("current_username");
+            this.uuid = (String) object.get("uuid");
+        } catch (ClassCastException ex) {
+            throw new PlayerNotFoundException("Invalid document");
+        }
+        this.playerDocument = object;
+        updateNickname();
     }
 
     /**
      * Creates a GearzPlayer from a ProxiedPlayer
+     * This will store 100% correct UUIDs and names
      *
      * @param player player to get the GearzPlayer for
      * @throws PlayerNotFoundException thrown when a player is not found
      */
     public GearzPlayer(ProxiedPlayer player) throws PlayerNotFoundException {
         this.username = player.getName();
-        this.uuid = player.getUUID();
+        this.uuid = player.getUniqueId().toString();
         loadDocument();
+        updateNickname();
     }
 
     public static GearzPlayer getById(ObjectId id) throws PlayerNotFoundException {
