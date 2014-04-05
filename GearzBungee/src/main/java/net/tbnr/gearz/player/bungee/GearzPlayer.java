@@ -212,6 +212,20 @@ public final class GearzPlayer {
         return usernames;
     }
 
+    public List<String> getIPHistory() {
+        List<String> usernames = new ArrayList<>();
+        BasicDBList usernamesObject = (BasicDBList) playerDocument.get("ips");
+        if (usernamesObject == null) {
+            return usernames;
+        }
+        for (Object object : usernamesObject) {
+            if (!(object instanceof String)) continue;
+            String name = (String) object;
+            usernames.add(name);
+        }
+        return usernames;
+    }
+
     public void save() {
         getCollection().save(this.playerDocument);
     }

@@ -42,10 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,7 +53,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
 
     public PlayerInfoModule() {
         try {
-            File resource = doThing(GearzBungee.getInstance().getResourceAsStream("geocity.dat"));
+            File resource = createStorageFile(GearzBungee.getInstance().getResourceAsStream("geocity.dat"));
             if (resource == null) return;
             lookupService = new LookupService(resource, LookupService.GEOIP_MEMORY_CACHE);
         } catch (IOException e) {
@@ -64,7 +61,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         }
     }
 
-    public static File doThing(InputStream is) throws IOException {
+    public static File createStorageFile(InputStream is) throws IOException {
         File tmp = null;
         FileOutputStream tmpOs = null;
         try {
@@ -120,6 +117,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             public void run() {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("playerinfo-header", false, false, new String[]{"<target>", player.getName()}));
                 sender.sendMessage(formatData("IP", player.getAddress().getHostString()));
+                sender.sendMessage();
                 sender.sendMessage(formatData("UUID", player.getUniqueId().toString()));
                 Server serverForBungee = getServerForBungee(player.getServer().getInfo());
                 sender.sendMessage(formatData("Server", serverForBungee.getGame() + serverForBungee.getNumber()));
@@ -139,6 +137,8 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
                 sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
                 GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
                 sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
+                sender.sendMessage(formatData("Previous IPs:", formatList(gearzPlayer.getIPHistory())));
+                sender.sendMessage(formatData("Previous Usernames:", formatList(gearzPlayer.getUsernameHistory())));
             }
         });
     }
@@ -157,6 +157,17 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
     private String formatDuration(Long mills) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault());
         return sdf.format(new Date(mills - TimeZone.getDefault().getRawOffset()));
+    }
+
+    private <T> String formatList(List<? extends T> list) {
+        StringBuilder builder = new StringBuilder();
+        for (T aValue : list) {
+            builder.append(aValue).append(",");
+        }
+        if (list.size() > 0) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        return builder.toString();
     }
 
     @EventHandler
