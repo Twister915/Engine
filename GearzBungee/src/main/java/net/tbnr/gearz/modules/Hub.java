@@ -60,7 +60,14 @@ public class Hub implements TCommandHandler, Listener {
 
     public ServerInfo getAHubServer() {
         if (hubServers.size() < 1) return null;
-        return ProxyServer.getInstance().getServerInfo(hubServers.get(GearzBungee.getRandom().nextInt(hubServers.size())).getBungee_name());
+        Server leastServer = this.hubServers.get(0);
+        Integer leastAmount = leastServer.getPlayerCount();
+        for (Server server : this.hubServers) {
+            if (server.getPlayerCount() < leastAmount) {
+                leastServer = server;
+            }
+        }
+        return ProxyServer.getInstance().getServerInfo(leastServer.getBungee_name());
     }
 
     public static boolean isHubServer(ServerInfo info) {
@@ -119,7 +126,10 @@ public class Hub implements TCommandHandler, Listener {
     }
 
     private Server serverForDispersion() throws Exception {
-        Server s = null;
+        Server s = PlayerInfoModule.getServerForBungee(getAHubServer());
+        if (s != null) {
+            return s;
+        }
         for (Server server : ServerManager.getAllServers()) {
             if (server.getGame().equals("lobby")) continue;
             if (!server.getStatusString().equals("lobby")) continue;
