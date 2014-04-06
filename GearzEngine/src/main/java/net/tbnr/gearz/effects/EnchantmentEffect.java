@@ -36,7 +36,6 @@ public class EnchantmentEffect {
      * stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 32);
      * player.getInventory().addItem(stack);
      */
-
     public static void addEnchantmentListener() {
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(Gearz.getInstance(), ConnectionSide.SERVER_SIDE, ListenerPriority.HIGH, Packets.Server.SET_SLOT, Packets.Server.WINDOW_ITEMS) {
             @Override

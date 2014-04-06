@@ -27,5 +27,3 @@ irc:
   enabled: false
   printout: false
   format: "[%server%]<%sender%>: %message%"
-friends:
-  enabled: true
