@@ -22,11 +22,16 @@ import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 
 /**
- * Created by jake on 12/29/13.
+ * Manages chat for personal conversations
+ * which stops a player from sending a global
+ * message when they are in a personal conversation.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Create
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 12/29/2013
  */
 public class PrivateConversation implements Listener {
     final Conversation conversation;
@@ -65,12 +70,10 @@ public class PrivateConversation implements Listener {
 
         public void sendMessage(String message) {
             String sendToSender = GearzBungee.getInstance().getFormat("messaging-message", false, false, new String[]{"<sender>", target.getName()}, new String[]{"<message>", message}, new String[]{"<direction>", "to"});
-
             String sendToTarget = GearzBungee.getInstance().getFormat("messaging-message", false, false, new String[]{"<sender>", sender.getName()}, new String[]{"<message>", message}, new String[]{"<direction>", "from"});
 
             sender.sendMessage(sendToSender);
             target.sendMessage(sendToTarget);
-
         }
 
         public void end() {

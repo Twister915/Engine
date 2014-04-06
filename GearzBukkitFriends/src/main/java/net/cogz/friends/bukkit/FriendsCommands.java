@@ -25,9 +25,9 @@ import java.util.List;
  * Latest Change:
  */
 public class FriendsCommands extends SimplePaginator implements TCommandHandler {
-    FriendManager manager;
+    FriendsManager manager;
 
-    public FriendsCommands(FriendManager manager) {
+    public FriendsCommands(FriendsManager manager) {
         super(6);
         this.manager = manager;
     }

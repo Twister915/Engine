@@ -3,11 +3,17 @@ package net.tbnr.gearz.player.bungee;
 import java.util.List;
 
 /**
- * Created by jake on 2/12/14.
+ * Delegate for GearzPermissions which
+ * allows for the retrieval of player
+ * metadata including prefixes, suffixes,
+ * and other things required for permissions
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Create
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 2/12/2014
  */
 public interface PermissionsDelegate {
     String getPrefix(String player);

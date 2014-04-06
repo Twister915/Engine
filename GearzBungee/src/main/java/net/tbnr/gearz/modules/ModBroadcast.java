@@ -27,11 +27,15 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 import java.util.ArrayList;
 
 /**
- * Created by George on 01/05/14.
- * <p/>
- * Purpose Of File: To allow for a private channel for mods
- * <p/>
- * Latest Change: Added support for console
+ * A module to allow for private channels
+ * for staff to use to communicate in game.
+ *
+ * <p>
+ * Latest Change: Deprecated for channels
+ * <p>
+ *
+ * @author George
+ * @since 01/05/14
  */
 @Deprecated //Deprecated on 1/30/2014 in favor of new, better, channels system.
 public class ModBroadcast implements TCommandHandler, Listener {

@@ -22,8 +22,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by jake on 12/28/13.
- * This class stores data for chat
+ * Stores chat data including
+ * personal conversations
+ * and previous messages for players
+ *
+ * <p>
+ * Latest Change: Remove mutes.
+ * <p>
+ *
+ * @author Jake
+ * @since 12/28/2013
  */
 public class Chat {
 

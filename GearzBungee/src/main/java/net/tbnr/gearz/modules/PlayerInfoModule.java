@@ -42,21 +42,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Responsible for stalking our player base. #NoPrivacyPolicy
+ * Module to display large amounts of information
+ * about a player including their UUID, IP, location,
+ * and much more information.
+ * <p>
+ * Latest Change: Added previous usernames and IPs
+ * <p>
+ *
+ * @author Joey
+ * @since Unknown
  */
 public final class PlayerInfoModule implements TCommandHandler, Listener {
     private LookupService lookupService = null;
 
     public PlayerInfoModule() {
         try {
-            File resource = doThing(GearzBungee.getInstance().getResourceAsStream("geocity.dat"));
+            File resource = createStorageFile(GearzBungee.getInstance().getResourceAsStream("geocity.dat"));
             if (resource == null) return;
             lookupService = new LookupService(resource, LookupService.GEOIP_MEMORY_CACHE);
         } catch (IOException e) {
@@ -64,7 +69,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         }
     }
 
-    public static File doThing(InputStream is) throws IOException {
+    public static File createStorageFile(InputStream is) throws IOException {
         File tmp = null;
         FileOutputStream tmpOs = null;
         try {
@@ -120,7 +125,8 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             public void run() {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("playerinfo-header", false, false, new String[]{"<target>", player.getName()}));
                 sender.sendMessage(formatData("IP", player.getAddress().getHostString()));
-                sender.sendMessage(formatData("UUID", player.getUUID()));
+                sender.sendMessage();
+                sender.sendMessage(formatData("UUID", player.getUniqueId().toString()));
                 Server serverForBungee = getServerForBungee(player.getServer().getInfo());
                 sender.sendMessage(formatData("Server", serverForBungee.getGame() + serverForBungee.getNumber()));
                 sender.sendMessage(formatData("Server State", serverForBungee.getStatusString()));
@@ -139,6 +145,8 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
                 sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
                 GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
                 sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
+                sender.sendMessage(formatData("Previous IPs:", formatList(gearzPlayer.getIPHistory())));
+                sender.sendMessage(formatData("Previous Usernames:", formatList(gearzPlayer.getUsernameHistory())));
             }
         });
     }
@@ -159,6 +167,17 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         return sdf.format(new Date(mills - TimeZone.getDefault().getRawOffset()));
     }
 
+    private <T> String formatList(List<? extends T> list) {
+        StringBuilder builder = new StringBuilder();
+        for (T aValue : list) {
+            builder.append(aValue).append(",");
+        }
+        if (list.size() > 0) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        return builder.toString();
+    }
+
     @EventHandler
     public void onPlayerJoin(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
@@ -177,18 +196,9 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         if (!ips.contains(hostString)) {
             ips.add(hostString);
         }
-        BasicDBList usernames = (BasicDBList) playerDocument.get("usernames");
-        if (usernames == null) {
-            usernames = new BasicDBList();
-        }
-        String currentUsername = player.getName();
-        if (!usernames.contains(currentUsername)) {
-            usernames.add(currentUsername);
-        }
-        playerDocument.put("usernames", usernames);
         playerDocument.put("ips", ips);
         if (!playerDocument.containsField("uuid")) {
-            playerDocument.put("uuid", player.getUUID());
+            playerDocument.put("uuid", player.getUniqueId().toString());
         }
         playerDocument.put("current_username", player.getName());
         GearzPlayer.getCollection().save(playerDocument);

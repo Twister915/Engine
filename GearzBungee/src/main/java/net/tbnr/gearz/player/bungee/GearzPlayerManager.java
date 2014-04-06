@@ -25,11 +25,16 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 9/30/13
- * Time: 11:40 PM
- * To change this template use File | Settings | File Templates.
+ * Manages logins and logouts for GearzPlayers.
+ * Also provides utility methods to retrieving
+ * a Gearz player based on certain parameters.
+ *
+ * <p>
+ * Latest Change: Add matched players method
+ * <p>
+ *
+ * @author Joey
+ * @since 9/13/2013
  */
 public final class GearzPlayerManager implements Listener {
     private final HashMap<String, GearzPlayer> players = new HashMap<>();

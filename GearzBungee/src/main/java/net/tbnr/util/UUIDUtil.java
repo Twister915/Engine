@@ -12,11 +12,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by jake on 3/29/2014.
+ * Util to allow for username to UUID conversion
+ * Uses a callback for async call.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Created util
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 3/29/2014
  */
 public class UUIDUtil implements Runnable {
     private static String AGENT = "minecraft";

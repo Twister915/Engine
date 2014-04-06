@@ -29,11 +29,15 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 10/28/13
- * Time: 11:53 AM
- * To change this template use File | Settings | File Templates.
+ * Module to manage automaticaly broadcasted
+ * announcents.
+ *
+ * <p>
+ * Latest Change: Created module
+ * <p>
+ *
+ * @author Jake
+ * @since 10/28/2013
  */
 @SuppressWarnings("unused")
 public class AnnouncerModule implements Runnable, TCommandHandler {

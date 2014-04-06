@@ -19,11 +19,16 @@ import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 
 /**
- * Created by Jake on 1/16/14.
+ * Listener for Channels that receives chat
+ * messages and sends a message with the
+ * sender and the message.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Create
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 1/16/2014
  */
 public class ChannelsListener implements Listener {
     @EventHandler (priority = EventPriority.HIGHEST)

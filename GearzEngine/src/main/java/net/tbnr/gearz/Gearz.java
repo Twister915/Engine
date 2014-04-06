@@ -94,10 +94,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         //** ENABLE **
         //This method is a bit confusing. Let's comment/clean it up a bit <3
 
-        this.databaseConfig = new GearzConfig(this, "database.yml");
-        this.databaseConfig.getConfig().options().copyDefaults(true);
-        this.databaseConfig.saveDefaultConfig();
-
         //Reset all players for the EnderBar
         EnderBar.resetPlayers();
 
@@ -174,6 +170,13 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         ServerManager.getThisServer().remove();
         NetCommand.withName("disconnect").withArg("name", Gearz.bungeeName2);
         EnderBar.resetPlayers();
+    }
+
+    @Override
+    public void initGearzConfigs() {
+        this.databaseConfig = new GearzConfig(this, "database.yml");
+        this.databaseConfig.getConfig().options().copyDefaults(true);
+        this.databaseConfig.saveDefaultConfig();
     }
 
     public void activatePermissionsFeatures() {

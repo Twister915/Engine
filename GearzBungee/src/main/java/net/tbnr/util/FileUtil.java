@@ -1,10 +1,14 @@
 package net.tbnr.util;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.gearz.GearzBungee;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -124,5 +128,35 @@ public class FileUtil {
             }
         }
         return result;
+    }
+
+    public static List<String> getData(String file, Plugin plugin) {
+        File f = new File(plugin.getDataFolder(), file);
+        if (!(f.canRead() && f.exists())) try {
+            boolean newFile = f.createNewFile();
+            if (!newFile) return null;
+            getData(file, plugin);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        BufferedReader stream;
+        try {
+            stream = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(f))));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        List<String> lines = new ArrayList<>();
+        String line;
+        try {
+            while ((line = stream.readLine()) != null) {
+                lines.add(ChatColor.translateAlternateColorCodes('&', line));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return lines;
     }
 }

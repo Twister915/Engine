@@ -16,7 +16,7 @@ import net.tbnr.util.bungee.command.TCommandStatus;
  * Latest Change: Created module
  * <p>
  *
- * @author jake
+ * @author Jake
  * @since 3/29/2014
  */
 public class PlayerHistoryModule implements TCommandHandler {

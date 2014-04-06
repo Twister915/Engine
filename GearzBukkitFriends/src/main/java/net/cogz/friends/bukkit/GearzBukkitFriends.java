@@ -12,15 +12,15 @@ import net.tbnr.util.TPlugin;
  */
 public class GearzBukkitFriends extends TPlugin {
     @Getter public static GearzBukkitFriends instance;
-    @Getter public FriendManager friendManager;
+    @Getter public FriendsManager friendsManager;
 
     @Override
     public void enable() {
         GearzBukkitFriends.instance = this;
         getConfig().options().copyDefaults(true);
         saveConfig();
-        friendManager = new FriendManager();
-        registerCommands(new FriendsCommands(friendManager));
+        friendsManager = new FriendsManager();
+        registerCommands(new FriendsCommands(friendsManager));
     }
 
     @Override

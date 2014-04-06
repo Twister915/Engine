@@ -22,11 +22,16 @@ import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
 /**
- * Created by Jake on 1/18/14.
+ * Commands to manage a player's channel
+ * including listing and swithcing between
+ * channels.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Fix command bug
+ * <p>
  *
- * Latest Change:
+ * @author Jake0oo0
+ * @since 1/18/2014
  */
 public class ChannelCommand implements TCommandHandler {
 

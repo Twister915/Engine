@@ -31,11 +31,16 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by Jake on 1/16/14.
+ * Manages creation and registration of
+ * channels. Also provides implementation
+ * for sending messages on channels.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Player display names
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 1/16/2014
  */
 public class ChannelManager {
     @Getter
