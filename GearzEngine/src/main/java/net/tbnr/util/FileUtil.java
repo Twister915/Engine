@@ -11,8 +11,6 @@
 
 package net.tbnr.util;
 
-import lombok.NonNull;
-
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;

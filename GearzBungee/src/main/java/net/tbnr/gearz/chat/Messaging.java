@@ -51,6 +51,7 @@ public class Messaging implements TCommandHandler {
             return TCommandStatus.FEW_ARGS;
         }
         String msg = compile(args, 1, args.length);
+        if (msg.trim().equals("")) return TCommandStatus.INVALID_ARGS;
 
         List<ProxiedPlayer> matchedPlayers = GearzBungee.getInstance().getPlayerManager().getMatchedPlayers(args[0]);
         if (matchedPlayers.size() < 1) {
