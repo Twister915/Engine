@@ -120,5 +120,5 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
     }
 
     protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();
-    protected abstract GearzNetworkManagerPlugin<PlayerType> getNetworkManager();
+    protected abstract GearzNetworkManagerPlugin<PlayerType, ? extends GearzPlayerProvider<PlayerType>> getNetworkManager();
 }
