@@ -1,6 +1,10 @@
+#IntelliJ IDEA Files
 *.iml
-*.class
-*/target/classes/
-*/target/
-/.idea/
-*/dependency-reduced-pom.xml
+*.idea/
+
+#Maven Generated Files
+target/
+dependency-reduced-pom.xml
+
+#Java Files
+*.jar

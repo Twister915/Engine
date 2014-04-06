@@ -89,8 +89,6 @@ public final class PvPTracker<PlayerType extends GearzPlayer> {
     }
 
     @Data
-    @ToString
-    @EqualsAndHashCode
     @RequiredArgsConstructor
     public final static class PlayerList<PlayerType2 extends GearzPlayer> implements TPlayerStorable {
         @NonNull
