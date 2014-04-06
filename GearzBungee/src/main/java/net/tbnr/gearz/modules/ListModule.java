@@ -24,7 +24,6 @@ import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
-import net.tbnr.util.NoDuplicatesList;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
@@ -32,6 +31,7 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class ListModule implements TCommandHandler, Listener {
     @Getter
-    public final Collection<ProxiedPlayer> staff = new NoDuplicatesList<>(); //Cache this for efficiency, don't for loop it every tie someone types /list staff lol
+    public final Collection<ProxiedPlayer> staff = new HashSet<>(); //Cache this for efficiency, don't for loop it every tie someone types /list staff lol
 
     @EventHandler
     @SuppressWarnings("unused")
