@@ -21,11 +21,14 @@ import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by jake on 12/20/13.
+ * Class for creating an IRC connection
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Make this async
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 12/20/2013
  */
 public class Connection {
     final String name;

@@ -24,6 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Module to manage the /msg command
+ * and also personal, one way, consversations.
+ *
+ * <p>
+ * Latest Change: Create
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
+ */
 @SuppressWarnings("unused")
 public class Messaging implements TCommandHandler {
     final Map<String, String> lastReplies = new HashMap<>();

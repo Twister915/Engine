@@ -19,11 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jake on 1/16/14.
+ * Implementation of a channel
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Create
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 1/16/2014
  */
 @ToString
 public class Channel implements ChannelInterface {

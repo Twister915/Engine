@@ -34,11 +34,17 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Joey on 12/17/13.
+ * Module to allow players to request
+ * private help from staff who are able
+ * to easily respond to requests by chatting
+ * as they normally would in game.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Reminder Changes
+ * <p>
  *
- * Latest Change:
+ * @author Joey
+ * @since 12/27/2013
  */
 @SuppressWarnings({"UnusedDeclaration", "deprecation"})
 public class HelpMe implements TCommandHandler, Listener {

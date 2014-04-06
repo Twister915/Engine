@@ -16,11 +16,14 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.List;
 
 /**
- * Created by Jake on 1/16/14.
+ * Base implementation of a Channel
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Create
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 1/16/2014
  */
 public interface ChannelInterface {
     public String getName();

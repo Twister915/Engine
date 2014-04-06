@@ -34,7 +34,15 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * List module, deals with the /list and /where command.
+ * Module that manages online players,
+ * including commands like /list, and /whois
+ *
+ * <p>
+ * Latest Change: Created module
+ * <p>
+ *
+ * @author Joey
+ * @since Unknown
  */
 public class ListModule implements TCommandHandler, Listener {
     @Getter

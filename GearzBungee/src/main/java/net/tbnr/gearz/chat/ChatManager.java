@@ -34,17 +34,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 9/29/13
- * Time: 12:08 AM
- * To change this template use File | Settings | File Templates.
+ * Manages chat including chat spying, and
+ * default listeners in the case that channels
+ * are disabled.
+ *
+ * <p>
+ * Latest Change: Implementation for channels
+ * <p>
+ *
+ * @author Joey
+ * @since 9/29/2013
  */
 public class ChatManager implements Listener, TCommandHandler {
     public static enum SpyType {
-        Chat,
-        Command,
-        All
+        Chat, Command, All
     }
 
     private final Map<String, SpyType> spies = new HashMap<>();
@@ -225,5 +228,4 @@ public class ChatManager implements Listener, TCommandHandler {
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         GearzBungee.handleCommandStatus(status, sender);
     }
-
 }

@@ -31,13 +31,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Joey on 12/18/13.
+ * The core module of GearzBungee, managing
+ * connecting to servers by commands, and also
+ * refreshing servers from the database and
+ * adding them to BungeeCord's internal server list
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Add server aliases
+ * <p>
  *
- * Latest Change:
+ * @author Joey
+ * @since 12/18/2013
  */
-@SuppressWarnings("deprecation")
 public class ServerModule implements TCommandHandler, Listener {
     /*
     /server - shows current server and lists games

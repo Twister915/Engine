@@ -15,7 +15,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Censored word
+ * Data class that can be called
+ * to automatically censor a word
+ * when it is said in chat.
+ *
+ * <p>
+ * Latest Change: Create
+ * <p>
+ *
+ * @author Joey
+ * @since Unknown
  */
 class CensoredWord {
     /**

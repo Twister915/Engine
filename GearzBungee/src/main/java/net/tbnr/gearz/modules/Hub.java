@@ -32,11 +32,18 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 10/14/13
- * Time: 3:37 PM
- * To change this template use File | Settings | File Templates.
+ * Module that manages the Gearz hub system.
+ * This includes sending players to the hubs,
+ * connecting them to the hub after minigames,
+ * and managing multiple hubs that are evenly
+ * filled by players as they join Bungee.
+ *
+ * <p>
+ * Latest Change: Changed spread logic
+ * <p>
+ *
+ * @author Joey
+ * @since 10/14/2013
  */
 public class Hub implements TCommandHandler, Listener {
 

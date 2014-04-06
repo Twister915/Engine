@@ -46,7 +46,15 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Responsible for stalking our player base. #NoPrivacyPolicy
+ * Module to display large amounts of information
+ * about a player including their UUID, IP, location,
+ * and much more information.
+ * <p>
+ * Latest Change: Added previous usernames and IPs
+ * <p>
+ *
+ * @author Joey
+ * @since Unknown
  */
 public final class PlayerInfoModule implements TCommandHandler, Listener {
     private LookupService lookupService = null;

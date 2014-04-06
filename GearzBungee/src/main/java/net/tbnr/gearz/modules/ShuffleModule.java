@@ -37,7 +37,16 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Shuffle Module
+ * Module that allows players to cycle
+ * between the minigames provided on
+ * a network.
+ *
+ * <p>
+ * Latest Change: Create module
+ * <p>
+ *
+ * @author Joey
+ * @since Unknown
  */
 public class ShuffleModule implements TCommandHandler, Listener {
 

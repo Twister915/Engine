@@ -31,6 +31,13 @@ import java.util.UUID;
  * which is the object used to access the
  * a player's player document and store
  * other vital information about them.
+ *
+ * <p>
+ * Latest Change: Update to use UUIDs
+ * <p>
+ *
+ * @author Joey
+ * @since Unknown
  */
 public final class GearzPlayer {
     /**

@@ -40,11 +40,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 9/28/13
- * Time: 6:29 PM
- * To change this template use File | Settings | File Templates.
+ * Handles the display of server MOTDs,
+ * server images, and a fake player list
+ * to the ProxyPingEvent. This module also
+ * displays the MOTD to the player on join
+ *
+ * <p>
+ * Latest Change: Add fake player list
+ * <p>
+ *
+ * @author Joey
+ * @since 9/28/13
  */
 public class MotdHandler implements Listener, TCommandHandler {
     private List<String> motd;

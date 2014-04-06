@@ -23,9 +23,16 @@ import net.tbnr.util.bungee.cooldowns.TCooldownManager;
 import java.util.ArrayList;
 
 /**
- * Created by jake on 12/28/13.
- * <p/>
- * Chat filtering
+ * Manages filtering of chat by passing the
+ * message sent and the sender of the messages.
+ * Manages mutes, censors, and filters.
+ *
+ * <p>
+ * Latest Change: Remove mutes, added to GearzPunishments
+ * <p>
+ *
+ * @author Jake
+ * @since 12/28/2013
  */
 public class Filter {
     public static FilterData filter(String message, ProxiedPlayer player) {

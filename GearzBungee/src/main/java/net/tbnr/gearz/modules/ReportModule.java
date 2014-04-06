@@ -15,6 +15,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -32,11 +34,18 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Jake on 1/15/14.
+ * Module that allows players to report
+ * other players and allows staff to
+ * deal with the reports by viewing and
+ * marking the report as completed for
+ * other staff members to see.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Created module
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 1/15/2014
  */
 public class ReportModule implements TCommandHandler {
     public final SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
@@ -123,40 +132,14 @@ public class ReportModule implements TCommandHandler {
         GearzBungee.handleCommandStatus(status, sender);
     }
 
+    @AllArgsConstructor
+    @Data
     public static class Report {
-        final GearzPlayer reporter;
-        final GearzPlayer reported;
-        final String message;
-        final String bungeeServer;
-        final Date time;
-
-        public Report(GearzPlayer reporter, GearzPlayer reported, String message, String bungeeServer, Date time) {
-            this.reporter = reporter;
-            this.reported = reported;
-            this.message = message;
-            this.bungeeServer = bungeeServer;
-            this.time = time;
-        }
-
-        public GearzPlayer getReporter() {
-            return reporter;
-        }
-
-        public GearzPlayer getReported() {
-            return reported;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public String getBungeeServer() {
-            return bungeeServer;
-        }
-
-        public Date getTime() {
-            return time;
-        }
+        private final GearzPlayer reporter;
+        private final GearzPlayer reported;
+        private final String message;
+        private final String bungeeServer;
+        private final Date time;
 
         public void broadcast() {
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
@@ -164,17 +147,6 @@ public class ReportModule implements TCommandHandler {
                     player.sendMessage(GearzBungee.getInstance().getFormat("report-receive", false, false, new String[]{"<reported>", getReported().getName()}, new String[]{"<reporter>", getReporter().getName()}, new String[]{"<reason>", getMessage()}, new String[]{"<server>", getBungeeServer()}));
                 }
             }
-        }
-
-        @Override
-        public String toString() {
-            return "Report{" +
-                    "reporter='" + reporter.getName() + '\'' +
-                    ", reported='" + reported.getName() + '\'' +
-                    ", message='" + message + '\'' +
-                    ", bungeeServer='" + bungeeServer + '\'' +
-                    ", time=" + time +
-                    '}';
         }
     }
 

@@ -19,11 +19,15 @@ import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
 /**
- * Created by rigor789 on 2014.01.25..
- * <p/>
- * Purpose Of File: Provides the /stats command for player stats.
- * <p/>
- * Latest Change: Create
+ * A simple module to send a link for
+ * TBNR's leaderboards to players
+ *
+ * <p>
+ * Latest Change: Create module
+ * <p>
+ *
+ * @author Rigor
+ * @since 1/25/2014
  */
 public class StatsModule implements TCommandHandler {
 

@@ -207,7 +207,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
                 reportModule,
                 whitelistModule,
                 new StatsModule(),
-                new PropertiesManager(),
                 announcerModule,
         };
 
