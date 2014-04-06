@@ -17,6 +17,7 @@ import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.config.GearzConfig;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
+import net.tbnr.gearz.network.GearzNetworkManagerPlugin;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.netcommand.NetCommand;
@@ -64,7 +65,11 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Getter @Setter private boolean isLobbyServer;
     @Getter InventoryRefresher inventoryRefresher;
 
-    @Getter @Setter private GearzPlayerProvider playerProvider;
+    @Getter @Setter private GearzNetworkManagerPlugin networkManager;
+
+    public GearzPlayerProvider getPlayerProvider() {
+        return this.networkManager.getPlayerProvider();
+    }
 
     public boolean showDebug() {
         return false;

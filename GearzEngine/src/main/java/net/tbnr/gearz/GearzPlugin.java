@@ -44,9 +44,9 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
     @Getter private GameMeta meta;
     @Getter private GearzClassSystem<PlayerType, ClassType> classSystem;
 
-    public boolean isClassEnabled() { return classSystem != null; }
+    public final boolean isClassEnabled() { return classSystem != null; }
 
-    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game, GearzClassSystem<PlayerType, ClassType> classSystem) throws GearzException {
+    protected final void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game, GearzClassSystem<PlayerType, ClassType> classSystem) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
 
         if (meta == null) throw new GearzException("No GameMeta found!");
@@ -105,12 +105,12 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         registerEvents(this.gameManager);
     }
 
-    protected void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game) throws GearzException {
+    protected final void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game) throws GearzException {
         registerGame(arenaClass, game, null);
     }
 
     @Override
-    public void disable() {
+    public final void disable() {
         if (this.gameManager != null) this.gameManager.disable();
     }
 

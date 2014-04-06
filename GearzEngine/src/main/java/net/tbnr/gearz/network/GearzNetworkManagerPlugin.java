@@ -10,9 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-public abstract class GearzNetworkManagerPlugin<PlayerType extends GearzPlayer> extends TPlugin implements Listener {
-    @Getter protected GearzPlayerProvider<PlayerType> playerProvider;
-    protected abstract GearzPlayerProvider<PlayerType> getNewPlayerProvider();
+public abstract class GearzNetworkManagerPlugin<PlayerType extends GearzPlayer, PlayerProviderType extends GearzPlayerProvider<PlayerType>> extends TPlugin implements Listener {
+    @Getter protected PlayerProviderType playerProvider;
+    protected abstract PlayerProviderType getNewPlayerProvider();
 
     protected void onPlayerJoin(PlayerType player) {}
     protected void onPlayerDisconnect(PlayerType player) {}
@@ -20,9 +20,8 @@ public abstract class GearzNetworkManagerPlugin<PlayerType extends GearzPlayer> 
 
     @Override
     public void enable() {
-        GearzPlayerProvider<PlayerType> newPlayerProvider = getNewPlayerProvider();
-        this.playerProvider = newPlayerProvider;
-        Gearz.getInstance().setPlayerProvider(newPlayerProvider);
+        this.playerProvider = getNewPlayerProvider();
+        Gearz.getInstance().setNetworkManager(this);
         registerEvents(this);
         getLogger().info("Setup Network Plugin!");
     }
