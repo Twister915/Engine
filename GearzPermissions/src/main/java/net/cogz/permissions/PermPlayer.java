@@ -52,15 +52,16 @@ public class PermPlayer extends GModel {
         super(database, dBobject);
     }
 
-    public PermPlayer(DB database, String uuid) {
+    @Deprecated
+    public PermPlayer(DB database, String name) {
         this(database);
-        this.uuid = uuid;
+        this.name = name;
     }
 
-    public PermPlayer(DB database, String uuid, String player) {
+    public PermPlayer(DB database, String uuid, String name) {
         this(database);
         this.uuid = uuid;
-        this.name = player;
+        this.name = name;
     }
 
     /**

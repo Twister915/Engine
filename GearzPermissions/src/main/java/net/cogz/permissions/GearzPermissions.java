@@ -68,18 +68,7 @@ public abstract class GearzPermissions {
      */
     public abstract DB getDatabase();
 
-    public abstract String generateUUID(String player);
-
-    private String getUUID(String player) {
-        if (!this.cachedUUIDs.containsKey(player)) {
-            String s = generateUUID(player);
-            this.cachedUUIDs.put(player, s);
-            return s;
-        }
-        return this.cachedUUIDs.get(player);
-    }
-
-    private Map<String, String> cachedUUIDs;
+    public abstract String getUUID(String player);
 
     /**
      * Reloads all the data from the database

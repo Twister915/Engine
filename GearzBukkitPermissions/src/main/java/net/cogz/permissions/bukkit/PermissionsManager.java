@@ -15,8 +15,6 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import net.cogz.permissions.GearzPermissions;
 import net.tbnr.gearz.Gearz;
-import net.tbnr.gearz.activerecord.GModel;
-import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.PermissionsDelegate;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerManager;
@@ -25,16 +23,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Bukkit Specific Permissions API
  */
 public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
+    private Map<String, Player> loggedPlayers = new HashMap<>();
+
     @Override
     public List<String> onlinePlayers() {
         List<String> players = new ArrayList<>();
@@ -46,7 +48,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
-        Player p = Bukkit.getPlayerExact(player);
+        Player p = loggedPlayers.get(player);
         if (p == null) return;
         p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
     }
@@ -57,7 +59,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     }
 
     @Override
-    public String generateUUID(String player) {
+    public String getUUID(String player) {
         return (String) getPlayerDocument(player).get("uuid");
     }
 
@@ -78,13 +80,15 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerLoginEvent event) {
+        loggedPlayers.put(event.getPlayer().getName(), event.getPlayer());
         onJoin(event.getPlayer().getName());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
     public void onPlayerQuit(PlayerQuitEvent event) {
+        loggedPlayers.remove(event.getPlayer().getName());
         onQuit(event.getPlayer().getName());
     }
 
