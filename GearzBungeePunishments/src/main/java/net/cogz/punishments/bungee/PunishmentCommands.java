@@ -86,14 +86,14 @@ public class PunishmentCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            if (manager.isPlayerBanned(gearzTarget.getName())) {
+            if (manager.isPlayerBanned(gearzTarget.getUsername())) {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-banned", false, false));
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            manager.punishPlayer(gearzTarget.getName(), sender.getName(), reason, PunishmentType.PERMANENT_BAN, null);
+            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.PERMANENT_BAN, null);
 
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
             broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.PERMANENT_BAN, reason);
         }
@@ -150,7 +150,7 @@ public class PunishmentCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            if (manager.isPlayerBanned(gearzTarget.getName())) {
+            if (manager.isPlayerBanned(gearzTarget.getUsername())) {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-banned", false, false));
                 return TCommandStatus.SUCCESSFUL;
             }
@@ -165,11 +165,11 @@ public class PunishmentCommands implements TCommandHandler {
             }
             Date end = new Date();
             end.setTime(duration);
-            manager.punishPlayer(gearzTarget.getName(), sender.getName(), reason, PunishmentType.TEMP_BAN, end);
+            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.TEMP_BAN, end);
 
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
-            broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getName(), PunishmentType.TEMP_BAN, reason);
+            broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getUsername(), PunishmentType.TEMP_BAN, reason);
         }
 
         return TCommandStatus.SUCCESSFUL;
@@ -239,9 +239,9 @@ public class PunishmentCommands implements TCommandHandler {
             }
 
             String reason = compile(args, 1, args.length).trim();
-            manager.punishPlayer(gearzTarget.getName(), sender.getName(), reason, PunishmentType.WARN, null);
+            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.WARN, null);
 
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("warned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("warned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
             broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.WARN, reason);
             gearzTarget.getProxiedPlayer().sendMessage(GearzBungeePunishments.getInstance().getFormat("warned-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}));
@@ -288,15 +288,15 @@ public class PunishmentCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            if (manager.isPlayerMuted(gearzTarget.getName())) {
+            if (manager.isPlayerMuted(gearzTarget.getUsername())) {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-muted", false, false));
                 return TCommandStatus.SUCCESSFUL;
             }
 
             String reason = compile(args, 1, args.length).trim();
-            manager.punishPlayer(gearzTarget.getName(), sender.getName(), reason, PunishmentType.MUTE, null);
+            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.MUTE, null);
 
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
             broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.MUTE, reason);
             gearzTarget.getProxiedPlayer().sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}));
@@ -354,7 +354,7 @@ public class PunishmentCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            if (manager.isPlayerMuted(gearzTarget.getName())) {
+            if (manager.isPlayerMuted(gearzTarget.getUsername())) {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-muted", false, false));
                 return TCommandStatus.SUCCESSFUL;
             }
@@ -369,9 +369,9 @@ public class PunishmentCommands implements TCommandHandler {
             }
             Date end = new Date();
             end.setTime(duration);
-            manager.punishPlayer(gearzTarget.getName(), sender.getName(), reason, PunishmentType.TEMP_MUTE, end);
+            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.TEMP_MUTE, end);
 
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getName()}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
             gearzTarget.getProxiedPlayer().sendMessage(GearzBungee.getInstance().getFormat("temp-muted-for", false, false, new String[]{"<reason>", reason}, new String[]{"<issuer>", sender.getName()}, new String[]{"<end>", longReadable.format(end)}));
             broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getProxiedPlayer().getName(), PunishmentType.TEMP_MUTE, reason);

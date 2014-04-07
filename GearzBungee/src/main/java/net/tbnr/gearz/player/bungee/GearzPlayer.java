@@ -43,7 +43,7 @@ public final class GearzPlayer {
     /**
      * The player's username
      */
-    private final String username;
+    @Getter private final String username;
     @Getter private final String uuid;
     private String nickname;
     /**
@@ -66,7 +66,6 @@ public final class GearzPlayer {
             throw new PlayerNotFoundException("Invalid DBObject");
         }
         this.playerDocument = object;
-        updateNickname();
     }
 
     /**
@@ -85,7 +84,6 @@ public final class GearzPlayer {
             throw new PlayerNotFoundException("Invalid username");
         }
         this.playerDocument = object;
-        updateNickname();
     }
 
     /**
@@ -104,7 +102,6 @@ public final class GearzPlayer {
             throw new PlayerNotFoundException("Invalid UUID");
         }
         this.playerDocument = object;
-        updateNickname();
     }
 
     /**
@@ -118,7 +115,7 @@ public final class GearzPlayer {
         this.username = player.getName();
         this.uuid = player.getUniqueId().toString();
         loadDocument();
-        updateNickname();
+        player.setDisplayName(updateNickname());
     }
 
     public static GearzPlayer getById(ObjectId id) throws PlayerNotFoundException {
@@ -176,17 +173,17 @@ public final class GearzPlayer {
         return ProxyServer.getInstance().getPlayer(this.username);
     }
 
-    public void updateNickname() {
+    public String updateNickname() {
         try {
             loadDocument();
         } catch (PlayerNotFoundException e) {
-            return;
+            return null;
         }
         Object nick = playerDocument.get("gearz_nickname");
-        if (nick == null || !(nick instanceof String)) return;
+        if (nick == null || !(nick instanceof String)) return null;
         String nickname = (String) nick;
         setNickname(nickname);
-        getProxiedPlayer().setDisplayName(nickname);
+        return nickname;
     }
 
     public String getNickname() {
@@ -199,10 +196,6 @@ public final class GearzPlayer {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public String getName() {
-        return this.username;
     }
 
     public List<String> getUsernameHistory() {

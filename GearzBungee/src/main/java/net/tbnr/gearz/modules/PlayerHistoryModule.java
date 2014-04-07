@@ -45,9 +45,9 @@ public class PlayerHistoryModule implements TCommandHandler {
             sender.sendMessage(GearzBungee.getInstance().getFormat("no-matches", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
-        sender.sendMessage(GearzBungee.getInstance().getFormat("history-header", false, false, new String[]{"<player>", target.getName()}));
+        sender.sendMessage(GearzBungee.getInstance().getFormat("history-header", false, false, new String[]{"<player>", target.getUsername()}));
         for (String string : target.getUsernameHistory()) {
-            if (string.equals(target.getName())) {
+            if (string.equals(target.getUsername())) {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("history-current", false, false, new String[]{"<player>", string}));
             } else {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("history-past", false, false, new String[]{"<player>", string}));

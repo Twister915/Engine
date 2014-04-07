@@ -100,7 +100,7 @@ public class ReportModule implements TCommandHandler {
         }
 
         for (Report report : this.reportManager.getRecentReports(amount, null)) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("reports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getName()}, new String[]{"<reported>", report.getReported().getName()}, new String[]{"<time>", readable.format(report.getTime())}));
+            sender.sendMessage(GearzBungee.getInstance().getFormat("reports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getUsername()}, new String[]{"<reported>", report.getReported().getUsername()}, new String[]{"<time>", readable.format(report.getTime())}));
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -120,9 +120,9 @@ public class ReportModule implements TCommandHandler {
             return TCommandStatus.INVALID_ARGS;
         }
 
-        sender.sendMessage(GearzBungee.getInstance().getFormat("preports-header", false, false, new String[]{"<player>", target.getName()}));
+        sender.sendMessage(GearzBungee.getInstance().getFormat("preports-header", false, false, new String[]{"<player>", target.getUsername()}));
         for (Report report : this.reportManager.getRecentReports(10, target)) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("preports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getName()}, new String[]{"<time>", readable.format(report.getTime())}));
+            sender.sendMessage(GearzBungee.getInstance().getFormat("preports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getUsername()}, new String[]{"<time>", readable.format(report.getTime())}));
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -144,7 +144,7 @@ public class ReportModule implements TCommandHandler {
         public void broadcast() {
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                 if (player.hasPermission("gearz.reports.receive")) {
-                    player.sendMessage(GearzBungee.getInstance().getFormat("report-receive", false, false, new String[]{"<reported>", getReported().getName()}, new String[]{"<reporter>", getReporter().getName()}, new String[]{"<reason>", getMessage()}, new String[]{"<server>", getBungeeServer()}));
+                    player.sendMessage(GearzBungee.getInstance().getFormat("report-receive", false, false, new String[]{"<reported>", getReported().getUsername()}, new String[]{"<reporter>", getReporter().getUsername()}, new String[]{"<reason>", getMessage()}, new String[]{"<server>", getBungeeServer()}));
                 }
             }
         }
