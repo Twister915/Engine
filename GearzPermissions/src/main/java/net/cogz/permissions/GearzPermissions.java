@@ -232,7 +232,7 @@ public abstract class GearzPermissions {
      * @param player Name of player to reload
      */
     private void reloadPlayer(String player) {
-        PermPlayer permPlayer = this.players.get(player.toLowerCase());
+        PermPlayer permPlayer = this.players.get(player);
         if (permPlayer == null) {
             return;
         }

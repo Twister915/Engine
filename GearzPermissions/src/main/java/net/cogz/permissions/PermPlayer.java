@@ -19,7 +19,6 @@ import net.tbnr.gearz.activerecord.GModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Jake on 1/24/14.

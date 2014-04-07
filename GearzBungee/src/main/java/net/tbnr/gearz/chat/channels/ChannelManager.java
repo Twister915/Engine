@@ -197,9 +197,9 @@ public class ChannelManager {
         PermissionsDelegate perms = GearzBungee.getInstance().getPermissionsDelegate();
         chanFormat = chanFormat.replace("%player%", GearzPlayerManager.getGearzPlayer(player).getNickname());
         if (perms != null) {
-            String prefix = perms.getPrefix(player.getName().toLowerCase());
-            String suffix = perms.getSuffix(player.getName().toLowerCase());
-            String nameColor = perms.getNameColor(player.getName().toLowerCase());
+            String prefix = perms.getPrefix(player.getName());
+            String suffix = perms.getSuffix(player.getName());
+            String nameColor = perms.getNameColor(player.getName());
             if (prefix == null) prefix = "";
             else prefix = ChatColor.translateAlternateColorCodes('&', prefix);
             if (suffix == null) suffix = "";
