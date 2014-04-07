@@ -74,7 +74,6 @@ public final class GearzPlayer {
      * @param player player's name
      * @throws PlayerNotFoundException thrown when the player is not found
      */
-    @Deprecated
     public GearzPlayer(String player) throws PlayerNotFoundException {
         DBObject object = new BasicDBObject("current_username", player);
         try {

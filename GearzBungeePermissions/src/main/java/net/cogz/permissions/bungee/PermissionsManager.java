@@ -12,6 +12,7 @@
 package net.cogz.permissions.bungee;
 
 import com.mongodb.DB;
+import com.mongodb.DBObject;
 import net.cogz.permissions.GearzPermissions;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,9 +22,9 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.activerecord.GModel;
+import net.tbnr.gearz.player.bungee.GearzPlayer;
+import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.player.bungee.PermissionsDelegate;
-import net.tbnr.util.UUIDUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +53,27 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     }
 
     @Override
-    public String generateUUID(String player) {
-        return null;
+    public String getUUID(String player) {
+        return (String) getPlayerDocument(player).get("uuid");
     }
+
+    public DBObject getPlayerDocument(String player) {
+        if (isPlayerOnline(player)) {
+            ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
+            return GearzPlayerManager.getGearzPlayer(proxiedPlayer).getPlayerDocument();
+        } else {
+            try {
+                return new GearzPlayer(player).getPlayerDocument();
+            } catch (GearzPlayer.PlayerNotFoundException e) {
+                return null;
+            }
+        }
+    }
+
+    public boolean isPlayerOnline(String player) {
+        return ProxyServer.getInstance().getPlayer(player) != null;
+    }
+
 
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
