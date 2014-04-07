@@ -47,18 +47,10 @@ public final class GearzBukkitPermissions extends TPlugin {
                 }
             }
         }, 0, 30 * 20);
-        if (getConfig().getBoolean("converter", false)) {
-            try {
-                new Converter();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
-    public void disable() {
-    }
+    public void disable() { }
 
     @Override
     public String getStorablePrefix() {
