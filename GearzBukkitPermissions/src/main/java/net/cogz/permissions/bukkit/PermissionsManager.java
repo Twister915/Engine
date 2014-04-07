@@ -25,12 +25,16 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Bukkit Specific Permissions API
  */
 public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
+    private Map<String, Player> loggedPlayers = new HashMap<>();
+
     @Override
     public List<String> onlinePlayers() {
         List<String> players = new ArrayList<>();
@@ -42,7 +46,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
-        Player p = Bukkit.getPlayerExact(player);
+        Player p = loggedPlayers.get(player);
         if (p == null) return;
         p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
     }
@@ -56,12 +60,14 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerLoginEvent event) {
+        loggedPlayers.put(event.getPlayer().getName(), event.getPlayer());
         onJoin(event.getPlayer().getName());
     }
 
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
+        loggedPlayers.remove(event.getPlayer().getName());
         onQuit(event.getPlayer().getName());
     }
 
