@@ -71,7 +71,13 @@ public class PermGroup extends GModel {
      * @param perm permission to remove
      */
     protected void removePermission(String perm) {
-        this.permissions.remove(perm);
+        String trueValue = perm + "," + true;
+        String falseValue = perm + "," + false;
+        if (this.permissions.contains(trueValue)) {
+            this.permissions.remove(trueValue);
+        } else if (this.permissions.contains(falseValue)) {
+            this.permissions.remove(falseValue);
+        }
         save();
     }
 
