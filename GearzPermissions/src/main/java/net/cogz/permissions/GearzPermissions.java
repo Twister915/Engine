@@ -138,6 +138,9 @@ public abstract class GearzPermissions {
     }
 
     public PermPlayer getOfflinePlayer(String player) {
+        if (this.players.containsKey(player)) {
+            return this.players.get(player);
+        }
         return onJoin(player);
     }
 
