@@ -114,8 +114,6 @@ public final class TPlayer {
         }
         this.playerDocument.put("last-seen", Calendar.getInstance().getTimeInMillis()); //Update last-seen
         this.playerDocument.put("online", true); //Update the online variable
-        this.save();
-        this.timeOnline = (Long) this.playerDocument.get("time-online");
         BasicDBList usernames = (BasicDBList) this.playerDocument.get("usernames");
         if (usernames == null) {
             usernames = new BasicDBList();
@@ -125,6 +123,8 @@ public final class TPlayer {
         }
         this.playerDocument.put("current_username", this.playerName);
         this.playerDocument.put("usernames", usernames);
+        this.save();
+        this.timeOnline = (Long) this.playerDocument.get("time-online");
         //loadSettings();
     }
 
