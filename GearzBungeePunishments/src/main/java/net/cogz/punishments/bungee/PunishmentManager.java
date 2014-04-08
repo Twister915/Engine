@@ -93,7 +93,10 @@ public class PunishmentManager extends GearzPunishments implements Listener {
     @Override
     public void kickPlayer(String player, Punishment punishment) {
         ProxiedPlayer proxiedPlayer = getPlayerByUUID(player);
-        if (proxiedPlayer == null) return;
+        if (proxiedPlayer == null) {
+            ProxyServer.getInstance().getLogger().info("NULL PLAYER");
+            return;
+        }
         if (punishment.getPunishmentType() == PunishmentType.KICK) {
             formatKickPlayer(punishment.punished, GearzBungeePunishments.getInstance().getFormat("kick-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
         } else if (punishment.getPunishmentType() == PunishmentType.TEMP_BAN) {
