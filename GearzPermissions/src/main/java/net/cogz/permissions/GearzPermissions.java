@@ -113,7 +113,6 @@ public abstract class GearzPermissions {
             one.save();
         }
         if (!(one instanceof PermPlayer)) return null;
-        System.out.println(player);
         this.players.put(player, (PermPlayer) one);
         reloadPlayer(player);
         return (PermPlayer) one;
@@ -135,9 +134,6 @@ public abstract class GearzPermissions {
      * @param player The name of the player
      */
     public PermPlayer getPlayer(String player) {
-        for (String string : this.players.keySet()) {
-            System.out.println("FUCK DIS: " + string);
-        }
         return this.players.get(player);
     }
 
