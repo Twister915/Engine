@@ -93,31 +93,25 @@ public class PunishmentManager extends GearzPunishments implements Listener {
     @Override
     public void kickPlayer(String player, Punishment punishment) {
         ProxiedPlayer proxiedPlayer = getPlayerByUUID(player);
-        if (proxiedPlayer == null) {
-            ProxyServer.getInstance().getLogger().info("NULL PLAYER");
-            return;
-        }
+        if (proxiedPlayer == null) return;
         if (punishment.getPunishmentType() == PunishmentType.KICK) {
-            formatKickPlayer(punishment.punished, GearzBungeePunishments.getInstance().getFormat("kick-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
+            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("kick-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
         } else if (punishment.getPunishmentType() == PunishmentType.TEMP_BAN) {
-            formatKickPlayer(punishment.punished, GearzBungeePunishments.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<date>", longReadable.format(punishment.end)}), punishment.issuer);
+            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<date>", longReadable.format(punishment.end)}), punishment.issuer);
         } else if (punishment.getPunishmentType() == PunishmentType.PERMANENT_BAN) {
-            formatKickPlayer(punishment.punished, GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
+            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
         }
     }
 
     private ProxiedPlayer getPlayerByUUID(String uuid) {
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-            System.out.println("Found UUID: " + player.getUniqueId().toString());
-            System.out.println("Was looking for: " + uuid);
             if (player.getUniqueId().toString().equals(uuid)) return player;
         }
         return null;
     }
 
-    private void formatKickPlayer(String player, String reason, String issuer) {
-        ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
-        if (proxiedPlayer == null) return;
-        proxiedPlayer.disconnect(GearzBungeePunishments.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
+    private void formatKickPlayer(ProxiedPlayer player, String reason, String issuer) {
+        if (player == null) return;
+        player.disconnect(GearzBungeePunishments.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
     }
 }
