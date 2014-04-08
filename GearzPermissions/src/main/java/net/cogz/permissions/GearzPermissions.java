@@ -113,7 +113,8 @@ public abstract class GearzPermissions {
             one.save();
         }
         if (!(one instanceof PermPlayer)) return null;
-        this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
+        System.out.println(player);
+        this.players.put(player, (PermPlayer) one);
         reloadPlayer(player);
         return (PermPlayer) one;
     }
