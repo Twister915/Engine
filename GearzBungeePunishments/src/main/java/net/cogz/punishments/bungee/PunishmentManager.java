@@ -105,6 +105,8 @@ public class PunishmentManager extends GearzPunishments implements Listener {
 
     private ProxiedPlayer getPlayerByUUID(String uuid) {
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+            System.out.println("Found UUID: " + player.getUUID());
+            System.out.println("Was looking for: " + uuid);
             if (player.getUUID().equals(uuid)) return player;
         }
         return null;
