@@ -136,7 +136,7 @@ public abstract class GearzPermissions {
      */
     public PermPlayer getPlayer(String player) {
         for (String string : this.players.keySet()) {
-            System.out.println(string);
+            System.out.println("FUCK DIS: " + string);
         }
         return this.players.get(player);
     }
