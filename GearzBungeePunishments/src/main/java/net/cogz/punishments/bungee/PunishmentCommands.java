@@ -91,7 +91,7 @@ public class PunishmentCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.PERMANENT_BAN, null);
+            manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.PERMANENT_BAN, null);
 
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
@@ -165,7 +165,7 @@ public class PunishmentCommands implements TCommandHandler {
             }
             Date end = new Date();
             end.setTime(duration);
-            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.TEMP_BAN, end);
+            manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.TEMP_BAN, end);
 
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
@@ -195,7 +195,7 @@ public class PunishmentCommands implements TCommandHandler {
         ProxiedPlayer target = matchedPlayers.get(0);
 
         String reason = compile(args, 1, args.length).trim();
-        manager.punishPlayer(target.getName(), sender.getName(), reason, PunishmentType.KICK, null);
+        manager.punishPlayer(target.getUUID().toString(), sender.getName(), reason, PunishmentType.KICK, null);
 
         sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("kicked-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", target.getName()}));
         broadcastPunishment(target.getServer().getInfo(), sender.getName(), target.getName(), PunishmentType.KICK, reason);
@@ -239,7 +239,7 @@ public class PunishmentCommands implements TCommandHandler {
             }
 
             String reason = compile(args, 1, args.length).trim();
-            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.WARN, null);
+            manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.WARN, null);
 
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("warned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
@@ -294,7 +294,7 @@ public class PunishmentCommands implements TCommandHandler {
             }
 
             String reason = compile(args, 1, args.length).trim();
-            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.MUTE, null);
+            manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.MUTE, null);
 
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
@@ -369,7 +369,7 @@ public class PunishmentCommands implements TCommandHandler {
             }
             Date end = new Date();
             end.setTime(duration);
-            manager.punishPlayer(gearzTarget.getUsername(), sender.getName(), reason, PunishmentType.TEMP_MUTE, end);
+            manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.TEMP_MUTE, end);
 
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
