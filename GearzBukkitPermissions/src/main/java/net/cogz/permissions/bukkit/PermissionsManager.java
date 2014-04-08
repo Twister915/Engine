@@ -83,7 +83,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("unused")
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerLoginEvent event) {
         loggedPlayers.put(event.getPlayer().getName(), event.getPlayer());
         onJoin(event.getPlayer().getName());
     }
