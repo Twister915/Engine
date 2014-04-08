@@ -153,14 +153,14 @@ public class PermissionsCommands implements TCommandHandler {
                 if (!sender.hasPermission("gearz.permissions.player.tabcolor")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
                 player.tabColor = args[2].trim();
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", ChatColor.RESET + ChatColor.stripColor(args[2])}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
                 player.save();
                 return TCommandStatus.SUCCESSFUL;
             case "namecolor":
                 if (!sender.hasPermission("gearz.permissions.player.namecolor")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
                 player.nameColor = args[2].trim();
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", args[2]}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
                 player.save();
                 return TCommandStatus.SUCCESSFUL;
             default:
@@ -313,7 +313,7 @@ public class PermissionsCommands implements TCommandHandler {
                 if (!sender.hasPermission("gearz.permissions.group.namecolor")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
                 group.nameColor = args[2].trim();
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", args[2]}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
             case "addinheritance":
@@ -352,6 +352,6 @@ public class PermissionsCommands implements TCommandHandler {
     private String getChatColorFormatted(String originalColor) {
         String colorCode = originalColor.replaceAll("\u0026", "");
         ChatColor chatColor = ChatColor.getByChar(colorCode);
-        return chatColor.name().replaceAll("_", " ").toLowerCase();
+        return chatColor + chatColor.name().replaceAll("_", " ").toLowerCase();
     }
 }
