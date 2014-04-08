@@ -350,7 +350,7 @@ public class PermissionsCommands implements TCommandHandler {
     }
 
     private String getChatColorFormatted(String originalColor) {
-        String colorCode = originalColor.replaceAll("&", "");
+        String colorCode = originalColor.replaceAll("\u0026", "");
         ChatColor chatColor = ChatColor.getByChar(colorCode);
         return chatColor.name().replaceAll("_", " ").toLowerCase();
     }
