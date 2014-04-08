@@ -134,6 +134,9 @@ public abstract class GearzPermissions {
      * @param player The name of the player
      */
     public PermPlayer getPlayer(String player) {
+        for (String string : this.players.keySet()) {
+            System.out.println(string);
+        }
         return this.players.get(player);
     }
 
