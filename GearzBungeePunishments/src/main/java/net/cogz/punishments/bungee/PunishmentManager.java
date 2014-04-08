@@ -92,7 +92,7 @@ public class PunishmentManager extends GearzPunishments implements Listener {
 
     @Override
     public void kickPlayer(String player, Punishment punishment) {
-        ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
+        ProxiedPlayer proxiedPlayer = getPlayerByUUID(player);
         if (proxiedPlayer == null) return;
         if (punishment.getPunishmentType() == PunishmentType.KICK) {
             formatKickPlayer(punishment.punished, GearzBungeePunishments.getInstance().getFormat("kick-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
@@ -103,8 +103,14 @@ public class PunishmentManager extends GearzPunishments implements Listener {
         }
     }
 
+    private ProxiedPlayer getPlayerByUUID(String uuid) {
+        for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+            if (player.getUUID().equals(uuid)) return player;
+        }
+        return null;
+    }
 
-    public void formatKickPlayer(String player, String reason, String issuer) {
+    private void formatKickPlayer(String player, String reason, String issuer) {
         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
         if (proxiedPlayer == null) return;
         proxiedPlayer.disconnect(GearzBungeePunishments.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
