@@ -306,7 +306,7 @@ public class PermissionsCommands implements TCommandHandler {
                 if (!sender.hasPermission("gearz.permissions.group.tabcolor")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
                 group.tabColor = args[2].trim();
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", args[2]}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
             case "namecolor":
@@ -347,5 +347,11 @@ public class PermissionsCommands implements TCommandHandler {
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         Gearz.getInstance().handleCommandStatus(status, sender, senderType);
+    }
+
+    private String getChatColorFormatted(String originalColor) {
+        String colorCode = originalColor.replaceAll("&", "");
+        ChatColor chatColor = ChatColor.getByChar(colorCode);
+        return chatColor.name().replaceAll("_", " ").toLowerCase();
     }
 }
