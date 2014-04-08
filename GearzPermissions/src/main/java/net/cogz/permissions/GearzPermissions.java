@@ -113,6 +113,7 @@ public abstract class GearzPermissions {
             if (uuid == null) throw new IllegalArgumentException("Not a valid player");
             System.out.println("NOT VALID");
             one = new PermPlayer(this.database, uuid, player);
+            ((PermPlayer) one).name = player;
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
