@@ -64,7 +64,8 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
         if (loggedPlayers.containsKey(player)) {
             return loggedPlayers.get(player).getUniqueId().toString();
         }
-        return (String) getPlayerDocument(player).get("uuid");
+        DBObject playerDocument = getPlayerDocument(player);
+        return (String) playerDocument.get("uuid");
     }
 
     public boolean isPlayerOnline(String player) {
@@ -72,6 +73,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     }
 
     public DBObject getPlayerDocument(String player) {
+        if (player == null) return null;
         if (isPlayerOnline(player)) {
             Player bukkitPlayer = Bukkit.getPlayerExact(player);
             TPlayer tPlayer = TPlayerManager.getInstance().getPlayer(bukkitPlayer);

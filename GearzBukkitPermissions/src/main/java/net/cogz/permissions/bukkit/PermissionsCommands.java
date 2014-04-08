@@ -37,7 +37,13 @@ public class PermissionsCommands implements TCommandHandler {
     public TCommandStatus player(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length == 0) return TCommandStatus.FEW_ARGS;
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
-        PermPlayer player = permsManager.getOfflinePlayer(args[0].trim());
+        PermPlayer player;
+        try {
+            player = permsManager.getOfflinePlayer(args[0].trim());
+        } catch (NullPointerException e) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
+            return TCommandStatus.SUCCESSFUL;
+        }
         if (player == null) {
             sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
             return TCommandStatus.SUCCESSFUL;

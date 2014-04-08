@@ -104,25 +104,18 @@ public abstract class GearzPermissions {
      * @param player Player who joined
      */
     public PermPlayer onJoin(String player) {
-        System.out.println("CALLED FOR " + player);
         GModel one = new PermPlayer(this.database, getUUID(player), player).findOne();
         if (one == null) {
-            System.out.println("NULL");
-
             String uuid = getUUID(player);
             if (uuid == null) throw new IllegalArgumentException("Not a valid player");
-            System.out.println("NOT VALID");
             one = new PermPlayer(this.database, uuid, player);
             ((PermPlayer) one).name = player;
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
-        System.out.println("HERE");
         if (!(one instanceof PermPlayer)) return null;
-        System.out.println("NOW HEER");
         this.players.put(player, (PermPlayer) one);
         reloadPlayer(player);
-        System.out.println("RETURNING");
         return (PermPlayer) one;
     }
 
