@@ -14,9 +14,11 @@ package net.tbnr.gearz.effects;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.FakeEntity;
 import net.tbnr.gearz.player.GearzPlayer;
+import net.tbnr.util.player.TPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -99,13 +101,15 @@ public final class EnderBar {
     public static class EnderBarListeners implements Listener {
         @EventHandler
         public void onPlayerMove(PlayerMoveEvent event) {
-            GearzPlayer gearzPlayer = Gearz.getInstance().getPlayerProvider().getPlayerFromPlayer(event.getPlayer());
+            Player player = event.getPlayer();
+            TPlayer tpLayer = Gearz.getInstance().getPlayerManager().getPlayer(player);
+            GearzPlayer gearzPlayer = Gearz.getInstance().getPlayerProvider().getPlayerFromTPlayer(tpLayer);
             if (!hasEnderBarFor(gearzPlayer)) {
                 return;
             }
             EnderBar enderBarFor = getEnderBarFor(gearzPlayer);
             Location enderLocation = enderBarFor.enderDragon.getLocation().clone();
-            Location playerLocation = event.getPlayer().getLocation().clone();
+            Location playerLocation = player.getLocation().clone();
             enderLocation.setY(0);
             playerLocation.setY(0);
             if (!enderLocation.getWorld().equals(playerLocation.getWorld()) || enderLocation.distance(playerLocation) >= 25d) {
