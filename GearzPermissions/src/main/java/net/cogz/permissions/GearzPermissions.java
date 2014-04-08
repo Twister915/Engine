@@ -370,6 +370,9 @@ public abstract class GearzPermissions {
     @SuppressWarnings("unused")
     public String getTabColor(PermPlayer player) {
         String tabColor = null;
+        if (player == null) {
+            System.out.println("WHAT THE FUCK");
+        }
         if (player.getGroup() != null) {
             PermGroup permGroup = getGroup(player.getGroup());
             tabColor = permGroup.getTabColor();

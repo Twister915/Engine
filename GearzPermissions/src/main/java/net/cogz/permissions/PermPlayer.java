@@ -29,11 +29,11 @@ import java.util.List;
  */
 public class PermPlayer extends GModel {
     @Getter public String name;
+    @Getter @BasicField public String uuid;
     @Getter @BasicField public String prefix;
     @Getter @BasicField public String suffix;
     @Getter @BasicField public String nameColor;
     @Getter @BasicField public String tabColor;
-    @Getter @BasicField public String uuid;
     @Getter @BasicField public String group;
     @Getter @BasicField public List<String> permissions;
 
