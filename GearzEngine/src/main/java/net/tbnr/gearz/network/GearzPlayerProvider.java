@@ -27,6 +27,9 @@ public abstract class GearzPlayerProvider<PlayerType extends GearzPlayer> {
     }
 
     public PlayerType getPlayerFromTPlayer(TPlayer player) {
+        for (TPlayer tplayer : this.players.keySet()) {
+            Gearz.getInstance().getLogger().info(tplayer.getPlayerName());
+        }
         return this.players.containsKey(player) ? this.players.get(player) : newInstanceFor(player);
     }
 
