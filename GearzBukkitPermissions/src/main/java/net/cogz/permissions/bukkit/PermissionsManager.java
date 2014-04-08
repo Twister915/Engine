@@ -46,7 +46,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
-        Player p = loggedPlayers.get(player);
+        Player p = loggedPlayers.get(player.toLowerCase());
         if (p == null) return;
         p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
     }
@@ -60,14 +60,14 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerLoginEvent event) {
-        loggedPlayers.put(event.getPlayer().getName(), event.getPlayer());
+        loggedPlayers.put(event.getPlayer().getName().toLowerCase(), event.getPlayer());
         onJoin(event.getPlayer().getName());
     }
 
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        loggedPlayers.remove(event.getPlayer().getName());
+        loggedPlayers.remove(event.getPlayer().getName().toLowerCase());
         onQuit(event.getPlayer().getName());
     }
 
