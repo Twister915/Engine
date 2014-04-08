@@ -19,6 +19,7 @@ import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -76,7 +77,7 @@ public class PermissionsCommands implements TCommandHandler {
             case "unset":
                 if (!sender.hasPermission("gearz.permissions.player.remove")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-perm", false, new String[]{"<oermission>", args[2]}, new String[]{"<player>", args[0]}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-perm", false, new String[]{"<permission>", args[2]}, new String[]{"<player>", args[0]}));
                 player.removePermission(args[2]);
                 return TCommandStatus.SUCCESSFUL;
             case "check":
@@ -152,7 +153,7 @@ public class PermissionsCommands implements TCommandHandler {
                 if (!sender.hasPermission("gearz.permissions.player.tabcolor")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
                 player.tabColor = args[2].trim();
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", args[2]}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", ChatColor.stripColor(args[2])}));
                 player.save();
                 return TCommandStatus.SUCCESSFUL;
             case "namecolor":
