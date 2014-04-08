@@ -369,7 +369,7 @@ public class PunishmentCommands implements TCommandHandler {
             }
             Date end = new Date();
             end.setTime(duration);
-            manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.TEMP_MUTE, end);
+            manager.punishPlayer(gearzTarget.getProxiedPlayer().getUUID(), sender.getName(), reason, PunishmentType.TEMP_MUTE, end);
 
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
