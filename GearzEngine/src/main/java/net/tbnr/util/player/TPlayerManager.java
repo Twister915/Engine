@@ -110,7 +110,7 @@ public final class TPlayerManager implements Listener {
         players.remove(event.getPlayer().getName());
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onLogin(PlayerLoginEvent event) {
         this.addPlayer(event.getPlayer());
     }
