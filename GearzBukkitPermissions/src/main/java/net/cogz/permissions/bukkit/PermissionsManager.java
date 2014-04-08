@@ -60,6 +60,9 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public String getUUID(String player) {
+        if (loggedPlayers.containsKey(player)) {
+            return loggedPlayers.get(player).getUniqueId().toString();
+        }
         return (String) getPlayerDocument(player).get("uuid");
     }
 
@@ -70,11 +73,10 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     public DBObject getPlayerDocument(String player) {
         if (isPlayerOnline(player)) {
             Player bukkitPlayer = Bukkit.getPlayerExact(player);
-            bukkitPlayer.getName();
             TPlayer tPlayer = TPlayerManager.getInstance().getPlayer(bukkitPlayer);
             return tPlayer.getPlayerDocument();
         } else {
-            return TPlayer.getPlayerObject(player);
+            return TPlayer.getPlayerObjectByLastKnownName(player);
         }
     }
 
