@@ -68,9 +68,6 @@ public class PermissionsCommands implements TCommandHandler {
                 }
                 String permission = args[2];
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-player-perm", false, new String[]{"<permission>", permission}, new String[]{"<player>", args[0]}, new String[]{"<value>", value + ""}));
-                if (player.getName() == null) {
-                    System.out.println("dis is null");
-                }
                 permsManager.givePermToPlayer(args[0].trim(), permission, value);
                 break;
             case "remove":
