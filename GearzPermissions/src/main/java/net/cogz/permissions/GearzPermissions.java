@@ -149,8 +149,6 @@ public abstract class GearzPermissions {
         if (this.players.containsKey(player)) {
             return this.players.get(player);
         }
-        System.out.println("onJoin for " + player);
-        System.out.println("derp join for " + player.replaceAll(" ", "-"));
         return onJoin(player);
     }
 
