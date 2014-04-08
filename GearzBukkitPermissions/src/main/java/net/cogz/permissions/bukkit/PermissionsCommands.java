@@ -38,6 +38,8 @@ public class PermissionsCommands implements TCommandHandler {
         if (args.length == 0) return TCommandStatus.FEW_ARGS;
         PermissionsManager permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
         PermPlayer player = permsManager.getOfflinePlayer(args[0]);
+        System.out.println("onJoin for " + player.getName());
+        System.out.println("derp join for " + player.getName().replaceAll(" ", "-"));
         if (player == null) {
             sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
             return TCommandStatus.SUCCESSFUL;
