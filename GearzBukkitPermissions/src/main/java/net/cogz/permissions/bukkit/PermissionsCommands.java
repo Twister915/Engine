@@ -153,7 +153,7 @@ public class PermissionsCommands implements TCommandHandler {
                 if (!sender.hasPermission("gearz.permissions.player.tabcolor")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
                 player.tabColor = args[2].trim();
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", ChatColor.stripColor(args[2])}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", ChatColor.RESET + ChatColor.stripColor(args[2])}));
                 player.save();
                 return TCommandStatus.SUCCESSFUL;
             case "namecolor":
