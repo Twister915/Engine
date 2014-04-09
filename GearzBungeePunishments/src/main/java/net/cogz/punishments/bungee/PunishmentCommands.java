@@ -197,7 +197,7 @@ public class PunishmentCommands implements TCommandHandler {
         ProxiedPlayer target = matchedPlayers.get(0);
 
         String reason = compile(args, 1, args.length).trim();
-        manager.punishPlayer(target.getUUID(), sender.getName(), reason, PunishmentType.KICK, null);
+        manager.punishPlayer(target.getUniqueId().toString(), sender.getName(), reason, PunishmentType.KICK, null);
 
         sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("kicked-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", target.getName()}));
         broadcastPunishment(target.getServer().getInfo(), sender.getName(), target.getName(), PunishmentType.KICK, reason);
