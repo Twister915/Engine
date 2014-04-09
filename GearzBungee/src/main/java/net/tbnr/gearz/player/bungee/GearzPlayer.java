@@ -113,7 +113,7 @@ public final class GearzPlayer {
      */
     public GearzPlayer(ProxiedPlayer player) throws PlayerNotFoundException {
         this.username = player.getName();
-        this.uuid = Util.getUUID(player.getUniqueId().toString()).toString();
+        this.uuid = player.getUniqueId().toString();
         loadDocument();
         player.setDisplayName(updateNickname());
     }
