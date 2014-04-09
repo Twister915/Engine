@@ -29,10 +29,6 @@ import java.util.ArrayList;
  */
 public class Filter {
     public static FilterData filter(String message, ProxiedPlayer player) {
-        StringBuilder sb = new StringBuilder(message);
-        if (!player.hasPermission("gearz.staff")) {
-            message = sb.reverse().toString();
-        }
         FilterData filterData = new FilterData(message, player, false);
         if (player.hasPermission("gearz.chat.filters.bypass")) return filterData;
 
