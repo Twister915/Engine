@@ -11,12 +11,8 @@
 
 package net.cogz.punishments;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import net.tbnr.gearz.activerecord.GModel;
-import org.bson.types.ObjectId;
 
 import java.util.*;
 

@@ -13,8 +13,8 @@ package net.cogz.punishments.bungee;
 
 import net.cogz.punishments.Punishment;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.util.UUIDUtil;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
@@ -51,7 +51,7 @@ public class UnPunishCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
             Punishment punishment = manager.getValidIpBan(args[0]);
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punishment.issuer}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punisherFromUUID(punishment.issuer)}));
         }
 
         new UUIDUtil(args[0], new UUIDUtil.UUIDCallback() {
@@ -69,12 +69,24 @@ public class UnPunishCommands implements TCommandHandler {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", username}));
                 int x = 0;
                 for (Punishment punishment : punishments) {
-                    sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punishment.issuer}, new String[]{"<id>", x + ""}));
+                    sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", punisherFromUUID(punishment.issuer)}, new String[]{"<id>", x + ""}));
                     x++;
                 }
             }
         });
         return TCommandStatus.SUCCESSFUL;
+    }
+
+    private String punisherFromUUID(String uuid) {
+        if (uuid.equals("CONSOLE")) {
+            return uuid;
+        }
+        try {
+            GearzPlayer player = new GearzPlayer(uuid);
+            return player.getUsername();
+        } catch (GearzPlayer.PlayerNotFoundException e) {
+            return "Unknown";
+        }
     }
 
     @TCommand(
@@ -199,7 +211,7 @@ public class UnPunishCommands implements TCommandHandler {
                     return;
                 }
                 manager.appealPunishment(toAppeal);
-                ProxyServer.getInstance().getLogger().info(sender.getName() + " appealed " + username + "'s " + id + " punishment.");
+                GearzBungeePunishments.getInstance().getLogger().info(sender.getName() + " appealed " + username + "'s " + id + " punishment.");
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("appeal-punishment", false, false, new String[]{"<target>", username}));
             }
         });
