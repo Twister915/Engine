@@ -16,6 +16,8 @@ import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
 import com.mojang.api.profiles.ProfileCriteria;
 import lombok.Getter;
+import net.md_5.bungee.api.ProxyServer;
+import net.tbnr.gearz.GearzBungee;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,6 +50,8 @@ public class UUIDUtil implements Runnable {
     public UUIDUtil(String username, UUIDCallback callback) {
         this.usernames = Lists.newArrayList(username);
         this.callback = callback;
+
+        ProxyServer.getInstance().getScheduler().runAsync(GearzBungee.getInstance(), this);
     }
 
     @Override
