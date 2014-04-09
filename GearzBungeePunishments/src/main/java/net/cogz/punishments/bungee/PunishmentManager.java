@@ -24,6 +24,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.player.bungee.GearzPlayer;
 
 import java.text.SimpleDateFormat;
 
@@ -39,16 +40,16 @@ public class PunishmentManager extends GearzPunishments implements Listener {
     public void onPlayerChat(ChatEvent event) {
         if (event.isCommand()) return;
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        boolean muted = onChat(player.getName());
+        boolean muted = onChat(player.getUniqueId().toString());
         if (muted) {
-            Punishment mute = getLocalMute(player.getName());
+            Punishment mute = getLocalMute(player.getUniqueId().toString());
             if (mute == null) {
                 return;
             }
             if (mute.getPunishmentType() == PunishmentType.MUTE) {
-                player.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted", false, false, new String[]{"<reason>", mute.reason}, new String[]{"<issuer>", mute.issuer}));
+                player.sendMessage(GearzBungeePunishments.getInstance().getFormat("muted", false, false, new String[]{"<reason>", mute.reason}, new String[]{"<issuer>", punisherFromUUID(mute.issuer)}));
             } else if (mute.getPunishmentType() == PunishmentType.TEMP_MUTE) {
-                player.sendMessage(GearzBungeePunishments.getInstance().getFormat("temp-muted", false, false, new String[]{"<reason>", mute.reason}, new String[]{"<issuer>", mute.issuer}, new String[]{"<end>", longReadable.format(mute.end)}));
+                player.sendMessage(GearzBungeePunishments.getInstance().getFormat("temp-muted", false, false, new String[]{"<reason>", mute.reason}, new String[]{"<issuer>", punisherFromUUID(mute.issuer)}, new String[]{"<end>", longReadable.format(mute.end)}));
             }
             event.setCancelled(true);
         }
@@ -60,7 +61,7 @@ public class PunishmentManager extends GearzPunishments implements Listener {
         boolean ipBanned = isLocalIpBanned(ipAddress);
         if (ipBanned) {
             Punishment punishment = getValidLocalIpBan(ipAddress);
-            event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punishment.issuer}));
+            event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punisherFromUUID(punishment.issuer)}));
             return;
         }
         String player = event.getConnection().getName();
@@ -95,17 +96,18 @@ public class PunishmentManager extends GearzPunishments implements Listener {
         ProxiedPlayer proxiedPlayer = getPlayerByUUID(player);
         if (proxiedPlayer == null) return;
         if (punishment.getPunishmentType() == PunishmentType.KICK) {
-            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("kick-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
+            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("kick-reason", false, true, new String[]{"<reason>", punishment.reason}), punisherFromUUID(punishment.issuer));
         } else if (punishment.getPunishmentType() == PunishmentType.TEMP_BAN) {
-            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<date>", longReadable.format(punishment.end)}), punishment.issuer);
+            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<date>", longReadable.format(punishment.end)}), punisherFromUUID(punishment.issuer));
         } else if (punishment.getPunishmentType() == PunishmentType.PERMANENT_BAN) {
-            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}), punishment.issuer);
+            formatKickPlayer(proxiedPlayer, GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}), punisherFromUUID(punishment.issuer));
         }
     }
 
     private ProxiedPlayer getPlayerByUUID(String uuid) {
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
             if (player.getUniqueId().toString().equals(uuid)) return player;
+
         }
         return null;
     }
@@ -113,5 +115,17 @@ public class PunishmentManager extends GearzPunishments implements Listener {
     private void formatKickPlayer(ProxiedPlayer player, String reason, String issuer) {
         if (player == null) return;
         player.disconnect(GearzBungeePunishments.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", issuer}));
+    }
+
+    public String punisherFromUUID(String uuid) {
+        if (uuid.equals("CONSOLE")) {
+            return uuid;
+        }
+        try {
+            GearzPlayer player = new GearzPlayer(uuid);
+            return player.getUsername();
+        } catch (GearzPlayer.PlayerNotFoundException e) {
+            return "Unknown";
+        }
     }
 }
