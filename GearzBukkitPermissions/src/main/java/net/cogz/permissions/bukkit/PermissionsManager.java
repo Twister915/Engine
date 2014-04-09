@@ -50,8 +50,6 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
         Player p = loggedPlayers.get(player);
-        System.out.println("Giving Bukkit permission to: " + player + " with values " + perm + ":" + value);
-
         if (p == null) return;
         p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
     }
