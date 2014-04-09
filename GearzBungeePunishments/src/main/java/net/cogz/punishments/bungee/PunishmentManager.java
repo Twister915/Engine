@@ -31,7 +31,6 @@ import java.text.SimpleDateFormat;
 /**
  * Bungee Side Permissions Manager
  */
-
 //todo punisher from uuid
 public class PunishmentManager extends GearzPunishments implements Listener {
     public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
@@ -64,26 +63,26 @@ public class PunishmentManager extends GearzPunishments implements Listener {
             event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<issuer>", punisherFromUUID(punishment.issuer)}));
             return;
         }
-        String player = event.getConnection().getName();
-        boolean banned = onJoin(player);
+        String uuid = event.getConnection().getUniqueId().toString();
+        boolean banned = onJoin(uuid);
         if (banned) {
-            Punishment punishment = getValidBan(player);
+            Punishment punishment = getValidBan(uuid);
             PunishmentType punishmentType = punishment.getPunishmentType();
             if (punishmentType == PunishmentType.PERMANENT_BAN) {
                 event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("ban-reason", false, true, new String[]{"<reason>", punishment.reason}));
             } else if (punishmentType == PunishmentType.TEMP_BAN) {
                 event.getConnection().disconnect(GearzBungeePunishments.getInstance().getFormat("temp-reason", false, true, new String[]{"<reason>", punishment.reason}, new String[]{"<date>", longReadable.format(punishment.end)}));
             }
-            cleanUpPunishmentMap(player);
+            cleanUpPunishmentMap(uuid);
         } else {
-            loadMute(player);
-            cleanUpPunishmentMap(player);
+            loadMute(uuid);
+            cleanUpPunishmentMap(uuid);
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerDisconnectEvent event) {
-        onQuit(event.getPlayer().getName());
+        onQuit(event.getPlayer().getUniqueId().toString());
     }
 
     @Override
@@ -107,7 +106,6 @@ public class PunishmentManager extends GearzPunishments implements Listener {
     private ProxiedPlayer getPlayerByUUID(String uuid) {
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
             if (player.getUniqueId().toString().equals(uuid)) return player;
-
         }
         return null;
     }
