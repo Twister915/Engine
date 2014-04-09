@@ -244,10 +244,10 @@ public abstract class GearzPermissions {
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
                 try {
-                String[] s = entry.split(",");
-                String permission = s[0];
-                boolean value = Boolean.valueOf(s[1]);
-                perms.put(permission, value);
+                    String[] s = entry.split(",");
+                    String permission = s[0];
+                    boolean value = Boolean.valueOf(s[1]);
+                    perms.put(permission, value);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     //ignore -- continue
                 }
@@ -267,6 +267,7 @@ public abstract class GearzPermissions {
         }
 
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
+            System.out.println("Giving perm: " + stringBooleanEntry.getKey() + ":" + stringBooleanEntry.getValue());
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
     }
