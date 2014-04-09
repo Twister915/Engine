@@ -42,9 +42,11 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
+
         ProxiedPlayer proxiedPlayer = getOnlinePlayer(player);
-        if (proxiedPlayer == null) return;
         System.out.println("Giving Bungee permission to: " + player + " with values " + perm + ":" + value);
+
+        if (proxiedPlayer == null) return;
 
         proxiedPlayer.setPermission(perm, value);
     }
