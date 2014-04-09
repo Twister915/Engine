@@ -11,19 +11,10 @@
 
 package net.tbnr.util;
 
-import com.google.common.collect.Lists;
 import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
 import com.mojang.api.profiles.ProfileCriteria;
 import lombok.Getter;
-import net.md_5.bungee.api.ProxyServer;
-import net.tbnr.gearz.GearzBungee;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * Util to allow for username to UUID conversion
  * Uses a callback for async call.
@@ -36,25 +27,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 3/29/2014
  */
 public class UUIDUtil {
-    private final HttpProfileRepository repository = new HttpProfileRepository();
-    private final List<UUIDRunner> uuidRunnables = new ArrayList<>();
-    private List<String> usernames = new ArrayList<>();
-    private UUIDCallback callback;
-
-    public UUIDUtil(List<String> usernames, UUIDCallback callback) {
-        this.usernames = usernames;
-        this.callback = callback;
-    }
 
     public UUIDUtil(String user, UUIDCallback callback) {
-        this.usernames = Lists.newArrayList(user);
-        this.callback = callback;
-
-        for (String username : this.usernames) {
-            UUIDRunner uuidRunner = new UUIDRunner(repository, username, this.callback);
-            this.uuidRunnables.add(uuidRunner);
-            new Thread(uuidRunner).start();
-        }
+        HttpProfileRepository repository = new HttpProfileRepository();
+        UUIDRunner uuidRunner = new UUIDRunner(repository, user, callback);
+        new Thread(uuidRunner).start();
     }
 
     public static class UUIDRunner implements Runnable {
@@ -62,7 +39,6 @@ public class UUIDUtil {
         private final HttpProfileRepository httpProfileRepository;
         @Getter private final String username;
         @Getter private String uuid;
-        @Getter private final AtomicBoolean complete = new AtomicBoolean(false);
         @Getter private UUIDCallback callback;
 
         public UUIDRunner(HttpProfileRepository httpProfileRepository, String username, UUIDCallback callback) {
