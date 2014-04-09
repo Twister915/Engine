@@ -42,9 +42,16 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
-        ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
+        ProxiedPlayer proxiedPlayer = getOnlinePlayer(player);
         if (proxiedPlayer == null) return;
         proxiedPlayer.setPermission(perm, value);
+    }
+
+    private ProxiedPlayer getOnlinePlayer(String name) {
+        for (ProxiedPlayer player : this.playersAlreadyConnected) {
+            if (player.getName().equals(name)) return player;
+        }
+        return null;
     }
 
     @Override
