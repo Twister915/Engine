@@ -268,7 +268,6 @@ public abstract class GearzPermissions {
         }
 
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
-            System.out.println("Giving perm: " + stringBooleanEntry.getKey() + ":" + stringBooleanEntry.getValue());
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
     }
