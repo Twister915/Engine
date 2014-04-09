@@ -35,8 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Jake
  * @since 3/29/2014
  */
-public class UUIDUtil implements Runnable {
-    private static String AGENT = "minecraft";
+public class UUIDUtil {
     private final HttpProfileRepository repository = new HttpProfileRepository();
     private final List<UUIDRunner> uuidRunnables = new ArrayList<>();
     private List<String> usernames = new ArrayList<>();
@@ -47,34 +46,14 @@ public class UUIDUtil implements Runnable {
         this.callback = callback;
     }
 
-    public UUIDUtil(String username, UUIDCallback callback) {
-        this.usernames = Lists.newArrayList(username);
+    public UUIDUtil(String user, UUIDCallback callback) {
+        this.usernames = Lists.newArrayList(user);
         this.callback = callback;
 
-        ProxyServer.getInstance().getScheduler().runAsync(GearzBungee.getInstance(), this);
-    }
-
-    @Override
-    public void run() {
         for (String username : this.usernames) {
-            UUIDRunner uuidRunner = new UUIDRunner(repository, username);
+            UUIDRunner uuidRunner = new UUIDRunner(repository, username, this.callback);
             this.uuidRunnables.add(uuidRunner);
             new Thread(uuidRunner).start();
-        }
-
-        Iterator<UUIDRunner> i = uuidRunnables.iterator();
-        while (i.hasNext()) {
-            UUIDRunner job = i.next();
-            if (job.getComplete().get()) {
-                this.callback.complete(job.getUsername(), job.getUuid());
-                i.remove();
-            }
-        }
-    }
-
-    public static class UUIDException extends Exception {
-        public UUIDException(String message) {
-            super(message);
         }
     }
 
@@ -84,10 +63,12 @@ public class UUIDUtil implements Runnable {
         @Getter private final String username;
         @Getter private String uuid;
         @Getter private final AtomicBoolean complete = new AtomicBoolean(false);
+        @Getter private UUIDCallback callback;
 
-        public UUIDRunner(HttpProfileRepository httpProfileRepository, String username) {
+        public UUIDRunner(HttpProfileRepository httpProfileRepository, String username, UUIDCallback callback) {
             this.httpProfileRepository = httpProfileRepository;
             this.username = username;
+            this.callback = callback;
         }
 
         @Override
@@ -98,7 +79,7 @@ public class UUIDUtil implements Runnable {
             } else {
                 uuid = profiles[0].getId();
             }
-            complete.set(true);
+            callback.complete(username, uuid);
         }
     }
 
