@@ -17,6 +17,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import lombok.Getter;
 import lombok.NonNull;
+import net.md_5.bungee.Util;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.tbnr.gearz.GearzBungee;
@@ -112,7 +113,7 @@ public final class GearzPlayer {
      */
     public GearzPlayer(ProxiedPlayer player) throws PlayerNotFoundException {
         this.username = player.getName();
-        this.uuid = player.getUniqueId().toString();
+        this.uuid = Util.getUUID(player.getUniqueId().toString()).toString();
         loadDocument();
         player.setDisplayName(updateNickname());
     }

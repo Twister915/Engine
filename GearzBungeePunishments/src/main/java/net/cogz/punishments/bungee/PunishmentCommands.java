@@ -93,7 +93,7 @@ public class PunishmentCommands implements TCommandHandler {
 
             System.out.println(gearzTarget.getUuid());
             System.out.println(gearzTarget.getProxiedPlayer().getUniqueId().toString());
-            manager.punishPlayer(gearzTarget.getProxiedPlayer().getUniqueId().toString(), sender.getName(), reason, PunishmentType.PERMANENT_BAN, null);
+            manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.PERMANENT_BAN, null);
 
             sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
