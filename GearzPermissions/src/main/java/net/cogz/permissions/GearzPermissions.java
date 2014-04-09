@@ -114,6 +114,7 @@ public abstract class GearzPermissions {
             one.save();
         }
         if (!(one instanceof PermPlayer)) return null;
+        ((PermPlayer) one).name = player;
         this.players.put(player, (PermPlayer) one);
         reloadPlayer(player);
         return (PermPlayer) one;
