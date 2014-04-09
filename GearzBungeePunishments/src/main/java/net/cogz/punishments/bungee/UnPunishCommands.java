@@ -57,13 +57,10 @@ public class UnPunishCommands implements TCommandHandler {
         new UUIDUtil(args[0], new UUIDUtil.UUIDCallback() {
             @Override
             public void complete(String username, String uuid) {
-                System.out.println(uuid);
-                System.out.println(username);
                 if (uuid == null) {
                     sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("null-player", false, false));
                     return;
                 }
-
                 List<Punishment> punishments = manager.getPunishmentsByUUID(uuid, true);
                 if (punishments == null) {
                     sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("no-punishment", false, false));

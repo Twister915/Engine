@@ -121,7 +121,7 @@ public class PunishmentManager extends GearzPunishments implements Listener {
             return uuid;
         }
         try {
-            GearzPlayer player = new GearzPlayer(UUID.fromString(uuid));
+            GearzPlayer player = new GearzPlayer(uuid, true);
             return player.getUsername();
         } catch (GearzPlayer.PlayerNotFoundException e) {
             return uuid;

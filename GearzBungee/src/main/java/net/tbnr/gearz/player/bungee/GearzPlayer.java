@@ -86,6 +86,17 @@ public final class GearzPlayer {
         this.playerDocument = object;
     }
 
+    public GearzPlayer(String uuid, boolean findUUID) throws PlayerNotFoundException {
+        DBObject object = new BasicDBObject("uuid", uuid);
+        try {
+            this.username = (String) object.get("current_username");
+            this.uuid = (String) object.get("uuid");
+        } catch (ClassCastException ex) {
+            throw new PlayerNotFoundException("Invalid username");
+        }
+        this.playerDocument = object;
+    }
+
     /**
      * This will create a GearzPlayer with the UUID passed and the
      * last known username for the player in the Gearz database
