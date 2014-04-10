@@ -67,7 +67,7 @@ public class PunishmentCommands implements TCommandHandler {
                     }
                     String reason = compile(args, 1, args.length).trim();
 
-                    if (manager.isPlayerBanned(uuid)) {
+                    if (manager.isUUIDBanned(uuid)) {
                         sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-banned", false, false));
                         return;
                     }
@@ -91,7 +91,7 @@ public class PunishmentCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            if (manager.isPlayerBanned(gearzTarget.getUsername())) {
+            if (manager.isUUIDBanned(gearzTarget.getUsername())) {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-banned", false, false));
                 return TCommandStatus.SUCCESSFUL;
             }
@@ -127,7 +127,7 @@ public class PunishmentCommands implements TCommandHandler {
                     }
                     String reason = compile(args, 1, args.length).trim();
 
-                    if (manager.isPlayerBanned(uuid)) {
+                    if (manager.isUUIDBanned(uuid)) {
                         sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-banned", false, false));
                         return;
                     }
@@ -162,7 +162,7 @@ public class PunishmentCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
 
-            if (manager.isPlayerBanned(gearzTarget.getUsername())) {
+            if (manager.isUUIDBanned(gearzTarget.getUsername())) {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("already-banned", false, false));
                 return TCommandStatus.SUCCESSFUL;
             }

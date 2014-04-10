@@ -59,11 +59,6 @@ public class GearzBungeePunishments extends TPluginBungee {
         FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"));
     }
 
-    public void resetStrings() {
-        saveStrings();
-        reloadStrings();
-    }
-
     public String getFormat(String key, boolean prefix, boolean color, String[]... datas) {
         if (this.strings.getProperty(key) == null) {
             return key;
@@ -85,15 +80,7 @@ public class GearzBungeePunishments extends TPluginBungee {
         return getFormat(key, prefix, color, null);
     }
 
-    public String getFormat(String key, String[]... data) {
-        return getFormat(key, false, false, data);
-    }
-
     public String getFormat(String key, boolean prefix) {
         return getFormat(key, prefix, true);
-    }
-
-    public String getFormat(String key) {
-        return getFormat(key, true);
     }
 }

@@ -26,7 +26,7 @@ public abstract class GearzPunishments {
     /**
      * Players that are muted
      */
-    public Map<String, Punishment> mutedPlayers = new HashMap<>();
+    public Map<String, Punishment> mutedUUIDs = new HashMap<>();
 
     private Map<String, List<Punishment>> allPunishments = new HashMap<>();
 
@@ -44,12 +44,12 @@ public abstract class GearzPunishments {
     public abstract DB getDB();
 
     /**
-     * Kicks a player from the server
+     * Kicks a uuid from the server
      *
-     * @param player     player to kick
+     * @param uuid     uuid to kick
      * @param punishment punishment to kick for
      */
-    public abstract void kickPlayer(String player, Punishment punishment);
+    public abstract void kickPlayer(String uuid, Punishment punishment);
 
     /**
      * Gets a list of a uuid's punishments
@@ -89,22 +89,22 @@ public abstract class GearzPunishments {
     /**
      * Removes players punishments from list
      *
-     * @param player player to remove
+     * @param uuid uuid to remove
      */
-    public void cleanUpPunishmentMap(String player) {
-        if (this.allPunishments.containsKey(player)) {
-            this.allPunishments.remove(player);
+    public void cleanUpPunishmentMap(String uuid) {
+        if (this.allPunishments.containsKey(uuid)) {
+            this.allPunishments.remove(uuid);
         }
     }
 
     /**
-     * Checks whether or not a player is banned
+     * Checks whether or not a uuid is banned
      *
-     * @param player player to check
-     * @return whether or not the player is banned
+     * @param uuid uuid to check
+     * @return whether or not the uuid is banned
      */
-    public boolean isPlayerBanned(String player) {
-        List<Punishment> punishments = getPunishmentsByUUID(player, true);
+    public boolean isUUIDBanned(String uuid) {
+        List<Punishment> punishments = getPunishmentsByUUID(uuid, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.PERMANENT_BAN && punishment.getPunishmentType() != PunishmentType.TEMP_BAN)
                 continue;
@@ -119,11 +119,11 @@ public abstract class GearzPunishments {
     /**
      * Gets a players valid ban
      *
-     * @param player player to get a ban for
-     * @return latest ban for the player
+     * @param uuid uuid to get a ban for
+     * @return latest ban for the uuid
      */
-    public Punishment getValidBan(String player) {
-        List<Punishment> punishments = getPunishmentsByUUID(player, true);
+    public Punishment getValidBan(String uuid) {
+        List<Punishment> punishments = getPunishmentsByUUID(uuid, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.PERMANENT_BAN && punishment.getPunishmentType() != PunishmentType.TEMP_BAN)
                 continue;
@@ -139,24 +139,24 @@ public abstract class GearzPunishments {
     }
 
     /**
-     * Unbans a player
+     * Unbans a uuid
      *
-     * @param player player to unban
+     * @param uuid uuid to unban
      */
-    public void unBan(String player) {
-        Punishment punishment = getValidBan(player);
+    public void unBan(String uuid) {
+        Punishment punishment = getValidBan(uuid);
         punishment.valid = false;
         punishment.save();
     }
 
     /**
-     * Checks if a player is muted
+     * Checks if a uuid is muted
      *
-     * @param player player to check
-     * @return whether or not the player is muted
+     * @param uuid uuid to check
+     * @return whether or not the uuid is muted
      */
-    public boolean isPlayerMuted(String player) {
-        List<Punishment> punishments = getPunishmentsByUUID(player, true);
+    public boolean isPlayerMuted(String uuid) {
+        List<Punishment> punishments = getPunishmentsByUUID(uuid, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.MUTE && punishment.getPunishmentType() != PunishmentType.TEMP_MUTE)
                 continue;
@@ -169,13 +169,13 @@ public abstract class GearzPunishments {
     }
 
     /**
-     * Gets a player's latest and valid mute
+     * Gets a uuid's latest and valid mute
      *
-     * @param player player to get mute for
-     * @return latest and valid mute for the player
+     * @param uuid uuid to get mute for
+     * @return latest and valid mute for the uuid
      */
-    public Punishment getValidMute(String player) {
-        List<Punishment> punishments = getPunishmentsByUUID(player, true);
+    public Punishment getValidMute(String uuid) {
+        List<Punishment> punishments = getPunishmentsByUUID(uuid, true);
         for (Punishment punishment : punishments) {
             if (punishment.getPunishmentType() != PunishmentType.MUTE && punishment.getPunishmentType() != PunishmentType.TEMP_MUTE)
                 continue;
@@ -191,48 +191,48 @@ public abstract class GearzPunishments {
     }
 
     /**
-     * Unmutes a player
+     * Unmutes a uuid
      *
-     * @param player player to unmute
+     * @param uuid uuid to unmute
      */
-    public void unMute(String player) {
-        Punishment punishment = getValidMute(player);
-        if (this.mutedPlayers.containsKey(player)) {
-            this.mutedPlayers.remove(player);
+    public void unMute(String uuid) {
+        Punishment punishment = getValidMute(uuid);
+        if (this.mutedUUIDs.containsKey(uuid)) {
+            this.mutedUUIDs.remove(uuid);
         }
         punishment.valid = false;
         punishment.save();
     }
 
     /**
-     * Loads a mute to the local list for a player
+     * Loads a mute to the local list for a uuid
      *
-     * @param player player to load mute for
+     * @param uuid uuid to load mute for
      */
-    public void loadMute(String player) {
-        Punishment mute = getValidMute(player);
+    public void loadMute(String uuid) {
+        Punishment mute = getValidMute(uuid);
         if (mute == null) return;
-        this.mutedPlayers.put(player, mute);
+        this.mutedUUIDs.put(uuid, mute);
     }
 
     /**
-     * Checks if a player is locally muted
+     * Checks if a uuid is locally muted
      *
-     * @param player player to check
-     * @return whether or not a player is local muted
+     * @param uuid uuid to check
+     * @return whether or not a uuid is local muted
      */
-    public boolean isPlayerLocalMuted(String player) {
-        return this.mutedPlayers.containsKey(player);
+    public boolean isUUIDLocalMuted(String uuid) {
+        return this.mutedUUIDs.containsKey(uuid);
     }
 
     /**
-     * Returns a player's local mute
+     * Returns a uuid's local mute
      *
-     * @param player player to get the mute for
-     * @return the player's local mute
+     * @param uuid uuid to get the mute for
+     * @return the uuid's local mute
      */
-    public Punishment getLocalMute(String player) {
-        Punishment punishment = this.mutedPlayers.get(player);
+    public Punishment getLocalMute(String uuid) {
+        Punishment punishment = this.mutedUUIDs.get(uuid);
         if (punishment.getPunishmentType() != PunishmentType.MUTE && punishment.getPunishmentType() != PunishmentType.TEMP_MUTE) {
             return null;
         }
@@ -307,11 +307,11 @@ public abstract class GearzPunishments {
     /**
      * Called when a player joins the server
      *
-     * @param uuid player that joined
-     * @return whether or not a player is banned
+     * @param uuid UUID of the player that joined
+     * @return whether or not a UUID is banned
      */
     public boolean onJoin(String uuid) {
-        return isPlayerBanned(uuid);
+        return isUUIDBanned(uuid);
     }
 
     /**
@@ -321,34 +321,35 @@ public abstract class GearzPunishments {
      * @param uuid player that left
      */
     public void onQuit(String uuid) {
-        if (isPlayerLocalMuted(uuid)) {
-            this.mutedPlayers.remove(uuid);
+        if (isUUIDLocalMuted(uuid)) {
+            this.mutedUUIDs.remove(uuid);
         }
     }
 
     /**
      * Called when a player chats
      *
-     * @param player player that chatted
-     * @return whether or not a player is muted
+     * @param uuid uuid of the player that chatted
+     * @return whether or not a uuid is muted
      */
-    public boolean onChat(String player) {
-        return isPlayerLocalMuted(player);
+    public boolean onChat(String uuid) {
+        return isUUIDLocalMuted(uuid);
     }
 
     /**
-     * Punishes a player with the specific parameters
+     * Punishes a player with the specific parameters.
+     * UUID of the console is CONSOLE
      *
-     * @param player uuid to punish
-     * @param issuer uuid of the issuer of the punishment
+     * @param punishedUUID uuid of the punished player
+     * @param issuerUUID uuid of the issuer of the punishment
      * @param reason reason for punishment
      * @param type   type of punishment
      * @param end    when the punishment ends
      */
-    public void punishPlayer(String player, String issuer, String reason, PunishmentType type, Date end) {
+    public void punishPlayer(String punishedUUID, String issuerUUID, String reason, PunishmentType type, Date end) {
         Punishment punishment = new Punishment(this.database);
-        punishment.punished = player;
-        punishment.issuer = issuer;
+        punishment.punished = punishedUUID;
+        punishment.issuer = issuerUUID;
         punishment.reason = reason;
         punishment.valid = true;
         punishment.type = type.toString();
@@ -359,13 +360,13 @@ public abstract class GearzPunishments {
         }
         punishment.time = new Date();
         if (punishment.getPunishmentType().isKickable()) {
-            kickPlayer(player, punishment);
+            kickPlayer(punishedUUID, punishment);
         }
         if (type == PunishmentType.MUTE || type == PunishmentType.TEMP_MUTE) {
-            this.mutedPlayers.put(player, punishment);
+            this.mutedUUIDs.put(punishedUUID, punishment);
         }
         if (type == PunishmentType.IP_BAN) {
-            this.ipBans.put(player, punishment);
+            this.ipBans.put(punishedUUID, punishment);
         }
         punishment.save();
     }
@@ -381,7 +382,7 @@ public abstract class GearzPunishments {
         punishment.save();
         PunishmentType type = punishment.getPunishmentType();
         if (type == PunishmentType.MUTE || type == PunishmentType.TEMP_MUTE) {
-            this.mutedPlayers.remove(punishment.punished);
+            this.mutedUUIDs.remove(punishment.punished);
         }
         if (type == PunishmentType.IP_BAN) {
             this.ipBans.remove(punishment.punished);

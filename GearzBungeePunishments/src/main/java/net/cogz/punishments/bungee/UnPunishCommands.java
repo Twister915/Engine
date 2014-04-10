@@ -94,7 +94,7 @@ public class UnPunishCommands implements TCommandHandler {
                     return;
                 }
 
-                if (!manager.isPlayerBanned(uuid)) {
+                if (!manager.isUUIDBanned(uuid)) {
                     sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("not-banned", false, false));
                     return;
                 }
