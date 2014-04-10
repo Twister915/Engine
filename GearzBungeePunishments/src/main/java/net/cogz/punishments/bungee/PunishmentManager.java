@@ -27,14 +27,12 @@ import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 
 import java.text.SimpleDateFormat;
-import java.util.UUID;
 
 /**
  * Bungee Side Permissions Manager
  */
-//todo punisher from uuid
 public class PunishmentManager extends GearzPunishments implements Listener {
-    public final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
+    private final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(ChatEvent event) {

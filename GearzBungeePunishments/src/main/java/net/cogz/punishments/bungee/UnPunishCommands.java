@@ -14,7 +14,6 @@ package net.cogz.punishments.bungee;
 import net.cogz.punishments.Punishment;
 import net.md_5.bungee.api.CommandSender;
 import net.tbnr.gearz.GearzBungee;
-import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.util.UUIDUtil;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
