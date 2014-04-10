@@ -23,6 +23,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import java.util.Map;
+
 /**
  * Commands to manage player
  * and group permissions
@@ -164,27 +166,6 @@ public class PermissionsCommands implements TCommandHandler {
                 return TCommandStatus.INVALID_ARGS;
         }
         return TCommandStatus.SUCCESSFUL;
-    }
-
-    @TCommand(
-            name = "permissions",
-            usage = "/permissions <args>",
-            permission = "gearz.permissions",
-            senders = {TCommandSender.Player, TCommandSender.Console})
-    @SuppressWarnings("unused")
-    public TCommandStatus permissions(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
-        if (args.length < 1) return TCommandStatus.FEW_ARGS;
-        if (!sender.hasPermission("gearz.permissions")) return TCommandStatus.PERMISSIONS;
-        switch (args[0]) {
-            case "reload":
-            case "refresh":
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.reload"));
-                GearzBukkitPermissions.getInstance().getPermsManager().reload();
-                NetCommand.withName("permissions").withArg("reload", true).send();
-                return TCommandStatus.SUCCESSFUL;
-            default:
-                return TCommandStatus.INVALID_ARGS;
-        }
     }
 
     @TCommand(
@@ -341,14 +322,41 @@ public class PermissionsCommands implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    @Override
-    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
-        Gearz.getInstance().handleCommandStatus(status, sender, senderType);
+    @TCommand(
+            name = "permissions",
+            usage = "/permissions <args>",
+            permission = "gearz.permissions",
+            senders = {TCommandSender.Player, TCommandSender.Console})
+    @SuppressWarnings("unused")
+    public TCommandStatus permissions(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+        if (args.length < 1) return TCommandStatus.FEW_ARGS;
+        if (!sender.hasPermission("gearz.permissions")) return TCommandStatus.PERMISSIONS;
+        switch (args[0]) {
+            case "reload":
+            case "refresh":
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.reload"));
+                GearzBukkitPermissions.getInstance().getPermsManager().reload();
+                NetCommand.withName("permissions").withArg("reload", true).send();
+                return TCommandStatus.SUCCESSFUL;
+            case "groups":
+                sender.sendMessage("Permissions Groups:");
+                for (Map.Entry<String, PermGroup> group : GearzBukkitPermissions.getInstance().getPermsManager().getGroups().entrySet()) {
+                    sender.sendMessage(group.getKey());
+                }
+                return TCommandStatus.SUCCESSFUL;
+            default:
+                return TCommandStatus.INVALID_ARGS;
+        }
     }
 
     private String getChatColorFormatted(String originalColor) {
         String colorCode = originalColor.replaceAll("\u0026", "");
         ChatColor chatColor = ChatColor.getByChar(colorCode);
         return chatColor + chatColor.name().replaceAll("_", " ").toLowerCase();
+    }
+
+    @Override
+    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
+        Gearz.getInstance().handleCommandStatus(status, sender, senderType);
     }
 }

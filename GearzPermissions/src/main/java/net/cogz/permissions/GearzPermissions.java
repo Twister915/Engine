@@ -34,7 +34,7 @@ public abstract class GearzPermissions {
     /**
      * All groups
      */
-    private Map<String, PermGroup> groups = new HashMap<>();
+    @Getter private Map<String, PermGroup> groups = new HashMap<>();
     /**
      * Default group
      */

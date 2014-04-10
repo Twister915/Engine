@@ -43,9 +43,7 @@ public class GearzBungeePunishments extends TPluginBungee {
     }
 
     @Override
-    protected void stop() {
-
-    }
+    protected void stop() { }
 
     public void reloadStrings() {
         try {
@@ -80,7 +78,4 @@ public class GearzBungeePunishments extends TPluginBungee {
         return getFormat(key, prefix, color, null);
     }
 
-    public String getFormat(String key, boolean prefix) {
-        return getFormat(key, prefix, true);
-    }
 }
