@@ -31,6 +31,10 @@ import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.inventory.ServerSelector;
+import net.tbnr.util.inventory.base.BaseGUI;
+import net.tbnr.util.inventory.base.GUICallback;
+import net.tbnr.util.inventory.base.GUIItem;
+import net.tbnr.util.inventory.InventoryGUI;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
 import org.apache.commons.lang.StringUtils;
@@ -164,9 +168,9 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         this.id = id;
         this.hideStream = false;
         this.metrics = GearzMetrics.beginTracking(this);
-        this.spectatorGui = new InventoryGUI(getPlayersForMenu(), ChatColor.RED + "Spectator menu.", new InventoryGUI.InventoryGUICallback() {
+        this.spectatorGui = new InventoryGUI(getPlayersForMenu(), ChatColor.RED + "Spectator menu.", new GUICallback() {
             @Override
-            public void onItemSelect(InventoryGUI gui, InventoryGUI.InventoryGUIItem item, Player player) {
+            public void onItemSelect(BaseGUI gui, GUIItem item, Player player) {
                 Player target = Bukkit.getServer().getPlayer(item.getName());
                 if (target == null) return;
                 player.teleport(target.getLocation());
@@ -178,14 +182,12 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
             }
 
             @Override
-            public void onGUIOpen(InventoryGUI gui, Player player) {
+            public void onGUIOpen(BaseGUI gui, Player player) {
                 gui.updateContents(getPlayersForMenu());
             }
 
             @Override
-            public void onGUIClose(InventoryGUI gui, Player player) {
-                // IGNORE
-            }
+            public void onGUIClose(BaseGUI gui, Player player) {}
         });
     }
 
@@ -474,8 +476,8 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         RandomUtils.setPlayerCollision(player.getPlayer(), false);
     }
 
-    protected final ArrayList<InventoryGUI.InventoryGUIItem> getPlayersForMenu() {
-        ArrayList<InventoryGUI.InventoryGUIItem> items = new ArrayList<>();
+    protected final ArrayList<GUIItem> getPlayersForMenu() {
+        ArrayList<GUIItem> items = new ArrayList<>();
         try {
             for (PlayerType player : getPlayers()) {
                 Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGame|399>--------< getPlayersForMenu / player loop has been CAUGHT for: " + player.toString());
@@ -496,7 +498,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
                 }*/
                 stack.setItemMeta(itemMeta);
                 //stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 32);
-                items.add(new InventoryGUI.InventoryGUIItem(stack, player.getUsername()));
+                items.add(new GUIItem(stack, player.getUsername()));
             }
         } catch (NullPointerException npe) {
             Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGame|417>--------< getPlayersForMenu / player loop has thrown a npe: " + npe.getCause());
@@ -748,9 +750,9 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         if (isSpectating(player)) {
             if (event.getPlayer().getItemInHand().getType() == Material.BOOK && event.getAction() != Action.PHYSICAL) {
                 if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(getFormat("server-book"))) {
-                    ServerSelector serverSelector = new ServerSelector(this.getGameMeta().key(), new ServerSelector.InventoryGUICallback() {
+                    final ServerSelector selectorInstance = new ServerSelector(this.getGameMeta().key(), new GUICallback() {
                         @Override
-                        public void onItemSelect(ServerSelector selector, InventoryGUI.InventoryGUIItem item, Player player) {
+                        public void onItemSelect(BaseGUI selector, GUIItem item, Player player) {
                             /**
                              * The reason you need to test as the person could have the selector
                              * open for a while, and he clicks the last item while a server is restarting
@@ -759,30 +761,27 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
                              * Therefore it causes and IndexOutOfBoundsException
                              * @see java.lang.IndexOutOfBoundsException
                              */
+                            ServerSelector serverSelector = (ServerSelector) selector;
                             net.tbnr.gearz.server.Server server;
                             try {
-                                server = selector.getServers().get(
-                                        /** if */item.getSlot() > selector.getServers().size() ?
+                                server = serverSelector.getServers().get(
+                                        /** if */item.getSlot() > serverSelector.getServers().size() ?
                                                 /** true */0 : /** false */item.getSlot()
                                 );
                             } catch (IndexOutOfBoundsException e) {
-                                selector.update();
+                                serverSelector.update();
                                 return;
                             }
                             BouncyUtils.sendPlayerToServer(player, server);
                         }
 
                         @Override
-                        public void onSelectorOpen(ServerSelector selector, Player player) {
-
-                        }
+                        public void onGUIOpen(BaseGUI selector, Player player) {}
 
                         @Override
-                        public void onSelectorClose(ServerSelector selector, Player player) {
-
-                        }
+                        public void onGUIClose(BaseGUI selector, Player player) {}
                     });
-                    serverSelector.open(player.getPlayer());
+                    selectorInstance.open(player.getPlayer());
                     event.setCancelled(true);
                     return;
                 }

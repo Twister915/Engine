@@ -31,10 +31,10 @@ import java.util.List;
  *
  * Latest Change:
  */
-public class InventoryRefresher implements Runnable {
+public class SelectorManager implements Runnable {
     final List<ServerSelector> serverSelectors = new ArrayList<>();
 
-    public InventoryRefresher() {
+    public SelectorManager() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Gearz.getInstance(), this, 0L, 20L);
     }
 
@@ -60,7 +60,7 @@ public class InventoryRefresher implements Runnable {
                 allServerTypes.put(serverSelector.getGameType(), getServersForSelector(serverSelector.getGameType()));
             }
             for (ServerSelector serverSelector : serverSelectors) {
-                serverSelector.updateContents(getServerItems(InventoryRefresher.getServersForSelector(serverSelector.getGameType())));
+                serverSelector.updateContents(getServerItems(SelectorManager.getServersForSelector(serverSelector.getGameType())));
             }
         }
     }

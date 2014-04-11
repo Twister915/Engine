@@ -13,9 +13,12 @@ package net.tbnr.util.inventory;
 
 import lombok.Getter;
 import net.tbnr.gearz.Gearz;
+import net.tbnr.gearz.server.Server;
 import net.tbnr.util.inventory.base.BaseGUI;
 import net.tbnr.util.inventory.base.GUICallback;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * Created by jake on 12/27/13.
@@ -27,19 +30,26 @@ import org.bukkit.entity.Player;
 public class ServerSelector extends BaseGUI {
     @Getter
     final String gameType;
+    @Getter
+    final List<Server> servers;
 
     public ServerSelector(String gameType, GUICallback inventoryGUICallback) {
-        super(InventoryRefresher.getServerItems(InventoryRefresher.getServersForSelector(gameType)), gameType + " Servers", inventoryGUICallback);
+        super(SelectorManager.getServerItems(SelectorManager.getServersForSelector(gameType)), gameType + " Servers", inventoryGUICallback);
+        this.servers = SelectorManager.getServersForSelector(gameType);
         this.gameType = gameType;
     }
 
     @Override
     public void openGUI(Player player) {
-        Gearz.getInstance().getInventoryRefresher().add(this);
+        Gearz.getInstance().getSelectorManager().add(this);
     }
 
     @Override
     public void closeGUI(Player player) {
-        Gearz.getInstance().getInventoryRefresher().remove(this);
+        Gearz.getInstance().getSelectorManager().remove(this);
+    }
+
+    public void update() {
+        updateContents(SelectorManager.getServerItems(SelectorManager.getServersForSelector(getGameType())));
     }
 }

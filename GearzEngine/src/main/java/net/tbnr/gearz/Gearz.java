@@ -31,7 +31,7 @@ import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
-import net.tbnr.util.inventory.InventoryRefresher;
+import net.tbnr.util.inventory.SelectorManager;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -63,7 +63,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     @Getter private List<GearzPlugin> gamePlugins;
     public static final String CHAN = "GEARZ_NETCOMMAND";
     @Getter @Setter private boolean isLobbyServer;
-    @Getter InventoryRefresher inventoryRefresher;
+    @Getter SelectorManager selectorManager;
 
     @Getter @Setter private GearzNetworkManagerPlugin networkManager;
 
@@ -131,7 +131,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         EnchantmentEffect.addEnchantmentListener();
 
         //Setup the inv refresher. This is used in the server selector.
-        this.inventoryRefresher = new InventoryRefresher();
+        this.selectorManager = new SelectorManager();
 
         //Setup some hooks for the GModel class to connect to our database.
         GModel.setDefaultDatabase(this.getMongoDB());
