@@ -13,11 +13,9 @@ package net.cogz.punishments;
 
 import com.mongodb.DB;
 import com.mongodb.DBObject;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.tbnr.gearz.activerecord.BasicField;
 import net.tbnr.gearz.activerecord.GModel;
-import org.bson.types.ObjectId;
 
 import java.util.Date;
 
