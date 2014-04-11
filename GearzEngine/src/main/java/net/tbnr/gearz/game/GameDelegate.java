@@ -12,7 +12,6 @@
 package net.tbnr.gearz.game;
 
 import org.bukkit.Location;
-import org.bukkit.PortalType;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;

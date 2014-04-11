@@ -30,8 +30,7 @@ import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.RandomUtils;
-import net.tbnr.util.ServerSelector;
-import net.tbnr.util.inventory.InventoryGUI;
+import net.tbnr.util.inventory.ServerSelector;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerStorable;
 import org.apache.commons.lang.StringUtils;
@@ -749,7 +748,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         if (isSpectating(player)) {
             if (event.getPlayer().getItemInHand().getType() == Material.BOOK && event.getAction() != Action.PHYSICAL) {
                 if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(getFormat("server-book"))) {
-                    ServerSelector serverSelector = new ServerSelector(this.getGameMeta().key(), new ServerSelector.SelectorCallback() {
+                    ServerSelector serverSelector = new ServerSelector(this.getGameMeta().key(), new ServerSelector.InventoryGUICallback() {
                         @Override
                         public void onItemSelect(ServerSelector selector, InventoryGUI.InventoryGUIItem item, Player player) {
                             /**

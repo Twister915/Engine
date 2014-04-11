@@ -13,7 +13,6 @@ package net.tbnr.util.player;
 
 import com.mongodb.*;
 import lombok.NonNull;
-import net.tbnr.gearz.Gearz;
 import net.tbnr.util.player.cooldowns.TCooldownManager;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;

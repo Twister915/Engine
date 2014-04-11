@@ -14,8 +14,11 @@ package net.tbnr.util.inventory;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
-import net.tbnr.util.ServerSelector;
+import net.tbnr.util.inventory.base.GUIItem;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,16 +57,50 @@ public class InventoryRefresher implements Runnable {
                 if (allServerTypes.containsKey(serverSelector.getGameType())) {
                     continue;
                 }
-                allServerTypes.put(serverSelector.getGameType(), getServersForSelector(serverSelector));
+                allServerTypes.put(serverSelector.getGameType(), getServersForSelector(serverSelector.getGameType()));
             }
             for (ServerSelector serverSelector : serverSelectors) {
-                serverSelector.setServers(allServerTypes.get(serverSelector.getGameType()));
-                serverSelector.update();
+                serverSelector.updateContents(getServerItems(InventoryRefresher.getServersForSelector(serverSelector.getGameType())));
             }
         }
     }
 
-    public static List<Server> getServersForSelector(ServerSelector selector) {
-        return ServerManager.getServersWithGame(selector.getGameType());
+    public static List<Server> getServersForSelector(String gameType) {
+        return ServerManager.getServersWithGame(gameType);
+    }
+
+    public static ArrayList<GUIItem> getServerItems(List<Server> servers) {
+        ArrayList<GUIItem> items = new ArrayList<>();
+        for (Server aServer : servers) {
+            items.add(itemForServer(aServer));
+        }
+        return items;
+    }
+
+    public static GUIItem itemForServer(Server server) {
+        DyeColor color = null;
+
+        String status = server.getStatusString();
+        switch (status) {
+            case "lobby":
+                color = DyeColor.LIME;
+                break;
+            case "spectate":
+                color = DyeColor.YELLOW;
+                break;
+            case "load_lobby":
+            case "load-map":
+            case "game-over":
+                color = DyeColor.RED;
+                break;
+        }
+
+        Wool wool = new Wool(color);
+        ItemStack itemStack = wool.toItemStack(1);
+
+        String serverName = Gearz.getInstance().getFormat("formats.selector-name", true, new String[]{"<game>", server.getGame()}, new String[]{"<number>", server.getNumber().toString()});
+
+        itemStack.setAmount(server.getPlayerCount() == null ? 1 : Math.max(1, server.getPlayerCount()));
+        return new GUIItem(itemStack, serverName);
     }
 }

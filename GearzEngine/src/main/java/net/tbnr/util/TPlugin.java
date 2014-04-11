@@ -12,7 +12,6 @@
 package net.tbnr.util;
 
 import com.mongodb.DB;
-import net.tbnr.gearz.Gearz;
 import net.tbnr.util.command.TCommandDispatch;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.player.TPlayer;

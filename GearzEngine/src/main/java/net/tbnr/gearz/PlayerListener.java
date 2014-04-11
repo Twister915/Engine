@@ -14,9 +14,7 @@ package net.tbnr.gearz;
 import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.player.TPlayerJoinEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
