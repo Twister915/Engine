@@ -89,7 +89,7 @@ public class RandomUtils implements GUtility {
 
     /**
      * Refreshes the player for the list of players.
-     * Hopefully will fix invisible player issues. Based of Protocollib dev this should work.
+     * Hopefully will fix invisible player issues. Based on Protocollib dev, this should work.
      *
      * @param player - the player that needs updating aka the invisible player.
      * @param players - the list of players getting the update.
