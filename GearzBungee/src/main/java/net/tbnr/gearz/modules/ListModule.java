@@ -31,6 +31,7 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -46,13 +47,13 @@ import java.util.List;
  */
 public class ListModule implements TCommandHandler, Listener {
     @Getter
-    public final Collection<ProxiedPlayer> staff = new ArrayList<>(); //Cache this for efficiency, don't for loop it every tie someone types /list staff lol
+    public final Collection<ProxiedPlayer> staff = new HashSet<>(); //Cache this for efficiency
 
     @EventHandler
     @SuppressWarnings("unused")
     public void onJoin(ServerSwitchEvent event) {
         if (event.getPlayer().hasPermission("gearz.staff")) {
-            if (!staff.contains(event.getPlayer()))staff.add(event.getPlayer());
+            if (!staff.contains(event.getPlayer())) staff.add(event.getPlayer());
         }
     }
 
@@ -76,14 +77,6 @@ public class ListModule implements TCommandHandler, Listener {
             } else if (args[0].equalsIgnoreCase("server") && type == TCommandSender.Player) {
                 Collection<ProxiedPlayer> thisServer = ((ProxiedPlayer) sender).getServer().getInfo().getPlayers();
                 multiMessage.add(GearzBungee.getInstance().getFormat("list-server-title", false, false, new String[]{"<server>", "This Server"}, new String[]{"<online>", String.valueOf(thisServer.size())}) + formatPlayerList(thisServer));
-            } else if (args[0].equalsIgnoreCase("refresh") && sender.hasPermission("gearz.list.refresh")) {
-                List<ProxiedPlayer> toRemove = new ArrayList<>();
-                for (ProxiedPlayer staff : this.staff) {
-                    if (staff.getServer() == null) {
-                        toRemove.add(staff);
-                    }
-                }
-                this.staff.removeAll(toRemove);
             }
         } else {
             shouldShowMoreMessage = true;
@@ -119,19 +112,19 @@ public class ListModule implements TCommandHandler, Listener {
             if (player1 != null) {
                 name = player1.getName();
                 online = true;
-				serverBungeeName = player1.getServer().getInfo().getName();
+                serverBungeeName = player1.getServer().getInfo().getName();
             }
             messages.add(GearzBungee.getInstance().getFormat("player-status-where", false, true, new String[]{"<status>", online ? "&aonline" : "&coffline"}, new String[]{"<name>", name}));
             if (online) {
-				Server server = null;
-				for(Server server1 : ServerManager.getAllServers()) {
-					if(server1.getBungee_name().equalsIgnoreCase(serverBungeeName)) {
-						server = server1;
-						break;
-					}
-				}
-				if(server != null)
-                	messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber() }));
+                Server server = null;
+                for (Server server1 : ServerManager.getAllServers()) {
+                    if (server1.getBungee_name().equalsIgnoreCase(serverBungeeName)) {
+                        server = server1;
+                        break;
+                    }
+                }
+                if (server != null)
+                    messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber()}));
             }
         }
         for (String s : GearzBungee.boxMessage(ChatColor.BLUE, messages)) {
