@@ -84,12 +84,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         this.gameMeta = gameMeta1;
         Arena arena = ArenaManager.arenaFromDBObject(GameLobby.class, Gearz.getInstance().getMongoDB().getCollection("game_lobbys_v2").findOne(new BasicDBObject("game", gameMeta.key())));
         if (arena == null) throw new GearzException("No lobby found!");
-        this.gameLobby = (GameLobby)arena ;
-        if (this.gameLobby.spawnPoints == null) {
-            System.out.println("NULL POINTS");
-        } else {
-            System.out.println(gameLobby.spawnPoints.getArrayList().size());
-        }
+        this.gameLobby = (GameLobby) arena;
         this.plugin = plugin;
         try {
             this.gameLobby.loadWorld();
@@ -204,7 +199,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
             return;
         }
         PlayerType personToKick = candidateForKicking(event.getPlayer());
-        if(personToKick != null) {
+        if (personToKick != null) {
             personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
         } else {
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
@@ -229,7 +224,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
             this.votingSession.addPlayer(gearzPlayer);
         } else {
             this.runningGame.addPlayer(gearzPlayer);
-			if(this.runningGame.isHideStream()) event.setJoinMessage(null);
+            if (this.runningGame.isHideStream()) event.setJoinMessage(null);
         }
         ItemStack stack = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) stack.getItemMeta();
@@ -263,7 +258,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         PlayerType player = playerProvider.getPlayerFromTPlayer(event.getPlayer());
         if (this.runningGame != null) {
             this.runningGame.playerLeft(player);
-			if(this.runningGame.isHideStream()) event.setQuitMessage(null);
+            if (this.runningGame.isHideStream()) event.setQuitMessage(null);
         } else {
             if (this.votingSession.isVoting()) {
                 votingSession.removePlayer(player);
@@ -356,13 +351,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
 
     @Override
     public void spawn(PlayerType player) {
-	    Gearz.getInstance().getLogger().info(this.gameLobby.spawnPoints.getArrayList().size()+"");
-	    Gearz.getInstance().getLogger().info(Boolean.valueOf(this.gameLobby.spawnPoints.hasNext())+" very true");
-	    Point p = this.gameLobby.spawnPoints.next();
-	    Gearz.getInstance().getLogger().info(p == null ? "point is null" : "point is not null");
-	    Location l = gameLobby.pointToLocation(p);
-	    Gearz.getInstance().getLogger().info(l == null ? "true" : "false");
-        player.getTPlayer().teleport(l);
+        player.getTPlayer().teleport(this.gameLobby.pointToLocation(this.gameLobby.spawnPoints.next()));
     }
 
     @Override
@@ -489,6 +478,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
 
     /**
      * Get the person on the server with lower priority then them if no player lower it returns null
+     *
      * @return GearzPlayer ~ player with lower priority then them
      */
     private PlayerType candidateForKicking(@NonNull Player p) {
@@ -499,10 +489,10 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(getPlayerProvider().getPlayerFromPlayer(p));
         event = Gearz.getInstance().callEvent(event);
         if (event.isCancelled()) return null;
-        for(int i = players.size()-1; i >= 0; i--) {
+        for (int i = players.size() - 1; i >= 0; i--) {
             Player wannaBe = players.get(i);
             if (p.getName().equals(wannaBe.getName())) continue;
-            if(integer < priorityForPlayer(wannaBe.getPlayer()) || event.isAbsolutePriority()) {
+            if (integer < priorityForPlayer(wannaBe.getPlayer()) || event.isAbsolutePriority()) {
                 candidate = playerProvider.getPlayerFromPlayer(p);
                 break;
             }
@@ -512,6 +502,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
 
     /**
      * Get's priority of a player
+     *
      * @param p Player to test priority for.
      * @return priority of player, -1 default
      */
@@ -521,7 +512,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         String permissionPriority;
         Player player = p.getPlayer();
         for (int x = 0, l = priorities.size(); x < l; x++) {
-            permissionPriority = "gearz.priority."+priorities.get(x);
+            permissionPriority = "gearz.priority." + priorities.get(x);
             if (player.hasPermission(permissionPriority)) {
                 priority = x;
             }
