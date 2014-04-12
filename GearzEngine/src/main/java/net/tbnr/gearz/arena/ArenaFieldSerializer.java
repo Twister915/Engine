@@ -35,11 +35,11 @@ public enum ArenaFieldSerializer {
         @Override
         protected Point getObjectForInternal(DBObject object) {
             try {
-                Integer x = (Integer) object.get("x");
-                Integer y = (Integer) object.get("y");
-                Integer z = (Integer) object.get("z");
-                Float pitch = (Float) object.get("pitch");
-                Float yaw = (Float) object.get("yaw");
+                Double x = ((Number) object.get("x")).doubleValue();
+                Double y = ((Number) object.get("y")).doubleValue();
+                Double z = ((Number) object.get("z")).doubleValue();
+                Float pitch = ((Number) object.get("pitch")).floatValue();
+                Float yaw = ((Number) object.get("yaw")).floatValue();
                 return new Point(x, y, z, pitch, yaw);
             }
             catch (ClassCastException ex) {
