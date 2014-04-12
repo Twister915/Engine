@@ -43,6 +43,7 @@ public enum ArenaFieldSerializer {
                 return new Point(x, y, z, pitch, yaw);
             }
             catch (ClassCastException ex) {
+                ex.printStackTrace();
                 return null;
             }
         }
