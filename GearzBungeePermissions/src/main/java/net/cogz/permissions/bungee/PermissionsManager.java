@@ -17,6 +17,7 @@ import net.cogz.permissions.GearzPermissions;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -84,7 +85,7 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @EventHandler(priority = EventPriority.LOW)
     @SuppressWarnings("unused")
-    public void onPostLogin(ServerConnectedEvent event) {
+    public void onPostLogin(ServerConnectEvent event) {
         if (!this.playersAlreadyConnected.contains(event.getPlayer())) {
             this.playersAlreadyConnected.add(event.getPlayer());
             onJoin(event.getPlayer().getName());
