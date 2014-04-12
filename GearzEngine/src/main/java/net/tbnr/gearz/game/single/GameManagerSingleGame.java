@@ -20,6 +20,7 @@ import net.tbnr.gearz.GearzException;
 import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
+import net.tbnr.gearz.arena.Point;
 import net.tbnr.gearz.event.player.PlayerPriorityDetermineEvent;
 import net.tbnr.gearz.game.*;
 import net.tbnr.gearz.game.classes.GearzAbstractClass;
@@ -355,8 +356,9 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
 
     @Override
     public void spawn(PlayerType player) {
-	    Gearz.getInstance().getLogger().info(player == null ? "true2" : "false2");
-	    Location l = gameLobby.pointToLocation(this.gameLobby.spawnPoints.next());
+	    Point p = this.gameLobby.spawnPoints.next();
+	    Gearz.getInstance().getLogger().info(p == null ? "point is null" : "point is not null");
+	    Location l = gameLobby.pointToLocation(p);
 	    Gearz.getInstance().getLogger().info(l == null ? "true" : "false");
         player.getTPlayer().teleport(l);
     }
