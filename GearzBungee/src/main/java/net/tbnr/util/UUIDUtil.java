@@ -15,6 +15,7 @@ import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
 import com.mojang.api.profiles.ProfileCriteria;
 import lombok.Getter;
+
 /**
  * Util to allow for username to UUID conversion
  * Uses a callback for async call.
@@ -54,6 +55,9 @@ public class UUIDUtil {
                 this.uuid = null;
             } else {
                 uuid = profiles[0].getId();
+                uuid = String.format("%s-%s-%s-%s-%s", uuid.substring(0, 8),
+                        uuid.substring(8, 12), uuid.substring(12, 16),
+                        uuid.substring(16, 20), uuid.substring(20, 32));
             }
             callback.complete(username, uuid);
         }
