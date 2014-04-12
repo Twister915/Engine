@@ -43,8 +43,8 @@ public final class GearzPlayer {
     /**
      * The player's username
      */
-    @Getter private final String username;
-    @Getter private final String uuid;
+    @Getter private String username;
+    @Getter private String uuid;
     private String nickname;
     /**
      * The player document
@@ -78,22 +78,20 @@ public final class GearzPlayer {
         DBObject object = new BasicDBObject("current_username", player);
         try {
             this.username = (String) object.get("current_username");
-            this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
             throw new PlayerNotFoundException("Invalid username");
         }
-        this.playerDocument = object;
+        loadUsernameDocument();
     }
 
     public GearzPlayer(String uuid, boolean findUUID) throws PlayerNotFoundException {
         DBObject object = new BasicDBObject("uuid", uuid);
         try {
-            this.username = (String) object.get("current_username");
             this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
-            throw new PlayerNotFoundException("Invalid username");
+            throw new PlayerNotFoundException("Invalid UUID String");
         }
-        this.playerDocument = object;
+        loadUUIDDocument();
     }
 
     /**
@@ -106,12 +104,11 @@ public final class GearzPlayer {
     public GearzPlayer(UUID uuid) throws PlayerNotFoundException {
         DBObject object = new BasicDBObject("uuid", uuid.toString());
         try {
-            this.username = (String) object.get("current_username");
             this.uuid = (String) object.get("uuid");
         } catch (ClassCastException ex) {
             throw new PlayerNotFoundException("Invalid UUID");
         }
-        this.playerDocument = object;
+        loadUUIDDocument();
     }
 
     /**
@@ -124,7 +121,7 @@ public final class GearzPlayer {
     public GearzPlayer(ProxiedPlayer player) throws PlayerNotFoundException {
         this.username = player.getName();
         this.uuid = player.getUniqueId().toString();
-        loadDocument();
+        loadUUIDDocument();
         player.setDisplayName(updateNickname());
     }
 
@@ -141,7 +138,7 @@ public final class GearzPlayer {
      * @throws PlayerNotFoundException This occurs when there is no database object for that player, can be used as a hook
      *                                 for retrying the find.
      */
-    public void loadDocument() throws PlayerNotFoundException {
+    public void loadUUIDDocument() throws PlayerNotFoundException {
         DBObject object = new BasicDBObject("uuid", this.uuid);
         DBObject cursor = getCollection().findOne(object);
         if (cursor != null) {
@@ -149,6 +146,18 @@ public final class GearzPlayer {
         } else {
             throw new PlayerNotFoundException("Player not found yet!");
         }
+        this.username = (String) this.playerDocument.get("current_username");
+    }
+
+    public void loadUsernameDocument() throws PlayerNotFoundException {
+        DBObject object = new BasicDBObject("current_username", this.username);
+        DBObject cursor = getCollection().findOne(object);
+        if (cursor != null) {
+            this.playerDocument = cursor;
+        } else {
+            throw new PlayerNotFoundException("Player not found yet!");
+        }
+        this.uuid = (String) this.playerDocument.get("uuid");
     }
 
     /**
@@ -172,7 +181,7 @@ public final class GearzPlayer {
     public DBObject getPlayerDocument() {
         if (this.playerDocument != null) return this.playerDocument;
         try {
-            loadDocument();
+            loadUUIDDocument();
         } catch (PlayerNotFoundException e) {
             return null;
         }
@@ -185,7 +194,7 @@ public final class GearzPlayer {
 
     public String updateNickname() {
         try {
-            loadDocument();
+            loadUUIDDocument();
         } catch (PlayerNotFoundException e) {
             return null;
         }
