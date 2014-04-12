@@ -62,6 +62,10 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public String getUUID(String player) {
+        ProxiedPlayer proxiedPlayer = getOnlinePlayer(player);
+        if (proxiedPlayer != null) {
+            return proxiedPlayer.getUniqueId().toString();
+        }
         return (String) getPlayerDocument(player).get("uuid");
     }
 
