@@ -103,7 +103,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
 		player.store(Gearz.getInstance(), new GearzPlayerNickname(nick));
 		String s = this.updateNickname(player);
 		player.sendMessage(Gearz.getInstance().getFormat("formats.update-nickname", false, new String[]{"<name>", s}));
-		NetCommand.withName("update_nick").withArg("player", player).send();
+		NetCommand.withName("update_nick").withArg("player", player.getPlayer().getName()).send();
 		return TCommandStatus.SUCCESSFUL;
 	}
 
