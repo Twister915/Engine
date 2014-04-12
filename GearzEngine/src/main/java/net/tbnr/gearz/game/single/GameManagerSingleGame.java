@@ -84,6 +84,11 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         Arena arena = ArenaManager.arenaFromDBObject(GameLobby.class, Gearz.getInstance().getMongoDB().getCollection("game_lobbys_v2").findOne(new BasicDBObject("game", gameMeta.key())));
         if (arena == null) throw new GearzException("No lobby found!");
         this.gameLobby = (GameLobby)arena ;
+        if (this.gameLobby.spawnPoints == null) {
+            System.out.println("NULL POINTS");
+        } else {
+            System.out.println(gameLobby.spawnPoints.getArrayList().size());
+        }
         this.plugin = plugin;
         try {
             this.gameLobby.loadWorld();
