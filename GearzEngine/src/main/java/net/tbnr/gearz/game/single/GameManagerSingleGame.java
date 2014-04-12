@@ -20,7 +20,6 @@ import net.tbnr.gearz.GearzException;
 import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
-import net.tbnr.gearz.arena.Point;
 import net.tbnr.gearz.event.player.PlayerPriorityDetermineEvent;
 import net.tbnr.gearz.game.*;
 import net.tbnr.gearz.game.classes.GearzAbstractClass;
@@ -131,7 +130,10 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
             return TCommandStatus.INVALID_ARGS;
         }
 
-        switch (args[0]) {
+        sender.sendMessage(ChatColor.RED + "This command is currently disabled!");
+        return TCommandStatus.SUCCESSFUL;
+
+       /* switch (args[0]) {
             case "start":
                 if (this.runningGame != null) {
                     return TCommandStatus.INVALID_ARGS;
@@ -149,6 +151,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
                 return TCommandStatus.INVALID_ARGS;
         }
         return TCommandStatus.SUCCESSFUL;
+        */
     }
 
     @TCommand(
