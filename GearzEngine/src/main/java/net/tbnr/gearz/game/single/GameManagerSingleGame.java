@@ -356,6 +356,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
 
     @Override
     public void spawn(PlayerType player) {
+	    Gearz.getInstance().getLogger().info(this.gameLobby.spawnPoints.getArrayList().size()+"");
 	    Point p = this.gameLobby.spawnPoints.next();
 	    Gearz.getInstance().getLogger().info(p == null ? "point is null" : "point is not null");
 	    Location l = gameLobby.pointToLocation(p);
