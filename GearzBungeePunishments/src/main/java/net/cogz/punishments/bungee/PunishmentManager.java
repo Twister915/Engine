@@ -111,13 +111,6 @@ public class PunishmentManager extends GearzPunishments implements Listener {
 
     private void formatKickPlayer(ProxiedPlayer player, String reason, String issuer) {
         if (player == null) return;
-        if (reason == null) {
-            ProxyServer.getInstance().getLogger().info("REASON NULL");
-        }
-
-        if (issuer == null) {
-            ProxyServer.getInstance().getLogger().info("ISSUE NULL");
-        }
         player.disconnect(GearzBungeePunishments.getInstance().getFormat("kick", false, true, new String[]{"<reason>", reason}, new String[]{"<issuer>", punisherFromUUID(issuer)}));
     }
 
