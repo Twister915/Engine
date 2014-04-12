@@ -1288,12 +1288,14 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
             classFor.deregisterClass();
             classFor.onClassDeactivate();
         }
-        AbstractClassType abstractClassType = constructClassType(getClassResolver().getClassForPlayer(player, this), player);
-        this.classInstances.put(player, abstractClassType);
-        abstractClassType.registerClass();
-        abstractClassType.onClassActivate();
-        if (classFor == null) abstractClassType.onGameStart();
-        abstractClassType.onPlayerActivate();
+        if(this.getClassResolver() != null) {
+            AbstractClassType abstractClassType = constructClassType(getClassResolver().getClassForPlayer(player, this), player);
+            this.classInstances.put(player, abstractClassType);
+            abstractClassType.registerClass();
+            abstractClassType.onClassActivate();
+            if(classFor == null) abstractClassType.onGameStart();
+            abstractClassType.onPlayerActivate();
+        }
     }
 
     @Override

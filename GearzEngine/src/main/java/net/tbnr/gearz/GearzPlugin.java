@@ -83,10 +83,12 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         }
 
         //Save all the metas for the class in the database
-        GearzClassResolver<PlayerType, ClassType> classResolver = this.getClassResolver();
-        for (Class<? extends ClassType> aClass : classSystem.getClasses()) {
-            MinigameClass objectFor = MinigameClass.getObjectFor(this, classResolver.getClassMeta(aClass));
-            objectFor.save();
+        if(this.classSystem != null) {
+            GearzClassResolver<PlayerType, ClassType> classResolver = this.getClassResolver();
+            for(Class<? extends ClassType> aClass : this.classSystem.getClasses()) {
+                MinigameClass objectFor = MinigameClass.getObjectFor(this, classResolver.getClassMeta(aClass));
+                objectFor.save();
+            }
         }
 
         //if game manager is instance of TCommandHandler then register it's commands
