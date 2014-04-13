@@ -20,7 +20,16 @@ import net.tbnr.gearz.activerecord.GModel;
 import java.util.Date;
 
 /**
- * Stores data about a player's Punishment
+ * Stores data about a punishment that a
+ * player has receieved. Storage is based
+ * on UUIDs and not player names.
+ *
+ * <p>
+ * Latest Change: UUID Changes
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 @ToString
 public class Punishment extends GModel {

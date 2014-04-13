@@ -28,14 +28,14 @@ import java.util.List;
  * Latest Change:
  */
 public class PermPlayer extends GModel {
-    @Getter public String name;
-    @Getter @BasicField public String uuid;
-    @Getter @BasicField public String prefix;
-    @Getter @BasicField public String suffix;
-    @Getter @BasicField public String nameColor;
-    @Getter @BasicField public String tabColor;
-    @Getter @BasicField public String group;
-    @Getter @BasicField public List<String> permissions;
+    @Getter public String name; //Name of the player for local data purposes
+    @Getter @BasicField public String uuid; //UUID of the player
+    @Getter @BasicField public String prefix; //Player's chat prefix
+    @Getter @BasicField public String suffix; //Player's chat suffix
+    @Getter @BasicField public String nameColor; //Player's name color in chat
+    @Getter @BasicField public String tabColor; //Player's tab color
+    @Getter @BasicField public String group; //Player's group
+    @Getter @BasicField public List<String> permissions; //List of permissions that the player has
 
     @SuppressWarnings("unused")
     public PermPlayer() {
@@ -52,11 +52,21 @@ public class PermPlayer extends GModel {
     }
 
     @Deprecated
+    /**
+     * Deprecated in place of searching for players by name.
+     */
     public PermPlayer(DB database, String name) {
         this(database);
         this.name = name;
     }
 
+    /**
+     * Instance of a PermPlayer created from the UUID
+     *
+     * @param database called in the super
+     * @param uuid UUID of the player to created
+     * @param name name of the player to create
+     */
     public PermPlayer(DB database, String uuid, String name) {
         this(database);
         this.uuid = uuid;

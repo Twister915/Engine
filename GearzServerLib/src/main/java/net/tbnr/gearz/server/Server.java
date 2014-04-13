@@ -22,11 +22,19 @@ import net.tbnr.gearz.activerecord.GModel;
 import java.util.List;
 
 /**
- * Created by Joey on 12/17/13.
+ * Object to store information about
+ * a Gearz server. Allows for a player
+ * to be connected to a server based
+ * on the bungee_name, which is the
+ * name of the server in the Bungeecord
+ * Proxy.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Add online players
+ * <p>
  *
- * Latest Change:
+ * @author Joey
+ * @since 12/17/2013
  */
 @Data
 @ToString

@@ -17,10 +17,17 @@ import net.tbnr.gearz.activerecord.GModel;
 import java.util.*;
 
 /**
- * Gearz Punishments API
- * Supports Mutes, Bans,
- * and more types of
- * punishments
+ * Gearz Punishments API which
+ * supports multiple types of
+ * punishments, including bans,
+ * mutes, and more.
+ *
+ * <p>
+ * Latest Change: UUID Changes
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public abstract class GearzPunishments {
     /**
@@ -46,7 +53,7 @@ public abstract class GearzPunishments {
     /**
      * Kicks a uuid from the server
      *
-     * @param uuid     uuid to kick
+     * @param uuid       uuid to kick
      * @param punishment punishment to kick for
      */
     public abstract void kickPlayer(String uuid, Punishment punishment);
@@ -54,8 +61,8 @@ public abstract class GearzPunishments {
     /**
      * Gets a list of a uuid's punishments
      *
-     * @param uuid uuid to check
-     * @param valid  valid punishments only
+     * @param uuid  uuid to check
+     * @param valid valid punishments only
      * @return a list of punishments
      */
     public List<Punishment> getPunishmentsByUUID(String uuid, boolean valid) {
@@ -341,10 +348,10 @@ public abstract class GearzPunishments {
      * UUID of the console is CONSOLE
      *
      * @param punishedUUID uuid of the punished player
-     * @param issuerUUID uuid of the issuer of the punishment
-     * @param reason reason for punishment
-     * @param type   type of punishment
-     * @param end    when the punishment ends
+     * @param issuerUUID   uuid of the issuer of the punishment
+     * @param reason       reason for punishment
+     * @param type         type of punishment
+     * @param end          when the punishment ends
      */
     public void punishPlayer(String punishedUUID, String issuerUUID, String reason, PunishmentType type, Date end) {
         Punishment punishment = new Punishment(this.database);

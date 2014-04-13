@@ -139,6 +139,16 @@ public abstract class GearzPermissions {
         return this.players.get(player);
     }
 
+    /**
+     * Retrieves an offline player by name.
+     * First checks if the player is online,
+     * and will return that. Otherwise a new
+     * instance of PermPlayer is created and
+     * returned.
+     *
+     * @param player name of the player to retrieve
+     * @return a PermPlayer created from the player
+     */
     public PermPlayer getOfflinePlayer(String player) {
         if (this.players.containsKey(player)) {
             return this.players.get(player);
