@@ -28,12 +28,18 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+
 /**
- * Created by jake on 3/8/14.
+ * Commands that allow players to manage
+ * their friends, including adding, removing,
+ * and checking the online status of them.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: UUIDs
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 3/8/2014
  */
 public class FriendsCommands extends SimplePaginator implements TCommandHandler {
     FriendsManager manager;

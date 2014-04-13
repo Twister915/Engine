@@ -17,8 +17,17 @@ import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 
+
 /**
- * Bukkit Side Permissions Plugin
+ * Bukkit Plugin implementation of the
+ * Gearz permissions API
+ *
+ * <p>
+ * Latest Change: Run reload ASync
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public final class GearzBukkitPermissions extends TPlugin {
     @Getter private static GearzBukkitPermissions instance;

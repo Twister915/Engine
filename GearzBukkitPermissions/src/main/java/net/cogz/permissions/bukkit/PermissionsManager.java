@@ -32,7 +32,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Bukkit Specific Permissions API
+ * Implementation of the Gearz Permissions
+ * API for Bukkit. Manages adding permissions
+ * and UUID retreival from DBObjects.
+ *
+ * <p>
+ * Latest Change: UUID Changes
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
     private Map<String, Player> loggedPlayers = new HashMap<>();

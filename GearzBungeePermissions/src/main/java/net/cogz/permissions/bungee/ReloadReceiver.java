@@ -16,7 +16,18 @@ import net.tbnr.gearz.command.NetCommandHandler;
 import java.util.HashMap;
 
 /**
- * Manages permissions reloads for BungeeCord
+ * Handles the reloading of
+ * permissions when the NetCommand
+ * is receieved from the Bukkit
+ * end, where the command is initially
+ * executed from.
+ *
+ * <p>
+ * Latest Change: Created
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public class ReloadReceiver {
     @NetCommandHandler(args = {"reload"}, name = "permissions")

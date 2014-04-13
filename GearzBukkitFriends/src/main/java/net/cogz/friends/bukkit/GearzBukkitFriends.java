@@ -14,12 +14,17 @@ package net.cogz.friends.bukkit;
 import lombok.Getter;
 import net.tbnr.util.TPlugin;
 
+
 /**
- * Created by jake on 3/8/14.
+ * Bukkit Friends Plugin
+ * An implementation of the friends API
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Created
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 3/8/2014
  */
 public class GearzBukkitFriends extends TPlugin {
     @Getter public static GearzBukkitFriends instance;

@@ -31,7 +31,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Bungee Specific Permissions API
+ * Implementation of the Gearz Permissions
+ * API for Bungee. Manages adding permissions
+ * and UUID retreival from DBObjects and
+ * online players.
+ *
+ * <p>
+ * Latest Change: UUID Changes
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
     private final List<ProxiedPlayer> playersAlreadyConnected = new ArrayList<>();

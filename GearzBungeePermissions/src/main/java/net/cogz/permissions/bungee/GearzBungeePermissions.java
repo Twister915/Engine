@@ -21,7 +21,15 @@ import net.tbnr.util.TPluginBungee;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Bungee Side Permissions Plugin
+ * Bungee Plugin implementation of the
+ * Gearz permissions API
+ *
+ * <p>
+ * Latest Change: Run reload ASync
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 @SuppressWarnings("FieldCanBeLocal")
 public class GearzBungeePermissions extends TPluginBungee {

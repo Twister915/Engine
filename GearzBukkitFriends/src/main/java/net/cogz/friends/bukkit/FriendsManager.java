@@ -21,11 +21,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
- * Created by jake on 3/8/14.
+ * Manages Bukkit end of the friends API
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: UUIDs
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 3/8/2014
  */
 public class FriendsManager extends GearzFriends {
     @Override

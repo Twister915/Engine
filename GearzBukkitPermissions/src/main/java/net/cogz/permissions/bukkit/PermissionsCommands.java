@@ -25,9 +25,19 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
+
 /**
- * Commands to manage player
- * and group permissions
+ * Commands to manage permisisons for
+ * groups and players alike. Includes
+ * commands to update every field that
+ * a PermPlayer or PermGroup stores.
+ *
+ * <p>
+ * Latest Change: UUID Changes
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public class PermissionsCommands implements TCommandHandler {
 
