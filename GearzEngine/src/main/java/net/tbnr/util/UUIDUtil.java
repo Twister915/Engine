@@ -11,16 +11,10 @@
 
 package net.tbnr.util;
 
-import com.google.common.collect.Lists;
 import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
 import com.mojang.api.profiles.ProfileCriteria;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Util to allow for username to UUID conversion
@@ -33,45 +27,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Jake
  * @since 3/29/2014
  */
-public class UUIDUtil implements Runnable {
-    private static String AGENT = "minecraft";
-    private final HttpProfileRepository repository = new HttpProfileRepository();
-    private final List<UUIDRunner> uuidRunnables = new ArrayList<>();
-    private List<String> usernames = new ArrayList<>();
-    private UUIDCallback callback;
+public class UUIDUtil {
 
-    public UUIDUtil(List<String> usernames, UUIDCallback callback) {
-        this.usernames = usernames;
-        this.callback = callback;
-    }
-
-    public UUIDUtil(String username, UUIDCallback callback) {
-        this.usernames = Lists.newArrayList(username);
-        this.callback = callback;
-    }
-
-    @Override
-    public void run() {
-        for (String username : this.usernames) {
-            UUIDRunner uuidRunner = new UUIDRunner(repository, username);
-            this.uuidRunnables.add(uuidRunner);
-            new Thread(uuidRunner).start();
-        }
-
-        Iterator<UUIDRunner> i = uuidRunnables.iterator();
-        while (i.hasNext()) {
-            UUIDRunner job = i.next();
-            if (job.getComplete().get()) {
-                this.callback.complete(job.getUsername(), job.getUuid());
-                i.remove();
-            }
-        }
-    }
-
-    public static class UUIDException extends Exception {
-        public UUIDException(String message) {
-            super(message);
-        }
+    public UUIDUtil(String user, UUIDCallback callback) {
+        HttpProfileRepository repository = new HttpProfileRepository();
+        UUIDRunner uuidRunner = new UUIDRunner(repository, user, callback);
+        new Thread(uuidRunner).start();
     }
 
     public static class UUIDRunner implements Runnable {
@@ -79,11 +40,12 @@ public class UUIDUtil implements Runnable {
         private final HttpProfileRepository httpProfileRepository;
         @Getter private final String username;
         @Getter private String uuid;
-        @Getter private final AtomicBoolean complete = new AtomicBoolean(false);
+        @Getter private UUIDCallback callback;
 
-        public UUIDRunner(HttpProfileRepository httpProfileRepository, String username) {
+        public UUIDRunner(HttpProfileRepository httpProfileRepository, String username, UUIDCallback callback) {
             this.httpProfileRepository = httpProfileRepository;
             this.username = username;
+            this.callback = callback;
         }
 
         @Override
@@ -93,8 +55,11 @@ public class UUIDUtil implements Runnable {
                 this.uuid = null;
             } else {
                 uuid = profiles[0].getId();
+                uuid = String.format("%s-%s-%s-%s-%s", uuid.substring(0, 8),
+                        uuid.substring(8, 12), uuid.substring(12, 16),
+                        uuid.substring(16, 20), uuid.substring(20, 32));
             }
-            complete.set(true);
+            callback.complete(username, uuid);
         }
     }
 
