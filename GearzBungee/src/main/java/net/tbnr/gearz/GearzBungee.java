@@ -259,7 +259,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     }
 
     public void saveStrings() {
-        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"));
+        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"), this.getClass());
     }
 
     public void resetStrings() {

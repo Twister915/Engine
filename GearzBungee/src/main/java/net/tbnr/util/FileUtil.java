@@ -95,10 +95,10 @@ public class FileUtil {
      * @param file         path to save too
      * @return whether or not the file was saved
      */
-    public static boolean writeEmbeddedResourceToLocalFile(final String resourceName, final File file) {
+    public static boolean writeEmbeddedResourceToLocalFile(final String resourceName, final File file, Class clazz) {
         boolean result = false;
 
-        final URL resourceUrl = FileUtil.class.getClassLoader().getResource(resourceName);
+        final URL resourceUrl = clazz.getClassLoader().getResource(resourceName);
         final Logger logger = GearzBungee.getInstance().getLogger();
 
         // 1Kb buffer
