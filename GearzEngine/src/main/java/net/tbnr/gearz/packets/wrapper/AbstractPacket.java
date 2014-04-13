@@ -57,6 +57,9 @@ public abstract class AbstractPacket {
      * @throws RuntimeException If the packet cannot be sent.
      */
     public void sendPacket(Player receiver) {
+        if (receiver == null) {
+            throw new IllegalArgumentException("Receiver can not be null");
+        }
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(receiver, getHandle());
         } catch (InvocationTargetException e) {
