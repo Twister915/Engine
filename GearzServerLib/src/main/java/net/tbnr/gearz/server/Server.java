@@ -41,25 +41,25 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false, of = {"game", "bungee_name", "port", "address"})
 public final class Server extends GModel {
     @BasicField
-    private String game;
+    private String game; //Current game being played
     @BasicField
-    private String bungee_name;
+    private String bungee_name; //Name of the server as stored in the Bungee Proxy
     @BasicField
-    private Integer number;
+    private Integer number; //Number of this game type
     @BasicField
-    private String statusString;
+    private String statusString; //Current status: lobby, map-loading, etc
     @BasicField
-    private boolean canJoin;
+    private boolean canJoin; //Whether or not this server is joinable
     @BasicField
-    private Integer playerCount;
+    private Integer playerCount; //Current number of players online
     @BasicField
-    private String address;
+    private String address; //IP of the server
     @BasicField
-    private Integer port;
+    private Integer port; //Port of the server
     @BasicField
-    private Integer maximumPlayers;
+    private Integer maximumPlayers; //Max number players that can join this server
     @BasicField
-    private List<String> onlinePlayers;
+    private List<String> onlinePlayers; //A list of online players
 
     public Server() {
         super();
@@ -73,6 +73,11 @@ public final class Server extends GModel {
         super(database, dBobject);
     }
 
+    /**
+     * Returns a non-null player count
+     *
+     * @return the server's player count, 0 if null
+     */
     public Integer getPlayerCount() {
         if (this.playerCount == null) return 0;
         return this.playerCount;
