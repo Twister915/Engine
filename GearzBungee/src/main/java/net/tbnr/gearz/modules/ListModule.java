@@ -29,10 +29,7 @@ import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * List module, deals with the /list and /where command.
@@ -45,17 +42,31 @@ public class ListModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public void onJoin(ServerSwitchEvent event) {
         if (event.getPlayer().hasPermission("gearz.staff")) {
-            if (!staff.contains(event.getPlayer()))staff.add(event.getPlayer());
+	        if(staffContains(event.getPlayer().getUniqueId())) staff.add(event.getPlayer());
         }
     }
 
-    @EventHandler
+	private Boolean staffContains(UUID uniqueId) {
+		for (ProxiedPlayer proxiedPlayer : staff) {
+			if(proxiedPlayer.getUniqueId().equals(uniqueId)) return true;
+		}
+		return false;
+	}
+
+	@EventHandler
     @SuppressWarnings("unused")
     public void onDisconnect(PlayerDisconnectEvent event) {
-        if (staff.contains(event.getPlayer())) staff.remove(event.getPlayer());
+        staffRemove(event.getPlayer().getUniqueId());
     }
 
-    @TCommand(aliases = {"who", "w", "ls", "players", "online"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")
+	private void staffRemove(UUID uniqueId) {
+		Iterator<ProxiedPlayer> iterator = staff.iterator();
+		while(iterator.hasNext()) {
+			if(iterator.next().getUniqueId().equals(uniqueId)) iterator.remove();
+		}
+	}
+
+	@TCommand(aliases = {"who", "w", "ls", "players", "online"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")
     @SuppressWarnings("unused")
     public TCommandStatus list(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         List<String> multiMessage = new ArrayList<>();
