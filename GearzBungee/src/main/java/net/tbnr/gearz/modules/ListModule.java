@@ -42,7 +42,7 @@ public class ListModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public void onJoin(ServerSwitchEvent event) {
         if (event.getPlayer().hasPermission("gearz.staff")) {
-	        if(staffContains(event.getPlayer().getUniqueId())) staff.add(event.getPlayer());
+	        if(!staffContains(event.getPlayer().getUniqueId())) staff.add(event.getPlayer());
         }
     }
 
