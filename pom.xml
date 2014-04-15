@@ -39,7 +39,7 @@
         <module>GearzFriends</module>
         <module>GearzBukkitFriends</module>
         <module>GearzSettings</module>
-        <module>GearzChannels</module>
+        <module>GearzChat</module>
     </modules>
 
     <properties>

@@ -20,7 +20,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>GearzChannels</artifactId>
+    <artifactId>GearzChat</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,7 +37,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}-No-Dependencies</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
