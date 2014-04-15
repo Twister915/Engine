@@ -17,4 +17,8 @@ formats:
   channel: "&c<channel>"
   switched: "&cYou have switched the the channel: &4<channel>"
   already-on-channel: "&cYou are already on this channel!"
+  index-out-of-range: "&cThat's not a valid index!"
+  header-motdlist: "&9Motds:"
+  removed-motd: "<motd>&c has been removed!"
+  added-motd: "<motd>&a has been added!"
   

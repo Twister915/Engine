@@ -70,7 +70,7 @@ public class ChatManager implements Listener, TCommandHandler {
         if (cmd.equalsIgnoreCase("remove")) {
             Integer toRemove = Integer.parseInt(args[1]);
             if (toRemove < 1 || toRemove > censoredWords1.length) {
-                sender.sendMessage(GearzChat.getInstance().getFormat("formats.formats.index-out-of-range", false));
+                sender.sendMessage(GearzChat.getInstance().getFormat("formats.index-out-of-range", false));
                 return TCommandStatus.SUCCESSFUL;
             }
             String s = strings.get(toRemove - 1);
