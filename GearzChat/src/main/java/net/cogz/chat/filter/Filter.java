@@ -35,7 +35,7 @@ public class Filter {
         FilterData filterData = new FilterData(message, player, false);
         if (player.hasPermission("gearz.chat.filters.bypass")) return filterData;
 
-        if (GearzChat.getInstance().getChat().isMuted()) {
+        if (GearzChat.getInstance().getChat().isMuted() && !player.hasPermission("gearz.mute.bypass")) {
             player.sendMessage(GearzChat.getInstance().getFormat("formats.chat-muted"));
             filterData.setCancelled(true);
             return filterData;

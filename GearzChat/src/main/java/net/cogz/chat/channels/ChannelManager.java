@@ -58,7 +58,7 @@ public class ChannelManager {
     private final Map<String, Channel> playerChannels = new HashMap<>();
 
     public ChannelManager() {
-        enabled = Gearz.getInstance().getConfig().getBoolean("channels.enabled", false);
+        enabled = GearzChat.getInstance().getChannelConfig().getConfig().getBoolean("channels.enabled", false);
     }
 
     /**
@@ -239,6 +239,7 @@ public class ChannelManager {
      * @param player player to remove the channel from
      */
     public void removeChannel(Player player) {
+        this.playerChannels.get(player.getName()).removeMember(player);
         this.playerChannels.remove(player.getName());
     }
 

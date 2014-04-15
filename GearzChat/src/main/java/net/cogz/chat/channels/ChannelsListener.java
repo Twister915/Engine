@@ -41,14 +41,7 @@ public class ChannelsListener implements Listener {
         if (event.isCancelled()) return;
         Player sender = event.getPlayer();
 
-        if (GearzChat.getInstance().getChat().isMuted() && !sender.hasPermission("gearz.mute.bypass")) {
-            event.setCancelled(true);
-            sender.sendMessage(GearzChat.getInstance().getFormat("formats.chat-muted"));
-            return;
-        }
-
-        String message = event.getMessage();
-        GearzChat.getInstance().getChannelManager().sendMessage(sender, message);
+        GearzChat.getInstance().getChannelManager().sendMessage(sender, event.getMessage());
         event.setCancelled(true);
     }
 
