@@ -88,7 +88,7 @@ public class GearzChat extends TPlugin {
     }
 
     public DBObject getBungeeConfig() {
-        BasicDBObject object = new BasicDBObject("GearzBungee", this.getDescription().getName());
+        BasicDBObject object = new BasicDBObject("pl_name", "GearzBungee");
         DBCursor cursor = this.getCollection().find();
         DBObject obj = null;
         if (cursor.count() == 0) {
