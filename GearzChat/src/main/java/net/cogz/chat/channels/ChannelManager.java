@@ -107,6 +107,7 @@ public class ChannelManager {
      * @param channel channel to register
      */
     private void registerChannel(Channel channel) {
+        GearzChat.getInstance().getLogger().info("Registered channel " + channel.getName() + ": " + channel.toString());
         channels.add(channel);
     }
 
