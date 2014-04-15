@@ -9,13 +9,13 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.chat;
+package net.cogz.chat.data;
 
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.tbnr.gearz.GearzBungee;
+import net.cogz.chat.GearzChat;
+import net.cogz.chat.filter.CensoredWord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,36 +35,34 @@ import java.util.Map;
  */
 public class Chat {
 
+    /**
+     * Whether or not chat is globally muted
+     */
     @Getter @Setter
-    public boolean muted;
+    public boolean muted = false;
 
+    /**
+     * A list of {@link net.cogz.chat.filter.CensoredWord}
+     */
     @Getter
     public final List<CensoredWord> censoredWords;
 
-    @Getter List<PrivateConversation.Conversation> conversations = new ArrayList<>();
-
-    @Getter Map<ProxiedPlayer, String> lastMessages = Maps.newHashMap();
+    /**
+     * The last messages that a player sent
+     */
+    @Getter Map<String, String> lastMessages = Maps.newHashMap();
 
     public Chat() {
-        setMuted(false);
         this.censoredWords = new ArrayList<>();
         this.lastMessages = Maps.newHashMap();
         updateCensor();
     }
 
-    public boolean isPlayerInConversation(ProxiedPlayer proxiedPlayer) {
-        return getConversationForPlayer(proxiedPlayer) != null;
-    }
-
-    public PrivateConversation.Conversation getConversationForPlayer(ProxiedPlayer player) {
-        for (PrivateConversation.Conversation conversation : GearzBungee.getInstance().getChat().getConversations()) {
-            if (conversation.getSender().getName().equals(player.getName())) return conversation;
-        }
-        return null;
-    }
-
+    /**
+     * Updates the list of censored words from the database
+     */
     public void updateCensor() {
-        String[] censoredWords1 = GearzBungee.getInstance().getCensoredWords();
+        String[] censoredWords1 = GearzChat.getInstance().getCensoredWords();
         censoredWords.clear();
         for (String s : censoredWords1) {
             censoredWords.add(new CensoredWord(s));

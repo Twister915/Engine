@@ -9,7 +9,7 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.chat;
+package net.cogz.chat.filter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @author Joey
  * @since Unknown
  */
-class CensoredWord {
+public class CensoredWord {
     /**
      * Stores the compiled pattern for the string
      */

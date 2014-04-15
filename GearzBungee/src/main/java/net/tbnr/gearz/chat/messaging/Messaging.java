@@ -9,7 +9,7 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.chat;
+package net.tbnr.gearz.chat.messaging;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -43,8 +43,8 @@ public class Messaging implements TCommandHandler {
     @SuppressWarnings("unused")
     public TCommandStatus messageCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;
-        if (args.length == 0 && GearzBungee.getInstance().getChat().isPlayerInConversation(player)) {
-            GearzBungee.getInstance().getChat().getConversationForPlayer(player).end();
+        if (args.length == 0 && GearzBungee.getInstance().getConversationManager().isPlayerInConversation(player)) {
+            GearzBungee.getInstance().getConversationManager().getConversationForPlayer(player).end();
             return TCommandStatus.SUCCESSFUL;
         }
         if (args.length == 0) {
@@ -70,14 +70,10 @@ public class Messaging implements TCommandHandler {
             player.sendMessage(GearzBungee.getInstance().getFormat("message-notonline", false, false));
             return TCommandStatus.INVALID_ARGS;
         }
-        if (args.length == 1 && !GearzBungee.getInstance().getChat().isPlayerInConversation(player)) {
+        if (args.length == 1 && !GearzBungee.getInstance().getConversationManager().isPlayerInConversation(player)) {
             new PrivateConversation(player, target);
             return TCommandStatus.SUCCESSFUL;
         }
-        Filter.FilterData filterData = Filter.filter(msg, player);
-        if (filterData.isCancelled()) return TCommandStatus.SUCCESSFUL;
-
-        msg = filterData.getMessage();
 
         String sendToSender = GearzBungee.getInstance().getFormat("messaging-message", false, false, new String[]{"<sender>", target.getName()}, new String[]{"<message>", msg}, new String[]{"<direction>", "to"});
 
@@ -104,11 +100,6 @@ public class Messaging implements TCommandHandler {
             player.sendMessage(GearzBungee.getInstance().getFormat("message-notonline", false, false));
             return TCommandStatus.SUCCESSFUL;
         }
-
-        Filter.FilterData filterData = Filter.filter(msg, player);
-        if (filterData.isCancelled()) return TCommandStatus.SUCCESSFUL;
-
-        msg = filterData.getMessage();
 
         String sendToPlayer = GearzBungee.getInstance().getFormat("messaging-message", false, false, new String[]{"<sender>", target.getName()}, new String[]{"<message>", msg}, new String[]{"<direction>", "to"});
 

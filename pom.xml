@@ -39,6 +39,7 @@
         <module>GearzFriends</module>
         <module>GearzBukkitFriends</module>
         <module>GearzSettings</module>
+        <module>GearzChannels</module>
     </modules>
 
     <properties>

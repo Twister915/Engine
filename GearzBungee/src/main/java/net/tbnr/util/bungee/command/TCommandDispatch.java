@@ -249,19 +249,11 @@ public class TCommandDispatch {
             }
 
             Set<String> matches = new HashSet<>();
-            if (args.length == 1) {
-                String search = args[0].toLowerCase();
-                for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-                    if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
-                        matches.add(player.getName());
-                    }
-                }
-            } else if (args.length == 2) {
-                String search = args[1].toLowerCase();
-                for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-                    if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
-                        matches.add(player.getName());
-                    }
+
+            String search = args[args.length - 1].toLowerCase();
+            for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+                if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
+                    matches.add(player.getName());
                 }
             }
 

@@ -70,12 +70,10 @@ public final class GearzPlayerManager implements Listener {
     public void removePlayer(PlayerDisconnectEvent event) {
         this.players.remove(event.getPlayer().getName());
         this.playersAlreadyConnected.remove(event.getPlayer());
-        if (GearzBungee.getInstance().getChannelManager().isEnabled()) {
-            GearzBungee.getInstance().getChannelManager().removeChannel(event.getPlayer());
-        }
     }
 
     @EventHandler
+    @SuppressWarnings("unused")
     public void playerLoginEvent(ServerConnectEvent event) {
         if (!this.playersAlreadyConnected.contains(event.getPlayer())) {
             this.playersAlreadyConnected.add(event.getPlayer());
@@ -84,9 +82,6 @@ public final class GearzPlayerManager implements Listener {
                 return;
             }
             event.setTarget(aHubServer);
-            if (GearzBungee.getInstance().getChannelManager().isEnabled()) {
-                GearzBungee.getInstance().getChannelManager().setChannel(event.getPlayer(), GearzBungee.getInstance().getChannelManager().getDefaultChannel());
-            }
         }
     }
 

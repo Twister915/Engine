@@ -21,12 +21,9 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.gearz.activerecord.GModel;
-import net.tbnr.gearz.chat.Chat;
-import net.tbnr.gearz.chat.ChatManager;
-import net.tbnr.gearz.chat.Messaging;
-import net.tbnr.gearz.chat.channels.ChannelCommand;
-import net.tbnr.gearz.chat.channels.ChannelManager;
-import net.tbnr.gearz.chat.channels.ChannelsListener;
+import net.tbnr.gearz.chat.ChatSpy;
+import net.tbnr.gearz.chat.messaging.ConversationManager;
+import net.tbnr.gearz.chat.messaging.Messaging;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
@@ -81,16 +78,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
      * Stores the player manager.
      */
     private GearzPlayerManager playerManager;
-    /**
-     * Stores chat utils
-     */
-    private ChatManager chatUtils;
-
-    /**
-     * Stores chat data
-     */
-    @Getter
-    private Chat chat;
 
     /**
      * Has our NetCommandDispatch for registration.
@@ -115,16 +102,13 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     private boolean whitelisted = false;
 
     @Getter
-    private ChannelManager channelManager;
-
-    @Getter
     private SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-
-    @Getter
-    private ChatManager chatManager;
 
     @Setter @Getter
     private PermissionsDelegate permissionsDelegate;
+
+    @Getter
+    private ConversationManager conversationManager;
 
     /**
      * Gets the current instance of the GearzBungee plugin.
@@ -165,12 +149,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         //MOTD Handler
         MotdHandler motdHandler = new MotdHandler();
 
-        //Chat utilities and storage kits
-        this.chatUtils = new ChatManager();
-        this.chat = new Chat();
-        this.channelManager = new ChannelManager();
-        this.chatManager = new ChatManager();
-
         //Online player manager
         this.listModule = new ListModule();
 
@@ -180,6 +158,8 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         //Helpme manager
         this.helpMeModule = new HelpMe();
         this.helpMeModule.registerReminderTask(30);
+
+        this.conversationManager = new ConversationManager();
 
         //Player info module
         PlayerInfoModule infoModule = new PlayerInfoModule();
@@ -197,10 +177,11 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         //Bungee announcer module
         AnnouncerModule announcerModule = new AnnouncerModule(getConfig().getBoolean("announcer.enabled", false));
 
+        ChatSpy spy = new ChatSpy();
+
         TCommandHandler[] commandHandlers = {
                 motdHandler,
                 new Messaging(),
-                this.chatUtils,
                 this.hub,
                 new UtilCommands(),
                 new ServerModule(),
@@ -213,18 +194,19 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
                 whitelistModule,
                 new StatsModule(),
                 announcerModule,
+                spy
         };
 
         Listener[] listeners = {
                 this.playerManager,
                 motdHandler,
-                this.chatUtils,
                 this.hub,
                 this.listModule,
                 this.helpMeModule,
                 infoModule,
                 this.shuffleModule,
                 whitelistModule,
+                spy
         };
 
         for (TCommandHandler handler : commandHandlers) {
@@ -235,17 +217,13 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             registerEvents(listener);
         }
 
-        if (getConfig().getBoolean("channels.enabled", false)) {
-            getLogger().info("Channels enabled...");
-            registerEvents(new ChannelsListener());
-            channelManager.registerChannels();
-            registerCommandHandler(new ChannelCommand());
-        } else {
-            ModBroadcast modBroadcast = new ModBroadcast();
-            registerEvents(modBroadcast);
-            registerCommandHandler(modBroadcast);
-            getLogger().info("Channels disabled...");
-        }
+        /*
+        ModBroadcast modBroadcast = new ModBroadcast();
+        registerEvents(modBroadcast);
+        registerCommandHandler(modBroadcast);
+        getLogger().info("Channels disabled...");
+        */
+
 
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
@@ -301,19 +279,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             return 60;
         }
         return (Integer) interval;
-    }
-
-    public String[] getCensoredWords() {
-        Object censoredWords = getBungeeConfig().get("censoredWords");
-        if (censoredWords == null || !(censoredWords instanceof BasicDBList)) {
-            return new String[0];
-        }
-        BasicDBList dbListCensored = (BasicDBList) censoredWords;
-        return dbListCensored.toArray(new String[dbListCensored.size()]);
-    }
-
-    public void setCensoredWords(BasicDBList dbList) {
-        bungeeConfigSet("censoredWords", dbList);
     }
 
     public int getMaxPlayers() {

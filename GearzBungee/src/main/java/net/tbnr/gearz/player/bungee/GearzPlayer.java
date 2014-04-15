@@ -45,7 +45,6 @@ public final class GearzPlayer {
      */
     @Getter private String username;
     @Getter private String uuid;
-    private String nickname;
     /**
      * The player document
      */
@@ -122,7 +121,6 @@ public final class GearzPlayer {
         this.username = player.getName();
         this.uuid = player.getUniqueId().toString();
         loadUUIDDocument();
-        player.setDisplayName(updateNickname());
     }
 
     public static GearzPlayer getById(ObjectId id) throws PlayerNotFoundException {
@@ -192,30 +190,6 @@ public final class GearzPlayer {
         return ProxyServer.getInstance().getPlayer(this.username);
     }
 
-    public String updateNickname() {
-        try {
-            loadUUIDDocument();
-        } catch (PlayerNotFoundException e) {
-            return null;
-        }
-        Object nick = playerDocument.get("gearz_nickname");
-        if (nick == null || !(nick instanceof String)) return null;
-        String nickname = (String) nick;
-        setNickname(nickname);
-        return nickname;
-    }
-
-    public String getNickname() {
-        if (this.nickname != null) {
-            return this.nickname;
-        } else {
-            return this.username;
-        }
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public List<String> getUsernameHistory() {
         List<String> usernames = new ArrayList<>();

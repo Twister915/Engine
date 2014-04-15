@@ -9,11 +9,10 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.chat;
+package net.tbnr.gearz.chat.messaging;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -38,7 +37,7 @@ public class PrivateConversation implements Listener {
 
     public PrivateConversation(ProxiedPlayer sender, ProxiedPlayer target) {
         this.conversation = new Conversation(sender, target);
-        GearzBungee.getInstance().getChat().getConversations().add(conversation);
+        GearzBungee.getInstance().getConversationManager().getConversations().add(conversation);
         sender.sendMessage(GearzBungee.getInstance().getFormat("conversation-start", false, true, new String[]{"<player>", target.getName()}));
         GearzBungee.getInstance().registerEvents(this);
     }
@@ -50,20 +49,13 @@ public class PrivateConversation implements Listener {
         if (event.isCommand()) return;
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
-        if (!GearzBungee.getInstance().getChat().isPlayerInConversation(player)) return;
+        if (!GearzBungee.getInstance().getConversationManager().isPlayerInConversation(player)) return;
 
-        Filter.FilterData filterData = Filter.filter(event.getMessage(), player);
-        if (!filterData.isCancelled()) {
-            GearzBungee.getInstance().getChat().getConversationForPlayer(player).sendMessage(filterData.getMessage());
-            event.setCancelled(true);
-        } else {
-            event.setCancelled(true);
-        }
+        GearzBungee.getInstance().getConversationManager().getConversationForPlayer(player).sendMessage(event.getMessage());
     }
 
     @AllArgsConstructor
     @Data
-    @EqualsAndHashCode
     public class Conversation {
         private final ProxiedPlayer sender;
         private final ProxiedPlayer target;
@@ -78,7 +70,7 @@ public class PrivateConversation implements Listener {
 
         public void end() {
             conversation.getSender().sendMessage(GearzBungee.getInstance().getFormat("conversation-end", false, true, new String[]{"<player>", conversation.getTarget().getName()}));
-            GearzBungee.getInstance().getChat().getConversations().remove(this);
+            GearzBungee.getInstance().getConversationManager().getConversations().remove(this);
         }
     }
 }
