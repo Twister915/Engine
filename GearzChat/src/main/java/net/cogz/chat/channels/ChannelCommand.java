@@ -45,7 +45,7 @@ public class ChannelCommand implements TCommandHandler {
             return TCommandStatus.INVALID_ARGS;
         }
 
-        if (channel.hasPermission() && sender.hasPermission(channel.getListeningPermission())) {
+        if (channel.hasPermission() && !sender.hasPermission(channel.getListeningPermission())) {
             return TCommandStatus.PERMISSIONS;
         }
         GearzChat.getInstance().getChannelManager().setChannel((Player) sender, channel);
@@ -62,6 +62,7 @@ public class ChannelCommand implements TCommandHandler {
 
         sender.sendMessage(GearzChat.getInstance().getFormat("formats.channels", false));
         for (Channel channel : GearzChat.getInstance().getChannelManager().getChannels()) {
+            if (channel.hasPermission() && !sender.hasPermission(channel.getListeningPermission())) continue;
             sender.sendMessage(GearzChat.getInstance().getFormat("formats.channel", false, new String[]{"<channel>", channel.getName()}));
         }
 
