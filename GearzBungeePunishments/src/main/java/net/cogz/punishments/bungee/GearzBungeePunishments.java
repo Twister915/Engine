@@ -12,6 +12,7 @@
 package net.cogz.punishments.bungee;
 
 import lombok.Getter;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.util.config.PropertiesPlugin;
 
 /**
@@ -19,6 +20,11 @@ import net.tbnr.util.config.PropertiesPlugin;
  */
 public class GearzBungeePunishments extends PropertiesPlugin {
     @Getter public static GearzBungeePunishments instance;
+
+    @Override
+    public Plugin getPlugin() {
+        return this;
+    }
 
     @Override
     protected void start() {

@@ -30,13 +30,16 @@ import java.util.Properties;
  * @author Jake
  * @since 4/12/2014
  */
-public class PropertiesPlugin extends TPluginBungee {
+public abstract class PropertiesPlugin extends TPluginBungee {
     @Getter private Properties properties;
-    protected Plugin plugin;
+    @Getter private Plugin plugin;
     @Getter protected String fileName = "strings.properties";
+
+    public abstract Plugin getPlugin();
 
     @Override
     protected void start() {
+        this.plugin = getPlugin();
         if (!new File(this.plugin.getDataFolder() + File.separator + getFileName()).exists()) {
             saveProperties();
         }
