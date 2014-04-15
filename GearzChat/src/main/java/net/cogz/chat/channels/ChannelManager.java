@@ -211,7 +211,7 @@ public class ChannelManager {
         }
 
         Object[] args = {senderName, senderDisplay, message, cleanMessage, prefix, suffix, nameColor, resetColor};
-        return formatter.format(args);
+        return ChatColor.translateAlternateColorCodes('&', formatter.format(args));
     }
 
     /**
