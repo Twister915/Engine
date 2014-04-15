@@ -11,8 +11,6 @@
 
 package net.tbnr.gearz.game.classes;
 
-import org.bukkit.Material;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -24,5 +22,4 @@ public @interface GearzClassMeta {
     String name();
     String key();
     String[] description() default "";
-    Material displayItem() default Material.IRON_SWORD;
 }

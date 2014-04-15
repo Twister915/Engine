@@ -41,8 +41,6 @@ formats:
   blastoff-itemlore: "&e&l<online> &cplayers"
   h2p-book-author: "&aTBNR Server"
   h2p-book-title: "&aHow to play &3<game>&a."
-  classes-item-name: "&cChoose Your Class!"
-  classes-item-lore: "&7Right Click To Choose A Class"
   server-book: "&3<game> &aServers"
   voted-for: "&3You have voted for &a<map>&3."
   command-status: "&7[&6TBNR&7] &cThe command returned an error: &4<status>"

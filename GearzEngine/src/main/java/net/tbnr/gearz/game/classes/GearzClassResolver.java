@@ -24,7 +24,6 @@ public abstract class GearzClassResolver<PlayerType extends GearzPlayer, Abstrac
     public abstract void playerUsedClassFully(PlayerType player, AbstractClassType classUsed, GearzGame<PlayerType, AbstractClassType> game);
     public abstract void gameStarting(Collection<PlayerType> players, GearzGame<PlayerType, AbstractClassType> game);
     public abstract boolean canUseClass(PlayerType player, Class<? extends AbstractClassType> clazz);
-	public abstract void assignPlayerClass(PlayerType player, Class<? extends AbstractClassType> clazz);
 
     public GearzClassMeta getClassMeta(Class<? extends AbstractClassType> classType) {
         return classType.getAnnotation(GearzClassMeta.class);

@@ -12,7 +12,6 @@
 package net.tbnr.util.inventory.base;
 
 import lombok.Getter;
-import lombok.Setter;
 import net.tbnr.gearz.Gearz;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -42,8 +41,7 @@ public abstract class BaseGUI implements Listener {
     private final String title;
 
     @Getter
-    @Setter
-    private GUICallback callback;
+    private final GUICallback callback;
 
     @Getter
     private Inventory inventory;

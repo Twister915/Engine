@@ -23,7 +23,6 @@ import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.player.PlayerPriorityDetermineEvent;
 import net.tbnr.gearz.game.*;
 import net.tbnr.gearz.game.classes.GearzAbstractClass;
-import net.tbnr.gearz.game.classes.GearzClassMeta;
 import net.tbnr.gearz.game.voting.AutoBoosts;
 import net.tbnr.gearz.game.voting.Votable;
 import net.tbnr.gearz.game.voting.VotingHandler;
@@ -37,9 +36,6 @@ import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
-import net.tbnr.util.inventory.base.BaseGUI;
-import net.tbnr.util.inventory.base.GUICallback;
-import net.tbnr.util.inventory.base.GUIItem;
 import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerJoinEvent;
 import org.bukkit.*;
@@ -59,7 +55,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -77,25 +72,9 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     private GearzGame<PlayerType, AbstractClassType> runningGame;
     @Getter private final GearzPlayerProvider<PlayerType> playerProvider;
     private List<String> priorities = new ArrayList<>();
-	private ClassSelector classSelector;
 
-    public GameManagerSingleGame(final Class<? extends GearzGame<PlayerType, AbstractClassType>> gameClass, final GearzPlugin<PlayerType, AbstractClassType> plugin, final GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
-        this.classSelector = new ClassSelector(plugin.getClassSystem().getClasses(), null);
-	    classSelector.setCallback(new GUICallback() {
-		    @Override
-		    public void onItemSelect(BaseGUI gui, GUIItem item, Player player) {
-			    plugin.getClassResolver().assignPlayerClass(playerProvider.getPlayerFromPlayer(player), classSelector.classTypeMap.get(item));
-		    }
-
-		    @Override
-		    public void onGUIOpen(BaseGUI gui, Player player) {
-		    }
-
-		    @Override
-		    public void onGUIClose(BaseGUI gui, Player player) {
-		    }
-	    });
-	    this.gearzGameClass = gameClass;
+    public GameManagerSingleGame(Class<? extends GearzGame<PlayerType, AbstractClassType>> gameClass, GearzPlugin<PlayerType, AbstractClassType> plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
+        this.gearzGameClass = gameClass;
         this.playerProvider = playerProvider;
         GameMeta gameMeta1 = gameClass.getAnnotation(GameMeta.class);
         if (gameMeta1 == null) {
@@ -266,16 +245,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         }
         stack.setItemMeta(bookMeta);
         gearzPlayer.getPlayer().getInventory().setItem(7, stack);
-
-	    // Make the classes inventory item
-	    ItemStack classes = new ItemStack(Material.NAME_TAG);
-	    ItemMeta classesItemMeta = classes.getItemMeta();
-	    classesItemMeta.setDisplayName(Gearz.getInstance().getFormat("formats.classes-item-name"));
-	    classesItemMeta.setLore(Arrays.asList(Gearz.getInstance().getFormat("formats.classes-item-lore")));
-	    classes.setItemMeta(classesItemMeta);
-	    gearzPlayer.getPlayer().getInventory().setItem(6, classes);
-
-        Gearz.getInstance().debug("GEARZ DEBUG ---<GameManagerSingleGame|258>--------< TPlayerJoinEvent has been CAUGHT for: " + gearzPlayer.toString());
+        Gearz.getInstance().debug("GEARZ DEBUG ---<GameManagerSingleGame|156>--------< TPlayerJoinEvent has been CAUGHT for: " + gearzPlayer.toString());
     }
 
     @EventHandler
@@ -509,14 +479,6 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         Gearz.getInstance().handleCommandStatus(status, sender, senderType);
     }
 
-	@EventHandler
-	public void onInteractEvent(PlayerInteractEvent event) {
-		if(event.getItem().getType() != Material.NAME_TAG ||
-			!event.getItem().getItemMeta().getDisplayName().equals(Gearz.getInstance().getFormat("formats.classes-item-name"))) return;
-		//If the class item
-		classSelector.open(event.getPlayer());
-	}
-
     /**
      * Get the person on the server with lower priority then them if no player lower it returns null
      *
@@ -564,37 +526,4 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     public void populatePrioritiesList() {
         this.priorities = Gearz.getInstance().getConfig().getStringList("priorities");
     }
-	public class ClassSelector extends BaseGUI {
-
-		Map<GUIItem, Class<? extends AbstractClassType>>classTypeMap = new HashMap<>();
-
-		public ClassSelector(Class<? extends AbstractClassType>[] classTypes, GUICallback callback) {
-			this(classTypes, callback, false);
-		}
-
-		public ClassSelector(Class<? extends AbstractClassType>[] classTypes, GUICallback callback, boolean effects) {
-			super(new ArrayList<GUIItem>(), Gearz.getInstance().getFormat("formats.class-inventory-name"), callback, effects); // TODO NAME
-			this.updateContents(getClassItems(classTypes));
-		}
-
-		public ArrayList<GUIItem> getClassItems(Class<? extends AbstractClassType>[] classTypes) {
-			ArrayList<GUIItem> itemStacks = new ArrayList<>();
-			GearzClassMeta classMeta;
-			GUIItem item;
-			for(Class<? extends AbstractClassType> classType : classTypes) {
-				classMeta = classType.getAnnotation(GearzClassMeta.class);
-				if(classMeta == null) continue;
-				item = new GUIItem(
-						new ItemStack(classMeta.displayItem()),
-						classMeta.name(),
-						Arrays.asList(classMeta.description())
-				);
-
-				classTypeMap.put(item, classType);
-
-				itemStacks.add(item);
-			}
-			return itemStacks;
-		}
-	}
 }
