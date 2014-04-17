@@ -17,7 +17,10 @@ import lombok.ToString;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.ChatPaginator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -78,4 +81,17 @@ public class GUIItem {
         }
         item.setItemMeta(meta);
     }
-}
+
+	/**
+	 * Wraps each String in item lore to a specific line length
+	 *
+	 * @param length the maximum line length
+	 * */
+	public void wrapLore(int length) {
+		List<String> newLore = new ArrayList<>();
+		for(String unwrapped : item.getItemMeta().getLore()) {
+			newLore.addAll(Arrays.asList(ChatPaginator.wordWrap(unwrapped, length)));
+		}
+		item.getItemMeta().setLore(newLore);
+	}
+ }
