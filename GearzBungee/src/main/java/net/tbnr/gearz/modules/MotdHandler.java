@@ -135,6 +135,17 @@ public class MotdHandler implements Listener, TCommandHandler {
     }
 
     @TCommand(
+            name = "motdreload",
+            permission = "gearz.motd.reload",
+            usage = "/motdreload",
+            senders = {TCommandSender.Player, TCommandSender.Console})
+    @SuppressWarnings("unused")
+    public TCommandStatus motdReload(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
+        reload();
+        return TCommandStatus.SUCCESSFUL;
+    }
+
+    @TCommand(
             name = "staticmotd",
             permission = "gearz.setmotd",
             usage = "/staticmotd [minutes] [motd...]",
