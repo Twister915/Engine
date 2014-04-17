@@ -34,10 +34,7 @@ import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Handles the display of server MOTDs,
@@ -70,7 +67,7 @@ public class MotdHandler implements Listener, TCommandHandler {
         List<String> fakePlayerList = GearzBungee.boxMessage(ChatColor.YELLOW, FileUtil.getData("ping.txt", GearzBungee.getInstance()));
         List<ServerPing.PlayerInfo> listInfo = new ArrayList<>();
         for (String string : fakePlayerList) {
-            listInfo.add(new ServerPing.PlayerInfo(string, string));
+            listInfo.add(new ServerPing.PlayerInfo(string, UUID.randomUUID()));
         }
         if (listInfo.size() == 0){
             this.pingInfo = null;
