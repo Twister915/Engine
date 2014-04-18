@@ -12,6 +12,7 @@
 package net.tbnr.util;
 
 import net.tbnr.gearz.Gearz;
+import net.tbnr.util.delegates.PermissionsDelegate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -53,14 +53,21 @@ public class ListModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public void onJoin(ServerSwitchEvent event) {
         if (event.getPlayer().hasPermission("gearz.staff")) {
-            if (!staff.contains(event.getPlayer())) staff.add(event.getPlayer());
+            if (!staffContains(event.getPlayer().getName())) staff.add(event.getPlayer());
         }
     }
 
     @EventHandler
     @SuppressWarnings("unused")
     public void onDisconnect(PlayerDisconnectEvent event) {
-        if (staff.contains(event.getPlayer())) staff.remove(event.getPlayer());
+        if (staffContains(event.getPlayer().getName())) staff.remove(event.getPlayer());
+    }
+
+    private boolean staffContains(String playerName) {
+        for (ProxiedPlayer player : staff) {
+            if (player.getName().equals(playerName)) return true;
+        }
+        return false;
     }
 
     @TCommand(aliases = {"who", "w", "ls", "players", "online"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")

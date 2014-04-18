@@ -31,6 +31,7 @@ import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
+import net.tbnr.util.delegates.PermissionsDelegate;
 import net.tbnr.util.inventory.SelectorManager;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;

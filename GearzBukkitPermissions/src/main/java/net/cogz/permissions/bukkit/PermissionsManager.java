@@ -15,7 +15,7 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import net.cogz.permissions.GearzPermissions;
 import net.tbnr.gearz.Gearz;
-import net.tbnr.util.PermissionsDelegate;
+import net.tbnr.util.delegates.PermissionsDelegate;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
