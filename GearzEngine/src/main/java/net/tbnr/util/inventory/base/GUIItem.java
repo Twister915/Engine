@@ -79,6 +79,7 @@ public class GUIItem {
             }
             meta.setLore(lore);
         }
+        wrapLore(15);
         item.setItemMeta(meta);
     }
 
