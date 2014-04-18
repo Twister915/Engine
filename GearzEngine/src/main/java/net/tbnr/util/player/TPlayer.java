@@ -643,15 +643,7 @@ public final class TPlayer {
         if (!params.isResetFlight()) {
             return;
         }
-        /*if (params.isMovePlayerDown()) {
-            if (getPlayer().getAllowFlight() && getPlayer().isFlying() && getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
-                Block block = getPlayer().getLocation().getBlock();
-                while (block.getRelative(BlockFace.DOWN).getType() == Material.AIR) {
-                    block = block.getRelative(BlockFace.DOWN);
-                }
-                getPlayer().teleport(block.getLocation());
-            }
-        }*/
+
         player.setVelocity(new Vector(0, 0, 0));
         player.setFallDistance(0F);
         player.setAllowFlight(false);
@@ -689,7 +681,7 @@ public final class TPlayer {
     public void setScoreBoardSide(String key, int value) {
         if (!this.isOnline()) return;
 
-        Score score = this.sidebar.getScore(Bukkit.getOfflinePlayer(key.substring(0, Math.min(key.length(), 15))));
+        Score score = this.sidebar.getScore(key.substring(0, Math.min(key.length(), 15)));
         score.setScore(value);
         Player player = getPlayer();
         if (player == null) return;
@@ -701,7 +693,7 @@ public final class TPlayer {
         if (!this.isOnline()) {
             return;
         }
-        this.scoreboard.resetScores(Bukkit.getOfflinePlayer(key));
+        this.scoreboard.resetScores(key);
         getPlayer().setScoreboard(this.scoreboard);
     }
 
