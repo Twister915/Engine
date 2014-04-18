@@ -44,7 +44,9 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
     @Getter private GameMeta meta;
     @Getter private GearzClassSystem<PlayerType, ClassType> classSystem;
 
-    public final boolean isClassEnabled() { return classSystem != null; }
+    public final boolean isClassEnabled() {
+        return classSystem != null;
+    }
 
     protected final void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game, GearzClassSystem<PlayerType, ClassType> classSystem) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
@@ -83,9 +85,9 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         }
 
         //Save all the metas for the class in the database
-        if(this.classSystem != null) {
+        if (this.classSystem != null) {
             GearzClassResolver<PlayerType, ClassType> classResolver = this.getClassResolver();
-            for(Class<? extends ClassType> aClass : this.classSystem.getClasses()) {
+            for (Class<? extends ClassType> aClass : this.classSystem.getClasses()) {
                 MinigameClass objectFor = MinigameClass.getObjectFor(this, classResolver.getClassMeta(aClass));
                 objectFor.save();
             }
@@ -98,9 +100,11 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         //Log that the gamemanager is set up
         Gearz.getInstance().debug("GameManager setup!");
 
-		//Save the game in the database
-		MinigameMeta model = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
-		model.save();
+        //Save the game in the database
+        MinigameMeta minigameMeta = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
+        if (minigameMeta.findOne() != null) {
+            minigameMeta.save();
+        }
 
         //Register the game and events
         Gearz.getInstance().registerGame(this);
@@ -122,5 +126,6 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
     }
 
     protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();
+
     protected abstract GearzNetworkManagerPlugin<PlayerType, ? extends GearzPlayerProvider<PlayerType>> getNetworkManager();
 }
