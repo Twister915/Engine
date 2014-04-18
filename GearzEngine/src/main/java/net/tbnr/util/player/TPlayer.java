@@ -125,7 +125,7 @@ public final class TPlayer {
         this.playerDocument.put("usernames", usernames);
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
-        //loadSettings();
+        loadSettings();
     }
 
     public static DBObject getPlayerObject(UUID uuid) {
