@@ -165,7 +165,6 @@ public abstract class Arena implements Votable {
     }
 
     public final Location pointToLocation(Point p) {
-	    Gearz.getInstance().getLogger().info(p == null ? "point is null" : "point is not null");
         return new Location(this.getWorld(), p.getX(), p.getY(), p.getZ(), p.getPitch(), p.getYaw());
     }
 
