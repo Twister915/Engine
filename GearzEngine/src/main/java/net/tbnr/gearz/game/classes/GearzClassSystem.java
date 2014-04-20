@@ -18,4 +18,5 @@ import net.tbnr.gearz.player.GearzPlayer;
 public abstract class GearzClassSystem<PlayerType extends GearzPlayer, AbstractClassType extends GearzAbstractClass<PlayerType>> {
     private final Class<? extends AbstractClassType>[] classes;
     private final GearzClassResolver<PlayerType, AbstractClassType> classResolver;
+    private final Class<? extends AbstractClassType> defaultClass;
 }

@@ -12,6 +12,7 @@
 package net.tbnr.gearz;
 
 import lombok.Getter;
+import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.arena.Arena;
 import net.tbnr.gearz.arena.ArenaManager;
 import net.tbnr.gearz.event.game.GameRegisterEvent;
@@ -30,6 +31,8 @@ import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.TPlugin;
 import net.tbnr.util.command.TCommandHandler;
 import org.bukkit.Bukkit;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -99,7 +102,11 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         Gearz.getInstance().debug("GameManager setup!");
 
 		//Save the game in the database
-		MinigameMeta model = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
+        MinigameMeta model1 = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta);
+        List<GModel> many = model1.findMany();
+
+        MinigameMeta model = new MinigameMeta(Gearz.getInstance().getMongoDB(), meta, this.getClass().getName(), game.getName());
+        if (many.size() > 0) model.setObjectId(model1.getObjectId());
 		model.save();
 
         //Register the game and events

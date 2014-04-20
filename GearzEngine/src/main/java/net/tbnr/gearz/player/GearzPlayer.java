@@ -74,4 +74,8 @@ public class GearzPlayer {
         Gearz.getInstance().debug("GEARZ DEBUG ---<GearzPlayer|279>--------< isValid has been CAUGHT for: " + this.username + " and it returned: " + getPlayer().getName());
         return Bukkit.getPlayer(getUsername()) != null;
     }
+
+    public void sendMessage(String message) {
+        getPlayer().sendMessage(message);
+    }
 }

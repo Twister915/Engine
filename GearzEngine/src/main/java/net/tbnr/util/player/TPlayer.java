@@ -499,6 +499,20 @@ public final class TPlayer {
         this.save();
     }
 
+    public void store(TPlugin plugin, final String key, final Object o) {
+        store(plugin, new TPlayerStorable() {
+            @Override
+            public String getName() {
+                return key;
+            }
+
+            @Override
+            public Object getValue() {
+                return o;
+            }
+        });
+    }
+
     /**
      * Gets the value of a storable
      *
@@ -519,6 +533,11 @@ public final class TPlayer {
      */
     public Object getStorable(TPlugin plugin, String storable_key) {
         return this.playerDocument.get(TPlayer.formatStorable(plugin.getStorablePrefix(), storable_key));
+    }
+
+    public <T> T getStorable(TPlugin plugin, String storable_key, Class<T> clazz) {
+        //noinspection unchecked
+        return (T) getStorable(plugin, storable_key);
     }
 
     /**

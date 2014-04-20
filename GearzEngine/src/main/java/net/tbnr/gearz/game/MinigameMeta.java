@@ -47,6 +47,11 @@ public final class MinigameMeta extends GModel {
 		super(database, dBobject);
 	}
 
+    public MinigameMeta(DB db, GameMeta meta) {
+        super(db);
+        this.key = meta.key();
+    }
+
 	public MinigameMeta(DB database, GameMeta meta, String pluginClass, String gameClass) {
         this(database);
 		this.longName = meta.longName();

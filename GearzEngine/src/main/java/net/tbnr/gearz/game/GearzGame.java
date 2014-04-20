@@ -276,6 +276,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
             classFor.deregisterClass();
             classFor.onClassDeactivate();
             classFor.onGameEndForPlayer();
+            getClassResolver().playerUsedClassFully(player, classFor, this);
         }
         onPlayerGameEnd(player, cause);
         this.endedPlayers.add(player);

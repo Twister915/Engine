@@ -42,7 +42,7 @@ public abstract class GModel {
     /**
      * The ID of this object. Is null by default
      */
-    @Getter private ObjectId objectId;
+    @Setter @Getter private ObjectId objectId;
 
     /**
      * Database
