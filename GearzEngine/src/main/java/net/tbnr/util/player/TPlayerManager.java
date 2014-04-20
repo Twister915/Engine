@@ -60,6 +60,7 @@ public final class TPlayerManager implements Listener {
         } else {
             logger = Bukkit.getLogger();
         }
+        System.out.println(details.toString());
         MongoClient databaseClient;
         try {
             databaseClient = details.getClient();
