@@ -30,7 +30,6 @@
         <module>GearzServerLib</module>
         <module>GearzBungee</module>
         <module>GearzSetup</module>
-        <module>GearzMapDev</module>
         <module>GearzPermissions</module>
         <module>GearzBungeePermissions</module>
         <module>GearzBukkitPermissions</module>

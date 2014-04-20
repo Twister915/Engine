@@ -54,7 +54,7 @@ public final class TPlayerManager implements Listener {
         Logger logger;
         if (gearz != null) {
             logger = gearz.getLogger();
-            if (!gearz.getConfig().getBoolean("database.enable")) {
+            if (!gearz.getConfig().getBoolean("database.enable", true)) {
                 return;
             }
         } else {
