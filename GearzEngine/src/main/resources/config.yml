@@ -51,7 +51,7 @@ formats:
   fail-set: "&cFailed to find your Youtube channel!"
 game-strings:
   #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version> <author>, <description>, and <key>
-  prefix: "<s>&l«<p><gn><s>&l»&r<s> "
+  prefix: "<s>&l\u00AB<p><gn><s>&l\u00BB&r<s> "
   game-cancelled: "<p><gname><s> will not begin because <p><reason><s>." #passed "<reason>" from the event
   game-start: "<s>A new game of <p><gname><s> is starting now!"
   begin-spectating: "<s>You are now <p>spectator<s>, no one can see you, but you can see them :)."
