@@ -3,6 +3,7 @@ channels:
   list:
   - default
   - staff
+  - specatator
 
 formatting:
   default:
@@ -15,3 +16,8 @@ formatting:
     permission: gearz.modbroadcast
     default: false
     filter: false
+  specatator:
+    format: '&7[&cSpectator&7] {4} {6}{1}{5}{7}: {3}'
+    permission: ''
+    default: false
+    filter: true

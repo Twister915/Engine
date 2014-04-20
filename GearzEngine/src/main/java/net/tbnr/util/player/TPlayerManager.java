@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -92,6 +92,7 @@ public final class TPlayerManager implements Listener {
     @SuppressWarnings("unused")
     public void onLogin(PlayerJoinEvent event) {
         TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.getPlayer(event.getPlayer()));
+        tPlayerJoinEvent.getPlayer().loadSettings();
         Bukkit.getPluginManager().callEvent(tPlayerJoinEvent);
         event.setJoinMessage(tPlayerJoinEvent.getJoinMessage());
     }

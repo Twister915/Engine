@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -42,7 +42,7 @@ public class GearzChat extends TPlugin {
         this.channelManager = new ChannelManager();
         ChatManager chatManager = new ChatManager();
         registerCommands(new ChannelCommand());
-        registerEvents(new ChannelsListener());
+        registerEvents(new ChannelsListener(channelManager));
         registerCommands(chatManager);
         registerEvents(chatManager);
         this.channelManager.registerChannels();

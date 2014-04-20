@@ -9,17 +9,27 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.cogz.friends;
+package net.tbnr.util.delegates;
+
+import java.util.List;
 
 /**
- * Created by jake on 3/13/14.
+ * Created by jake on 2/12/14.
  *
  * Purpose Of File:
  *
  * Latest Change:
  */
-public class FriendRequestException extends Exception {
-    public FriendRequestException(String s) {
-        super(s);
-    }
+public interface PermissionsDelegate {
+    String getPrefix(String player);
+
+    String getSuffix(String player);
+
+    String getTabColor(String player);
+
+    String getNameColor(String player);
+
+    List<String> getValidPermissions(String player);
+
+    List<String> getAllPermissions(String player);
 }

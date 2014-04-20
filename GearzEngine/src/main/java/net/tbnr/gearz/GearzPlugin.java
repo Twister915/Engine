@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -47,7 +47,9 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
     @Getter private GameMeta meta;
     @Getter private GearzClassSystem<PlayerType, ClassType> classSystem;
 
-    public final boolean isClassEnabled() { return classSystem != null; }
+    public final boolean isClassEnabled() {
+        return classSystem != null;
+    }
 
     protected final void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game, GearzClassSystem<PlayerType, ClassType> classSystem) throws GearzException {
         GameMeta meta = game.getAnnotation(GameMeta.class);
@@ -86,9 +88,9 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         }
 
         //Save all the metas for the class in the database
-        if(this.classSystem != null) {
+        if (this.classSystem != null) {
             GearzClassResolver<PlayerType, ClassType> classResolver = this.getClassResolver();
-            for(Class<? extends ClassType> aClass : this.classSystem.getClasses()) {
+            for (Class<? extends ClassType> aClass : this.classSystem.getClasses()) {
                 MinigameClass objectFor = MinigameClass.getObjectFor(this, classResolver.getClassMeta(aClass));
                 objectFor.save();
             }
@@ -129,5 +131,6 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
     }
 
     protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();
+
     protected abstract GearzNetworkManagerPlugin<PlayerType, ? extends GearzPlayerProvider<PlayerType>> getNetworkManager();
 }

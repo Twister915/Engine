@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -35,7 +35,7 @@ import java.util.List;
  * @author Jake
  * @since 1/16/2014
  */
-@ToString
+@ToString(exclude = {"members", "format"})
 public class Channel implements BaseChannel {
     private String name;
     private String format;

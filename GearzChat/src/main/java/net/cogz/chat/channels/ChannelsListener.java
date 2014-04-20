@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -34,6 +34,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * @since 1/16/2014
  */
 public class ChannelsListener implements Listener {
+    private ChannelManager channelManager;
+    public ChannelsListener(ChannelManager channelManager) {
+        this.channelManager = channelManager;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     @SuppressWarnings("unused")
     public void onChat(AsyncPlayerChatEvent event) {
@@ -48,14 +53,12 @@ public class ChannelsListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     @SuppressWarnings("unused")
     public void onJoin(PlayerJoinEvent event) {
-        ChannelManager channelManager = GearzChat.getInstance().getChannelManager();
         channelManager.setChannel(event.getPlayer(), channelManager.getDefaultChannel());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     @SuppressWarnings("unused")
     public void onQuit(PlayerQuitEvent event) {
-        ChannelManager channelManager = GearzChat.getInstance().getChannelManager();
         channelManager.removeChannel(event.getPlayer());
     }
 }

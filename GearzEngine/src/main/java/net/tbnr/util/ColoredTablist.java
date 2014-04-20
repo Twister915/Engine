@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -12,6 +12,7 @@
 package net.tbnr.util;
 
 import net.tbnr.gearz.Gearz;
+import net.tbnr.util.delegates.PermissionsDelegate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

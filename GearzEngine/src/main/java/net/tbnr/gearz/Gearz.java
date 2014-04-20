@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -31,6 +31,8 @@ import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
+import net.tbnr.util.delegates.ChatDelegate;
+import net.tbnr.util.delegates.PermissionsDelegate;
 import net.tbnr.util.inventory.SelectorManager;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
@@ -80,6 +82,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     }
 
     @Getter @Setter private PermissionsDelegate permissionsDelegate;
+    @Getter @Setter private ChatDelegate chatDelegate;
 
     @Getter GearzConfig databaseConfig;
 
@@ -181,6 +184,10 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     public void activatePermissionsFeatures() {
         registerEvents(new ColoredTablist());
+    }
+
+    public void activateChatFeatures() {
+
     }
 
     @Override

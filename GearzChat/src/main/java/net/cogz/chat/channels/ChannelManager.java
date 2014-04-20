@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -16,7 +16,7 @@ import lombok.Getter;
 import net.cogz.chat.GearzChat;
 import net.cogz.chat.filter.Filter;
 import net.tbnr.gearz.Gearz;
-import net.tbnr.util.PermissionsDelegate;
+import net.tbnr.util.delegates.PermissionsDelegate;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -54,7 +54,7 @@ public class GUIItem {
     /**
      * An item without lore
      *
-     * @param item  the {@link org.bukkit.inventory.ItemStack} to use
+     * @param item the {@link org.bukkit.inventory.ItemStack} to use
      * @param name the name of the item
      */
     public GUIItem(ItemStack item, String name) {
@@ -79,19 +79,21 @@ public class GUIItem {
             }
             meta.setLore(lore);
         }
+        wrapLore(15);
         item.setItemMeta(meta);
     }
 
-	/**
-	 * Wraps each String in item lore to a specific line length
-	 *
-	 * @param length the maximum line length
-	 * */
-	public void wrapLore(int length) {
-		List<String> newLore = new ArrayList<>();
-		for(String unwrapped : item.getItemMeta().getLore()) {
-			newLore.addAll(Arrays.asList(ChatPaginator.wordWrap(unwrapped, length)));
-		}
-		item.getItemMeta().setLore(newLore);
-	}
- }
+    /**
+     * Wraps each String in item lore to a specific line length
+     *
+     * @param length the maximum line length
+     */
+    public void wrapLore(int length) {
+        List<String> newLore = new ArrayList<>();
+        if (!item.hasItemMeta() || item.getItemMeta().getLore() == null) return;
+        for (String unwrapped : item.getItemMeta().getLore()) {
+            newLore.addAll(Arrays.asList(ChatPaginator.wordWrap(unwrapped, length)));
+        }
+        item.getItemMeta().setLore(newLore);
+    }
+}

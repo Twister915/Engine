@@ -9,27 +9,18 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util;
+package net.tbnr.util.delegates;
 
-import java.util.List;
+import org.bukkit.entity.Player;
 
 /**
- * Created by jake on 2/12/14.
- *
- * Purpose Of File:
- *
+ * <p>
  * Latest Change:
+ * <p>
+ *
+ * @author Jake
+ * @since 4/18/2014
  */
-public interface PermissionsDelegate {
-    String getPrefix(String player);
-
-    String getSuffix(String player);
-
-    String getTabColor(String player);
-
-    String getNameColor(String player);
-
-    List<String> getValidPermissions(String player);
-
-    List<String> getAllPermissions(String player);
+public interface ChatDelegate {
+    void setChannel(Player player, String channel);
 }
