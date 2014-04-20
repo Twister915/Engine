@@ -139,6 +139,7 @@ public class MotdHandler implements Listener, TCommandHandler {
     @SuppressWarnings("unused")
     public TCommandStatus motdReload(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         reload();
+        sender.sendMessage(ChatColor.GOLD + "MOTD data reloaded.");
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -148,17 +149,47 @@ public class MotdHandler implements Listener, TCommandHandler {
             usage = "/staticmotd [minutes] [motd...]",
             senders = {TCommandSender.Player, TCommandSender.Console}
     )
+    @SuppressWarnings("unused")
     public TCommandStatus staticMOTD(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 2) return TCommandStatus.FEW_ARGS;
-        Integer minutes;
-        try {
-            minutes = Integer.valueOf(args[0]);
-        } catch (NumberFormatException ex) {
-            return TCommandStatus.INVALID_ARGS;
+        switch(args[0]) {
+            case "add":
+                Integer minutes;
+                try {
+                    minutes = Integer.valueOf(args[1]);
+                } catch (NumberFormatException ex) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                String message = GearzBungee.getInstance().compile(args, 2, args.length);
+                this.staticMotds.add(new StaticMOTD(message, minutes));
+                sender.sendMessage(ChatColor.GREEN + "Added Static MOTD " + ChatColor.translateAlternateColorCodes('&', message));
+                break;
+            case "delete":
+            case "remove":
+                Integer id;
+                try {
+                    id = Integer.valueOf(args[1]);
+                } catch (NumberFormatException ex) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                StaticMOTD removedMOTD = this.staticMotds.get(id);
+                this.staticMotds.remove(removedMOTD);
+                sender.sendMessage(ChatColor.GREEN + "Removed Static MOTD " + ChatColor.translateAlternateColorCodes('&', removedMOTD.getMotd()));
+                break;
+            case "list":
+                sender.sendMessage(GearzBungee.getInstance().getFormat("header-motdlist", false));
+                int index = 0;
+                for (StaticMOTD motd : this.staticMotds) {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("list-motdlist", false, true, new String[]{"<index>", String.valueOf(index)}, new String[]{"<motd>", motd.getMotd()}));
+                    index++;
+                }
+                break;
+            case "clear":
+                this.staticMotds.clear();
+                break;
+            default:
+                return TCommandStatus.INVALID_ARGS;
         }
-        String message = GearzBungee.getInstance().compile(args, 1, args.length-1);
-        this.staticMotds.add(new StaticMOTD(message, minutes));
-        sender.sendMessage(ChatColor.GREEN + "Added Static MOTD " + ChatColor.translateAlternateColorCodes('&', message));
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -225,6 +256,7 @@ public class MotdHandler implements Listener, TCommandHandler {
     }
 
     @EventHandler(priority = EventPriority.LOW)
+    @SuppressWarnings("unused")
     public void onJoin(PostLoginEvent event) {
         sendMotd(event.getPlayer());
     }
