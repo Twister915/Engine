@@ -73,7 +73,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     @Getter private GearzGame<PlayerType, AbstractClassType> runningGame;
     @Getter private final GearzPlayerProvider<PlayerType> playerProvider;
     private List<String> priorities = new ArrayList<>();
-    private List<GameManagerConnector<PlayerType>> gameManagerConnectors = new ArrayList<>();
+    private List<GameManagerConnector<PlayerType, AbstractClassType>> gameManagerConnectors = new ArrayList<>();
 
     public GameManagerSingleGame(Class<? extends GearzGame<PlayerType, AbstractClassType>> gameClass, GearzPlugin<PlayerType, AbstractClassType> plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
         this.gearzGameClass = gameClass;
@@ -225,7 +225,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
                 player.sendMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", player1.getPlayer().getDisplayName()}));
             }
         }
-        for (GameManagerConnector<PlayerType> gameManagerConnector : this.gameManagerConnectors) {
+        for (GameManagerConnector<PlayerType, AbstractClassType> gameManagerConnector : this.gameManagerConnectors) {
             gameManagerConnector.playerConnectedToLobby(playerProvider.getPlayerFromTPlayer(player1), this);
         }
         spawn(gearzPlayer);
