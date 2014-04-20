@@ -114,6 +114,9 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
         //Register the game and events
         Gearz.getInstance().registerGame(this);
         registerEvents(this.gameManager);
+
+        //Notify our subclass
+        onGameRegister();
     }
 
     protected final void registerGame(Class<? extends Arena> arenaClass, Class<? extends GearzGame<PlayerType, ClassType>> game) throws GearzException {
@@ -133,4 +136,6 @@ public abstract class GearzPlugin<PlayerType extends GearzPlayer, ClassType exte
     protected abstract GearzPlayerProvider<PlayerType> getPlayerProvider();
 
     protected abstract GearzNetworkManagerPlugin<PlayerType, ? extends GearzPlayerProvider<PlayerType>> getNetworkManager();
+
+    protected void onGameRegister() {}
 }

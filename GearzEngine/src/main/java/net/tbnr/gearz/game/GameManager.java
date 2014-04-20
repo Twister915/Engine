@@ -13,6 +13,7 @@ package net.tbnr.gearz.game;
 
 import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.gearz.game.classes.GearzAbstractClass;
+import net.tbnr.gearz.game.single.GameManagerConnector;
 import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.event.Listener;
 
@@ -21,15 +22,15 @@ import org.bukkit.event.Listener;
  */
 public interface GameManager<PlayerType extends GearzPlayer, AbstractClassType extends GearzAbstractClass<PlayerType>> extends Listener {
     public GameMeta getGameMeta();
-
     public GearzPlugin<PlayerType, AbstractClassType> getPlugin();
-
     public void beginGame(Integer id) throws GameStartException;
-
     void gameEnded(GearzGame game);
-
     public void spawn(PlayerType player);
-
     @SuppressWarnings("unused")
     public void disable();
+    void registerListener(GameManagerConnector<PlayerType, AbstractClassType> connector);
+    void removeListener(GameManagerConnector<PlayerType, AbstractClassType> connector);
+
+    GearzGame getRunningGame();
+    boolean isIngame();
 }

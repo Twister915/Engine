@@ -36,6 +36,7 @@ import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
+import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerJoinEvent;
 import org.bukkit.*;
@@ -69,9 +70,10 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     @Getter private GameMeta gameMeta;
     @Getter private GearzPlugin<PlayerType, AbstractClassType> plugin;
     private VotingSession votingSession;
-    private GearzGame<PlayerType, AbstractClassType> runningGame;
+    @Getter private GearzGame<PlayerType, AbstractClassType> runningGame;
     @Getter private final GearzPlayerProvider<PlayerType> playerProvider;
     private List<String> priorities = new ArrayList<>();
+    private List<GameManagerConnector<PlayerType>> gameManagerConnectors = new ArrayList<>();
 
     public GameManagerSingleGame(Class<? extends GearzGame<PlayerType, AbstractClassType>> gameClass, GearzPlugin<PlayerType, AbstractClassType> plugin, GearzPlayerProvider<PlayerType> playerProvider) throws GearzException {
         this.gearzGameClass = gameClass;
@@ -212,15 +214,19 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(final TPlayerJoinEvent event) {
+        TPlayer player1 = event.getPlayer();
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length);
-        ServerManager.addPlayer(event.getPlayer().getPlayerName());
-        event.getPlayer().resetPlayer();
-        final PlayerType gearzPlayer = playerProvider.getPlayerFromTPlayer(event.getPlayer());
+        ServerManager.addPlayer(player1.getPlayerName());
+        player1.resetPlayer();
+        final PlayerType gearzPlayer = playerProvider.getPlayerFromTPlayer(player1);
         event.setJoinMessage(null);
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
-                player.sendMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
+                player.sendMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", player1.getPlayer().getDisplayName()}));
             }
+        }
+        for (GameManagerConnector<PlayerType> gameManagerConnector : this.gameManagerConnectors) {
+            gameManagerConnector.playerConnectedToLobby(playerProvider.getPlayerFromTPlayer(player1), this);
         }
         spawn(gearzPlayer);
         if (this.runningGame == null) {
@@ -406,6 +412,16 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         }
     }
 
+    @Override
+    public void registerListener(GameManagerConnector<PlayerType, AbstractClassType> connector) {
+        this.gameManagerConnectors.add(connector);
+    }
+
+    @Override
+    public void removeListener(GameManagerConnector<PlayerType, AbstractClassType> connector) {
+        this.gameManagerConnectors.remove(connector);
+    }
+
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
         if (this.runningGame != null && this.runningGame.isRunning()) {
@@ -525,5 +541,10 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
 
     public void populatePrioritiesList() {
         this.priorities = Gearz.getInstance().getConfig().getStringList("priorities");
+    }
+
+    @Override
+    public boolean isIngame() {
+        return runningGame != null;
     }
 }
