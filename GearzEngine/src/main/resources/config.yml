@@ -1,7 +1,6 @@
 game_mode: SINGLE
 network_interface: eth1
 message-ping: false
-scoreboard: true
 formats:
   setting-not-found: "&cThat setting was not found."
   setting-not-toggleable: "&cThat setting can not be toggled."
