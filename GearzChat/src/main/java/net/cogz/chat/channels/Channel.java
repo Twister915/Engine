@@ -119,9 +119,9 @@ public class Channel implements BaseChannel {
                 receiver.sendMessage(message);
             }
         }
-        if (this.isCrossServer()) {
-            NetCommand.withName("chat").withArg("channel", this.name).withArg("message", message);
-        }
+        //if (this.isCrossServer()) {
+            //NetCommand.withName("chat").withArg("channel", this.name).withArg("message", message);
+        //}
     }
 
     @Override
