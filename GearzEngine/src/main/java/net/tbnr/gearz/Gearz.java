@@ -222,6 +222,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public TPlayerManager.AuthenticationDetails getAuthDetails() {
+        System.out.println(getDatabaseConfig().getConfig().getString("database.host"));
         return new TPlayerManager.AuthenticationDetails(getDatabaseConfig().getConfig().getString("database.host"), getDatabaseConfig().getConfig().getInt("database.port"), getDatabaseConfig().getConfig().getString("database.database"), getDatabaseConfig().getConfig().getString("database.collection"));
     }
 
