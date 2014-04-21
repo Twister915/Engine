@@ -133,7 +133,7 @@ public abstract class BaseGUI implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
-        if (!event.getInventory().getTitle().equalsIgnoreCase(this.inventory.getTitle())) {
+        if (!event.getInventory().getTitle().equals(this.inventory.getTitle())) {
             return;
         }
         event.setCancelled(true);
@@ -154,11 +154,10 @@ public abstract class BaseGUI implements Listener {
             return;
         }
         for (GUIItem item : this.items) {
-            if (item == null ||
-                    event.getCurrentItem() == null ||
-                    !(event.getCurrentItem().equals(item.getItem()))) {
-                continue;
-            }
+            if (event.getCurrentItem() == null
+                    || !item.getItem().getType().equals(event.getCurrentItem().getType())
+                    || item.getName().equals(event.getCurrentItem().getItemMeta().getDisplayName())
+            ) continue;
             this.callback.onItemSelect(this, item, player1);
         }
     }
