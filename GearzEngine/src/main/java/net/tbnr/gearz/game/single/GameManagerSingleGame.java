@@ -225,15 +225,19 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
                 player.sendMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", player1.getPlayer().getDisplayName()}));
             }
         }
-        for (GameManagerConnector<PlayerType, AbstractClassType> gameManagerConnector : this.gameManagerConnectors) {
-            gameManagerConnector.playerConnectedToLobby(playerProvider.getPlayerFromTPlayer(player1), this);
-        }
         spawn(gearzPlayer);
         if (this.runningGame == null) {
             this.votingSession.addPlayer(gearzPlayer);
         } else {
             this.runningGame.addPlayer(gearzPlayer);
             if (this.runningGame.isHideStream()) event.setJoinMessage(null);
+        }
+        for (GameManagerConnector<PlayerType, AbstractClassType> gameManagerConnector : this.gameManagerConnectors) {
+            try {
+                gameManagerConnector.playerConnectedToLobby(playerProvider.getPlayerFromTPlayer(player1), this);
+            } catch (Throwable t) {
+                continue;
+            }
         }
         ItemStack stack = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) stack.getItemMeta();

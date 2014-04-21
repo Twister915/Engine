@@ -48,7 +48,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
     Map<String, String> overheadNicks = new HashMap<>();
 
     public GearzNickname() {
-		ProtocolLibrary.getProtocolManager().addPacketListener(
+		/*ProtocolLibrary.getProtocolManager().addPacketListener(
 				new PacketAdapter(Gearz.getInstance(), PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
 					@Override
 					public void onPacketSending(PacketEvent event) {
@@ -58,7 +58,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
                             event.getPacket().getStrings().write(0, overheadNicks.get(username));
                         }
 					}
-				});
+				});*/
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

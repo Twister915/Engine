@@ -211,20 +211,12 @@ public final class ArenaManager {
             return null;
         }
         for (Field field : arenaClass.getFields()) {
-            if (!(field.isAnnotationPresent(ArenaField.class))) {
-                continue;
-            }
-            if (!field.getType().equals(ArenaIterator.class)) {
-                continue;
-            }
+            if (!(field.isAnnotationPresent(ArenaField.class))) continue;
+            if (!ArenaIterator.class.isAssignableFrom(field.getType())) continue;
             ArenaField annotation = field.getAnnotation(ArenaField.class);
-            if (!object.containsField(annotation.key())) {
-                continue;
-            }
+            if (!object.containsField(annotation.key())) continue;
             Object o = object.get(annotation.key());
-            if (!(o instanceof BasicDBList)) {
-                continue;
-            }
+            if (!(o instanceof BasicDBList)) continue;
             BasicDBList list = (BasicDBList) o;
             List<Object> list2 = new ArrayList<>();
             ArenaFieldSerializer.SerializationDelegate serializer = null;

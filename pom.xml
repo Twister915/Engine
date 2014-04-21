@@ -39,7 +39,6 @@
         <module>GearzBukkitFriends</module>
         <module>GearzSettings</module>
         <module>GearzChat</module>
-        <module>GearzPlayerManager</module>
     </modules>
 
     <properties>
