@@ -50,7 +50,7 @@ public class UnPunishCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             }
             Punishment punishment = manager.getValidIpBan(args[0]);
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", manager.punisherFromUUID(punishment.issuer)}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.time)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", manager.punisherFromUUID(punishment.issuer)}));
         }
 
         new UUIDUtil(args[0], new UUIDUtil.UUIDCallback() {
