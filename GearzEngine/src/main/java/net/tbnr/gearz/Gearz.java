@@ -186,10 +186,6 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         registerEvents(new ColoredTablist());
     }
 
-    public void activateChatFeatures() {
-
-    }
-
     @Override
     public String getStorablePrefix() {
         return "gearz";
