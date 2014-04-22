@@ -66,7 +66,7 @@ public class PermissionsCommands implements TCommandHandler {
 		    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
 		    return TCommandStatus.SUCCESSFUL;
 	    } catch(Exception ex) {
-		    return null; // todo
+		    return TCommandStatus.INVALID_ARGS;
 	    }
 
 	    // If player is null return null player
