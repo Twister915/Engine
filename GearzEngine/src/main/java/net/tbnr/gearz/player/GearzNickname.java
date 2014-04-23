@@ -40,13 +40,8 @@ public final class GearzNickname implements Listener, TCommandHandler {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	@SuppressWarnings("unused")
-	public void onPlayerJoin(final TPlayerJoinEvent event) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Gearz.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                updateNickname(event.getPlayer());
-            }
-        }, 120);
+	public void onPlayerJoin(TPlayerJoinEvent event) {
+		this.updateNickname(event.getPlayer());
 	}
 
 	@TCommand(

@@ -15,9 +15,7 @@ import net.tbnr.gearz.Gearz;
 import net.tbnr.util.delegates.PermissionsDelegate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Created by rigor789 on 2013.12.29..
@@ -27,12 +25,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
  * Latest Change:
  */
 public class ColoredTablist implements Listener {
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        updateNick(player);
-    }
 
     public static String getPlayerTabColor(Player player) {
         PermissionsDelegate permsManager = Gearz.getInstance().getPermissionsDelegate();
