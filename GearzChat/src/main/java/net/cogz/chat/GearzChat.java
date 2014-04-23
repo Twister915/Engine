@@ -17,7 +17,6 @@ import net.cogz.chat.channels.ChannelCommand;
 import net.cogz.chat.channels.ChannelManager;
 import net.cogz.chat.channels.ChannelsListener;
 import net.cogz.chat.data.Chat;
-import net.cogz.chat.data.ChatManager;
 import net.tbnr.gearz.config.GearzConfig;
 import net.tbnr.util.TPlugin;
 

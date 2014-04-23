@@ -9,10 +9,10 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.cogz.chat.data;
+package net.cogz.chat;
 
 import com.mongodb.BasicDBList;
-import net.cogz.chat.GearzChat;
+import net.cogz.chat.data.Chat;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
