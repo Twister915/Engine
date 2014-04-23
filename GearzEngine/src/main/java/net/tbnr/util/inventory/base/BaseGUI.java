@@ -16,6 +16,7 @@ import net.tbnr.gearz.Gearz;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -111,6 +112,7 @@ public abstract class BaseGUI implements Listener {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
         }
         player.closeInventory();
+        HandlerList.unregisterAll(this);
     }
 
     @EventHandler
