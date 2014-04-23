@@ -12,7 +12,6 @@
 package net.tbnr.gearz.game;
 
 import lombok.Getter;
-import net.tbnr.gearz.GearzPlugin;
 import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 

@@ -40,7 +40,7 @@ public enum ArenaFieldSerializer {
                 double z = ((Number) object.get("z")).doubleValue();
                 float pitch = ((Number) object.get("pitch")).floatValue();
                 float yaw = ((Number) object.get("yaw")).floatValue();
-                System.out.println("Yo, I've decoded a point " + (new Point(x, y, z, pitch, yaw).toString()));
+                //System.out.println("Yo, I've decoded a point " + (new Point(x, y, z, pitch, yaw).toString()));
                 return new Point(x, y, z, pitch, yaw);
             }
             catch (ClassCastException | NullPointerException ex) {

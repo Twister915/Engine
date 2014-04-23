@@ -11,10 +11,6 @@
 
 package net.tbnr.gearz.player;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.ColoredTablist;
 import net.tbnr.util.command.TCommand;
