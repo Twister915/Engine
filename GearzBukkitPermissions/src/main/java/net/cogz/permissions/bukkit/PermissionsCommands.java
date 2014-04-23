@@ -41,12 +41,12 @@ import java.util.Map;
  */
 public class PermissionsCommands implements TCommandHandler {
 
-	private PermissionsManager permsManager;
+    private PermissionsManager permsManager;
 
-	public PermissionsCommands() {
-		// Get the perm manager current instance
-		permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
-	}
+    public PermissionsCommands() {
+        // Get the perm manager current instance
+        permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
+    }
 
     @TCommand(
             name = "player",
@@ -55,195 +55,195 @@ public class PermissionsCommands implements TCommandHandler {
             senders = {TCommandSender.Player, TCommandSender.Console})
     @SuppressWarnings("unused")
     public TCommandStatus player(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
-	    if (args.length < 2) return TCommandStatus.FEW_ARGS;
-	    // Continue if args is 2 or bigger
+        if (args.length < 2) return TCommandStatus.FEW_ARGS;
+        // Continue if args is 2 or bigger
 
-	    PermPlayer player;
-	    try {
-		    // Get's the offline version of the player ~ .trim() removes whitespace from the argument (Just in case)
-		    player = permsManager.getOfflinePlayer(args[0].trim());
-	    } catch(NullPointerException ex) {
-		    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
-		    return TCommandStatus.SUCCESSFUL;
-	    } catch(Exception ex) {
-		    return TCommandStatus.INVALID_ARGS;
-	    }
+        PermPlayer player;
+        try {
+            // Get's the offline version of the player ~ .trim() removes whitespace from the argument (Just in case)
+            player = permsManager.getOfflinePlayer(args[0].trim());
+        } catch (NullPointerException ex) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
+            return TCommandStatus.SUCCESSFUL;
+        } catch (Exception ex) {
+            return TCommandStatus.INVALID_ARGS;
+        }
 
-	    // If player is null return null player
-	    if(player == null) {
-		    sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
-		    return TCommandStatus.SUCCESSFUL;
-	    }
+        // If player is null return null player
+        if (player == null) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
+            return TCommandStatus.SUCCESSFUL;
+        }
 
-	    // Commands to follow
+        // Commands to follow
         switch (args[1]) {
-	        // If reset or delete is the command : delete the player
+            // If reset or delete is the command : delete the player
             case "reset":
             case "delete":
-	            return deletePlayer(sender, player);
+                return deletePlayer(sender, player);
             case "set":
-	            return setPlayerPerm(sender, player, args);
+                return setPlayerPerm(sender, player, args);
             case "remove":
             case "unset":
-	            return unsetPlayersGroup(sender, player, args);
+                return unsetPlayersGroup(sender, player, args);
             case "check":
-	            return checkPlayerPerms(sender, player, args);
+                return checkPlayerPerms(sender, player, args);
             case "perms":
             case "show":
             case "permissions":
-	            return showPermissions(sender, player, args);
+                return showPermissions(sender, player, args);
             case "setgroup":
-	            return setPlayerGroup(sender, player, args);
+                return setPlayerGroup(sender, player, args);
             case "removegroup":
-	            return removePlayerGroup(sender, player, args);
+                return removePlayerGroup(sender, player, args);
             case "prefix":
-	            return setPrefix(sender, player, args);
+                return setPrefix(sender, player, args);
             case "suffix":
-	            return setSuffix(sender, player, args);
+                return setSuffix(sender, player, args);
             case "tabcolor":
-	            return setTabColor(sender, player, args);
+                return setTabColor(sender, player, args);
             case "namecolor":
-	            return setNameColor(sender, player, args);
+                return setNameColor(sender, player, args);
             default:
                 return TCommandStatus.INVALID_ARGS;
         }
     }
 
-	private TCommandStatus setNameColor(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.namecolor")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 3) return TCommandStatus.FEW_ARGS;
-		player.nameColor = args[2].trim();
-		sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
-		player.save();
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus setNameColor(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.namecolor")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.FEW_ARGS;
+        player.nameColor = args[2].trim();
+        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
+        player.save();
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus setTabColor(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.tabcolor")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 3) return TCommandStatus.FEW_ARGS;
-		player.tabColor = args[2].trim();
-		sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
-		player.save();
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus setTabColor(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.tabcolor")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.FEW_ARGS;
+        player.tabColor = args[2].trim();
+        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
+        player.save();
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus setSuffix(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.suffix")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 3) return TCommandStatus.FEW_ARGS;
-		if (args[2].trim().equals("null")) {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix-null", false, new String[]{"<target>", player.getName()}));
-			player.suffix = null;
-			player.save();
-		} else {
-			String suffix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
-			player.suffix = suffix;
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<suffix>", suffix}));
-			player.save();
-		}
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus setSuffix(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.suffix")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.FEW_ARGS;
+        if (args[2].trim().equals("null")) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix-null", false, new String[]{"<target>", player.getName()}));
+            player.suffix = null;
+            player.save();
+        } else {
+            String suffix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
+            player.suffix = suffix;
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix", true, new String[]{"<suffix>", suffix}));
+            player.save();
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus setPrefix(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.prefix")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 3) return TCommandStatus.FEW_ARGS;
-		if (args[2].trim().equals("null")) {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix-null", false, new String[]{"<target>", player.getName()}));
-			player.prefix = null;
-			player.save();
-		} else {
-			String prefix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
-			player.prefix = prefix;
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix", true, new String[]{"<prefix>", prefix}));
-			player.save();
-		}
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus setPrefix(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.prefix")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.FEW_ARGS;
+        if (args[2].trim().equals("null")) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix-null", false, new String[]{"<target>", player.getName()}));
+            player.prefix = null;
+            player.save();
+        } else {
+            String prefix = GearzBukkitPermissions.getInstance().compile(args, 2, args.length).trim();
+            player.prefix = prefix;
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix", true, new String[]{"<prefix>", prefix}));
+            player.save();
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus removePlayerGroup(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.removegroup")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 2) return TCommandStatus.FEW_ARGS;
-		PermGroup grp = permsManager.getGroup(player.getGroup());
-		if (grp == null) {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
-		} else {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
-			player.removeGroup();
-		}
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus removePlayerGroup(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.removegroup")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 2) return TCommandStatus.FEW_ARGS;
+        PermGroup grp = permsManager.getGroup(player.getGroup());
+        if (grp == null) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
+        } else {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
+            player.removeGroup();
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus setPlayerGroup(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.addgroup")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 3) return TCommandStatus.FEW_ARGS;
-		PermGroup group = permsManager.getGroup(args[2]);
-		if (group == null) {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
-		} else {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.added-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
-			player.setGroup(group);
-		}
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus setPlayerGroup(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.addgroup")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.FEW_ARGS;
+        PermGroup group = permsManager.getGroup(args[2]);
+        if (group == null) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
+        } else {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.added-player-group", false, new String[]{"<player>", args[0]}, new String[]{"<group>", args[2]}));
+            player.setGroup(group);
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus showPermissions(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.show")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 2) return TCommandStatus.FEW_ARGS;
-		String[] split;
-		for (String perm : player.getPermissions()) {
-			split = perm.split(",");
-			sender.sendMessage(split[0] + " : " + split[1]);
-		}
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus showPermissions(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.show")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 2) return TCommandStatus.FEW_ARGS;
+        String[] split;
+        for (String perm : player.getPermissions()) {
+            split = perm.split(",");
+            sender.sendMessage(split[0] + " : " + split[1]);
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus checkPlayerPerms(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.check")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 3) return TCommandStatus.INVALID_ARGS;
+    private TCommandStatus checkPlayerPerms(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.check")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.INVALID_ARGS;
 
-		if (player.hasPermission(args[2])) {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.check-player-perm-value", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}, new String[]{"<value>", true + ""}));
-		} else {
-			sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.check-player-perm-invalid", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}));
-		}
-		return TCommandStatus.SUCCESSFUL;
-	}
+        if (player.hasPermission(args[2])) {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.check-player-perm-value", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}, new String[]{"<value>", true + ""}));
+        } else {
+            sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.check-player-perm-invalid", false, new String[]{"<player>", args[0]}, new String[]{"<permission>", args[2]}));
+        }
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus unsetPlayersGroup(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.remove")) return TCommandStatus.PERMISSIONS;
-		if (args.length < 3) return TCommandStatus.FEW_ARGS;
+    private TCommandStatus unsetPlayersGroup(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.remove")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.FEW_ARGS;
 
-		sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-perm", false, new String[]{"<permission>", args[2]}, new String[]{"<player>", args[0]}));
-		player.removePermission(args[2]);
-		return TCommandStatus.SUCCESSFUL;
-	}
+        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-player-perm", false, new String[]{"<permission>", args[2]}, new String[]{"<player>", args[0]}));
+        player.removePermission(args[2]);
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus setPlayerPerm(CommandSender sender, PermPlayer player, String[] args) {
-		if (!sender.hasPermission("gearz.permissions.player.set")) return TCommandStatus.PERMISSIONS;
-		if(args.length < 3) return TCommandStatus.FEW_ARGS;
-		Boolean value = true;
+    private TCommandStatus setPlayerPerm(CommandSender sender, PermPlayer player, String[] args) {
+        if (!sender.hasPermission("gearz.permissions.player.set")) return TCommandStatus.PERMISSIONS;
+        if (args.length < 3) return TCommandStatus.FEW_ARGS;
+        Boolean value = true;
 
-		try {
-			if (args.length >= 4) value = Boolean.parseBoolean(args[3]);
-		} catch(Exception exception) {
-			return TCommandStatus.INVALID_ARGS;
-		}
+        try {
+            if (args.length >= 4) value = Boolean.parseBoolean(args[3]);
+        } catch (Exception exception) {
+            return TCommandStatus.INVALID_ARGS;
+        }
 
-		String permission = args[2];
-		sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-player-perm", false, new String[]{"<permission>", permission}, new String[]{"<player>", args[0]}, new String[]{"<value>", value + ""}));
-		permsManager.givePermToPlayer(args[0].trim(), permission, value);
-		return TCommandStatus.SUCCESSFUL;
-	}
+        String permission = args[2];
+        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-player-perm", false, new String[]{"<permission>", permission}, new String[]{"<player>", args[0]}, new String[]{"<value>", value + ""}));
+        permsManager.givePermToPlayer(args[0].trim(), permission, value);
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	private TCommandStatus deletePlayer(CommandSender sender, PermPlayer player) {
-		if (!sender.hasPermission("gearz.permissions.player.delete")) return TCommandStatus.PERMISSIONS;
-		String name = player.getName();
-		player.remove();
-		permsManager.onJoin(name);
-		sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.player-deleted"));
-		return TCommandStatus.SUCCESSFUL;
-	}
+    private TCommandStatus deletePlayer(CommandSender sender, PermPlayer player) {
+        if (!sender.hasPermission("gearz.permissions.player.delete")) return TCommandStatus.PERMISSIONS;
+        String name = player.getName();
+        player.remove();
+        permsManager.onJoin(name);
+        sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.player-deleted"));
+        return TCommandStatus.SUCCESSFUL;
+    }
 
-	@TCommand(
+    @TCommand(
             name = "group",
             usage = "/group",
             permission = "gearz.permissions.group",
