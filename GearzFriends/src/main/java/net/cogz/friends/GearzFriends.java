@@ -50,6 +50,9 @@ public abstract class GearzFriends {
             DBObject friendObject = getById(id);
             friends.add((String) friendObject.get("current_username"));
         }
+        for (String friend : friends ) {
+            System.out.println("FOUND FRIEND: " +friend);
+        }
         return friends;
     }
 

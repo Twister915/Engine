@@ -142,7 +142,7 @@ public final class TPlayer {
     }
 
     public static DBObject getPlayerObjectByLastKnownName(String name) {
-        BasicDBObject query = new BasicDBObject("current_username", name); //Query the database for the player's UUID
+        BasicDBObject query = new BasicDBObject("current_username", name); //Query the database for the player's last known username
         DBCursor cursor = TPlayerManager.getInstance().getCollection().find(query);
         if (cursor.hasNext()) {
             return cursor.next();
