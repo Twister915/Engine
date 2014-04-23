@@ -105,7 +105,6 @@ public abstract class GearzPermissions {
      */
     public PermPlayer onJoin(String player) {
         GModel one = new PermPlayer(this.database, getUUID(player), player).findOne();
-        System.out.println("searching for: " + getUUID(player) + " for player " +  player);
         if (one == null) {
             String uuid = getUUID(player);
             if (uuid == null) throw new IllegalArgumentException("Not a valid player");
