@@ -51,7 +51,7 @@ public class UUIDUtil {
         @Override
         public void run() {
             Profile[] profiles = httpProfileRepository.findProfilesByCriteria(new ProfileCriteria(username, AGENT));
-            if (profiles[0] == null) {
+            if (profiles.length == 0) {
                 this.uuid = null;
             } else {
                 uuid = profiles[0].getId();
