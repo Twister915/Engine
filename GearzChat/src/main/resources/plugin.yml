@@ -11,8 +11,10 @@ commands:
     description: Lists all currently regsistered channels.
   modbroadcast:
     description: Switches the player to the staff channel.
+    aliases: [mb]
   default:
     description: Switches the player to the default channel.
+    aliases: [d]
   chat:
     description: Chat management commands such as mute, unmute, etc.
   censor:
