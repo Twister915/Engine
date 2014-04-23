@@ -92,8 +92,7 @@ public abstract class BaseGUI implements Listener {
         updateContents(items);
     }
 
-    public void openGUI(Player player) {
-    }
+    public void openGUI(Player player) {}
 
     public void open(Player player) {
         player.openInventory(inventory);
@@ -103,8 +102,7 @@ public abstract class BaseGUI implements Listener {
         callback.onGUIOpen(this, player);
     }
 
-    public void closeGUI(Player player) {
-    }
+    public void closeGUI(Player player) {}
 
     public void close(Player player) {
         if (effects) {
