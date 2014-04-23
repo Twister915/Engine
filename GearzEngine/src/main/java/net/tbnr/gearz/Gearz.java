@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -12,16 +12,16 @@
 package net.tbnr.gearz;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import net.tbnr.gearz.activerecord.GModel;
+import net.tbnr.gearz.config.GearzConfig;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.netcommand.NetCommand;
-import net.tbnr.gearz.player.ClearChat;
+import net.tbnr.gearz.network.GearzNetworkManagerPlugin;
+import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzNickname;
-import net.tbnr.gearz.player.GearzPlayerUtils;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.gearz.server.ServerManagerHelper;
@@ -31,16 +31,15 @@ import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
-import net.tbnr.util.inventory.InventoryRefresher;
+import net.tbnr.util.delegates.ChatDelegate;
+import net.tbnr.util.delegates.PermissionsDelegate;
+import net.tbnr.util.inventory.SelectorManager;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.tyrannyofheaven.bukkit.zPermissions.ZPermissionsService;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -53,36 +52,26 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     /**
      * The Gearz instance.
      */
-    private static Gearz instance;
+    @Getter private static Gearz instance;
     /**
      * Stores the Random for Gearz
      */
     private static Random random;
-
     private static String bungeeName2;
     /**
      * Jedis pool
      */
     private JedisPool jedisPool;
-
-    public List<GearzPlugin> getGamePlugins() {
-        return gamePlugins;
-    }
-
-    private List<GearzPlugin> gamePlugins;
-
+    @Getter private List<GearzPlugin> gamePlugins;
     public static final String CHAN = "GEARZ_NETCOMMAND";
+    @Getter @Setter private boolean isLobbyServer;
+    @Getter SelectorManager selectorManager;
 
-    @Getter
-    @Setter
-    private boolean isLobbyServer;
+    @Getter @Setter private GearzNetworkManagerPlugin networkManager;
 
-    public static Gearz getInstance() {
-        return instance;
+    public GearzPlayerProvider getPlayerProvider() {
+        return this.networkManager.getPlayerProvider();
     }
-
-    @Getter
-    InventoryRefresher inventoryRefresher;
 
     public boolean showDebug() {
         return false;
@@ -92,85 +81,21 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return random;
     }
 
-    @Getter @Setter
-    public PermissionsDelegate permissionsDelegate;
+    @Getter @Setter private PermissionsDelegate permissionsDelegate;
+    @Getter @Setter private ChatDelegate chatDelegate;
+
+    @Getter GearzConfig databaseConfig;
 
     public Gearz() {
-        Gearz.instance = this;
         Gearz.random = new Random();
     }
 
     @Override
     public void enable() {
+        Gearz.instance = this;
 
         //** ENABLE **
         //This method is a bit confusing. Let's comment/clean it up a bit <3
-
-
-        //Setup zPermissions bridge
-
-        Plugin zPermissions = Bukkit.getPluginManager().getPlugin("zPermissions");
-        if (zPermissions != null) {
-            ZPermissionsService service = null;
-            try {
-                service = Bukkit.getServicesManager().load(ZPermissionsService.class);
-            }
-            catch (NoClassDefFoundError ignored) {}
-            if (service != null) {
-                final ZPermissionsService finalService = service;
-                this.setPermissionsDelegate(new PermissionsDelegate() {
-                    @Override
-                    public String getPrefix(String player) {
-                        String group = getGroup(player);
-                        String prefix = getPlayerData(player, "prefix", "");
-                        if (prefix == null || prefix.equals("")) prefix = getGroupData(group, "prefix", group);
-                        return prefix;
-                    }
-
-                    @Override
-                    public String getSuffix(String player) {
-                        return "";
-                    }
-
-                    @Override
-                    public String getTabColor(String player) {
-                        String group = getGroup(player);
-                        String suffix = getPlayerData(player, "suffix", "");
-                        if (suffix == null || suffix.equals("")) suffix = getGroupData(group, "suffix", group);
-                        return suffix;
-                    }
-
-                    @Override
-                    public String getNameColor(String player) {
-                        return null;
-                    }
-
-                    @Override
-                    public List<String> getValidPermissions(String player) {
-                        return null;
-                    }
-
-                    @Override
-                    public List<String> getAllPermissions(String player) {
-                        return null;
-                    }
-
-                    private String getPlayerData(String player, String node, String defaultVal) {
-                        String playerMetadata = finalService.getPlayerMetadata(player, node, String.class);
-                        if (playerMetadata == null) return defaultVal;
-                        return playerMetadata;
-                    }
-                    private String getGroupData(String group, String node, String defaultVal) {
-                        String groupMetadata = finalService.getGroupMetadata(group, node, String.class);
-                        if (groupMetadata == null) return defaultVal;
-                        return groupMetadata;
-                    }
-                    private String getGroup(String player) {
-                        return finalService.getPlayerPrimaryGroup(player);
-                    }
-                });
-            }
-        }
 
         //Reset all players for the EnderBar
         EnderBar.resetPlayers();
@@ -187,7 +112,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         }
 
         //Setup the Jedis pool so we can communicate with BungeeCord using our NetCommand system.
-        this.jedisPool = new JedisPool(getConfig().getString("redis.host"), getConfig().getInt("redis.port"));
+        this.jedisPool = new JedisPool(getDatabaseConfig().getConfig().getString("redis.host"), getDatabaseConfig().getConfig().getInt("redis.port"));
 
         //Setup an array to hold a list of all Gearz plugins.
         this.gamePlugins = new ArrayList<>();
@@ -196,29 +121,20 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         registerEvents(nicknameHandler);
         registerCommands(nicknameHandler);
 
-        //Setup the player utils commands and events
-        GearzPlayerUtils gearzPlayerUtils = new GearzPlayerUtils();
-        registerEvents(gearzPlayerUtils);
-        registerCommands(gearzPlayerUtils);
-
         //Generic player utils
         registerEvents(new PlayerListener());
         registerEvents(new EnderBar.EnderBarListeners());
-        registerCommands(new ClearChat());
         registerCommands(new SettingsCommands());
         new TabListener();
 
         //EnderBar utils
         registerEvents(new EnderBar.EnderBarListeners());
 
-        //ClearChat
-        registerCommands(new ClearChat());
-
         //Silk Touch 32 listener for effects
         EnchantmentEffect.addEnchantmentListener();
 
         //Setup the inv refresher. This is used in the server selector.
-        this.inventoryRefresher = new InventoryRefresher();
+        this.selectorManager = new SelectorManager();
 
         //Setup some hooks for the GModel class to connect to our database.
         GModel.setDefaultDatabase(this.getMongoDB());
@@ -252,9 +168,18 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public void disable() {
+        saveConfig();
+        getDatabaseConfig().saveConfig();
         ServerManager.getThisServer().remove();
         NetCommand.withName("disconnect").withArg("name", Gearz.bungeeName2);
         EnderBar.resetPlayers();
+    }
+
+    @Override
+    public void initGearzConfigs() {
+        this.databaseConfig = new GearzConfig(this, "database.yml");
+        this.databaseConfig.getConfig().options().copyDefaults(true);
+        this.databaseConfig.saveDefaultConfig();
     }
 
     public void activatePermissionsFeatures() {
@@ -293,9 +218,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
 
     @Override
     public TPlayerManager.AuthenticationDetails getAuthDetails() {
-        return new TPlayerManager.AuthenticationDetails(getConfig().getString("database.host"), getConfig().getInt("database.port"), getConfig().getString("database.database"), getConfig().getString("database.collection"));
+        return new TPlayerManager.AuthenticationDetails(getDatabaseConfig().getConfig().getString("database.host"), getDatabaseConfig().getConfig().getInt("database.port"), getDatabaseConfig().getConfig().getString("database.database"), getDatabaseConfig().getConfig().getString("database.collection"));
     }
-
 
     public Jedis getJedisClient() {
         return jedisPool.getResource();
@@ -315,26 +239,9 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return this.gamePlugins.size() > 0;
     }
 
-    private static void delete(@NonNull File file) {
-        if (file.isDirectory()) {
-            try {
-                for (File f : file.listFiles()) {
-                    delete(f);
-                }
-            } catch (NullPointerException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (!file.delete()) Gearz.getInstance().getLogger().warning("File: " + file + " could not be deleted");
-    }
-
     @Override
     public String getGame() {
         return (this.isGameServer() ? this.gamePlugins.get(0).getGameManager().getGameMeta().key() : null);
-    }
-
-    public static String getBungeeName2() {
-        return bungeeName2;
     }
 
     public String getBungeeName() {
@@ -357,5 +264,10 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
             }
         }
         return fin == null ? null : fin.getHostAddress();
+    }
+
+    public void debug(String string) {
+        if (!showDebug()) return;
+        getLogger().info(string);
     }
 }

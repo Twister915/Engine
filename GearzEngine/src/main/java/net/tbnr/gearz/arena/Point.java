@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -14,6 +14,8 @@ package net.tbnr.gearz.arena;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.bukkit.Location;
+import org.bukkit.World;
 
 /**
  * Point class
@@ -46,5 +48,9 @@ public final class Point {
 
     public Point(int x, int y, int z, int pitch, int yaw) {
         this((double) x, (double) y, (double) z, (float) pitch, (float) yaw);
+    }
+
+    public Location toLocation(World world) {
+        return new Location(world, x, y, z, yaw, pitch);
     }
 }

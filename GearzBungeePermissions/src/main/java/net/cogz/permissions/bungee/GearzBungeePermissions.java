@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -21,7 +21,15 @@ import net.tbnr.util.TPluginBungee;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Bungee Side Permissions Plugin
+ * Bungee Plugin implementation of the
+ * Gearz permissions API
+ *
+ * <p>
+ * Latest Change: Run reload ASync
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 @SuppressWarnings("FieldCanBeLocal")
 public class GearzBungeePermissions extends TPluginBungee {
@@ -52,6 +60,5 @@ public class GearzBungeePermissions extends TPluginBungee {
     }
 
     @Override
-    protected void stop() {
-    }
+    protected void stop() { }
 }

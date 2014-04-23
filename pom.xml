@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright (c) 2014.
-  ~ Cogz Development LLC USA
+  ~ CogzMC LLC USA
   ~ All Right reserved
   ~
   ~ This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -30,16 +30,15 @@
         <module>GearzServerLib</module>
         <module>GearzBungee</module>
         <module>GearzSetup</module>
-        <module>GearzMapDev</module>
         <module>GearzPermissions</module>
         <module>GearzBungeePermissions</module>
         <module>GearzBukkitPermissions</module>
-        <module>GearzHub</module>
         <module>GearzPunishments</module>
         <module>GearzBungeePunishments</module>
         <module>GearzFriends</module>
         <module>GearzBukkitFriends</module>
         <module>GearzSettings</module>
+        <module>GearzChat</module>
     </modules>
 
     <properties>

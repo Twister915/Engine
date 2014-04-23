@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -42,15 +42,5 @@ public class BaseReceiver {
         ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(player);
         if (player1 == null) return;
         GearzPlayerManager.getInstance().storePlayer(player1);
-    }
-
-    @NetCommandHandler(args = {"player"}, name = "update_nick")
-    public void onNickUpdate(HashMap<String, Object> args) {
-        Object s = args.get("player");
-        if (!(s instanceof String)) return;
-        String player = (String) s;
-        ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(player);
-        if (player1 == null) return;
-        GearzPlayerManager.getGearzPlayer(player1).updateNickname();
     }
 }

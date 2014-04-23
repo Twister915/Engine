@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -42,7 +42,7 @@ public abstract class GModel {
     /**
      * The ID of this object. Is null by default
      */
-    @Getter private ObjectId objectId;
+    @Setter @Getter private ObjectId objectId;
 
     /**
      * Database
@@ -488,7 +488,7 @@ public abstract class GModel {
         String name;
         if (clazz.isAnnotationPresent(Collection.class)) {
             Collection annotation = clazz.getAnnotation(Collection.class);
-            name = annotation.name();
+            name = annotation.value();
         } else {
             name = clazz.getSimpleName().toLowerCase();
             name = name + "s";

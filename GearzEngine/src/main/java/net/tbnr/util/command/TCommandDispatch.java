@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -21,10 +21,7 @@ import org.bukkit.plugin.PluginManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is the dispatcher for all commands. It will handle commands and dispatch them to the proper methods.
@@ -252,8 +249,15 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
 
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] strings) {
-        return null;
+    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
+        List<String> matches = new ArrayList<>();
+        String search = args[args.length - 1].toLowerCase();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
+                matches.add(player.getName());
+            }
+        }
+        return matches;
     }
 
     /**

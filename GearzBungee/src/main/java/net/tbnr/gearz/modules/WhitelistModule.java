@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -25,13 +25,17 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 
 import java.util.List;
 
-
 /**
- * Created by Jake on 1/15/14.
+ * Module that allows for global whitelisting
+ * on the BungeeCord level. Includes the exact
+ * same commands as Bukkit's default whitelist.
  *
- * Purpose Of File: A Bungee Whitelist
+ * <p>
+ * Latest Change: Fix whitelisting players
+ * <p>
  *
- * Latest Change: Fix whitelisting
+ * @author Jake
+ * @since 1/15/2014
  */
 public class WhitelistModule implements TCommandHandler, Listener {
     @TCommand(name = "gwhitelist", permission = "gearz.gwhitelist", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/gwhitelist <argument>")

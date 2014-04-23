@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright (c) 2014.
-  ~ Cogz Development LLC USA
+  ~ CogzMC LLC USA
   ~ All Right reserved
   ~
   ~ This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -20,12 +20,14 @@
         <version>1.1-SNAPSHOT</version>
     </parent>
     <version>1.0-SNAPSHOT</version>
-
     <artifactId>GearzBungee</artifactId>
+
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <repositories>
         <repository>
             <id>snapshot-repo</id>
@@ -36,6 +38,7 @@
             <url>http://repo.craftminecraft.net/content/groups/public/</url>
         </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>net.md-5</groupId>
@@ -95,14 +98,20 @@
             <artifactId>bungeeyaml</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>AccountsClient</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.artifactId}-No-Dependencies</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -128,6 +137,7 @@
                                     <include>com.maxmind.geoip:geoip-api</include>
                                     <include>net.craftminecraft.bungee:bungeeyaml</include>
                                     <include>net.tbnr.gearz:GearzActiveRecord</include>
+                                    <include>com.mojang:AccountsClient</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

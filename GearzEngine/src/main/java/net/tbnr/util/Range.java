@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -19,25 +19,25 @@ package net.tbnr.util;
  * To change this template use File | Settings | File Templates.
  */
 public final class Range {
-    private final Integer x;
-    private final Integer y;
+    private final Number x;
+    private final Number y;
 
     private static enum RangeMode {
         XY,
         X
     }
 
-    private Range(Integer x, Integer y) {
+    private Range(Number x, Number y) {
         this.x = x;
         this.y = y;
     }
 
-    private Range(Integer x) {
+    private Range(Number x) {
         this(x, -1);
     }
 
-    public static Range in(Integer x, Integer y) {
-        if (x > y) {
+    public static Range in(Number x, Number y) {
+        if (x.doubleValue() > y.doubleValue()) {
             return null;
         }
         if (x.equals(y)) {
@@ -46,14 +46,15 @@ public final class Range {
         return new Range(x, y);
     }
 
+
     public static Range atLeast(Integer x) {
         return new Range(x);
     }
 
-    public boolean isWithinRange(Integer x) {
+    public boolean isWithinRange(Number x) {
         if (y == -1) {
-            return x >= this.x;
+            return x.doubleValue() >= this.x.doubleValue();
         }
-        return x >= this.x && x < this.y;
+        return x.doubleValue() >= this.x.doubleValue() && x.doubleValue() < this.y.doubleValue();
     }
 }

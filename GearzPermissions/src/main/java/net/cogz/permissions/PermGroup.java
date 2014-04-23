@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -30,14 +30,14 @@ import java.util.List;
  */
 @EqualsAndHashCode(of = {"name", "prefix", "nameColor", "tabColor", "suffix"}, callSuper = false)
 public class PermGroup extends GModel {
-    @Getter @BasicField public String name;
-    @Getter @BasicField public String prefix;
-    @Getter @BasicField public String suffix;
-    @Getter @BasicField public String nameColor;
-    @Getter @BasicField public String tabColor;
-    @Getter @BasicField public List<String> permissions;
-    @Getter @BasicField public List<String> inheritances;
-    @Getter @BasicField public boolean isDefault;
+    @Getter @BasicField public String name; //Name of the group
+    @Getter @BasicField public String prefix; //Group prefix, overriden by player specific prefixes
+    @Getter @BasicField public String suffix; //Group suffix, overriden by player specific suffixes
+    @Getter @BasicField public String nameColor; //Group name color in chat, overriden by player specific name colors
+    @Getter @BasicField public String tabColor; //Group tab color, overriden by player specific name colors
+    @Getter @BasicField public List<String> permissions; //List of permissions that a group has
+    @Getter @BasicField public List<String> inheritances; //Groups that this PermGroup inherits
+    @Getter @BasicField public boolean isDefault; //Whether or not this is the group that players are automatically added too upon joining
 
     @SuppressWarnings("unused")
     public PermGroup() {
@@ -71,7 +71,13 @@ public class PermGroup extends GModel {
      * @param perm permission to remove
      */
     protected void removePermission(String perm) {
-        this.permissions.remove(perm);
+        String trueValue = perm + "," + true;
+        String falseValue = perm + "," + false;
+        if (this.permissions.contains(trueValue)) {
+            this.permissions.remove(trueValue);
+        } else if (this.permissions.contains(falseValue)) {
+            this.permissions.remove(falseValue);
+        }
         save();
     }
 

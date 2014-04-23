@@ -1,16 +1,6 @@
 game_mode: SINGLE
 network_interface: eth1
 message-ping: false
-database:
-  host: 198.15.70.114
-  port: 27017
-  database: gearz_test
-  collection: users
-  enable: true
-redis:
-  host: 198.15.70.114
-  port: 6379
-scoreboard: true
 formats:
   setting-not-found: "&cThat setting was not found."
   setting-not-toggleable: "&cThat setting can not be toggled."
@@ -42,7 +32,7 @@ formats:
   nickname-too-long: "&cThe nickname you have supplied is longer than 16 characters"
   game-full: "&aThe game is full! Get A Premium/VIP to get into a full game!"
   game-kick: "&aThe game has ended!"
-  game-kick-premium: "&aYou have been kicked to make room for a donor."
+  game-kick-premium: "&aYou have been kicked to make room for a customer."
   map-loading: "&3The map &a<map>&3 was chosen. Please wait for it to load! (There will be a lot of lag, don't worry though)"
   map-loaded: "&3The map &a<map>&3 was loaded fully! Teleporting you into the game..."
   chat-format: "<p><n>&e&l>> &r<c_prefix> &r<prefix><name_color>%s&r<suffix>&3:<s> %s" #need to pass <prefix> <c_prefix> <suffix> and game meta stuff
@@ -53,9 +43,14 @@ formats:
   server-book: "&3<game> &aServers"
   voted-for: "&3You have voted for &a<map>&3."
   command-status: "&7[&6TBNR&7] &cThe command returned an error: &4<status>"
+  no-youtube: "&cThat player does not have a Youtube channel."
+  failed-youtube: "&cFailed to retrieve Youtube channel data."
+  youtube-display: "&3<key> &5: &b<value>"
+  set-youtube-this: "&3Setting your Youtube username to the following data:"
+  fail-set: "&cFailed to find your Youtube channel!"
 game-strings:
   #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version> <author>, <description>, and <key>
-  prefix: "<s>&l«<p><gn><s>&l»&r<s> "
+  prefix: "<s>&l\u00AB<p><gn><s>&l\u00BB&r<s> "
   game-cancelled: "<p><gname><s> will not begin because <p><reason><s>." #passed "<reason>" from the event
   game-start: "<s>A new game of <p><gname><s> is starting now!"
   begin-spectating: "<s>You are now <p>spectator<s>, no one can see you, but you can see them :)."

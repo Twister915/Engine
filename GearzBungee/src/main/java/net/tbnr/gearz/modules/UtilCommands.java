@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -22,10 +22,16 @@ import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
 /**
- * Created with IntelliJ IDEA.
- * User: George
- * Date: 05/01/13
- * Time: 11:20 AM
+ * Utility commands such as /help
+ * or /kickall that do not fit into
+ * other classes.
+ *
+ * <p>
+ * Latest Change: Add kickall command
+ * <p>
+ *
+ * @author George
+ * @since 1/5/2013
  */
 public class UtilCommands implements TCommandHandler, Listener {
 
@@ -58,6 +64,9 @@ public class UtilCommands implements TCommandHandler, Listener {
 
     public void kickPlayers(String message) {
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+            if (proxiedPlayer.hasPermission("gearz.kickall.bypass")) {
+                continue;
+            }
             proxiedPlayer.disconnect(message);
         }
     }

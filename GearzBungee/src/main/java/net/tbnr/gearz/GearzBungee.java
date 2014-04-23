@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -19,14 +19,11 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.gearz.activerecord.GModel;
-import net.tbnr.gearz.chat.Chat;
-import net.tbnr.gearz.chat.ChatManager;
-import net.tbnr.gearz.chat.ClearChat;
-import net.tbnr.gearz.chat.Messaging;
-import net.tbnr.gearz.chat.channels.ChannelCommand;
-import net.tbnr.gearz.chat.channels.ChannelManager;
-import net.tbnr.gearz.chat.channels.ChannelsListener;
+import net.tbnr.gearz.chat.ChatSpy;
+import net.tbnr.gearz.chat.messaging.ConversationManager;
+import net.tbnr.gearz.chat.messaging.Messaging;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
@@ -35,14 +32,20 @@ import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 import net.tbnr.util.FileUtil;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
+import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandStatus;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -75,16 +78,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
      * Stores the player manager.
      */
     private GearzPlayerManager playerManager;
-    /**
-     * Stores chat utils
-     */
-    private ChatManager chatUtils;
-
-    /**
-     * Stores chat data
-     */
-    @Getter
-    private Chat chat;
 
     /**
      * Has our NetCommandDispatch for registration.
@@ -106,19 +99,16 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     @Setter
-    private boolean whitelisted;
+    private boolean whitelisted = false;
 
     @Getter
-    private ChannelManager channelManager;
-
-    @Getter
-    public SimpleDateFormat readable;
-
-    @Getter
-    public ChatManager chatManager;
+    private SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
     @Setter @Getter
     private PermissionsDelegate permissionsDelegate;
+
+    @Getter
+    private ConversationManager conversationManager;
 
     /**
      * Gets the current instance of the GearzBungee plugin.
@@ -135,71 +125,106 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Override
     protected void start() {
+        //Load config
         this.getConfig().options().copyDefaults(true);
         this.saveDefaultConfig();
+
+        //Set instance
         GearzBungee.instance = this;
-        readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-        whitelisted = false;
-        GModel.setDefaultDatabase(this.getMongoDB());
-        this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("database.host"));
-        //this.responder = new ServerResponder();
-        this.dispatch = new NetCommandDispatch();
-        this.getDispatch().registerNetCommands(new BaseReceiver());
-        this.playerManager = new GearzPlayerManager();
-        registerEvents(this.playerManager);
-        MotdHandler motdHandler = new MotdHandler();
-        registerEvents(motdHandler);
-        registerCommandHandler(motdHandler);
-        this.chatUtils = new ChatManager();
-        this.chat = new Chat();
-        registerCommandHandler(new Messaging());
-        registerEvents(this.chatUtils);
-        registerCommandHandler(this.chatUtils);
-        hub = new Hub();
-        registerEvents(hub);
-        registerCommandHandler(hub);
-        registerCommandHandler(new UtilCommands());
-        registerCommandHandler(new ServerModule());
-        listModule = new ListModule();
-        registerCommandHandler(listModule);
-        registerEvents(listModule);
+
+        //Load properties
         if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
         this.strings = new Properties();
         reloadStrings();
+
+        //Setup redis and database
+        GModel.setDefaultDatabase(this.getMongoDB());
+        this.pool = new JedisPool(new JedisPoolConfig(), getConfig().getString("database.host"));
+        this.dispatch = new NetCommandDispatch();
+        this.getDispatch().registerNetCommands(new BaseReceiver());
+
+        //New player manager
+        this.playerManager = new GearzPlayerManager();
+
+        //MOTD Handler
+        MotdHandler motdHandler = new MotdHandler();
+
+        //Online player manager
+        this.listModule = new ListModule();
+
+        //Hub server manager
+        this.hub = new Hub();
+
+        //Helpme manager
         this.helpMeModule = new HelpMe();
         this.helpMeModule.registerReminderTask(30);
-        registerCommandHandler(this.helpMeModule);
-        registerEvents(this.helpMeModule);
+
+        this.conversationManager = new ConversationManager();
+
+        //Player info module
         PlayerInfoModule infoModule = new PlayerInfoModule();
-        registerCommandHandler(infoModule);
-        registerEvents(infoModule);
+
+        //Game shuffle module
         this.shuffleModule = new ShuffleModule();
-        registerEvents(this.shuffleModule);
-        registerCommandHandler(this.shuffleModule);
+
+        //Report module
         ReportModule.ReportManager reportManager = new ReportModule.ReportManager(getMongoDB().getCollection("reports"));
         ReportModule reportModule = new ReportModule(reportManager);
-        registerCommandHandler(reportModule);
+
+        //Bungee whitelist module
         WhitelistModule whitelistModule = new WhitelistModule();
-        registerEvents(whitelistModule);
-        registerCommandHandler(whitelistModule);
+
+        //Bungee announcer module
         AnnouncerModule announcerModule = new AnnouncerModule(getConfig().getBoolean("announcer.enabled", false));
-        registerCommandHandler(announcerModule);
-        registerCommandHandler(new StatsModule());
-        registerCommandHandler(new PropertiesManager());
-        channelManager = new ChannelManager();
-        if (getConfig().getBoolean("channels.enabled", false)) {
-            getLogger().info("Channels enabled...");
-            registerEvents(new ChannelsListener());
-            channelManager.registerChannels();
-            registerCommandHandler(new ChannelCommand());
-        } else {
-            ModBroadcast modBroadcast = new ModBroadcast();
-            registerEvents(modBroadcast);
-            registerCommandHandler(modBroadcast);
-            getLogger().info("Channels disabled...");
+
+        ChatSpy spy = new ChatSpy();
+
+        TCommandHandler[] commandHandlers = {
+                motdHandler,
+                new Messaging(),
+                this.hub,
+                new UtilCommands(),
+                new ServerModule(),
+                new PlayerHistoryModule(),
+                this.listModule,
+                this.helpMeModule,
+                infoModule,
+                this.shuffleModule,
+                reportModule,
+                whitelistModule,
+                new StatsModule(),
+                announcerModule,
+                spy
+        };
+
+        Listener[] listeners = {
+                this.playerManager,
+                motdHandler,
+                this.hub,
+                this.listModule,
+                this.helpMeModule,
+                infoModule,
+                this.shuffleModule,
+                whitelistModule,
+                spy
+        };
+
+        for (TCommandHandler handler : commandHandlers) {
+            registerCommandHandler(handler);
         }
-        this.chatManager = new ChatManager();
-        registerCommandHandler(new ClearChat());
+
+        for (Listener listener : listeners) {
+            registerEvents(listener);
+        }
+
+        /*
+        ModBroadcast modBroadcast = new ModBroadcast();
+        registerEvents(modBroadcast);
+        registerCommandHandler(modBroadcast);
+        getLogger().info("Channels disabled...");
+        */
+
+
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -212,7 +237,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     }
 
     public void saveStrings() {
-        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"));
+        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"), this.getClass());
     }
 
     public void resetStrings() {
@@ -254,19 +279,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             return 60;
         }
         return (Integer) interval;
-    }
-
-    public String[] getCensoredWords() {
-        Object censoredWords = getBungeeConfig().get("censoredWords");
-        if (censoredWords == null || !(censoredWords instanceof BasicDBList)) {
-            return new String[0];
-        }
-        BasicDBList dbListCensored = (BasicDBList) censoredWords;
-        return dbListCensored.toArray(new String[dbListCensored.size()]);
-    }
-
-    public void setCensoredWords(BasicDBList dbList) {
-        bungeeConfigSet("censoredWords", dbList);
     }
 
     public int getMaxPlayers() {
@@ -345,65 +357,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         return getFormat(key, true);
     }
 
-    public List<String> getData(String file) {
-        File f = new File(getDataFolder(), file);
-        if (!(f.canRead() && f.exists())) try {
-            boolean newFile = f.createNewFile();
-            if (!newFile) return null;
-            getData(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        BufferedReader stream;
-        try {
-            stream = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(f))));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-        List<String> lines = new ArrayList<>();
-        String line;
-        try {
-            while ((line = stream.readLine()) != null) {
-                lines.add(ChatColor.translateAlternateColorCodes('&', line));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return lines;
-    }
-
-    public static List<String> boxMessage(ChatColor firstColor, ChatColor secondColor, List<String> message) {
-        List<String> stringList = new ArrayList<>();
-        char[] chars = new char[50];
-        Arrays.fill(chars, ' ');
-        String result = new String(chars);
-        stringList.add(firstColor + "" + ChatColor.STRIKETHROUGH + result);
-        stringList.addAll(message);
-        stringList.add(secondColor + "" + ChatColor.STRIKETHROUGH + result);
-        return stringList;
-    }
-
-    public static List<String> boxMessage(ChatColor firstColor, String... message) {
-        return boxMessage(firstColor, firstColor, Arrays.asList(message));
-    }
-
-    @SuppressWarnings("unused")
-    public static List<String> boxMessage(String... message) {
-        return boxMessage(ChatColor.WHITE, message);
-    }
-
-    public static List<String> boxMessage(ChatColor color, List<String> message) {
-        return boxMessage(color, color, message);
-    }
-
-    @SuppressWarnings("unused")
-    public static List<String> boxMessage(List<String> message) {
-        return boxMessage(ChatColor.WHITE, message);
-    }
-
     public Jedis getJedisClient() {
         return this.pool.getResource();
     }
@@ -412,12 +365,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.pool.returnResource(client);
     }
 
-    /*
-        @SuppressWarnings("unused")
-        @Deprecated
-        public ServerResponder getResponder() {
-            return responder;
-        }*/
     public static void handleCommandStatus(TCommandStatus status, CommandSender sender) {
         String msgFormat = null;
         switch (status) {

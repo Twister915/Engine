@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -49,14 +49,22 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Responsible for stalking our player base. #NoPrivacyPolicy
+ * Module to display large amounts of information
+ * about a player including their UUID, IP, location,
+ * and much more information.
+ * <p>
+ * Latest Change: Added previous usernames and IPs
+ * <p>
+ *
+ * @author Joey
+ * @since Unknown
  */
 public final class PlayerInfoModule implements TCommandHandler, Listener {
     private LookupService lookupService = null;
 
     public PlayerInfoModule() {
         try {
-            File resource = doThing(GearzBungee.getInstance().getResourceAsStream("geocity.dat"));
+            File resource = createStorageFile(GearzBungee.getInstance().getResourceAsStream("geocity.dat"));
             if (resource == null) return;
             lookupService = new LookupService(resource, LookupService.GEOIP_MEMORY_CACHE);
         } catch (IOException e) {
@@ -64,7 +72,7 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         }
     }
 
-    public static File doThing(InputStream is) throws IOException {
+    public static File createStorageFile(InputStream is) throws IOException {
         File tmp = null;
         FileOutputStream tmpOs = null;
         try {
@@ -120,7 +128,8 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             public void run() {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("playerinfo-header", false, false, new String[]{"<target>", player.getName()}));
                 sender.sendMessage(formatData("IP", player.getAddress().getHostString()));
-                sender.sendMessage(formatData("UUID", player.getUUID()));
+                sender.sendMessage();
+                sender.sendMessage(formatData("UUID", player.getUniqueId().toString()));
                 Server serverForBungee = getServerForBungee(player.getServer().getInfo());
                 sender.sendMessage(formatData("Server", serverForBungee.getGame() + serverForBungee.getNumber()));
                 sender.sendMessage(formatData("Server State", serverForBungee.getStatusString()));
@@ -139,6 +148,8 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
                 sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
                 GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
                 sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
+                sender.sendMessage(formatData("Previous IPs:", formatList(gearzPlayer.getIPHistory())));
+                sender.sendMessage(formatData("Previous Usernames:", formatList(gearzPlayer.getUsernameHistory())));
             }
         });
     }
@@ -159,31 +170,45 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         return sdf.format(new Date(mills - TimeZone.getDefault().getRawOffset()));
     }
 
-    @Override
-    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
-        GearzBungee.handleCommandStatus(status, sender);
+    private <T> String formatList(List<? extends T> list) {
+        StringBuilder builder = new StringBuilder();
+        for (T aValue : list) {
+            builder.append(aValue).append(",");
+        }
+        if (list.size() > 0) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        return builder.toString();
     }
 
     @EventHandler
     public void onPlayerJoin(PostLoginEvent event) {
-        GearzPlayer player;
+        ProxiedPlayer player = event.getPlayer();
+        GearzPlayer gearzPlayer;
         try {
-            player = new GearzPlayer(event.getPlayer().getName());
+            gearzPlayer = new GearzPlayer(event.getPlayer());
         } catch (GearzPlayer.PlayerNotFoundException e) {
             return;
         }
-        DBObject playerDocument = player.getPlayerDocument();
+        DBObject playerDocument = gearzPlayer.getPlayerDocument();
         BasicDBList ips = (BasicDBList) playerDocument.get("ips");
-        if (ips == null) ips = new BasicDBList();
-        String hostString = event.getPlayer().getAddress().getHostString();
-        if (!ips.contains(hostString)) ips.add(hostString);
+        if (ips == null) {
+            ips = new BasicDBList();
+        }
+        String hostString = player.getAddress().getHostString();
+        if (!ips.contains(hostString)) {
+            ips.add(hostString);
+        }
         playerDocument.put("ips", ips);
-        playerDocument.put("uuid", event.getPlayer().getUUID());
-        /*Location location = lookupService == null ? null : lookupService.getLocation(event.getPlayer().getAddress().getAddress());
-        if (location != null)
-            playerDocument.put("last_location", location.countryCode + "|" + location.region + "|" + location.city + "|" + location.postalCode);*/
+        if (!playerDocument.containsField("uuid")) {
+            playerDocument.put("uuid", player.getUniqueId().toString());
+        }
+        playerDocument.put("current_username", player.getName());
         GearzPlayer.getCollection().save(playerDocument);
     }
 
-
+    @Override
+    public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
+        GearzBungee.handleCommandStatus(status, sender);
+    }
 }

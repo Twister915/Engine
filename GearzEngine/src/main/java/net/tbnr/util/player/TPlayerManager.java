@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -13,7 +13,6 @@ package net.tbnr.util.player;
 
 import com.mongodb.*;
 import lombok.NonNull;
-import net.tbnr.gearz.Gearz;
 import net.tbnr.util.player.cooldowns.TCooldownManager;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
@@ -50,15 +49,12 @@ public final class TPlayerManager implements Listener {
     }
 
     public TPlayerManager(AuthenticationDetails details) {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<TPlayerManager|32>--------< TPlayerManager has been instantiated!");
-        }
         TPlayerManager.instance = this;
         Plugin gearz = Bukkit.getPluginManager().getPlugin("Gearz");
         Logger logger;
         if (gearz != null) {
             logger = gearz.getLogger();
-            if (!gearz.getConfig().getBoolean("database.enable")) {
+            if (!gearz.getConfig().getBoolean("database.enable", true)) {
                 return;
             }
         } else {
@@ -95,8 +91,8 @@ public final class TPlayerManager implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     @SuppressWarnings("unused")
     public void onLogin(PlayerJoinEvent event) {
-        if (event.getPlayer() == null) return;
         TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.getPlayer(event.getPlayer()));
+        tPlayerJoinEvent.getPlayer().loadSettings();
         Bukkit.getPluginManager().callEvent(tPlayerJoinEvent);
         event.setJoinMessage(tPlayerJoinEvent.getJoinMessage());
     }
@@ -113,7 +109,7 @@ public final class TPlayerManager implements Listener {
         players.remove(event.getPlayer().getName());
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onLogin(PlayerLoginEvent event) {
         this.addPlayer(event.getPlayer());
     }

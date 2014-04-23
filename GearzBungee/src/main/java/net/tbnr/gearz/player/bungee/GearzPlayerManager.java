@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -25,11 +25,16 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 9/30/13
- * Time: 11:40 PM
- * To change this template use File | Settings | File Templates.
+ * Manages logins and logouts for GearzPlayers.
+ * Also provides utility methods to retrieving
+ * a Gearz player based on certain parameters.
+ *
+ * <p>
+ * Latest Change: Add matched players method
+ * <p>
+ *
+ * @author Joey
+ * @since 9/13/2013
  */
 public final class GearzPlayerManager implements Listener {
     private final HashMap<String, GearzPlayer> players = new HashMap<>();
@@ -65,12 +70,10 @@ public final class GearzPlayerManager implements Listener {
     public void removePlayer(PlayerDisconnectEvent event) {
         this.players.remove(event.getPlayer().getName());
         this.playersAlreadyConnected.remove(event.getPlayer());
-        if (GearzBungee.getInstance().getChannelManager().isEnabled()) {
-            GearzBungee.getInstance().getChannelManager().removeChannel(event.getPlayer());
-        }
     }
 
     @EventHandler
+    @SuppressWarnings("unused")
     public void playerLoginEvent(ServerConnectEvent event) {
         if (!this.playersAlreadyConnected.contains(event.getPlayer())) {
             this.playersAlreadyConnected.add(event.getPlayer());
@@ -79,9 +82,6 @@ public final class GearzPlayerManager implements Listener {
                 return;
             }
             event.setTarget(aHubServer);
-            if (GearzBungee.getInstance().getChannelManager().isEnabled()) {
-                GearzBungee.getInstance().getChannelManager().setChannel(event.getPlayer(), GearzBungee.getInstance().getChannelManager().getDefaultChannel());
-            }
         }
     }
 

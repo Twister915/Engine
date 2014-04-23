@@ -1,10 +1,25 @@
+/*
+ * Copyright (c) 2014.
+ * CogzMC LLC USA
+ * All Right reserved
+ *
+ * This software is the confidential and proprietary information of Cogz Development, LLC.
+ * ("Confidential Information").
+ * You shall not disclose such Confidential Information and shall use it only in accordance
+ * with the terms of the license agreement you entered into with Cogz LLC.
+ */
+
 package net.tbnr.util;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.gearz.GearzBungee;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -80,10 +95,10 @@ public class FileUtil {
      * @param file         path to save too
      * @return whether or not the file was saved
      */
-    public static boolean writeEmbeddedResourceToLocalFile(final String resourceName, final File file) {
+    public static boolean writeEmbeddedResourceToLocalFile(final String resourceName, final File file, Class clazz) {
         boolean result = false;
 
-        final URL resourceUrl = FileUtil.class.getClassLoader().getResource(resourceName);
+        final URL resourceUrl = clazz.getClassLoader().getResource(resourceName);
         final Logger logger = GearzBungee.getInstance().getLogger();
 
         // 1Kb buffer
@@ -124,5 +139,35 @@ public class FileUtil {
             }
         }
         return result;
+    }
+
+    public static List<String> getData(String file, Plugin plugin) {
+        File f = new File(plugin.getDataFolder(), file);
+        if (!(f.canRead() && f.exists())) try {
+            boolean newFile = f.createNewFile();
+            if (!newFile) return null;
+            getData(file, plugin);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        BufferedReader stream;
+        try {
+            stream = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(f))));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        List<String> lines = new ArrayList<>();
+        String line;
+        try {
+            while ((line = stream.readLine()) != null) {
+                lines.add(ChatColor.translateAlternateColorCodes('&', line));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return lines;
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -17,8 +17,17 @@ import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 
+
 /**
- * Bukkit Side Permissions Plugin
+ * Bukkit Plugin implementation of the
+ * Gearz permissions API
+ *
+ * <p>
+ * Latest Change: Run reload ASync
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public final class GearzBukkitPermissions extends TPlugin {
     @Getter private static GearzBukkitPermissions instance;
@@ -47,18 +56,10 @@ public final class GearzBukkitPermissions extends TPlugin {
                 }
             }
         }, 0, 30 * 20);
-        if (getConfig().getBoolean("converter", false)) {
-            try {
-                new Converter();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
-    public void disable() {
-    }
+    public void disable() { }
 
     @Override
     public String getStorablePrefix() {

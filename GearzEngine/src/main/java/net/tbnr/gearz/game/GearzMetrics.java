@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -26,33 +26,33 @@ import java.util.Set;
 /**
  * Stores metrics on the games
  */
-public final class GearzMetrics {
+public final class GearzMetrics<PlayerType extends GearzPlayer> {
     @Getter @NonNull
     private DBCollection metricsCollection;
     @Getter @NonNull
-    private GearzGame game;
+    private GearzGame<PlayerType, ?> game;
     @Getter
     private Long gameStart;
     @Getter
     private Long gameEnd;
-    private Set<GearzPlayer> players;
+    private Set<PlayerType> players;
 
-    public static GearzMetrics beginTracking(GearzGame game) {
+    public static <T extends GearzPlayer> GearzMetrics<T> beginTracking(GearzGame<T, ?> game) {
         DB mongoDB = game.getPlugin().getMongoDB();
         DBCollection metrics = mongoDB.getCollection("metrics");
-        GearzMetrics gearzMetrics = new GearzMetrics();
+        GearzMetrics<T> gearzMetrics = new GearzMetrics<>();
         gearzMetrics.metricsCollection = metrics;
         gearzMetrics.game = game;
         return gearzMetrics;
     }
 
-    public GearzMetrics startGame() {
+    public GearzMetrics<PlayerType> startGame() {
         this.gameStart = Calendar.getInstance().getTimeInMillis();
         this.players = game.allPlayers();
         return this;
     }
 
-    public GearzMetrics finishGame() {
+    public GearzMetrics<PlayerType> finishGame() {
         this.gameEnd = Calendar.getInstance().getTimeInMillis();
         return this;
     }

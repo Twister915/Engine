@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -27,6 +27,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -81,7 +82,8 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         Author,
         Description,
         Selection,
-        Fields,
+        Points,
+        Regions,
         Completed
     }
 
@@ -93,11 +95,15 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
     private String description;
     private Location l1 = null;
     private Location l2 = null;
-    private final HashMap<ArenaField, ArenaIterator> fields;
-    private ArenaField fieldIndex;
+    private final HashMap<ArenaField, PointIterator> pointsMap;
+    private final HashMap<ArenaField, RegionIterator> regionsMap;
+    private ArenaField pointFieldIndex;
+    private ArenaField regionFieldIndex;
     private final ArenaManager manager;
-    private final Iterator<ArenaField> iterator;
-    private ArenaIterator<Point> points;
+    private final Iterator<ArenaField> pointsIterator;
+    private final Iterator<ArenaField> regionsIterator;
+    private PointIterator points;
+    private RegionIterator regions;
     private boolean complete = false;
     private final ArrayList<ReplacementBlock> blocksToReplace = new ArrayList<>();
     private boolean waitingForAsync = false;
@@ -109,15 +115,17 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         this.world = player.getPlayer().getWorld();
         this.meta = meta;
         this.arena = arena;
-        this.fields = new HashMap<>();
+        this.pointsMap = new HashMap<>();
+        this.regionsMap = new HashMap<>();
         for (Field field : this.arena.getFields()) {
             if (!(field.isAnnotationPresent(ArenaField.class))) continue;
-            if (!field.isAnnotationPresent(ArenaField.class)) continue;
             GearzSetup.getInstance().getLogger().info("Field detected " + field.getName());
             ArenaField annotation = field.getAnnotation(ArenaField.class);
-            this.fields.put(annotation, null);
+            if (field.getType().equals(PointIterator.class)) this.pointsMap.put(annotation, null);
+            if (field.getType().equals(RegionIterator.class)) this.regionsMap.put(annotation, null);
         }
-        this.iterator = this.fields.keySet().iterator();
+        this.pointsIterator = this.pointsMap.keySet().iterator();
+        this.regionsIterator = this.regionsMap.keySet().iterator();
     }
 
     public void startSetup() {
@@ -147,7 +155,8 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
                 break;
             case Description:
                 this.description = event.getMessage();
-                this.state = ArenaSetupStage.Selection;
+                if (this.arena.isAnnotationPresent(RequiresRegion.class)) this.state = ArenaSetupStage.Selection;
+                else this.state = this.regionsMap.size() == 0 ? ArenaSetupStage.Points : ArenaSetupStage.Regions;
                 break;
             default:
                 return;
@@ -157,24 +166,27 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
     }
 
     private void moveOn() {
+        GearzSetup instance = GearzSetup.getInstance();
         switch (this.state) {
             case Name:
-                this.player.sendMessage(GearzSetup.getInstance().getFormat("formats.name-prompt"));
+                this.player.sendMessage(instance.getFormat("formats.name-prompt"));
                 break;
             case Author:
-                this.player.sendMessage(GearzSetup.getInstance().getFormat("formats.author-prompt"));
+                this.player.sendMessage(instance.getFormat("formats.author-prompt"));
                 break;
             case Description:
-                this.player.sendMessage(GearzSetup.getInstance().getFormat("formats.description-prompt"));
+                this.player.sendMessage(instance.getFormat("formats.description-prompt"));
                 break;
             case Selection:
-                this.player.sendMessage(GearzSetup.getInstance().getFormat("formats.select-prompt"));
+                this.player.sendMessage(instance.getFormat("formats.select-prompt"));
+            case Regions:
+                this.player.sendMessage(instance.getFormat("formats.regions-prompt", false, new String[]{"<field>", this.regionFieldIndex.longName()}));
                 break;
-            case Fields:
-                this.player.sendMessage(GearzSetup.getInstance().getFormat("formats.field-prompt", false, new String[]{"<field>", this.fieldIndex.longName()}));
+            case Points:
+                this.player.sendMessage(instance.getFormat("formats.field-prompt", false, new String[]{"<field>", this.pointFieldIndex.longName()}));
                 break;
             case Completed:
-                this.player.sendMessage(GearzSetup.getInstance().getFormat("formats.completed"));
+                this.player.sendMessage(instance.getFormat("formats.completed"));
                 break;
         }
     }
@@ -182,28 +194,22 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
     @EventHandler
     @SuppressWarnings("unused")
     public void onInteract(PlayerInteractEvent event) {
-        if (!event.getPlayer().equals(this.player.getPlayer())) return;
+        Player player1 = event.getPlayer();
+        if (!player1.equals(this.player.getPlayer())) return;
         if (event.getAction() == Action.PHYSICAL) return;
-        Material type = event.getPlayer().getItemInHand().getType();
+        Material type = player1.getItemInHand().getType();
         switch (type) {
             case DIAMOND_AXE:
-                if (this.state != ArenaSetupStage.Selection) return;
+                if (this.state != ArenaSetupStage.Selection && this.state != ArenaSetupStage.Regions) return;
                 if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK)
                     return;
                 regionSelection(event.getClickedBlock().getLocation(), event.getAction());
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.selected", false, new String[]{"<count>", event.getAction() == Action.RIGHT_CLICK_BLOCK ? "2" : "1"}));
+                player1.sendMessage(GearzSetup.getInstance().getFormat("formats.selected", false, new String[]{"<count>", event.getAction() == Action.RIGHT_CLICK_BLOCK ? "2" : "1"}));
                 break;
             case DIAMOND_HOE:
-                if (this.state != ArenaSetupStage.Fields) return;
-                if (this.points == null) return;
-                Point relative = Arena.pointFromLocation((this.fieldIndex.type() == ArenaField.PointType.Block ? event.getClickedBlock().getLocation() : event.getPlayer().getLocation()));
-                if (this.points.contains(relative)) {
-                    event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.already-exists"));
-                }
-                if (!this.world.equals(event.getPlayer().getWorld())) return;
-                this.points.add(relative);
-                event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.selected", false, new String[]{"<count>", String.valueOf(this.points.getArrayList().size())}));
+                if (this.state == ArenaSetupStage.Points) handlePointInteract(event);
+                if (this.state == ArenaSetupStage.Regions) handleRegionInteract(event);
                 break;
             case GOLD_SPADE:
                 //completion
@@ -225,33 +231,68 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         switch (this.state) {
             case Selection:
                 if (this.l1 == null || this.l2 == null) {
-                    this.player.sendMessage(GearzSetup.getInstance().getFormat("foramts.complete-fail"));
+                    this.player.sendMessage(GearzSetup.getInstance().getFormat("formats.complete-fail"));
                     return;
                 }
-                this.state = ArenaSetupStage.Fields;
+                this.state = ArenaSetupStage.Regions;
                 completePhase();
                 break;
-            case Fields:
+            case Points:
                 if (this.waitingForAsync) {
                     return;
                 }
                 if (this.points != null) {
-                    this.fields.put(this.fieldIndex, this.points);
+                    this.pointsMap.put(this.pointFieldIndex, this.points);
                 }
-                if (!this.iterator.hasNext()) {
-                    this.state = ArenaSetupStage.Completed;
+                if (!this.pointsIterator.hasNext()) {
+                    this.state = ArenaSetupStage.Regions;
                 } else {
-                    this.fieldIndex = this.iterator.next();
+                    this.pointFieldIndex = this.pointsIterator.next();
                     try {
-                        this.points = new ArenaIterator<>();
+                        this.points = new PointIterator();
                     } catch (GearzException e) {
                         e.printStackTrace();
                         return;
                     }
                 }
                 break;
+            case Regions:
+                if (this.waitingForAsync) return;
+                if (this.regions != null) this.regionsMap.put(this.regionFieldIndex, this.regions);
+                if (!this.regionsIterator.hasNext()) {
+                    this.state = ArenaSetupStage.Points;
+                } else {
+                    this.regionFieldIndex = this.regionsIterator.next();
+                    try {
+                        this.regions = new RegionIterator();
+                    } catch (GearzException e) {
+                        e.printStackTrace();
+                    }
+                }
         }
         moveOn();
+    }
+
+    private void handlePointInteract(PlayerInteractEvent event) {
+        if (this.points == null) return;
+        Point relative = Arena.pointFromLocation((this.pointFieldIndex.type() == ArenaField.PointType.Block ? event.getClickedBlock().getLocation() : event.getPlayer().getLocation()));
+        if (this.points.contains(relative)) {
+            event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.already-exists"));
+        }
+        if (!this.world.equals(event.getPlayer().getWorld())) return;
+        this.points.add(relative);
+        event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.selected", false, new String[]{"<count>", String.valueOf(this.points.getArrayList().size())}));
+    }
+
+    private void handleRegionInteract(PlayerInteractEvent event) {
+        if (this.regions == null) return;
+        if (l1 == null || l2 == null) {
+            event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.complete-fail"));
+            return;
+        }
+        this.regions.add(new Region(Arena.pointFromLocation(l1.getBlock().getLocation()), Arena.pointFromLocation(l2.getBlock().getLocation())));
+        this.l1 = null;
+        this.l2 = null;
     }
 
     private boolean commitArena() {
@@ -265,7 +306,9 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         for (Field field : arena.getClass().getFields()) {
             if (!field.isAnnotationPresent(ArenaField.class)) continue;
             if (!field.getType().equals(ArenaIterator.class)) continue;
-            ArenaIterator arenaIterator = this.fields.get(field.getAnnotation(ArenaField.class));
+            ArenaField annotation = field.getAnnotation(ArenaField.class);
+            ArenaIterator arenaIterator = this.pointsMap.get(annotation);
+            if (arenaIterator == null) arenaIterator = this.regionsMap.get(annotation);
             try {
                 field.set(arena, arenaIterator);
             } catch (IllegalAccessException e) {

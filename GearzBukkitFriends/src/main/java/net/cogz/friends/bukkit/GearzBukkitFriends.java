@@ -1,26 +1,42 @@
+/*
+ * Copyright (c) 2014.
+ * CogzMC LLC USA
+ * All Right reserved
+ *
+ * This software is the confidential and proprietary information of Cogz Development, LLC.
+ * ("Confidential Information").
+ * You shall not disclose such Confidential Information and shall use it only in accordance
+ * with the terms of the license agreement you entered into with Cogz LLC.
+ */
+
 package net.cogz.friends.bukkit;
 
 import lombok.Getter;
 import net.tbnr.util.TPlugin;
 
+
 /**
- * Created by jake on 3/8/14.
+ * Bukkit Friends Plugin
+ * An implementation of the friends API
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Created
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 3/8/2014
  */
 public class GearzBukkitFriends extends TPlugin {
     @Getter public static GearzBukkitFriends instance;
-    @Getter public FriendManager friendManager;
+    @Getter public FriendsManager friendsManager;
 
     @Override
     public void enable() {
         GearzBukkitFriends.instance = this;
         getConfig().options().copyDefaults(true);
         saveConfig();
-        friendManager = new FriendManager();
-        registerCommands(new FriendsCommands(friendManager));
+        friendsManager = new FriendsManager();
+        registerCommands(new FriendsCommands(friendsManager));
     }
 
     @Override

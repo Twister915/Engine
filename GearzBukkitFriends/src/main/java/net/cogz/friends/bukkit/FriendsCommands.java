@@ -1,3 +1,14 @@
+/*
+ * Copyright (c) 2014.
+ * CogzMC LLC USA
+ * All Right reserved
+ *
+ * This software is the confidential and proprietary information of Cogz Development, LLC.
+ * ("Confidential Information").
+ * You shall not disclose such Confidential Information and shall use it only in accordance
+ * with the terms of the license agreement you entered into with Cogz LLC.
+ */
+
 package net.cogz.friends.bukkit;
 
 import net.cogz.friends.FriendRequestException;
@@ -17,17 +28,23 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+
 /**
- * Created by jake on 3/8/14.
+ * Commands that allow players to manage
+ * their friends, including adding, removing,
+ * and checking the online status of them.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: UUIDs
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 3/8/2014
  */
 public class FriendsCommands extends SimplePaginator implements TCommandHandler {
-    FriendManager manager;
+    FriendsManager manager;
 
-    public FriendsCommands(FriendManager manager) {
+    public FriendsCommands(FriendsManager manager) {
         super(6);
         this.manager = manager;
     }

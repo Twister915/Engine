@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -12,10 +12,12 @@
 package net.cogz.permissions.bukkit;
 
 import com.mongodb.DB;
+import com.mongodb.DBObject;
 import net.cogz.permissions.GearzPermissions;
 import net.tbnr.gearz.Gearz;
-import net.tbnr.gearz.activerecord.GModel;
-import net.tbnr.util.PermissionsDelegate;
+import net.tbnr.util.delegates.PermissionsDelegate;
+import net.tbnr.util.player.TPlayer;
+import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +32,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Bukkit Specific Permissions API
+ * Implementation of the Gearz Permissions
+ * API for Bukkit. Manages adding permissions
+ * and UUID retreival from DBObjects.
+ *
+ * <p>
+ * Latest Change: UUID Changes
+ * <p>
+ *
+ * @author Jake
+ * @since Unknown
  */
 public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
     private Map<String, Player> loggedPlayers = new HashMap<>();
@@ -46,28 +57,51 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
 
     @Override
     public void givePermsToPlayer(String player, String perm, boolean value) {
-        Player p = loggedPlayers.get(player.toLowerCase());
+        Player p = loggedPlayers.get(player);
         if (p == null) return;
         p.addAttachment(GearzBukkitPermissions.getInstance(), perm, value);
     }
 
     @Override
     public DB getDatabase() {
-        GModel.setDefaultDatabase(Gearz.getInstance().getMongoDB());
         return Gearz.getInstance().getMongoDB();
     }
 
+    @Override
+    public String getUUID(String player) {
+        if (loggedPlayers.containsKey(player)) {
+            return loggedPlayers.get(player).getUniqueId().toString();
+        }
+        DBObject playerDocument = getPlayerDocument(player);
+        return (String) playerDocument.get("uuid");
+    }
+
+    public boolean isPlayerOnline(String player) {
+        return Bukkit.getPlayerExact(player) != null;
+    }
+
+    public DBObject getPlayerDocument(String player) {
+        if (player == null) return null;
+        if (isPlayerOnline(player)) {
+            Player bukkitPlayer = Bukkit.getPlayerExact(player);
+            TPlayer tPlayer = TPlayerManager.getInstance().getPlayer(bukkitPlayer);
+            return tPlayer.getPlayerDocument();
+        } else {
+            return TPlayer.getPlayerObjectByLastKnownName(player);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
     @SuppressWarnings("unused")
-    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerLoginEvent event) {
-        loggedPlayers.put(event.getPlayer().getName().toLowerCase(), event.getPlayer());
+        loggedPlayers.put(event.getPlayer().getName(), event.getPlayer());
         onJoin(event.getPlayer().getName());
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST)
+    @SuppressWarnings("unused")
     public void onPlayerQuit(PlayerQuitEvent event) {
-        loggedPlayers.remove(event.getPlayer().getName().toLowerCase());
+        loggedPlayers.remove(event.getPlayer().getName());
         onQuit(event.getPlayer().getName());
     }
 

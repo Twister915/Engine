@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -15,6 +15,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -32,11 +34,18 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Jake on 1/15/14.
+ * Module that allows players to report
+ * other players and allows staff to
+ * deal with the reports by viewing and
+ * marking the report as completed for
+ * other staff members to see.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Created module
+ * <p>
  *
- * Latest Change:
+ * @author Jake
+ * @since 1/15/2014
  */
 public class ReportModule implements TCommandHandler {
     public final SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy");
@@ -91,7 +100,7 @@ public class ReportModule implements TCommandHandler {
         }
 
         for (Report report : this.reportManager.getRecentReports(amount, null)) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("reports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getName()}, new String[]{"<reported>", report.getReported().getName()}, new String[]{"<time>", readable.format(report.getTime())}));
+            sender.sendMessage(GearzBungee.getInstance().getFormat("reports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getUsername()}, new String[]{"<reported>", report.getReported().getUsername()}, new String[]{"<time>", readable.format(report.getTime())}));
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -105,14 +114,15 @@ public class ReportModule implements TCommandHandler {
 
         GearzPlayer target;
         try {
-            target = new GearzPlayer(args[0]);
-        } catch (GearzPlayer.PlayerNotFoundException e) {
+            ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(args[0]);
+            target = new GearzPlayer(proxiedPlayer);
+        } catch (GearzPlayer.PlayerNotFoundException | NullPointerException e) {
             return TCommandStatus.INVALID_ARGS;
         }
 
-        sender.sendMessage(GearzBungee.getInstance().getFormat("preports-header", false, false, new String[]{"<player>", target.getName()}));
+        sender.sendMessage(GearzBungee.getInstance().getFormat("preports-header", false, false, new String[]{"<player>", target.getUsername()}));
         for (Report report : this.reportManager.getRecentReports(10, target)) {
-            sender.sendMessage(GearzBungee.getInstance().getFormat("preports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getName()}, new String[]{"<time>", readable.format(report.getTime())}));
+            sender.sendMessage(GearzBungee.getInstance().getFormat("preports-format", false, false, new String[]{"<reason>", report.getMessage()}, new String[]{"<reporter>", report.getReporter().getUsername()}, new String[]{"<time>", readable.format(report.getTime())}));
         }
         return TCommandStatus.SUCCESSFUL;
     }
@@ -122,58 +132,21 @@ public class ReportModule implements TCommandHandler {
         GearzBungee.handleCommandStatus(status, sender);
     }
 
+    @AllArgsConstructor
+    @Data
     public static class Report {
-        final GearzPlayer reporter;
-        final GearzPlayer reported;
-        final String message;
-        final String bungeeServer;
-        final Date time;
-
-        public Report(GearzPlayer reporter, GearzPlayer reported, String message, String bungeeServer, Date time) {
-            this.reporter = reporter;
-            this.reported = reported;
-            this.message = message;
-            this.bungeeServer = bungeeServer;
-            this.time = time;
-        }
-
-        public GearzPlayer getReporter() {
-            return reporter;
-        }
-
-        public GearzPlayer getReported() {
-            return reported;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public String getBungeeServer() {
-            return bungeeServer;
-        }
-
-        public Date getTime() {
-            return time;
-        }
+        private final GearzPlayer reporter;
+        private final GearzPlayer reported;
+        private final String message;
+        private final String bungeeServer;
+        private final Date time;
 
         public void broadcast() {
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                 if (player.hasPermission("gearz.reports.receive")) {
-                    player.sendMessage(GearzBungee.getInstance().getFormat("report-receive", false, false, new String[]{"<reported>", getReported().getName()}, new String[]{"<reporter>", getReporter().getName()}, new String[]{"<reason>", getMessage()}, new String[]{"<server>", getBungeeServer()}));
+                    player.sendMessage(GearzBungee.getInstance().getFormat("report-receive", false, false, new String[]{"<reported>", getReported().getUsername()}, new String[]{"<reporter>", getReporter().getUsername()}, new String[]{"<reason>", getMessage()}, new String[]{"<server>", getBungeeServer()}));
                 }
             }
-        }
-
-        @Override
-        public String toString() {
-            return "Report{" +
-                    "reporter='" + reporter.getName() + '\'' +
-                    ", reported='" + reported.getName() + '\'' +
-                    ", message='" + message + '\'' +
-                    ", bungeeServer='" + bungeeServer + '\'' +
-                    ", time=" + time +
-                    '}';
         }
     }
 

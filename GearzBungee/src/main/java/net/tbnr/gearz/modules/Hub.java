@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -32,11 +32,18 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 10/14/13
- * Time: 3:37 PM
- * To change this template use File | Settings | File Templates.
+ * Module that manages the Gearz hub system.
+ * This includes sending players to the hubs,
+ * connecting them to the hub after minigames,
+ * and managing multiple hubs that are evenly
+ * filled by players as they join Bungee.
+ *
+ * <p>
+ * Latest Change: Changed spread logic
+ * <p>
+ *
+ * @author Joey
+ * @since 10/14/2013
  */
 public class Hub implements TCommandHandler, Listener {
 
@@ -53,7 +60,14 @@ public class Hub implements TCommandHandler, Listener {
 
     public ServerInfo getAHubServer() {
         if (hubServers.size() < 1) return null;
-        return ProxyServer.getInstance().getServerInfo(hubServers.get(GearzBungee.getRandom().nextInt(hubServers.size())).getBungee_name());
+        Server leastServer = this.hubServers.get(0);
+        Integer leastAmount = leastServer.getPlayerCount();
+        for (Server server : this.hubServers) {
+            if (server.getPlayerCount() < leastAmount) {
+                leastServer = server;
+            }
+        }
+        return ProxyServer.getInstance().getServerInfo(leastServer.getBungee_name());
     }
 
     public static boolean isHubServer(ServerInfo info) {
@@ -112,7 +126,10 @@ public class Hub implements TCommandHandler, Listener {
     }
 
     private Server serverForDispersion() throws Exception {
-        Server s = null;
+        Server s = PlayerInfoModule.getServerForBungee(getAHubServer());
+        if (s != null) {
+            return s;
+        }
         for (Server server : ServerManager.getAllServers()) {
             if (server.getGame().equals("lobby")) continue;
             if (!server.getStatusString().equals("lobby")) continue;

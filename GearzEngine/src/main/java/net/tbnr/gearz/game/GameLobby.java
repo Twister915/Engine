@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -27,7 +27,7 @@ import org.bukkit.World;
 public final class GameLobby extends Arena {
 
     @ArenaField(loop = true, longName = "Spawn Points", key = "spawn_points", type = ArenaField.PointType.Player)
-    public ArenaIterator<Point> spawnPoints;
+    public PointIterator spawnPoints;
 
     public GameLobby(String name, String author, String description, String worldId, String id) {
         super(name, author, description, worldId, id);

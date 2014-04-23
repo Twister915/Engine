@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -34,7 +34,7 @@ public abstract class GearzPermissions {
     /**
      * All groups
      */
-    private Map<String, PermGroup> groups = new HashMap<>();
+    @Getter private Map<String, PermGroup> groups = new HashMap<>();
     /**
      * Default group
      */
@@ -68,17 +68,13 @@ public abstract class GearzPermissions {
      */
     public abstract DB getDatabase();
 
+    public abstract String getUUID(String player);
+
     /**
      * Reloads all the data from the database
      */
     public void reload() {
         this.database = getDatabase();
-        int checks = 0;
-        while (this.database == null) {
-            this.database = getDatabase();
-            checks++;
-            if (checks >= 2000000) break;
-        }
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         this.groups = new HashMap<>();
         defaultGroup = null;
@@ -108,14 +104,18 @@ public abstract class GearzPermissions {
      * @param player Player who joined
      */
     public PermPlayer onJoin(String player) {
-        GModel one = new PermPlayer(this.database, player).findOne();
+        GModel one = new PermPlayer(this.database, getUUID(player), player).findOne();
         if (one == null) {
-            one = new PermPlayer(this.database, player);
+            String uuid = getUUID(player);
+            if (uuid == null) throw new IllegalArgumentException("Not a valid player");
+            one = new PermPlayer(this.database, uuid, player);
+            ((PermPlayer) one).name = player;
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
         if (!(one instanceof PermPlayer)) return null;
-        this.players.put(((PermPlayer) one).getName(), (PermPlayer) one);
+        ((PermPlayer) one).name = player;
+        this.players.put(player, (PermPlayer) one);
         reloadPlayer(player);
         return (PermPlayer) one;
     }
@@ -139,7 +139,20 @@ public abstract class GearzPermissions {
         return this.players.get(player);
     }
 
+    /**
+     * Retrieves an offline player by name.
+     * First checks if the player is online,
+     * and will return that. Otherwise a new
+     * instance of PermPlayer is created and
+     * returned.
+     *
+     * @param player name of the player to retrieve
+     * @return a PermPlayer created from the player
+     */
     public PermPlayer getOfflinePlayer(String player) {
+        if (this.players.containsKey(player)) {
+            return this.players.get(player);
+        }
         return onJoin(player);
     }
 
@@ -219,7 +232,7 @@ public abstract class GearzPermissions {
      */
     @SuppressWarnings("unused")
     public void setGroup(String player, String group) {
-        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, player).findOne();
+        PermPlayer permPlayer = (PermPlayer) new PermPlayer(this.database, getUUID(player), player).findOne();
         if (permPlayer == null) {
             permPlayer = onJoin(player);
         }
@@ -234,7 +247,7 @@ public abstract class GearzPermissions {
      * @param player Name of player to reload
      */
     private void reloadPlayer(String player) {
-        PermPlayer permPlayer = this.players.get(player.toLowerCase());
+        PermPlayer permPlayer = this.players.get(player);
         if (permPlayer == null) {
             return;
         }
@@ -242,10 +255,10 @@ public abstract class GearzPermissions {
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
                 try {
-                String[] s = entry.split(",");
-                String permission = s[0];
-                boolean value = Boolean.valueOf(s[1]);
-                perms.put(permission, value);
+                    String[] s = entry.split(",");
+                    String permission = s[0];
+                    boolean value = Boolean.valueOf(s[1]);
+                    perms.put(permission, value);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     //ignore -- continue
                 }
@@ -267,7 +280,6 @@ public abstract class GearzPermissions {
         for (Map.Entry<String, Boolean> stringBooleanEntry : perms.entrySet()) {
             givePermsToPlayer(permPlayer.getName(), stringBooleanEntry.getKey(), stringBooleanEntry.getValue());
         }
-
     }
 
     /**

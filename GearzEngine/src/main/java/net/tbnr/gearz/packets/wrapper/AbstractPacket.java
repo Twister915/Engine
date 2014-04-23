@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -57,6 +57,9 @@ public abstract class AbstractPacket {
      * @throws RuntimeException If the packet cannot be sent.
      */
     public void sendPacket(Player receiver) {
+        if (receiver == null) {
+            throw new IllegalArgumentException("Receiver can not be null");
+        }
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(receiver, getHandle());
         } catch (InvocationTargetException e) {

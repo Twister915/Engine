@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -13,6 +13,7 @@ package net.tbnr.gearz.game;
 
 import lombok.Getter;
 import net.tbnr.gearz.GearzPlugin;
+import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 
 /**
@@ -35,7 +36,7 @@ public final class GameCountdown implements Runnable {
     /**
      * Plugin to schedule the event against.
      */
-    private final GearzPlugin plugin;
+    private final TPlugin plugin;
     /**
      * Stores if the timer has started or not.
      */
@@ -62,7 +63,7 @@ public final class GameCountdown implements Runnable {
      * @param handler The handler to send status updates to
      * @param plugin  The game this is for.
      */
-    public GameCountdown(Integer seconds, GameCountdownHandler handler, GearzPlugin plugin) {
+    public GameCountdown(Integer seconds, GameCountdownHandler handler, TPlugin plugin) {
         this.seconds = seconds;
         this.handler = handler;
         this.passed = 0;

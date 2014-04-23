@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright (c) 2014.
-  ~ Cogz Development LLC USA
+  ~ CogzMC LLC USA
   ~ All Right reserved
   ~
   ~ This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -18,13 +18,16 @@
         <artifactId>Engine</artifactId>
         <version>1.1-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>GearzServerLib</artifactId>
+
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

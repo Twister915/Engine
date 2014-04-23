@@ -30,11 +30,9 @@ Commands:
 	 * removeinheritance [group] - Removes the group as an inheritance
   * /permissions
      * reload - Reloads the permissions from the database
+     * groups - Lists all the groups currently created.
 	 
 Notes:
 =====
   * Commands only exist on the Bukkit side
   * Player specific metadata override group ones.
-	 
-	 
-	 

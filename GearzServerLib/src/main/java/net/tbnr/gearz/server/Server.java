@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -22,36 +22,44 @@ import net.tbnr.gearz.activerecord.GModel;
 import java.util.List;
 
 /**
- * Created by Joey on 12/17/13.
+ * Object to store information about
+ * a Gearz server. Allows for a player
+ * to be connected to a server based
+ * on the bungee_name, which is the
+ * name of the server in the Bungeecord
+ * Proxy.
  *
- * Purpose Of File:
+ * <p>
+ * Latest Change: Add online players
+ * <p>
  *
- * Latest Change:
+ * @author Joey
+ * @since 12/17/2013
  */
 @Data
 @ToString
 @EqualsAndHashCode(callSuper = false, of = {"game", "bungee_name", "port", "address"})
 public final class Server extends GModel {
     @BasicField
-    private String game;
+    private String game; //Current game being played
     @BasicField
-    private String bungee_name;
+    private String bungee_name; //Name of the server as stored in the Bungee Proxy
     @BasicField
-    private Integer number;
+    private Integer number; //Number of this game type
     @BasicField
-    private String statusString;
+    private String statusString; //Current status: lobby, map-loading, etc
     @BasicField
-    private boolean canJoin;
+    private boolean canJoin; //Whether or not this server is joinable
     @BasicField
-    private Integer playerCount;
+    private Integer playerCount; //Current number of players online
     @BasicField
-    private String address;
+    private String address; //IP of the server
     @BasicField
-    private Integer port;
+    private Integer port; //Port of the server
     @BasicField
-    private Integer maximumPlayers;
+    private Integer maximumPlayers; //Max number players that can join this server
     @BasicField
-    private List<String> onlinePlayers;
+    private List<String> onlinePlayers; //A list of online players
 
     public Server() {
         super();
@@ -65,6 +73,11 @@ public final class Server extends GModel {
         super(database, dBobject);
     }
 
+    /**
+     * Returns a non-null player count
+     *
+     * @return the server's player count, 0 if null
+     */
     public Integer getPlayerCount() {
         if (this.playerCount == null) return 0;
         return this.playerCount;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright (c) 2014.
-  ~ Cogz Development LLC USA
+  ~ CogzMC LLC USA
   ~ All Right reserved
   ~
   ~ This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -14,17 +14,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>net.tbnr.gearz</groupId>
         <artifactId>Engine</artifactId>
         <version>1.1-SNAPSHOT</version>
     </parent>
-    <groupId>GearzSetup</groupId>
+
     <artifactId>GearzSetup</artifactId>
+
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>net.tbnr.gearz</groupId>
@@ -37,13 +41,14 @@
             <version>1.12.2</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>

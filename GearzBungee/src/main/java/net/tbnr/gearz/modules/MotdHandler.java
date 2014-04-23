@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -26,6 +26,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.util.FileUtil;
 import net.tbnr.util.ImageToChatBungeeUtil;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
@@ -33,20 +34,24 @@ import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Joey
- * Date: 9/28/13
- * Time: 6:29 PM
- * To change this template use File | Settings | File Templates.
+ * Handles the display of server MOTDs,
+ * server images, and a fake player list
+ * to the ProxyPingEvent. This module also
+ * displays the MOTD to the player on join
+ *
+ * <p>
+ * Latest Change: Add fake player list
+ * <p>
+ *
+ * @author Joey
+ * @since 9/28/13
  */
 public class MotdHandler implements Listener, TCommandHandler {
     private List<String> motd;
+    private ServerPing.PlayerInfo[] pingInfo;
     private Integer index;
     private String favicon;
     private final List<StaticMOTD> staticMotds = new LinkedList<>();
@@ -58,7 +63,17 @@ public class MotdHandler implements Listener, TCommandHandler {
     }
 
     public void reload() {
-        this.motd = GearzBungee.boxMessage(ChatColor.YELLOW, GearzBungee.getInstance().getData("motd.txt"));
+        this.motd = GearzBungee.boxMessage(ChatColor.YELLOW, FileUtil.getData("motd.txt", GearzBungee.getInstance()));
+        List<String> fakePlayerList = GearzBungee.boxMessage(ChatColor.YELLOW, FileUtil.getData("ping.txt", GearzBungee.getInstance()));
+        List<ServerPing.PlayerInfo> listInfo = new ArrayList<>();
+        for (String string : fakePlayerList) {
+            listInfo.add(new ServerPing.PlayerInfo(string, UUID.randomUUID()));
+        }
+        if (listInfo.size() == 0){
+            this.pingInfo = null;
+        } else {
+            this.pingInfo = listInfo.toArray(new ServerPing.PlayerInfo[listInfo.size()]);
+        }
         File fav = new File("server-icon.png");
         if (fav.exists()) {
             try {
@@ -97,13 +112,11 @@ public class MotdHandler implements Listener, TCommandHandler {
         }
         motd = GearzBungee.getInstance().getFormat("motd-format", false, true, new String[]{"<motd>", motd},
                 new String[]{"<randomColor>", isStatic ? "" : motdPrefixColors[GearzBungee.getRandom().nextInt(motdPrefixColors.length)].toString()});
-        /*event.setResponse(new ServerPing(
-                ProxyServer.getInstance().getProtocolVersion(),
-                ProxyServer.getInstance().getGameVersion(),
-                motd,
-                ProxyServer.getInstance().getOnlineCount(),
-                GearzBungee.getInstance().getMaxPlayers())); - 1.6.4 */
-        event.setResponse(new ServerPing(event.getResponse().getVersion(), new ServerPing.Players(GearzBungee.getInstance().getMaxPlayers(), ProxyServer.getInstance().getOnlineCount(), event.getResponse().getPlayers().getSample()), motd, this.favicon));
+        if (pingInfo == null) {
+            event.setResponse(new ServerPing(event.getResponse().getVersion(), new ServerPing.Players(GearzBungee.getInstance().getMaxPlayers(), ProxyServer.getInstance().getOnlineCount(), event.getResponse().getPlayers().getSample()), motd, this.favicon));
+        } else {
+            event.setResponse(new ServerPing(event.getResponse().getVersion(), new ServerPing.Players(GearzBungee.getInstance().getMaxPlayers(), ProxyServer.getInstance().getOnlineCount(), this.pingInfo), motd, this.favicon));
+        }
     }
 
     @TCommand(
@@ -117,23 +130,66 @@ public class MotdHandler implements Listener, TCommandHandler {
         sendMotd(sender);
         return TCommandStatus.SUCCESSFUL;
     }
+
+    @TCommand(
+            name = "motdreload",
+            permission = "gearz.motd.reload",
+            usage = "/motdreload",
+            senders = {TCommandSender.Player, TCommandSender.Console})
+    @SuppressWarnings("unused")
+    public TCommandStatus motdReload(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
+        reload();
+        sender.sendMessage(ChatColor.GOLD + "MOTD data reloaded.");
+        return TCommandStatus.SUCCESSFUL;
+    }
+
     @TCommand(
             name = "staticmotd",
             permission = "gearz.setmotd",
             usage = "/staticmotd [minutes] [motd...]",
             senders = {TCommandSender.Player, TCommandSender.Console}
     )
+    @SuppressWarnings("unused")
     public TCommandStatus staticMOTD(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length < 2) return TCommandStatus.FEW_ARGS;
-        Integer minutes;
-        try {
-            minutes = Integer.valueOf(args[0]);
-        } catch (NumberFormatException ex) {
-            return TCommandStatus.INVALID_ARGS;
+        switch(args[0]) {
+            case "add":
+                Integer minutes;
+                try {
+                    minutes = Integer.valueOf(args[1]);
+                } catch (NumberFormatException ex) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                String message = GearzBungee.getInstance().compile(args, 2, args.length);
+                this.staticMotds.add(new StaticMOTD(message, minutes));
+                sender.sendMessage(ChatColor.GREEN + "Added Static MOTD " + ChatColor.translateAlternateColorCodes('&', message));
+                break;
+            case "delete":
+            case "remove":
+                Integer id;
+                try {
+                    id = Integer.valueOf(args[1]);
+                } catch (NumberFormatException ex) {
+                    return TCommandStatus.INVALID_ARGS;
+                }
+                StaticMOTD removedMOTD = this.staticMotds.get(id);
+                this.staticMotds.remove(removedMOTD);
+                sender.sendMessage(ChatColor.GREEN + "Removed Static MOTD " + ChatColor.translateAlternateColorCodes('&', removedMOTD.getMotd()));
+                break;
+            case "list":
+                sender.sendMessage(GearzBungee.getInstance().getFormat("header-motdlist", false));
+                int index = 0;
+                for (StaticMOTD motd : this.staticMotds) {
+                    sender.sendMessage(GearzBungee.getInstance().getFormat("list-motdlist", false, true, new String[]{"<index>", String.valueOf(index)}, new String[]{"<motd>", motd.getMotd()}));
+                    index++;
+                }
+                break;
+            case "clear":
+                this.staticMotds.clear();
+                break;
+            default:
+                return TCommandStatus.INVALID_ARGS;
         }
-        String message = GearzBungee.getInstance().compile(args, 1, args.length-1);
-        this.staticMotds.add(new StaticMOTD(message, minutes));
-        sender.sendMessage(ChatColor.GREEN + "Added Static MOTD " + ChatColor.translateAlternateColorCodes('&', message));
         return TCommandStatus.SUCCESSFUL;
     }
 
@@ -200,6 +256,7 @@ public class MotdHandler implements Listener, TCommandHandler {
     }
 
     @EventHandler(priority = EventPriority.LOW)
+    @SuppressWarnings("unused")
     public void onJoin(PostLoginEvent event) {
         sendMotd(event.getPlayer());
     }

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -131,7 +131,7 @@ public abstract class Arena implements Votable {
         ZipParameters zipParameters = new ZipParameters();
         zipParameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
         for (File file : files) {
-            Gearz.getInstance().getLogger().info("Adding " + file.getName());
+            Gearz.getInstance().debug("Adding " + file.getName());
             if (file.isDirectory()) {
                 zipFile.addFolder(file, zipParameters);
             } else {

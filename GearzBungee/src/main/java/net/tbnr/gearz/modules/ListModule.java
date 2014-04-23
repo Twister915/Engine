@@ -42,31 +42,31 @@ public class ListModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public void onJoin(ServerSwitchEvent event) {
         if (event.getPlayer().hasPermission("gearz.staff")) {
-	        if(!staffContains(event.getPlayer().getUniqueId())) staff.add(event.getPlayer());
+            if(!staffContains(event.getPlayer().getUniqueId())) staff.add(event.getPlayer());
         }
     }
 
-	private Boolean staffContains(UUID uniqueId) {
-		for (ProxiedPlayer proxiedPlayer : staff) {
-			if(proxiedPlayer.getUniqueId().equals(uniqueId)) return true;
-		}
-		return false;
-	}
+    private Boolean staffContains(UUID uniqueId) {
+        for (ProxiedPlayer proxiedPlayer : staff) {
+            if(proxiedPlayer.getUniqueId().equals(uniqueId)) return true;
+        }
+        return false;
+    }
 
-	@EventHandler
+    @EventHandler
     @SuppressWarnings("unused")
     public void onDisconnect(PlayerDisconnectEvent event) {
         staffRemove(event.getPlayer().getUniqueId());
     }
 
-	private void staffRemove(UUID uniqueId) {
-		Iterator<ProxiedPlayer> iterator = staff.iterator();
-		while(iterator.hasNext()) {
-			if(iterator.next().getUniqueId().equals(uniqueId)) iterator.remove();
-		}
-	}
+    private void staffRemove(UUID uniqueId) {
+        Iterator<ProxiedPlayer> iterator = staff.iterator();
+        while(iterator.hasNext()) {
+            if(iterator.next().getUniqueId().equals(uniqueId)) iterator.remove();
+        }
+    }
 
-	@TCommand(aliases = {"who", "w", "ls", "players", "online"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")
+    @TCommand(aliases = {"who", "w", "ls", "players", "online"}, usage = "/list", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.list", name = "list")
     @SuppressWarnings("unused")
     public TCommandStatus list(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         List<String> multiMessage = new ArrayList<>();
@@ -123,19 +123,19 @@ public class ListModule implements TCommandHandler, Listener {
             if (player1 != null) {
                 name = player1.getName();
                 online = true;
-				serverBungeeName = player1.getServer().getInfo().getName();
+                serverBungeeName = player1.getServer().getInfo().getName();
             }
             messages.add(GearzBungee.getInstance().getFormat("player-status-where", false, true, new String[]{"<status>", online ? "&aonline" : "&coffline"}, new String[]{"<name>", name}));
             if (online) {
-				Server server = null;
-				for(Server server1 : ServerManager.getAllServers()) {
-					if(server1.getBungee_name().equalsIgnoreCase(serverBungeeName)) {
-						server = server1;
-						break;
-					}
-				}
-				if(server != null)
-                	messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber() }));
+                Server server = null;
+                for(Server server1 : ServerManager.getAllServers()) {
+                    if(server1.getBungee_name().equalsIgnoreCase(serverBungeeName)) {
+                        server = server1;
+                        break;
+                    }
+                }
+                if(server != null)
+                    messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber() }));
             }
         }
         for (String s : GearzBungee.boxMessage(ChatColor.BLUE, messages)) {

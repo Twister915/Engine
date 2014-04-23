@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -12,7 +12,6 @@
 package net.tbnr.util;
 
 import com.mongodb.DB;
-import net.tbnr.gearz.Gearz;
 import net.tbnr.util.command.TCommandDispatch;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.player.TPlayer;
@@ -27,6 +26,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The TPlugin class is used to represent a plugin! This will handle all the basics for you!
@@ -47,11 +50,9 @@ public abstract class TPlugin extends JavaPlugin {
      *
      * @param listener The listener that you're registering
      */
-    public final void registerEvents(Listener listener) {
-        if (Gearz.getInstance().showDebug()) {
-            Gearz.getInstance().getLogger().info("GEARZ DEBUG ---<TPlugin|37>--------< registerEvents has been called for" + listener);
-        }
+    public final <T extends Listener> T registerEvents(T listener) {
         Bukkit.getPluginManager().registerEvents(listener, this);
+        return listener;
     }
 
     /**
@@ -70,6 +71,7 @@ public abstract class TPlugin extends JavaPlugin {
     public final void onEnable() {
         try {
             this.saveDefaultConfig(); //save the config
+            this.initGearzConfigs();
             this.commandDispatch = new TCommandDispatch(this); //Create a new command dispatch
             if (TPlugin.playerManager == null && this instanceof TDatabaseMaster) {
                 TPlugin.playerManager = new TPlayerManager(((TDatabaseMaster) this).getAuthDetails());
@@ -106,6 +108,8 @@ public abstract class TPlugin extends JavaPlugin {
      * Plugins must implement this to be called on disable.
      */
     public abstract void disable();
+
+    public void initGearzConfigs() {}
 
     /**
      * Get command dispatch
@@ -227,5 +231,32 @@ public abstract class TPlugin extends JavaPlugin {
             builder.append(" ");
         }
         return builder.toString();
+    }
+
+    public List<String> boxMessage(ChatColor firstColor, ChatColor secondColor, List<String> message) {
+        List<String> stringList = new ArrayList<>();
+        char[] chars = new char[50];
+        Arrays.fill(chars, ' ');
+        String result = new String(chars);
+        stringList.add(firstColor + "" + ChatColor.STRIKETHROUGH + result);
+        stringList.addAll(message);
+        stringList.add(secondColor + "" + ChatColor.STRIKETHROUGH + result);
+        return stringList;
+    }
+
+    public List<String> boxMessage(ChatColor firstColor, String... message) {
+        return boxMessage(firstColor, firstColor, Arrays.asList(message));
+    }
+
+    public List<String> boxMessage(String... message) {
+        return boxMessage(ChatColor.WHITE, message);
+    }
+
+    public List<String> boxMessage(ChatColor color, List<String> message) {
+        return boxMessage(color, color, message);
+    }
+
+    public List<String> boxMessage(List<String> message) {
+        return boxMessage(ChatColor.WHITE, message);
     }
 }
