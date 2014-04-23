@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Manages creation and registration of
@@ -180,13 +181,16 @@ public class ChannelManager {
         return channel;
     }
 
+    public static final char COLOR_CHAR = '\u0026';
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(COLOR_CHAR) + "[0-9A-FK-OR]");
+
     private String formatMessage(String message, Player player) {
         String chanFormat = getCurrentChannel(player).getFormat();
         PermissionsDelegate perms = Gearz.getInstance().getPermissionsDelegate();
         MessageFormat formatter = new MessageFormat(chanFormat);
         String senderName = player.getName();
         String senderDisplay = player.getDisplayName();
-        String cleanMessage = ChatColor.stripColor(message);
+        String cleanMessage = STRIP_COLOR_PATTERN.matcher(message).replaceAll("");
         String prefix = "";
         String suffix = "";
         String nameColor = "";
@@ -204,8 +208,6 @@ public class ChannelManager {
         }
 
         Object[] args = {senderName, senderDisplay, message, cleanMessage, prefix, suffix, nameColor, resetColor};
-        player.sendMessage("ORIGINAL: " + message);
-        player.sendMessage("CLEAN: " + cleanMessage);
         return ChatColor.translateAlternateColorCodes('&', formatter.format(args));
     }
 
