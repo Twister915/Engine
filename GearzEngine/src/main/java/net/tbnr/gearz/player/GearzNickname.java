@@ -18,7 +18,6 @@ import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
 import net.tbnr.util.player.TPlayer;
-import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerJoinEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,8 +28,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,34 +37,17 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public final class GearzNickname implements Listener, TCommandHandler {
-    //original username, nicked name
-    Map<String, String> overheadNicks = new HashMap<>();
-
-    public GearzNickname() {
-		/*ProtocolLibrary.getProtocolManager().addPacketListener(
-				new PacketAdapter(Gearz.getInstance(), PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
-					@Override
-					public void onPacketSending(PacketEvent event) {
-						String username = event.getPacket().getStrings().read(0);
-                        if (username == null) return;
-                        if (overheadNicks.containsKey(username)) {
-                            event.getPacket().getStrings().write(0, overheadNicks.get(username));
-                        }
-					}
-				});*/
-	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	@SuppressWarnings("unused")
-	public void onPlayerJoin(TPlayerJoinEvent event) {
-		this.updateNickname(event.getPlayer());
+	public void onPlayerJoin(final TPlayerJoinEvent event) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Gearz.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                updateNickname(event.getPlayer());
+            }
+        }, 120);
 	}
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    @SuppressWarnings("unused")
-    public void onPlayerQuit(TPlayerDisconnectEvent event) {
-        this.cleanupNickname(event.getPlayer());
-    }
 
 	@TCommand(
 			name = "nick",
@@ -146,9 +126,6 @@ public final class GearzNickname implements Listener, TCommandHandler {
 		return TCommandStatus.SUCCESSFUL;
 	}
 
-    private void cleanupNickname(TPlayer player) {
-        this.overheadNicks.remove(player.getPlayerName());
-    }
 
 	private String updateNickname(TPlayer player) {
 		Object storable = player.getStorable(Gearz.getInstance(), new GearzPlayerNickname(null));
@@ -163,7 +140,6 @@ public final class GearzNickname implements Listener, TCommandHandler {
 		player.getPlayer().setDisplayName(nick);
 		player.getPlayer().setCustomName(ChatColor.stripColor(nick));
 		ColoredTablist.updateNick(player.getPlayer());
-        this.overheadNicks.put(player.getPlayerName(), nick);
 		return nick;
 	}
 
