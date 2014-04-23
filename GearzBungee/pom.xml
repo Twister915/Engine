@@ -37,6 +37,10 @@
             <id>craftminecraft-dev</id>
             <url>http://repo.craftminecraft.net/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>gearz-repo</id>
+            <url>http://dev.tbnr.net:8080/plugin/repository/everything</url>
+        </repository>
     </repositories>
 
     <dependencies>
