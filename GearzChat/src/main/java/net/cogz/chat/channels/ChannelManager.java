@@ -60,7 +60,7 @@ public class ChannelManager {
     private final Map<String, Channel> playerChannels = new HashMap<>();
 
     public ChannelManager() {
-        enabled = GearzChat.getInstance().getChannelConfig().getConfig().getBoolean("channels.enabled", false);
+        enabled = GearzChat.getInstance().getChannelConfig().getConfig().getBoolean("channels.enabled");
     }
 
     /**
