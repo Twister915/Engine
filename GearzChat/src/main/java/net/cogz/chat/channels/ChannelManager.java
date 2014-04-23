@@ -52,6 +52,8 @@ public class ChannelManager {
     @Getter
     private final List<Channel> channels = new ArrayList<>();
 
+    @Getter public Channel defaultChannel;
+
     /**
      * A map of players to their respective channels
      */
@@ -69,11 +71,14 @@ public class ChannelManager {
         for (String chanName : config.getStringList("channels.list")) {
             String format = config.getString("formatting." + chanName + ".format");
             String permission = config.getString("formatting." + chanName + ".permission");
-            boolean main = config.getBoolean("formatting." + chanName + ".default", false);
+            boolean main = config.getBoolean("formatting." + chanName + ".main", false);
             boolean crossServer = config.getBoolean("formatting." + chanName + ".cross-server", false);
             boolean filter = config.getBoolean("formatting." + chanName + ".filter", true);
             Channel channel = new Channel(chanName, format, permission);
             channel.setDefault(main);
+            if (main) {
+                this.defaultChannel = channel;
+            }
             channel.setCrossServer(crossServer);
             channel.setFiltered(filter);
             registerChannel(channel);
@@ -87,18 +92,6 @@ public class ChannelManager {
         for (Channel channel : channels) {
             unregisterChannel(channel);
         }
-    }
-
-    /**
-     * Gets the default channel
-     *
-     * @return the default channel
-     */
-    public Channel getDefaultChannel() {
-        for (Channel channel : channels) {
-            if (channel.isDefault()) return channel;
-        }
-        return null;
     }
 
     /**
@@ -221,12 +214,8 @@ public class ChannelManager {
      * @param channel channel to set the player to
      */
     public void setChannel(Player player, Channel channel) {
-        Channel playerChannel = this.playerChannels.get(player.getName());
-        if (playerChannel != null && playerChannel.getName().equals(channel.getName())) {
-            throw new IllegalStateException("Already on this channel!");
-        }
-        if (playerChannel != null) {
-            playerChannel.removeMember(player);
+        if (this.playerChannels.containsKey(player.getName())) {
+            this.playerChannels.get(player.getName()).removeMember(player);
         }
 
         this.playerChannels.put(player.getName(), channel);
