@@ -43,18 +43,12 @@ public abstract class GearzFriends {
             return friends;
         }
         BasicDBList friendsList = (BasicDBList) friendsObj;
-        System.out.println("SIZE: " + friendsList.size());
         for (Object o : friendsList) {
             if (!(o instanceof BasicDBObject)) continue;
             BasicDBObject friend = (BasicDBObject) o;
             ObjectId id = friend.getObjectId("name");
-            System.out.println("ID found: " + id);
             DBObject friendObject = getById(id);
-            System.out.println("FOUND DBOBJECT: " + friendObject.get("current_username"));
             friends.add((String) friendObject.get("current_username"));
-        }
-        for (String friend : friends ) {
-            System.out.println("FOUND FRIEND: " +friend);
         }
         return friends;
     }
