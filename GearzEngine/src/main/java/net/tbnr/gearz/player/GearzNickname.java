@@ -77,7 +77,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
 		if (nick.equalsIgnoreCase("off")) {
 			nick = player.getPlayer().getName();
 		}
-		if ((TPlayer.getAnyPlayerWithUsername(nick) != null || TPlayer.anyMatchesToStorable(Gearz.getInstance(), "nickname", nick)) && !nick.equals(player.getPlayer().getName())) {
+		if ((TPlayer.getAnyPlayerWithUUID(nick) != null || TPlayer.anyMatchesToStorable(Gearz.getInstance(), "nickname", nick)) && !nick.equals(player.getPlayer().getName())) {
 			player.sendMessage(Gearz.getInstance().getFormat("formats.nickname-taken", false, new String[]{"<name>", nick}));
 			return TCommandStatus.SUCCESSFUL;
 		}
