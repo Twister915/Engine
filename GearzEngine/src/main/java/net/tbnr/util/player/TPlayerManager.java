@@ -13,6 +13,7 @@ package net.tbnr.util.player;
 
 import com.mongodb.*;
 import lombok.NonNull;
+import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.util.player.cooldowns.TCooldownManager;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
@@ -92,7 +93,6 @@ public final class TPlayerManager implements Listener {
     @SuppressWarnings("unused")
     public void onLogin(PlayerJoinEvent event) {
         TPlayerJoinEvent tPlayerJoinEvent = new TPlayerJoinEvent(this.getPlayer(event.getPlayer()));
-        tPlayerJoinEvent.getPlayer().loadSettings();
         Bukkit.getPluginManager().callEvent(tPlayerJoinEvent);
         event.setJoinMessage(tPlayerJoinEvent.getJoinMessage());
     }
@@ -111,7 +111,12 @@ public final class TPlayerManager implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onLogin(PlayerLoginEvent event) {
-        this.addPlayer(event.getPlayer());
+        if (ServerManager.canJoin()) {
+            this.addPlayer(event.getPlayer());
+            return;
+        }
+        event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+        event.setKickMessage("You are not permitted to join this server at this time.");
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -108,9 +108,9 @@ public abstract class GearzPermissions {
      * @param player Player who joined
      */
     public PermPlayer onJoin(String player) {
-        GModel one = new PermPlayer(this.database, getUUID(player), player).findOne();
+        String uuid = getUUID(player);
+        GModel one = new PermPlayer(this.database, uuid, player).findOne();
         if (one == null) {
-            String uuid = getUUID(player);
             if (uuid == null) throw new IllegalArgumentException("Not a valid player");
             one = new PermPlayer(this.database, uuid, player);
             ((PermPlayer) one).name = player;
