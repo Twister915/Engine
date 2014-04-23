@@ -73,7 +73,7 @@ public class PlayerDeath {
                         + (killer == null ? "" : " by ")
                         + game.getGameMeta().mainColor()
                         + getKillerName()
-                        + game.getGameMeta().mainColor()
+                        + game.getGameMeta().secondaryColor()
                         + (itemStack == null || itemStack.equals("") ? "" : "'s " + itemStack)
                         + (misc.equals("") || misc == null ? "" : " " + misc);
     }
