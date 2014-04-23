@@ -71,9 +71,9 @@ public class ChannelManager {
         for (String chanName : config.getStringList("channels.list")) {
             String format = config.getString("formatting." + chanName + ".format");
             String permission = config.getString("formatting." + chanName + ".permission");
-            boolean main = config.getBoolean("formatting." + chanName + ".main", false);
-            boolean crossServer = config.getBoolean("formatting." + chanName + ".cross-server", false);
-            boolean filter = config.getBoolean("formatting." + chanName + ".filter", true);
+            boolean main = config.getBoolean("formatting." + chanName + ".default");
+            boolean crossServer = config.getBoolean("formatting." + chanName + ".cross-server");
+            boolean filter = config.getBoolean("formatting." + chanName + ".filter");
             Channel channel = new Channel(chanName, format, permission);
             channel.setDefault(main);
             if (main) {

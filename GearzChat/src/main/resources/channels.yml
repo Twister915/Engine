@@ -9,15 +9,18 @@ formatting:
   default:
     format: '{4} {6}{1}{5}{7}: {3}'
     permission: ''
-    main: true
+    default: true
     filter: true
+    cross-server: false
   staff:
     format: '&0[&1Staff&0]&c {6}{1}{7}: &a{3}'
     permission: gearz.modbroadcast
-    main: false
+    default: false
     filter: false
+    cross-server: false
   specatator:
     format: '&7[&cSpectator&7] {4} {6}{1}{5}{7}: {3}'
     permission: ''
-    main: false
+    default: false
     filter: true
+    cross-server: false
