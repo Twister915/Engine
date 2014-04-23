@@ -58,7 +58,7 @@ public abstract class AbstractPacket {
      */
     public void sendPacket(Player receiver) {
         if (receiver == null) {
-            throw new IllegalArgumentException("Receiver can not be null");
+            return;
         }
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(receiver, getHandle());
