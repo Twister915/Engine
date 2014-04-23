@@ -242,7 +242,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
 
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
-        Gearz.getInstance().handleCommandStatus(status, sender, senderType);
+        Gearz.handleCommandStatus(status, sender);
     }
 
     public String formatHelp(String key, String value) {

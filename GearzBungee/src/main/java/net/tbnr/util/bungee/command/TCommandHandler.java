@@ -11,7 +11,6 @@
 
 package net.tbnr.util.bungee.command;
 
-
 import net.md_5.bungee.api.CommandSender;
 
 /**

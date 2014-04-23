@@ -28,14 +28,13 @@ import net.tbnr.gearz.server.ServerManagerHelper;
 import net.tbnr.gearz.settings.SettingsRegistration;
 import net.tbnr.gearz.settings.commands.SettingsCommands;
 import net.tbnr.util.*;
-import net.tbnr.util.command.TCommandHandler;
-import net.tbnr.util.command.TCommandSender;
 import net.tbnr.util.command.TCommandStatus;
 import net.tbnr.util.delegates.ChatDelegate;
 import net.tbnr.util.delegates.PermissionsDelegate;
 import net.tbnr.util.inventory.SelectorManager;
 import net.tbnr.util.player.TPlayerManager;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -48,7 +47,7 @@ import java.util.*;
 /**
  * Gearz Plugin
  */
-public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMaster, ServerManagerHelper {
+public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManagerHelper {
     /**
      * The Gearz instance.
      */
@@ -191,8 +190,7 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         return "gearz";
     }
 
-    @Override
-    public void handleCommandStatus(TCommandStatus status, org.bukkit.command.CommandSender sender, TCommandSender senderType) {
+    public static void handleCommandStatus(TCommandStatus status, CommandSender sender) {
         if (status == TCommandStatus.SUCCESSFUL) return;
         String msgFormat = null;
         switch (status) {
