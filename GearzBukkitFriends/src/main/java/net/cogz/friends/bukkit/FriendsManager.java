@@ -47,7 +47,7 @@ public class FriendsManager extends GearzFriends {
             TPlayer tPlayer = TPlayerManager.getInstance().getPlayer(bukkitPlayer);
             return tPlayer.getPlayerDocument();
         } else {
-            return TPlayer.getPlayerObject(player);
+            return TPlayer.getPlayerObjectByLastKnownName(player);
         }
     }
 }
