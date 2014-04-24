@@ -35,14 +35,11 @@ import net.tbnr.util.bungee.command.TCommandStatus;
  */
 public class UtilCommands implements TCommandHandler, Listener {
 
-    @TCommand(name = "about", permission = "gearz.about", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "", aliases = {"plugins", "version", "pl", "?"})
-    @SuppressWarnings("unused")
-    public TCommandStatus about(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
-        sender.sendMessage(GearzBungee.getInstance().getFormat("about-prefix", false) + GearzBungee.getInstance().getFormat("about-info", false));
-        return TCommandStatus.SUCCESSFUL;
-    }
-
-    @TCommand(name = "help", permission = "gearz.help", senders = {TCommandSender.Player}, usage = "")
+    @TCommand(name = "help",
+            permission = "gearz.help",
+            senders = {TCommandSender.Player},
+            usage = "/help",
+            aliases = {"about"})
     @SuppressWarnings("unused")
     public TCommandStatus help(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         sender.sendMessage(GearzBungee.getInstance().getFormat("about-prefix", false) + GearzBungee.getInstance().getFormat("about-info", false));
