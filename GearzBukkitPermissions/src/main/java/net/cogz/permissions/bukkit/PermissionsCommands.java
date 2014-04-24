@@ -62,11 +62,9 @@ public class PermissionsCommands implements TCommandHandler {
         try {
             // Get's the offline version of the player ~ .trim() removes whitespace from the argument (Just in case)
             player = permsManager.getOfflinePlayer(args[0].trim());
-        } catch (NullPointerException ex) {
+        } catch (Exception ex) {
             sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
             return TCommandStatus.SUCCESSFUL;
-        } catch (Exception ex) {
-            return TCommandStatus.INVALID_ARGS;
         }
 
         // If player is null return null player
