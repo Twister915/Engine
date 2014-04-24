@@ -49,22 +49,24 @@ public class UtilCommands implements TCommandHandler, Listener {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    @TCommand(name = "kickall", permission = "gearz.kickall", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "")
+    @TCommand(name = "kickall",
+            permission = "gearz.kickall",
+            senders = {TCommandSender.Player, TCommandSender.Console},
+            usage = "/kickall <reason>")
     @SuppressWarnings("unused")
     public TCommandStatus kickall(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
-        if (args.length == 0) {
-            return TCommandStatus.INVALID_ARGS;
+        String message = "All players kicked.";
+        if (args.length > 1) {
+            message = GearzBungee.getInstance().compile(args, 1, args.length);
         }
-
-        String msg = GearzBungee.getInstance().compile(args, 1, args.length);
-        kickPlayers(msg);
+        kickPlayers(message);
 
         return TCommandStatus.SUCCESSFUL;
     }
 
-    public void kickPlayers(String message) {
+    private void kickPlayers(String message) {
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
-            if (proxiedPlayer.hasPermission("gearz.kickall.bypass")) {
+            if (proxiedPlayer.hasPermission("gearz.staff")) {
                 continue;
             }
             proxiedPlayer.disconnect(message);

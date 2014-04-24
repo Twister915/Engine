@@ -69,7 +69,7 @@ public class MotdHandler implements Listener, TCommandHandler {
         for (String string : fakePlayerList) {
             listInfo.add(new ServerPing.PlayerInfo(string, UUID.randomUUID()));
         }
-        if (listInfo.size() == 0){
+        if (listInfo.size() == 2){
             this.pingInfo = null;
         } else {
             this.pingInfo = listInfo.toArray(new ServerPing.PlayerInfo[listInfo.size()]);
