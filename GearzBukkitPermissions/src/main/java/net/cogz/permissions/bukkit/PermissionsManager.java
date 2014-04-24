@@ -126,11 +126,6 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     }
 
     @Override
-    public List<String> getValidPermissions(String player) {
-        return getPlayer(player).getPermissions();
-    }
-
-    @Override
     public List<String> getAllPermissions(String player) {
         return getPlayer(player).getPermissions();
     }

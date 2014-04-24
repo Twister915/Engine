@@ -123,6 +123,12 @@ public final class GearzPlayer {
         loadUUIDDocument();
     }
 
+    /**
+     * Retrieves a {@link GearzPlayer} based on the id parameter.
+     * @param id {@link ObjectId} to query for.
+     * @return a {@link GearzPlayer} found for the id
+     * @throws PlayerNotFoundException thrown if a {@link DBObject} is not found for the id.
+     */
     public static GearzPlayer getById(ObjectId id) throws PlayerNotFoundException {
         DBObject query = new BasicDBObject("_id", id);
         DBObject one = getCollection().findOne(query);

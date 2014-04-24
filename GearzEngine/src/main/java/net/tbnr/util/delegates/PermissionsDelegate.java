@@ -29,7 +29,5 @@ public interface PermissionsDelegate {
 
     String getNameColor(String player);
 
-    List<String> getValidPermissions(String player);
-
     List<String> getAllPermissions(String player);
 }

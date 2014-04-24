@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Implementation of the Gearz Permissions
  * API for Bungee. Manages adding permissions
- * and UUID retreival from DBObjects and
+ * and UUID retrieval from DBObjects and
  * online players.
  *
  * <p>
@@ -130,11 +130,6 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     @Override
     public String getNameColor(String player) {
         return getNameColor(getPlayer(player));
-    }
-
-    @Override
-    public List<String> getValidPermissions(String player) {
-        return getPlayer(player).getPermissions();
     }
 
     @Override
