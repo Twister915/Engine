@@ -65,6 +65,7 @@ public class Hub implements TCommandHandler, Listener {
         for (Server server : this.hubServers) {
             if (server.getPlayerCount() < leastAmount) {
                 leastServer = server;
+                leastAmount = leastServer.getPlayerCount();
             }
         }
         return ProxyServer.getInstance().getServerInfo(leastServer.getBungee_name());
