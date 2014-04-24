@@ -167,10 +167,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         //Game shuffle module
         this.shuffleModule = new ShuffleModule();
 
-        //Report module
-        ReportModule.ReportManager reportManager = new ReportModule.ReportManager(getMongoDB().getCollection("reports"));
-        ReportModule reportModule = new ReportModule(reportManager);
-
         //Bungee whitelist module
         WhitelistModule whitelistModule = new WhitelistModule();
 
@@ -190,7 +186,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
                 this.helpMeModule,
                 infoModule,
                 this.shuffleModule,
-                reportModule,
                 whitelistModule,
                 announcerModule,
                 spy
