@@ -95,7 +95,6 @@ public abstract class BaseGUI implements Listener {
     public void openGUI(Player player) {}
 
     public void open(Player player) {
-        if (player == null) return;
         player.openInventory(inventory);
         if (effects) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 128, false));
@@ -106,7 +105,6 @@ public abstract class BaseGUI implements Listener {
     public void closeGUI(Player player) {}
 
     public void close(Player player) {
-        if (player == null || player.getOpenInventory() == null) return;
         if (effects) {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
         }
