@@ -217,13 +217,12 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             registerEvents(listener);
         }
 
-        /*
-        ModBroadcast modBroadcast = new ModBroadcast();
-        registerEvents(modBroadcast);
-        registerCommandHandler(modBroadcast);
-        getLogger().info("Channels disabled...");
-        */
-
+        if (getConfig().getBoolean("modbroadcast.enabled", true)) {
+            ModBroadcast modBroadcast = new ModBroadcast();
+            registerEvents(modBroadcast);
+            registerCommandHandler(modBroadcast);
+            getLogger().info("Channels disabled...");
+        }
 
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
