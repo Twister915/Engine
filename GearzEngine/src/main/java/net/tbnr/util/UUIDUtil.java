@@ -13,7 +13,6 @@ package net.tbnr.util;
 
 import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
-import com.mojang.api.profiles.ProfileCriteria;
 import lombok.Getter;
 
 /**
@@ -28,15 +27,15 @@ import lombok.Getter;
  * @since 3/29/2014
  */
 public class UUIDUtil {
+    private static final String AGENT = "minecraft";
 
     public UUIDUtil(String user, UUIDCallback callback) {
-        HttpProfileRepository repository = new HttpProfileRepository();
+        HttpProfileRepository repository = new HttpProfileRepository(AGENT);
         UUIDRunner uuidRunner = new UUIDRunner(repository, user, callback);
         new Thread(uuidRunner).start();
     }
 
     public static class UUIDRunner implements Runnable {
-        private static final String AGENT = "minecraft";
         private final HttpProfileRepository httpProfileRepository;
         @Getter private final String username;
         @Getter private String uuid;
@@ -50,7 +49,7 @@ public class UUIDUtil {
 
         @Override
         public void run() {
-            Profile[] profiles = httpProfileRepository.findProfilesByCriteria(new ProfileCriteria(username, AGENT));
+            Profile[] profiles = httpProfileRepository.findProfilesByNames(username);
             if (profiles[0] == null) {
                 this.uuid = null;
             } else {
