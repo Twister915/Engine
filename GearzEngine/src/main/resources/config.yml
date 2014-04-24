@@ -43,11 +43,6 @@ formats:
   server-book: "&3<game> &aServers"
   voted-for: "&3You have voted for &a<map>&3."
   command-status: "&7[&6TBNR&7] &cThe command returned an error: &4<status>"
-  no-youtube: "&cThat player does not have a Youtube channel."
-  failed-youtube: "&cFailed to retrieve Youtube channel data."
-  youtube-display: "&3<key> &5: &b<value>"
-  set-youtube-this: "&3Setting your Youtube username to the following data:"
-  fail-set: "&cFailed to find your Youtube channel!"
   selector-name: "&e<game> &7- &e<number>"
 game-strings:
   #All strings should use colors <p> and <s>, and has <gname> (longName()), <gn> (shortName()), <version> <author>, <description>, and <key>

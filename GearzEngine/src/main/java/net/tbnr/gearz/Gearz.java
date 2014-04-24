@@ -211,7 +211,7 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
                 break;
         }
         if (msgFormat == null) return;
-        sender.sendMessage(Gearz.getInstance().getFormat(msgFormat, true));
+        sender.sendMessage(Gearz.getInstance().getFormat("formats.command-status", true, new String[]{"<status>", Gearz.getInstance().getFormat(msgFormat, true)}));
     }
 
     @Override
