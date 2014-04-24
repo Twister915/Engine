@@ -1,9 +1,9 @@
 database:
-  host: 198.15.70.114
+  host: localhost
   port: 27017
   database: gearz_test
   collection: users
   enable: true
 redis:
-  host: 198.15.70.114
+  host: localhost
   port: 6379
