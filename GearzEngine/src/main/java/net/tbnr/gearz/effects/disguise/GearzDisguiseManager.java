@@ -32,14 +32,14 @@ public class GearzDisguiseManager {
 	 * @return the disguise of the player
 	 */
 	public EntityType getDisguise(GearzPlayer player) {
-
+		return null;
 	}
 
 	/**
 	 * Get if player is disguised
 	 * @param player the player to check if disguised
 	 */
-	public void isDisguised(GearzPlayer player) {
-
+	public Boolean isDisguised(GearzPlayer player) {
+		return false;
 	}
 }
