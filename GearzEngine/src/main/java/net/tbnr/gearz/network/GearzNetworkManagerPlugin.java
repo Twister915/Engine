@@ -23,7 +23,9 @@ import org.bukkit.event.Listener;
 
 public abstract class GearzNetworkManagerPlugin<PlayerType extends GearzPlayer, PlayerProviderType extends GearzPlayerProvider<PlayerType>> extends TPlugin implements Listener {
     @Getter protected PlayerProviderType playerProvider;
+    @Getter private String prefix;
     protected abstract PlayerProviderType getNewPlayerProvider();
+    public abstract String getServerPrefix();
 
     protected void onPlayerJoin(PlayerType player) {}
     protected void onPlayerDisconnect(PlayerType player) {}
@@ -32,6 +34,7 @@ public abstract class GearzNetworkManagerPlugin<PlayerType extends GearzPlayer, 
     @Override
     public void enable() {
         this.playerProvider = getNewPlayerProvider();
+        this.prefix = getServerPrefix();
         Gearz.getInstance().setNetworkManager(this);
         registerEvents(this);
         getLogger().info("Setup Network Plugin!");

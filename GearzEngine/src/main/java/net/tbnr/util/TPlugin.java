@@ -186,6 +186,10 @@ public abstract class TPlugin extends JavaPlugin {
         return string;
     }
 
+    public final String getFormat(String formatPath, String[]... data) {
+        return getFormat(formatPath, true, data);
+    }
+
     /**
      * Get the format without using any data.
      *

@@ -70,7 +70,6 @@ public final class GearzNickname implements Listener, TCommandHandler {
 			if (target == null) return TCommandStatus.INVALID_ARGS;
 			player = Gearz.getInstance().getPlayerManager().getPlayer(target);
 			nick = args[1];
-			//if (nick.equalsIgnoreCase("off")) nick = player.getPlayer().getName();
 			sender.sendMessage(Gearz.getInstance().getFormat("formats.update-nickname-other", false, new String[]{"<player>", target.getName()}, new String[]{"<name>", nick}));
 		}
 		assert player != null;
