@@ -15,39 +15,32 @@ import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.entity.EntityType;
 
 /**
- * The Gearz Disguise Manager
+ * An interface for a disguise manager
+ *
  * <p/>
  * Latest Change: Created it
  * <p/>
- * 
+ *
  * @author George
  * @since 25/04/2014
  */
-public class GearzDisguiseManager implements DisguiseManager {
+public interface DisguiseManager {
 
-	public GearzDisguiseManager() {
-		
-		init();
-	}
 
-	private void init() {
 
-	}
+
 
 	/**
 	 * Get the disguise of the player
 	 * @param player The player to get the disguise of
 	 * @return the disguise of the player
 	 */
-	public EntityType getDisguise(GearzPlayer player) {
-		return null;
-	}
+	public EntityType getDisguise(GearzPlayer player);
 
 	/**
 	 * Get if player is disguised
 	 * @param player the player to check if disguised
 	 */
-	public Boolean isDisguised(GearzPlayer player) {
-		return false;
-	}
+	public Boolean isDisguised(GearzPlayer player);
+
 }

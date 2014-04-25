@@ -11,17 +11,14 @@
 
 package net.tbnr.gearz.effects.disguise.exceptions;
 
-import java.util.logging.Logger;
-
 /**
+ * Exception for base disguise api exceptions
  * <p/>
- * Latest Change:
+ * Latest Change: Created it
  * <p/>
  *
  * @author George
  * @since 25/04/2014
  */
-public class GearzDisguiseAPIException {
-	private static final boolean debug = false; //TODO get debug mode
-	private static final Logger log = null; //TODO get logger
+public class GearzDisguiseAPIException extends Exception {
 }

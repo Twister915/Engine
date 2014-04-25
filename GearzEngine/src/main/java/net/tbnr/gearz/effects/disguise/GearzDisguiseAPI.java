@@ -11,13 +11,14 @@
 
 package net.tbnr.gearz.effects.disguise;
 
+import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.entity.EntityType;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
+ * An interface for the different disguise plugins
  * <p/>
- * Latest Change:
+ * Latest Change: Created it
  * <p/>
  *
  * @author George
@@ -27,9 +28,9 @@ public interface GearzDisguiseAPI {
 
 	/**
 	 * Grab the API for the disguise the plugin manager
-	 * @param plugin ~ The plugin
+	 * @param gearzPlugin ~ The plugin
 	 */
-	public void onEnable(JavaPlugin plugin);
+	public void onEnable(Gearz gearzPlugin);
 
 
 	/**

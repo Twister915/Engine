@@ -12,8 +12,9 @@
 package net.tbnr.gearz.effects.disguise.libdisguise;
 
 /**
+ * A Non-Magic way of showing which disguise plugin is prioritised to be used
  * <p/>
- * Latest Change:
+ * Latest Change: Created it
  * <p/>
  *
  * @author George
@@ -42,7 +43,7 @@ public enum GearzDisguisePriority {
 	 */
 	LOWEST,
 	/**
-	 * Fall back priority ~ for only disguise api's that use no external plugins!
+	 * Fall back priority ~ for only disguise API's that use no external plugins!
 	 */
 	FALLBACK
 

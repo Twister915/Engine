@@ -13,14 +13,17 @@ package net.tbnr.gearz.effects.disguise.libdisguise;
 
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseAPI;
+import net.tbnr.gearz.effects.disguise.GearzDisguiseMeta;
 import net.tbnr.gearz.player.GearzPlayer;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.entity.EntityType;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
+ * An implementation of the disguise api for lib disguise plugin
+ *
  * <p/>
  * Latest Change:
  * <p/>
@@ -28,17 +31,17 @@ import java.util.logging.Logger;
  * @author George
  * @since 25/04/2014
  */
+@GearzDisguiseMeta(
+
+)
 public class LibDisguiseAPI implements GearzDisguiseAPI {
 	private static final Boolean debug = true;
 	private static final Logger log = Gearz.getInstance().getLogger();
+	private static final Map<DisguiseType, EntityType> conversionMatrix = new HashMap<>();
 
 	@Override
-	public void onEnable(JavaPlugin plugin) {
-		if (debug) {
-			log.info("onEnable() was called in class net.tbnr.gearz.effects.disguise.libdisguise.LibDisguiseAPI! It Normally Returns void!");
-		}
-		// import org.apache.commons.lang.NotImplementedException;
-		throw new NotImplementedException("onEnable() has not been created yet in class net.tbnr.gearz.effects.disguise.libdisguise.LibDisguiseAPI! It would Normally Return void!");
+	public void onEnable(Gearz gearzPlugin) {
+
 	}
 
 	@Override
