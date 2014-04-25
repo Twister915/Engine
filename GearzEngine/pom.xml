@@ -51,9 +51,18 @@
             <id>gearz-repo</id>
             <url>http://dev.tbnr.net:8080/plugin/repository/everything</url>
         </repository>
+        <repository>
+            <id>md5-repo</id>
+            <url>http://repo.md-5.net/content/groups/public/</url>
+        </repository>
     </repositories>
 	
     <dependencies>
+        <dependency>
+            <groupId>LibDisguises</groupId>
+            <artifactId>LibDisguises</artifactId>
+            <version>7.2.4</version>
+        </dependency>
         <dependency>
             <artifactId>bukkit</artifactId>
             <groupId>org.bukkit</groupId>
