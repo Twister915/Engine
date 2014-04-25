@@ -9,10 +9,9 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.effects;
+package net.tbnr.gearz.effects.disguise.exceptions;
 
-import com.avaje.ebeaninternal.server.deploy.BeanDescriptor.EntityType;
-import net.tbnr.gearz.player.GearzPlayer;
+import java.util.logging.Logger;
 
 /**
  * <p/>
@@ -20,9 +19,9 @@ import net.tbnr.gearz.player.GearzPlayer;
  * <p/>
  *
  * @author George
- * @since 23/04/2014
+ * @since 25/04/2014
  */
-public interface GearzDisguiseAPI {
-
-	public static void DisguisePlayerAsMob(GearzPlayer player, EntityType entityType);
+public class GearzDisguiseAPIException {
+	private static final boolean debug = false; //TODO get debug mode
+	private static final Logger log = null; //TODO get logger
 }
