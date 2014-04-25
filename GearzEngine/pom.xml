@@ -59,11 +59,6 @@
 	
     <dependencies>
         <dependency>
-            <groupId>LibDisguises</groupId>
-            <artifactId>LibDisguises</artifactId>
-            <version>7.2.4</version>
-        </dependency>
-        <dependency>
             <artifactId>bukkit</artifactId>
             <groupId>org.bukkit</groupId>
             <version>1.7.9-R0.1-SNAPSHOT</version>
@@ -125,6 +120,11 @@
             <groupId>tc.oc</groupId>
             <artifactId>tracker</artifactId>
             <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>LibDisguises</groupId>
+            <artifactId>LibDisguises</artifactId>
+            <version>7.2.4</version>
         </dependency>
     </dependencies>
 
