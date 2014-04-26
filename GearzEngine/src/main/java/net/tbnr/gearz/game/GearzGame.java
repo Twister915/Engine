@@ -624,7 +624,6 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         Gearz.getInstance().debug("GEARZ DEBUG ---<GearzGAme|490>--------< playerLeft has been CAUGHT for: " + player.getUsername());
         this.players.remove(player);
         this.spectators.remove(player);
-        //this.pendingPoints.remove(player);
         player.setGame(null);
         if (this.players.size() < 2) {
             stopGame(GameStopCause.FORCED);
