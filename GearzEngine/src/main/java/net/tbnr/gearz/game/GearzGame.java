@@ -503,7 +503,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Hide's a player from all other players in the game (inc spectators)
+     * Hides a player from all other players in the game (inc spectators)
      *
      * @param player ~ (in PlayerType wrapper) to be hidden
      */
