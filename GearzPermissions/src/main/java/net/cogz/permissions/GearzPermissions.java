@@ -77,28 +77,27 @@ public abstract class GearzPermissions {
         this.database = getDatabase();
         if (this.database == null) throw new UnsupportedOperationException("No data supplied! Needs a database!");
         try {
-	        this.groups = new HashMap<>();
-	        defaultGroup = null;
-	        PermGroup permGroup = new PermGroup(this.database);
-	        List<GModel> many = permGroup.findAll();
-	        for (GModel m : many) {
-		        if (!(m instanceof PermGroup)) continue;
-		        PermGroup group = (PermGroup) m;
-		        if (group.isDefault()) defaultGroup = group;
-		        this.groups.put(group.getName(), group);
-	        }
-	        if (getDefaultGroup() == null) {
-		        PermGroup group = createGroup("default");
-		        group.isDefault = true;
-		        defaultGroup = group;
-		        group.save();
-		        throw new UnsupportedOperationException("Invalid default group! New one created..");
-	        }
-	        for (String s : onlinePlayers()) {
-		        onJoin(s);
-	        }
-        } catch(Exception exception) {
-	        throw new UnsupportedOperationException("Cannot Connect to Database! Maybe Database is lagging?!");
+            defaultGroup = null;
+            PermGroup permGroup = new PermGroup(this.database);
+            List<GModel> many = permGroup.findAll();
+            for (GModel m : many) {
+                if (!(m instanceof PermGroup)) continue;
+                PermGroup group = (PermGroup) m;
+                if (group.isDefault()) defaultGroup = group;
+                this.groups.put(group.getName(), group);
+            }
+            if (getDefaultGroup() == null) {
+                PermGroup group = createGroup("default");
+                group.isDefault = true;
+                defaultGroup = group;
+                group.save();
+                throw new UnsupportedOperationException("Invalid default group! New one created..");
+            }
+            for (String s : onlinePlayers()) {
+                onJoin(s);
+            }
+        } catch (Exception exception) {
+            throw new UnsupportedOperationException("Cannot Connect to Database! Maybe Database is lagging?!");
         }
     }
 
