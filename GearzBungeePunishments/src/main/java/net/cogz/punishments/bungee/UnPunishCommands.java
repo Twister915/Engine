@@ -68,7 +68,7 @@ public class UnPunishCommands implements TCommandHandler {
                 sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-header", false, false, new String[]{"<player>", username}));
                 int x = 0;
                 for (Punishment punishment : punishments) {
-                    sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.end)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", manager.punisherFromUUID(punishment.issuer)}, new String[]{"<id>", x + ""}));
+                    sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("lookup-format", false, false, new String[]{"<date>", readable.format(punishment.time)}, new String[]{"<reason>", punishment.reason}, new String[]{"<action>", punishment.getPunishmentType().getAction()}, new String[]{"<issuer>", manager.punisherFromUUID(punishment.issuer)}, new String[]{"<id>", x + ""}));
                     x++;
                 }
             }
