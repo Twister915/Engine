@@ -42,6 +42,12 @@ public interface GearzDisguiseAPI {
 	public void disguisePlayerAsMob(GearzPlayer player, EntityType entityType);
 
 	/**
+	 * Disguise a player as a mob
+	 * @param player player to disguise
+	 */
+	public void undisguisePlayer(GearzPlayer player);
+
+	/**
 	 * Turn a custom disguise into an entity type
 	 * @param o ~ the custom disguise type
 	 */

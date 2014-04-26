@@ -14,10 +14,11 @@ package net.tbnr.gearz.effects.disguise.disguises;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseAPI;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseMeta;
+import net.tbnr.gearz.effects.disguise.GearzDisguisePriority;
 import net.tbnr.gearz.player.GearzPlayer;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.entity.EntityType;
 
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
@@ -31,16 +32,18 @@ import java.util.logging.Logger;
  * @since 25/04/2014
  */
 @GearzDisguiseMeta(
-
+	priority = GearzDisguisePriority.HIGHEST,
+	enabled = false,
+	pluginName = "LibDisguises"
 )
 public class LibDisguiseAPI implements GearzDisguiseAPI {
 	private static final Boolean debug = true;
 	private static final Logger log = Gearz.getInstance().getLogger();
-	private static final Map<DisguiseType, EntityType> conversionMatrix = new HashMap<>() {
-		{
-			put(null, EntityType.MINECART);
-		}
-	};
+//	private static final Map<DisguiseType, EntityType> conversionMatrix = new HashMap<>() {
+//		{
+//			put(null, EntityType.MINECART);
+//		}
+//	};
 
 	@Override
 	public void onEnable(Gearz gearzPlugin) {

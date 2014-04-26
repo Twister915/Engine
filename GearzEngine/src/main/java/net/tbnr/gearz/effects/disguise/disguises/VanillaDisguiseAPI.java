@@ -13,8 +13,10 @@ package net.tbnr.gearz.effects.disguise.disguises;
 
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseAPI;
+import net.tbnr.gearz.effects.disguise.GearzDisguiseMeta;
+import net.tbnr.gearz.effects.disguise.GearzDisguisePriority;
+import net.tbnr.gearz.effects.disguise.exceptions.GearzDisguiseAPIException;
 import net.tbnr.gearz.player.GearzPlayer;
-import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.EntityType;
@@ -32,6 +34,9 @@ import java.util.logging.Logger;
  * @author George
  * @since 26/04/2014
  */
+@GearzDisguiseMeta(
+		priority = GearzDisguisePriority.FALLBACK
+)
 public class VanillaDisguiseAPI implements GearzDisguiseAPI {
 	private static final boolean debug = false; //TODO get debug mode
 	private static final Logger log = null; //TODO get logger
@@ -63,21 +68,21 @@ public class VanillaDisguiseAPI implements GearzDisguiseAPI {
 	}
 
 	@Override
+	public void undisguisePlayer(GearzPlayer player) {
+		player.getPlayer().getInventory().setHelmet(null);
+	}
+
+
+	@Override
 	public EntityType customDisguiseToEntityType(Object o) {
-		if (debug) {
-			log.info("customDisguiseToEntityType() was called in class net.tbnr.gearz.effects.disguise.disguises.VanillaDisguiseAPI! It Normally Returns EntityType!");
-		}
-		// import org.apache.commons.lang.NotImplementedException;
-		throw new NotImplementedException("customDisguiseToEntityType() has not been created yet in class net.tbnr.gearz.effects.disguise.disguises.VanillaDisguiseAPI! It would Normally Return EntityType!");
+		try {throw new GearzDisguiseAPIException(VanillaDisguiseAPI.class.getName()+" doesn't have a custom Disguise Type Enum!");}catch(GearzDisguiseAPIException ex) {ex.printStackTrace();}
+		return null;
 	}
 
 	@Override
 	public Object entityTypeToCustomDisguise(EntityType entityType) {
-		if (debug) {
-			log.info("entityTypeToCustomDisguise() was called in class net.tbnr.gearz.effects.disguise.disguises.VanillaDisguiseAPI! It Normally Returns Object!");
-		}
-		// import org.apache.commons.lang.NotImplementedException;
-		throw new NotImplementedException("entityTypeToCustomDisguise() has not been created yet in class net.tbnr.gearz.effects.disguise.disguises.VanillaDisguiseAPI! It would Normally Return Object!");
+		try {throw new GearzDisguiseAPIException(VanillaDisguiseAPI.class.getName()+" doesn't have a custom Disguise Type Enum!");}catch(GearzDisguiseAPIException ex) {ex.printStackTrace();}
+		return null;
 	}
 
 	public ItemStack getHelmet(EntityType entityType) {

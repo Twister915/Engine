@@ -45,6 +45,6 @@ public @interface GearzDisguiseMeta {
 	 * If it is enabled
 	 * @return true if it is enabled
 	 */
-	public boolean enabled() default false;
+	public boolean enabled() default true;
 
 }
