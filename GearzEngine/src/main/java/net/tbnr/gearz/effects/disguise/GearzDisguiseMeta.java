@@ -30,6 +30,12 @@ import java.lang.annotation.Target;
 public @interface GearzDisguiseMeta {
 
 	/**
+	 * The key so it can be chosen directory
+	 * @return the key
+	 */
+	public String key();
+
+	/**
 	 * Priority of the disguise plugin to be used
 	 * @return The GearzDisguisePriority
 	 */

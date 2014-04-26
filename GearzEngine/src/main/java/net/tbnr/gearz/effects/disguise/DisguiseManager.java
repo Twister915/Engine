@@ -50,4 +50,7 @@ public interface DisguiseManager {
 	 */
 	void registerDisguises(GearzDisguiseAPI... disguisesAPI);
 
+	public void disguisePlayer(GearzPlayer player, EntityType entityType);
+
+	public void undisguisePlayer(GearzPlayer player);
 }

@@ -35,6 +35,7 @@ import java.util.logging.Logger;
  * @since 26/04/2014
  */
 @GearzDisguiseMeta(
+		key = "vanilla",
 		priority = GearzDisguisePriority.FALLBACK
 )
 public class VanillaDisguiseAPI implements GearzDisguiseAPI {

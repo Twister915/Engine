@@ -11,6 +11,9 @@
 
 package net.tbnr.gearz.effects.disguise.disguises;
 
+import me.libraryaddict.disguise.DisguiseAPI;
+import me.libraryaddict.disguise.DisguiseTypes.DisguiseType;
+import me.libraryaddict.disguise.DisguiseTypes.MobDisguise;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseAPI;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseMeta;
@@ -32,6 +35,7 @@ import java.util.logging.Logger;
  * @since 25/04/2014
  */
 @GearzDisguiseMeta(
+	key = "LibDisguises",
 	priority = GearzDisguisePriority.HIGHEST,
 	enabled = false,
 	pluginName = "LibDisguises"
@@ -39,33 +43,19 @@ import java.util.logging.Logger;
 public class LibDisguiseAPI implements GearzDisguiseAPI {
 	private static final Boolean debug = true;
 	private static final Logger log = Gearz.getInstance().getLogger();
-//	private static final Map<DisguiseType, EntityType> conversionMatrix = new HashMap<>() {
-//		{
-//			put(null, EntityType.MINECART);
-//		}
-//	};
 
 	@Override
 	public void onEnable(Gearz gearzPlugin) {
-
 	}
 
 	@Override
 	public void disguisePlayerAsMob(GearzPlayer player, EntityType entityType) {
-		if (debug) {
-			log.info("disguisePlayerAsMob() was called in class net.tbnr.gearz.effects.disguise.libdisguise.LibDisguiseAPI! It Normally Returns void!");
-		}
-		// import org.apache.commons.lang.NotImplementedException;
-		throw new NotImplementedException("disguisePlayerAsMob() has not been created yet in class net.tbnr.gearz.effects.disguise.libdisguise.LibDisguiseAPI! It would Normally Return void!");
+		DisguiseAPI.disguiseToAll(player.getPlayer(), new MobDisguise(DisguiseType.getType(entityType)));
 	}
 
 	@Override
 	public void undisguisePlayer(GearzPlayer player) {
-		if (debug) {
-			log.info("undisguisePlayer() was called in class net.tbnr.gearz.effects.disguise.disguises.LibDisguiseAPI! It Normally Returns void!");
-		}
-		// import org.apache.commons.lang.NotImplementedException;
-		throw new NotImplementedException("undisguisePlayer() has not been created yet in class net.tbnr.gearz.effects.disguise.disguises.LibDisguiseAPI! It would Normally Return void!");
+		DisguiseAPI.undisguiseToAll(player.getPlayer());
 	}
 
 	@Override

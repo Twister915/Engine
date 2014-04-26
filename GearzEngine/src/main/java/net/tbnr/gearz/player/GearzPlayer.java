@@ -81,10 +81,10 @@ public class GearzPlayer {
     }
 
 	public void disguise(EntityType entityType) {
-		Gearz.getInstance().getDisguiseManager().getDisguiseAPI().disguisePlayerAsMob(this, entityType);
+		Gearz.getInstance().getDisguiseManager().disguisePlayer(this, entityType);
 	}
 
 	public void undisguise() {
-		Gearz.getInstance().getDisguiseManager().getDisguiseAPI().undisguisePlayer(this);
+		Gearz.getInstance().getDisguiseManager().undisguisePlayer(this);
 	}
 }

@@ -17,9 +17,7 @@ import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * The Gearz Disguise Manager
@@ -33,6 +31,7 @@ import java.util.List;
 public class GearzDisguiseManager implements DisguiseManager {
 
 	private List<GearzDisguiseAPI> disguises = new ArrayList<>();
+	private Map<GearzPlayer, EntityType> playerDisguise = new HashMap<>();
 
 	public GearzDisguiseManager() {
 		
@@ -52,8 +51,25 @@ public class GearzDisguiseManager implements DisguiseManager {
 	 * Registers all the disguises
 	 * @param disguisesAPI The disguise api's
 	 */
-	private void registerDisguises(GearzDisguiseAPI... disguisesAPI) {
+	public void registerDisguises(GearzDisguiseAPI... disguisesAPI) {
 		disguises.addAll(Arrays.asList(disguisesAPI));
+	}
+
+	@Override
+	public void disguisePlayer(GearzPlayer player, EntityType entityType) {
+		playerDisguise.put(player, entityType);
+		try {
+			getDisguiseAPI().disguisePlayerAsMob(player, entityType);
+		} catch(Exception ex) {
+			playerDisguise.remove(player);
+		}
+
+	}
+
+	@Override
+	public void undisguisePlayer(GearzPlayer player) {
+		playerDisguise.remove(player);
+		getDisguiseAPI().undisguisePlayer(player);
 	}
 
 	/**
@@ -62,16 +78,16 @@ public class GearzDisguiseManager implements DisguiseManager {
 	 * @return the disguise of the player
 	 */
 	public EntityType getDisguise(GearzPlayer player) {
-		return null;
-	} //todo
+		return playerDisguise.get(player);
+	}
 
 	/**
 	 * Get if player is disguised
 	 * @param player the player to check if disguised
 	 */
 	public Boolean isDisguised(GearzPlayer player) {
-		return false;
-	} //todo
+		return playerDisguise.containsKey(player);
+	}
 
 	public GearzDisguiseAPI getDisguiseAPI() {
 		GearzDisguiseAPI disguiseAPI = disguises.get(0);
@@ -92,11 +108,13 @@ public class GearzDisguiseManager implements DisguiseManager {
 	public GearzDisguiseAPI getDisguiseAPI(String s) {
 		for(GearzDisguiseAPI disguise : disguises) {
 			try {
-				if(GearzDisguiseUtil.getMeta(disguise).pluginName().equalsIgnoreCase(s)) return disguise;
+				if(GearzDisguiseUtil.getMeta(disguise).key().equalsIgnoreCase(s)) return disguise;
 			} catch (NoGearzDisguiseMeta noGearzDisguiseMeta) {
 				noGearzDisguiseMeta.printStackTrace();
 			}
 		}
 		return null;
 	}
+
+
 }
