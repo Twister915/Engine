@@ -68,6 +68,16 @@ public abstract class GearzPermissions {
      */
     public abstract DB getDatabase();
 
+    /**
+     * Returns a formatted {@link java.util.UUID} for the player
+     * based on either their {@link com.mongodb.DBObject}
+     * in the #getDatabase() method or based on
+     * the player's UUID that is passed during
+     * login.
+     *
+     * @param player name player to retrieve a UUID for
+     * @return the player's UUID
+     */
     public abstract String getUUID(String player);
 
     /**
@@ -109,14 +119,13 @@ public abstract class GearzPermissions {
     public PermPlayer onJoin(String player) {
         String uuid = getUUID(player);
         GModel one = new PermPlayer(this.database, uuid, player).findOne();
-        if (one == null) {
+        if (one == null || !(one instanceof PermPlayer)) {
             if (uuid == null) throw new IllegalArgumentException("Not a valid player");
             one = new PermPlayer(this.database, uuid, player);
             ((PermPlayer) one).name = player;
             ((PermPlayer) one).setGroup(getDefaultGroup());
             one.save();
         }
-        if (!(one instanceof PermPlayer)) return null;
         ((PermPlayer) one).name = player;
         this.players.put(player, (PermPlayer) one);
         reloadPlayer(player);
@@ -257,26 +266,20 @@ public abstract class GearzPermissions {
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {
-                try {
-                    String[] s = entry.split(",");
-                    String permission = s[0];
-                    boolean value = Boolean.valueOf(s[1]);
-                    perms.put(permission, value);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    //ignore -- continue
-                }
+                String[] s = entry.split(",");
+                if (s.length != 2) continue;
+                String permission = s[0];
+                boolean value = Boolean.valueOf(s[1]);
+                perms.put(permission, value);
             }
         }
         if (permPlayer.getPermissions() != null) {
             for (String entry : permPlayer.getPermissions()) {
-                try {
-                    String[] s = entry.split(",");
-                    String permission = s[0];
-                    boolean value = Boolean.valueOf(s[1]);
-                    perms.put(permission, value);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    //ignore -- continue
-                }
+                String[] s = entry.split(",");
+                if (s.length != 2) continue;
+                String permission = s[0];
+                boolean value = Boolean.valueOf(s[1]);
+                perms.put(permission, value);
             }
         }
 
