@@ -52,7 +52,7 @@
             <url>http://dev.tbnr.net:8080/plugin/repository/everything</url>
         </repository>
         <repository>
-            <id>md5-repo</id>
+            <id>md_5-repo</id>
             <url>http://repo.md-5.net/content/groups/public/</url>
         </repository>
     </repositories>
