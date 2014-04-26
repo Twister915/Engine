@@ -122,8 +122,8 @@
             <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>LibDisguises</groupId>
-            <artifactId>LibDisguises</artifactId>
+            <groupId>LibsDisguises</groupId>
+            <artifactId>LibsDisguises</artifactId>
             <version>7.2.4</version>
         </dependency>
     </dependencies>
