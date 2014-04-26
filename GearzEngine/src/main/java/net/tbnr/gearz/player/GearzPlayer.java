@@ -17,6 +17,7 @@ import net.tbnr.gearz.game.GearzGame;
 import net.tbnr.util.player.TPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 /**
@@ -78,4 +79,12 @@ public class GearzPlayer {
     public void sendMessage(String message) {
         getPlayer().sendMessage(message);
     }
+
+	public void disguise(EntityType entityType) {
+		Gearz.getInstance().getDisguiseManager().getDisguiseAPI().disguisePlayerAsMob(this, entityType);
+	}
+
+	public void undisguise() {
+		Gearz.getInstance().getDisguiseManager().getDisguiseAPI().undisguisePlayer(this);
+	}
 }

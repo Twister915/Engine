@@ -60,6 +60,15 @@ public class LibDisguiseAPI implements GearzDisguiseAPI {
 	}
 
 	@Override
+	public void undisguisePlayer(GearzPlayer player) {
+		if (debug) {
+			log.info("undisguisePlayer() was called in class net.tbnr.gearz.effects.disguise.disguises.LibDisguiseAPI! It Normally Returns void!");
+		}
+		// import org.apache.commons.lang.NotImplementedException;
+		throw new NotImplementedException("undisguisePlayer() has not been created yet in class net.tbnr.gearz.effects.disguise.disguises.LibDisguiseAPI! It would Normally Return void!");
+	}
+
+	@Override
 	public EntityType customDisguiseToEntityType(Object o) {
 		if (debug) {
 			log.info("customDisguiseToEntityType() was called in class net.tbnr.gearz.effects.disguise.libdisguise.LibDisguiseAPI! It Normally Returns EntityType!");

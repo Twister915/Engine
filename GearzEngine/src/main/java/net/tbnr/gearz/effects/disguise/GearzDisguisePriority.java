@@ -45,6 +45,10 @@ public enum GearzDisguisePriority {
 	/**
 	 * Fall back priority ~ for only disguise API's that use no external plugins!
 	 */
-	FALLBACK
+	FALLBACK;
 
+
+	public Boolean isHigher(GearzDisguisePriority priority) {
+		return this.ordinal() > priority.ordinal();
+	}
 }

@@ -40,4 +40,14 @@ public interface DisguiseManager {
 	 */
 	public Boolean isDisguised(GearzPlayer player);
 
+	public GearzDisguiseAPI getDisguiseAPI();
+
+	public GearzDisguiseAPI getDisguiseAPI(String s);
+
+	/**
+	 * Registers all the disguises
+	 * @param disguisesAPI The disguise api's
+	 */
+	void registerDisguises(GearzDisguiseAPI... disguisesAPI);
+
 }

@@ -12,7 +12,9 @@
 package net.tbnr.gearz.effects.disguise;
 
 import net.tbnr.gearz.effects.disguise.disguises.LibDisguiseAPI;
+import net.tbnr.gearz.effects.disguise.exceptions.NoGearzDisguiseMeta;
 import net.tbnr.gearz.player.GearzPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
@@ -46,8 +48,6 @@ public class GearzDisguiseManager implements DisguiseManager {
 
 	}
 
-	
-
 	/**
 	 * Registers all the disguises
 	 * @param disguisesAPI The disguise api's
@@ -63,7 +63,7 @@ public class GearzDisguiseManager implements DisguiseManager {
 	 */
 	public EntityType getDisguise(GearzPlayer player) {
 		return null;
-	}
+	} //todo
 
 	/**
 	 * Get if player is disguised
@@ -71,5 +71,32 @@ public class GearzDisguiseManager implements DisguiseManager {
 	 */
 	public Boolean isDisguised(GearzPlayer player) {
 		return false;
+	} //todo
+
+	public GearzDisguiseAPI getDisguiseAPI() {
+		GearzDisguiseAPI disguiseAPI = disguises.get(0);
+		GearzDisguiseMeta disguiseMeta;
+		for(GearzDisguiseAPI disguise : disguises) {
+			try {
+				disguiseMeta = GearzDisguiseUtil.getMeta(disguise);
+				if(disguiseMeta.enabled() &&
+						disguiseMeta.priority().isHigher(GearzDisguiseUtil.getMeta(disguiseAPI).priority()) &&
+						Bukkit.getPluginManager().isPluginEnabled(disguiseMeta.pluginName())) disguiseAPI = disguise;
+			} catch (NoGearzDisguiseMeta noGearzDisguiseMeta) {
+				noGearzDisguiseMeta.printStackTrace();
+			}
+		}
+		return disguiseAPI;
+	}
+
+	public GearzDisguiseAPI getDisguiseAPI(String s) {
+		for(GearzDisguiseAPI disguise : disguises) {
+			try {
+				if(GearzDisguiseUtil.getMeta(disguise).pluginName().equalsIgnoreCase(s)) return disguise;
+			} catch (NoGearzDisguiseMeta noGearzDisguiseMeta) {
+				noGearzDisguiseMeta.printStackTrace();
+			}
+		}
+		return null;
 	}
 }
