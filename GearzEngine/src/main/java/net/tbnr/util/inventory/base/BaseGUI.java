@@ -100,6 +100,7 @@ public abstract class BaseGUI implements Listener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 128, false));
         }
         callback.onGUIOpen(this, player);
+        openGUI(player);
     }
 
     public void closeGUI(Player player) {}
@@ -124,6 +125,7 @@ public abstract class BaseGUI implements Listener {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
         }
         callback.onGUIClose(this, player);
+        closeGUI(player);
     }
 
     @EventHandler
