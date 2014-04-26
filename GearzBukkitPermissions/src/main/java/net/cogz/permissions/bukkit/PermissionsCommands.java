@@ -411,7 +411,7 @@ public class PermissionsCommands implements TCommandHandler {
                 NetCommand.withName("permissions").withArg("reload", true).send();
                 return TCommandStatus.SUCCESSFUL;
             case "groups":
-                sender.sendMessage("Permissions Groups:");
+                sender.sendMessage(ChatColor.GOLD + "Permissions Groups:");
                 for (Map.Entry<String, PermGroup> group : GearzBukkitPermissions.getInstance().getPermsManager().getGroups().entrySet()) {
                     sender.sendMessage(group.getKey());
                 }
@@ -421,7 +421,7 @@ public class PermissionsCommands implements TCommandHandler {
         }
     }
 
-    private String getChatColorFormatted(String originalColor) {
+    protected String getChatColorFormatted(String originalColor) {
         String colorCode = originalColor.replaceAll("\u0026", "");
         ChatColor chatColor = ChatColor.getByChar(colorCode);
         return chatColor + chatColor.name().replaceAll("_", " ").toLowerCase();
