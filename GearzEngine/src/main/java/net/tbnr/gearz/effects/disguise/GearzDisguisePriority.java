@@ -9,7 +9,7 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.effects.disguise.libdisguise;
+package net.tbnr.gearz.effects.disguise;
 
 /**
  * A Non-Magic way of showing which disguise plugin is prioritised to be used

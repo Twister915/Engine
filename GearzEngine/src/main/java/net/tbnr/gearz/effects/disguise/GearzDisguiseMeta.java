@@ -11,8 +11,6 @@
 
 package net.tbnr.gearz.effects.disguise;
 
-import net.tbnr.gearz.effects.disguise.libdisguise.GearzDisguisePriority;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

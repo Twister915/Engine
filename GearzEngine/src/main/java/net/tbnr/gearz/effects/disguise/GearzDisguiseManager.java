@@ -11,8 +11,13 @@
 
 package net.tbnr.gearz.effects.disguise;
 
+import net.tbnr.gearz.effects.disguise.disguises.LibDisguiseAPI;
 import net.tbnr.gearz.player.GearzPlayer;
 import org.bukkit.entity.EntityType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The Gearz Disguise Manager
@@ -25,6 +30,8 @@ import org.bukkit.entity.EntityType;
  */
 public class GearzDisguiseManager implements DisguiseManager {
 
+	private List<GearzDisguiseAPI> disguises = new ArrayList<>();
+
 	public GearzDisguiseManager() {
 		
 		init();
@@ -32,6 +39,21 @@ public class GearzDisguiseManager implements DisguiseManager {
 
 	private void init() {
 
+		registerDisguises(
+			new LibDisguiseAPI()
+		);
+
+
+	}
+
+	
+
+	/**
+	 * Registers all the disguises
+	 * @param disguisesAPI The disguise api's
+	 */
+	private void registerDisguises(GearzDisguiseAPI... disguisesAPI) {
+		disguises.addAll(Arrays.asList(disguisesAPI));
 	}
 
 	/**

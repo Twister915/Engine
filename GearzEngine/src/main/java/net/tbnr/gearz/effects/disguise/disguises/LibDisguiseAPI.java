@@ -9,13 +9,12 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.gearz.effects.disguise.libdisguise;
+package net.tbnr.gearz.effects.disguise.disguises;
 
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseAPI;
 import net.tbnr.gearz.effects.disguise.GearzDisguiseMeta;
 import net.tbnr.gearz.player.GearzPlayer;
-import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.entity.EntityType;
 
 import java.util.HashMap;
@@ -37,7 +36,11 @@ import java.util.logging.Logger;
 public class LibDisguiseAPI implements GearzDisguiseAPI {
 	private static final Boolean debug = true;
 	private static final Logger log = Gearz.getInstance().getLogger();
-	private static final Map<DisguiseType, EntityType> conversionMatrix = new HashMap<>();
+	private static final Map<DisguiseType, EntityType> conversionMatrix = new HashMap<>() {
+		{
+			put(null, EntityType.MINECART);
+		}
+	};
 
 	@Override
 	public void onEnable(Gearz gearzPlugin) {

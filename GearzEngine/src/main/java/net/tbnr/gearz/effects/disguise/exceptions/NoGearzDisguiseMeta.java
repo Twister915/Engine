@@ -12,14 +12,15 @@
 package net.tbnr.gearz.effects.disguise.exceptions;
 
 /**
- * Exception for base disguise api exceptions
  * <p/>
- * Latest Change: Created it
+ * Latest Change:
  * <p/>
  *
  * @author George
- * @since 25/04/2014
+ * @since 26/04/2014
  */
-public class GearzDisguiseAPIException extends Exception {
-	public GearzDisguiseAPIException(String s) { super(s); }
+public class NoGearzDisguiseMeta extends GearzDisguiseAPIException {
+	public NoGearzDisguiseMeta(String s) {
+		super(s);
+	}
 }

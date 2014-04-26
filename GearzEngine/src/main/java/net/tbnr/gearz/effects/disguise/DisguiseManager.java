@@ -27,9 +27,6 @@ import org.bukkit.entity.EntityType;
 public interface DisguiseManager {
 
 
-
-
-
 	/**
 	 * Get the disguise of the player
 	 * @param player The player to get the disguise of

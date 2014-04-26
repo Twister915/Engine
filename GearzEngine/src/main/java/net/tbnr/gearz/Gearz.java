@@ -17,6 +17,8 @@ import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.config.GearzConfig;
 import net.tbnr.gearz.effects.EnchantmentEffect;
 import net.tbnr.gearz.effects.EnderBar;
+import net.tbnr.gearz.effects.disguise.DisguiseManager;
+import net.tbnr.gearz.effects.disguise.GearzDisguiseManager;
 import net.tbnr.gearz.game.single.GameManagerSingleGame;
 import net.tbnr.gearz.netcommand.NetCommand;
 import net.tbnr.gearz.network.GearzNetworkManagerPlugin;
@@ -80,6 +82,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
     public static Random getRandom() {
         return random;
     }
+
+	@Getter private DisguiseManager disguiseManager;
 
     @Getter @Setter private PermissionsDelegate permissionsDelegate;
     @Getter @Setter private ChatDelegate chatDelegate;
@@ -164,6 +168,8 @@ public final class Gearz extends TPlugin implements TCommandHandler, TDatabaseMa
         }, 1);
 
 	    registerEvents(new RedFactory());
+
+	    this.disguiseManager = new GearzDisguiseManager();
     }
 
     @Override
