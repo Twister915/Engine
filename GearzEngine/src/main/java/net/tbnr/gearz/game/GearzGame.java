@@ -491,14 +491,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
                 ItemMeta itemMeta = stack.getItemMeta();
                 String name = player.getPlayer().getName();
                 itemMeta.setDisplayName(getGameMeta().mainColor() + name);
-                /*try {
-                    List<String> headImage = ImageToChatBukkitUtil.getHeadImage(name, true);
-                    itemMeta.setLore(headImage);
-                } catch (RuntimeException ex) {
-                    System.err.println("Could not getSetting head for " + name);
-                }*/
                 stack.setItemMeta(itemMeta);
-                //stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 32);
                 items.add(new GUIItem(stack, player.getUsername()));
             }
         } catch (NullPointerException npe) {
