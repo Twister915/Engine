@@ -30,8 +30,6 @@ import net.tbnr.gearz.game.voting.VotingSession;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.gearz.server.ServerManager;
-import net.tbnr.gearz.settings.PlayerSettings;
-import net.tbnr.gearz.settings.SettingsRegistration;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;
@@ -123,40 +121,6 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     }
 
     @TCommand(
-            usage = "/game <arg>",
-            senders = {TCommandSender.Player, TCommandSender.Console},
-            permission = "gearz.game",
-            name = "game")
-    public TCommandStatus gameCommand(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
-        if (args.length < 1) {
-            return TCommandStatus.INVALID_ARGS;
-        }
-
-        sender.sendMessage(ChatColor.RED + "This command is currently disabled!");
-        return TCommandStatus.SUCCESSFUL;
-
-       /* switch (args[0]) {
-            case "start":
-                if (this.runningGame != null) {
-                    return TCommandStatus.INVALID_ARGS;
-                }
-                votingSession.endSession();
-                onVotingDone(votingSession.getVoteCounts(), votingSession, true);
-                break;
-            case "end":
-                if (this.runningGame == null) {
-                    return TCommandStatus.INVALID_ARGS;
-                }
-                this.runningGame.stopGame();
-                break;
-            default:
-                return TCommandStatus.INVALID_ARGS;
-        }
-        return TCommandStatus.SUCCESSFUL;
-        */
-    }
-
-    @TCommand(
             usage = "/map",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "",
@@ -219,12 +183,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         ServerManager.addPlayer(player1.getPlayerName());
         player1.resetPlayer();
         final PlayerType gearzPlayer = playerProvider.getPlayerFromTPlayer(player1);
-        event.setJoinMessage(null);
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
-                player.sendMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", player1.getPlayer().getDisplayName()}));
-            }
-        }
+        event.setJoinMessage(Gearz.getInstance().getFormat("formats.join-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", player1.getPlayer().getDisplayName()}));
         spawn(gearzPlayer);
         if (this.runningGame == null) {
             this.votingSession.addPlayer(gearzPlayer);
@@ -235,8 +194,8 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         for (GameManagerConnector<PlayerType, AbstractClassType> gameManagerConnector : this.gameManagerConnectors) {
             try {
                 gameManagerConnector.playerConnectedToLobby(playerProvider.getPlayerFromTPlayer(player1), this);
-            } catch (Throwable t) {
-                continue;
+            } catch (Throwable ignored) {
+                //ignore
             }
         }
         ItemStack stack = new ItemStack(Material.WRITTEN_BOOK);
@@ -263,11 +222,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     public void onLeave(TPlayerDisconnectEvent event) {
         ServerManager.setPlayersOnline(Bukkit.getOnlinePlayers().length - 1);
         ServerManager.removePlayer(event.getPlayer().getPlayerName());
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (PlayerSettings.getManager(player).getValue(SettingsRegistration.JOIN_MESSAGES, Boolean.class)) {
-                player.sendMessage(Gearz.getInstance().getFormat("formats.leave-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
-            }
-        }
+        event.setQuitMessage(Gearz.getInstance().getFormat("formats.leave-message", false, new String[]{"<game>", this.gameMeta.shortName()}, new String[]{"<player>", event.getPlayer().getPlayer().getDisplayName()}));
         PlayerType player = playerProvider.getPlayerFromTPlayer(event.getPlayer());
         if (this.runningGame != null) {
             this.runningGame.playerLeft(player);
