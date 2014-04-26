@@ -48,7 +48,7 @@ import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.Par
  * otherwise be more difficult using the vanilla Bukkit API.
  */
 @SuppressWarnings("UnusedDeclaration")
-@EqualsAndHashCode(of = {"playerName", "timeJoined"}, doNotUseGetters = true)
+@EqualsAndHashCode(of = {"playerName", "timeJoined", "uuid"}, doNotUseGetters = true)
 @ToString(of = {"playerName", "timeJoined"}, includeFieldNames = true, doNotUseGetters = true)
 public final class TPlayer {
     /**
@@ -62,6 +62,7 @@ public final class TPlayer {
     /**
      * The database document representing the player.
      */
+    @Getter
     private DBObject playerDocument;
     /**
      * The time the player joined.
@@ -447,16 +448,6 @@ public final class TPlayer {
         for (String m : message) {
             this.getPlayer().sendMessage(m);
         }
-    }
-
-    /**
-     * Gets the MongoDB object that stores data about the player.
-     *
-     * @return The MongoDB Document object that you can use to store raw data about the player. Please be careful
-     * when using this because it's very easy to mess things up with it.
-     */
-    public DBObject getPlayerDocument() {
-        return playerDocument;
     }
 
     /**
