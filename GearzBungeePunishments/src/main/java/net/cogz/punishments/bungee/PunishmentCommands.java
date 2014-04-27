@@ -564,6 +564,7 @@ public class PunishmentCommands implements TCommandHandler {
     public void broadcastPunishment(ServerInfo server, String issuer, String target, PunishmentType punishmentType, String reason) {
         for (ProxiedPlayer proxiedPlayer : server.getPlayers()) {
             if (proxiedPlayer.getServer() == null) continue;
+            if (proxiedPlayer.getPendingConnection() == null) continue;
             proxiedPlayer.sendMessage(GearzBungeePunishments.getInstance().getFormat("punish-broadcast", false, false, new String[]{"<server>", PlayerInfoModule.getServerForBungee(server).getGame().toUpperCase()}, new String[]{"<issuer>", issuer}, new String[]{"<target>", target}, new String[]{"<action>", punishmentType.getAction()}, new String[]{"<reason>", reason}));
         }
     }
