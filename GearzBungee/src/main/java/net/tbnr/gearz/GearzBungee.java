@@ -211,7 +211,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             registerEvents(listener);
         }
 
-        if (getConfig().getBoolean("modbroadcast.enabled", true)) {
+        if (getConfig().getBoolean("modbroadcast.enabled", false)) {
             ModBroadcast modBroadcast = new ModBroadcast();
             registerEvents(modBroadcast);
             registerCommandHandler(modBroadcast);
