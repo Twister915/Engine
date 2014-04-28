@@ -180,9 +180,11 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
             case Selection:
                 this.player.sendMessage(instance.getFormat("formats.select-prompt"));
             case Regions:
+                this.regionFieldIndex = this.regionsIterator.next();
                 this.player.sendMessage(instance.getFormat("formats.regions-prompt", false, new String[]{"<field>", this.regionFieldIndex.longName()}));
                 break;
             case Points:
+                this.pointFieldIndex = this.pointsIterator.next();
                 this.player.sendMessage(instance.getFormat("formats.field-prompt", false, new String[]{"<field>", this.pointFieldIndex.longName()}));
                 break;
             case Completed:
