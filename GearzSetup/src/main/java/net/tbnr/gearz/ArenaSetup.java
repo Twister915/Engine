@@ -253,7 +253,10 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
                     this.pointsMap.put(this.pointFieldIndex, this.points);
                 }
                 if (!this.pointsIterator.hasNext()) {
-                    if (!this.regionsIterator.hasNext()) this.state = ArenaSetupStage.Completed;
+                    if (!this.regionsIterator.hasNext()) {
+                        this.state = ArenaSetupStage.Completed;
+                        return;
+                    }
                     this.state = ArenaSetupStage.Regions;
                 } else {
                     this.pointFieldIndex = this.pointsIterator.next();
