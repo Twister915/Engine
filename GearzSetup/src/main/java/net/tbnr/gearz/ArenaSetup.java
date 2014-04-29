@@ -167,29 +167,35 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
 
     private void moveOn() {
         GearzSetup instance = GearzSetup.getInstance();
-        switch (this.state) {
-            case Name:
-                this.player.sendMessage(instance.getFormat("formats.name-prompt"));
-                break;
-            case Author:
-                this.player.sendMessage(instance.getFormat("formats.author-prompt"));
-                break;
-            case Description:
-                this.player.sendMessage(instance.getFormat("formats.description-prompt"));
-                break;
-            case Selection:
-                this.player.sendMessage(instance.getFormat("formats.select-prompt"));
-            case Regions:
-                this.regionFieldIndex = this.regionsIterator.next();
-                this.player.sendMessage(instance.getFormat("formats.regions-prompt", false, new String[]{"<field>", this.regionFieldIndex.longName()}));
-                break;
-            case Points:
-                this.pointFieldIndex = this.pointsIterator.next();
-                this.player.sendMessage(instance.getFormat("formats.field-prompt", false, new String[]{"<field>", this.pointFieldIndex.longName()}));
-                break;
-            case Completed:
-                this.player.sendMessage(instance.getFormat("formats.completed"));
-                break;
+        try {
+            switch (this.state) {
+                case Name:
+                    this.player.sendMessage(instance.getFormat("formats.name-prompt"));
+                    break;
+                case Author:
+                    this.player.sendMessage(instance.getFormat("formats.author-prompt"));
+                    break;
+                case Description:
+                    this.player.sendMessage(instance.getFormat("formats.description-prompt"));
+                    break;
+                case Selection:
+                    this.player.sendMessage(instance.getFormat("formats.select-prompt"));
+                case Regions:
+                    this.regionFieldIndex = this.regionsIterator.next();
+                    this.regions = new RegionIterator();
+                    this.player.sendMessage(instance.getFormat("formats.regions-prompt", false, new String[]{"<field>", this.regionFieldIndex.longName()}));
+                    break;
+                case Points:
+                    this.pointFieldIndex = this.pointsIterator.next();
+                    this.points = new PointIterator();
+                    this.player.sendMessage(instance.getFormat("formats.field-prompt", false, new String[]{"<field>", this.pointFieldIndex.longName()}));
+                    break;
+                case Completed:
+                    this.player.sendMessage(instance.getFormat("formats.completed"));
+                    break;
+            }
+        } catch (GearzException ex) {
+            ex.printStackTrace();
         }
     }
 
