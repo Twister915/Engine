@@ -160,7 +160,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         return GearzGame.formatUsingMeta(meta, Gearz.getInstance().getFormat(s, true, strings));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onLogin(PlayerLoginEvent event) {
         if (Bukkit.getOnlinePlayers().length < this.gameMeta.maxPlayers()) return;
         if (this.runningGame != null && this.runningGame.isRunning()) {
@@ -170,13 +170,9 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         PlayerType personToKick = candidateForKicking(event.getPlayer());
         if (personToKick != null) {
             personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
-        } else {
-            if (event.getPlayer() == null) {
-                event.setResult(PlayerLoginEvent.Result.KICK_FULL);
-                event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
-            }
-            event.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
         }
+        event.setResult(PlayerLoginEvent.Result.KICK_FULL);
+        event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
