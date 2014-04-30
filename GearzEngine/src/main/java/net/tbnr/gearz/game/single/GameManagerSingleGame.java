@@ -171,8 +171,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         if (personToKick != null) {
             personToKick.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-kick-premium"));
         } else {
-            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage(Gearz.getInstance().getFormat("formats.game-full"));
+            event.getPlayer().kickPlayer(Gearz.getInstance().getFormat("formats.game-full"));
         }
     }
 
