@@ -13,8 +13,7 @@ package net.tbnr.gearz.modules;
 
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
@@ -82,17 +81,17 @@ public class WhitelistModule implements TCommandHandler, Listener {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    private boolean isWhitelisted(ProxiedPlayer proxiedPlayer) {
+    private boolean isWhitelisted(String proxiedPlayer) {
         FileConfiguration config = GearzBungee.getInstance().getConfig();
         List<String> whitelisted = config.getStringList("whitelisted");
-        return whitelisted.contains(proxiedPlayer.getName());
+        return whitelisted.contains(proxiedPlayer);
     }
 
     @SuppressWarnings("unused")
     @EventHandler
-    public void onPostLogin(PostLoginEvent event) {
-        if (GearzBungee.getInstance().isWhitelisted() && !isWhitelisted(event.getPlayer()) && !event.getPlayer().hasPermission("gearz.whitelist.bypass")) {
-            event.getPlayer().disconnect(GearzBungee.getInstance().getFormat("whitelisted"));
+    public void onPostLogin(LoginEvent event) {
+        if (GearzBungee.getInstance().isWhitelisted() && !isWhitelisted(event.getConnection().getName())) {
+            event.getConnection().disconnect(GearzBungee.getInstance().getFormat("whitelisted"));
         }
     }
 
