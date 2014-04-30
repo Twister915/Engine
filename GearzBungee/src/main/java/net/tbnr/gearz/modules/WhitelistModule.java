@@ -22,6 +22,7 @@ import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,14 @@ import java.util.List;
  * @since 1/15/2014
  */
 public class WhitelistModule implements TCommandHandler, Listener {
+
+    List<String> whitelisted = new ArrayList<>();
+
+    {
+        FileConfiguration config = GearzBungee.getInstance().getConfig();
+        whitelisted = config.getStringList("whitelisted");
+    }
+
     @TCommand(name = "gwhitelist", permission = "gearz.gwhitelist", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/gwhitelist <argument>")
     @SuppressWarnings({"unused", "deprecation"})
     public TCommandStatus gwhitelist(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
@@ -82,8 +91,6 @@ public class WhitelistModule implements TCommandHandler, Listener {
     }
 
     private boolean isWhitelisted(String proxiedPlayer) {
-        FileConfiguration config = GearzBungee.getInstance().getConfig();
-        List<String> whitelisted = config.getStringList("whitelisted");
         return whitelisted.contains(proxiedPlayer);
     }
 
