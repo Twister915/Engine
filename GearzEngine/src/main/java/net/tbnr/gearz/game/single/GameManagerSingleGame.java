@@ -461,27 +461,46 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
      *
      * @return GearzPlayer ~ player with lower priority then them
      */
-    private PlayerType candidateForKicking(@NonNull Player p) {
-        PlayerType candidate = null;
+    private PlayerType candidateForKicking(@NonNull Player player) {
+        PlayerType candidate;
         ArrayList<Player> players = new ArrayList<>();
         Collections.addAll(players, Bukkit.getOnlinePlayers());
 
-        PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(getPlayerProvider().getPlayerFromPlayer(p));
+        PlayerPriorityDetermineEvent event = new PlayerPriorityDetermineEvent(getPlayerProvider().getPlayerFromPlayer(player));
         event = Gearz.getInstance().callEvent(event);
 
         if (event.isCancelled()) {
             return null;
         }
 
+        candidate = lookForPlayerToKick(event, players, player, false);
+        if (candidate == null) {
+            candidate = lookForPlayerToKick(event, players, player, true);
+        }
+        return candidate;
+    }
+
+    public PlayerType lookForPlayerToKick(PlayerPriorityDetermineEvent event, ArrayList<Player> players, Player player, boolean checkForPass) {
+        PlayerType candidate = null;
         for (Player playerToKick : players) {
-            if (p.getName().equals(playerToKick.getName())) {
+            if (player.getName().equals(playerToKick.getName())) {
                 continue;
             }
             if (!playersThatUsedPasses.contains(playerToKick)) {
-                if (priorityForPlayer(p) > priorityForPlayer(playerToKick) || event.isAbsolutePriority()) {
-                    candidate = playerProvider.getPlayerFromPlayer(playerToKick);
-                    playersThatUsedPasses.add(p);
-                    break;
+                if (checkForPass) {
+                    if (!playerToKick.hasPermission("gearz.staff")) {
+                        if (event.isAbsolutePriority()) {
+                            candidate = playerProvider.getPlayerFromPlayer(playerToKick);
+                            playersThatUsedPasses.add(player);
+                            break;
+                        }
+                    }
+                } else {
+                    if (priorityForPlayer(player) > priorityForPlayer(playerToKick)) {
+                        candidate = playerProvider.getPlayerFromPlayer(playerToKick);
+                        playersThatUsedPasses.add(player);
+                        break;
+                    }
                 }
             }
         }
