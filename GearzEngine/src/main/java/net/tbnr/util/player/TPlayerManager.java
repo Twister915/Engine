@@ -111,6 +111,12 @@ public final class TPlayerManager implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onLogin(PlayerLoginEvent event) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (event.getPlayer().getName().equals(player.getName())) {
+                event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+                event.setKickMessage("A player with this name is already on the server!");
+            }
+        }
         if (ServerManager.canJoin()) {
             this.addPlayer(event.getPlayer());
             return;
