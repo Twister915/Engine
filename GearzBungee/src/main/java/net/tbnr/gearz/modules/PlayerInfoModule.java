@@ -128,7 +128,6 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
             public void run() {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("playerinfo-header", false, false, new String[]{"<target>", player.getName()}));
                 sender.sendMessage(formatData("IP", player.getAddress().getHostString()));
-                sender.sendMessage();
                 sender.sendMessage(formatData("UUID", player.getUniqueId().toString()));
                 Server serverForBungee = getServerForBungee(player.getServer().getInfo());
                 sender.sendMessage(formatData("Server", serverForBungee.getGame() + serverForBungee.getNumber()));
