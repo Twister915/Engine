@@ -489,7 +489,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     }
 
     /**
-     * Get's priority of a player
+     * Gets priority of a player
      *
      * @param p Player to test priority for.
      * @return priority of player, -1 default
