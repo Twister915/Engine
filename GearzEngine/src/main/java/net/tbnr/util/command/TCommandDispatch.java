@@ -92,7 +92,7 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
             cmd.setExecutor(this); //Sets the executor to this
             cmd.setDescription(annotation.description());
             cmd.setUsage(annotation.usage()); //Set usage of the command for the help docs
-            cmd.setPermission(annotation.usage());
+            cmd.setPermission(annotation.permission());
             cmd.setAliases(Arrays.asList(annotation.aliases()));
 
             getCommandMap().register(plugin.getDescription().getName(), cmd);
