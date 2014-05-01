@@ -70,7 +70,6 @@ public abstract class TPlugin extends JavaPlugin {
     @Override
     public final void onEnable() {
         try {
-            this.getConfig().options().copyDefaults(true);
             this.saveDefaultConfig(); //save the config
             this.initGearzConfigs();
             this.commandDispatch = new TCommandDispatch(this); //Create a new command dispatch
