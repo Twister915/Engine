@@ -50,6 +50,7 @@ public class PermissionsCommands implements TCommandHandler {
 
     @TCommand(
             name = "player",
+            description = "Player management command.",
             usage = "/player <player> <args>",
             permission = "gearz.permissions.player",
             senders = {TCommandSender.Player, TCommandSender.Console})
@@ -243,6 +244,7 @@ public class PermissionsCommands implements TCommandHandler {
 
     @TCommand(
             name = "group",
+            description = "Group management command.",
             usage = "/group",
             permission = "gearz.permissions.group",
             senders = {TCommandSender.Player, TCommandSender.Console})
@@ -396,6 +398,7 @@ public class PermissionsCommands implements TCommandHandler {
 
     @TCommand(
             name = "permissions",
+            description = "Permissions command.",
             usage = "/permissions <args>",
             permission = "gearz.permissions",
             senders = {TCommandSender.Player, TCommandSender.Console})

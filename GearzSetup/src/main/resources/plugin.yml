@@ -4,10 +4,3 @@ authors: [Twister915]
 description: o dem setup gearz omg so wow plz suck. so sharp. dolphins
 main: net.tbnr.gearz.GearzSetup
 depend: [Gearz, WorldEdit]
-commands:
-  done:
-    description: Marks your setup session as done.
-  setup:
-    description: Setup start.
-  skullpoints:
-    description: Set some skull points.

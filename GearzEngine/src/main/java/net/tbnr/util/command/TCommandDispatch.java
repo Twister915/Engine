@@ -16,8 +16,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -84,45 +86,58 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
             if (!Arrays.equals(method.getParameterTypes(), TCommandDispatch.argumentOrder)) {
                 continue; //Checks arg type
             }
-            PluginCommand cmd = plugin.getCommand(annotation.name()); //Gets the command object from the name
-            if (cmd == null) {
-                continue; //Verifies the integrity of the name, continues is it's invalid
-            }
+
+            PluginCommand cmd = getCommand(annotation.name(), plugin);
+
             cmd.setExecutor(this); //Sets the executor to this
+            cmd.setDescription(annotation.description());
             cmd.setUsage(annotation.usage()); //Set usage of the command for the help docs
+            cmd.setPermission(annotation.usage());
+            cmd.setAliases(Arrays.asList(annotation.aliases()));
+
+            getCommandMap().register(plugin.getDescription().getName(), cmd);
+
             //Store values
             this.handlers.put(cmd, commandHandler);
             this.methods.put(cmd, method);
             this.metas.put(cmd, annotation);
 
-            // TODO Joey Need your info on what we need to add to TCommand like description and aliases. Also needs some testing once we get this info.
-            // registerGearzBukkitCommand("Gearz", annotation.name(), "Description here", annotation.usage());
         }
     }
 
     /**
-     * Registers a command to bukkit without it needing to be in the plugin.yml
-     * Reflection too stronk
+     * Creates a new instance of the command
      *
-     * @param plugin The plugin that hold the command code
-     * @param name The command name
-     * @param description The command description
-     * @param usageMessage The command usageMessage
+     * @return new PluginCommand instance of the requested command name
      */
-    public void registerGearzBukkitCommand(String plugin, String name, String description, String usageMessage) {
+    private PluginCommand getCommand(String name, Plugin plugin) {
+        PluginCommand command = null;
         try {
-            PluginManager pluginManager = Bukkit.getPluginManager();
-
-            Field commandMap = pluginManager.getClass().getDeclaredField("commandMap");
-            commandMap.setAccessible(true);
-
-            Method registerMethod = commandMap.get(pluginManager).getClass().getDeclaredMethod("register", String.class, Command.class);
-            registerMethod.setAccessible(true);
-
-            registerMethod.invoke(commandMap.get(pluginManager), plugin, new GearzBukkitCommand(name, description, usageMessage));
+            Constructor commandConstructor = PluginCommand.class.getDeclaredConstructor(new Class[] { String.class, Plugin.class });
+            commandConstructor.setAccessible(true);
+            command = (PluginCommand) commandConstructor.newInstance(name, plugin);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return command;
+    }
+
+    /**
+     * Gets the command map from bukkit
+     *
+     * @return The command map from bukkit
+     */
+    private CommandMap getCommandMap() {
+        CommandMap commandMap = null;
+        try {
+            PluginManager pluginManager = Bukkit.getPluginManager();
+            Field commandMapField = pluginManager.getClass().getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            commandMap = (CommandMap) commandMapField.get(pluginManager);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return commandMap;
     }
 
     /**

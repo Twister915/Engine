@@ -369,6 +369,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
      */
     @TCommand(
             permission = "gearzsetup.use",
+            description = "Marks your setup session as done.",
             usage = "/done",
             senders = {TCommandSender.Player},
             name = "done")
@@ -395,6 +396,7 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
 
     @TCommand(
             permission = "gearzsetup.use",
+            description = "Set some skull points.",
             usage = "/skullkpoints <skull_type>",
             senders = {TCommandSender.Player},
             name = "skullpoints")

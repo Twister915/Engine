@@ -46,6 +46,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
 
 	@TCommand(
 			name = "nick",
+            description = "Nickname.",
 			usage = "Nickname command!",
 			permission = "gearz.nick",
 			senders = {TCommandSender.Player, TCommandSender.Console})
@@ -93,6 +94,7 @@ public final class GearzNickname implements Listener, TCommandHandler {
 
 	@TCommand(
 			name = "realname",
+            description = "Checks a player's real name.",
 			usage = "/realname <player>",
 			permission = "gearz.whois",
 			senders = {TCommandSender.Player})

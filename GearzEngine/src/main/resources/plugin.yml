@@ -5,21 +5,6 @@ description: o, dem gearz
 main: net.tbnr.gearz.Gearz
 depend: [ProtocolLib]
 load: STARTUP
-commands:
-  nick:
-    description: Nickname.
-  realname:
-    description: Checks a player's real name.
-  map:
-    description: Gives info about the map.
-  settings:
-    description: Lists settings
-  set:
-    description: Sets setting to specified value
-  get:
-    description: Gets the value of the setting
-  toggle:
-    description: Toggles a setting, if applicable
 permissions:
   gearz.test:
     default: op

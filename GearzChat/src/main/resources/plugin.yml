@@ -4,18 +4,3 @@ authors: [Jake0oo0, Twister915]
 description: Chat Management Plugin for Gearz
 main: net.cogz.chat.GearzChat
 depend: [Gearz]
-commands:
-  channel:
-    description: Allows the user to switch channels.
-  channels:
-    description: Lists all currently regsistered channels.
-  modbroadcast:
-    description: Switches the player to the staff channel.
-    aliases: [mb]
-  default:
-    description: Switches the player to the default channel.
-    aliases: [d]
-  chat:
-    description: Chat management commands such as mute, unmute, etc.
-  censor:
-    description: Command for managing censored words.

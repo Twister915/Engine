@@ -77,6 +77,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
 
     @TCommand(
             name = "friend",
+            description = "Friend management command",
             usage = "/friend <args...>",
             permission = "gearz.friend",
             senders = {TCommandSender.Player})
@@ -202,6 +203,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
 
     @TCommand(
             name = "friends",
+            description = "Friends list command",
             senders = {TCommandSender.Player},
             permission = "gearz.friends",
             usage = "/friends")

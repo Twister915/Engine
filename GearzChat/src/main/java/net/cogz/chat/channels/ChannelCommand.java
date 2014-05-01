@@ -35,7 +35,7 @@ import org.bukkit.entity.Player;
  */
 public class ChannelCommand implements TCommandHandler {
 
-    @TCommand(name = "channel", usage = "/channel <channel>", permission = "gearz.channels.command.switch", senders = {TCommandSender.Player})
+    @TCommand(name = "channel", usage = "/channel <channel>", permission = "gearz.channels.command.switch", senders = {TCommandSender.Player}, description = "Allows the user to switch channels.")
     @SuppressWarnings("unused")
     public TCommandStatus channel(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length != 1)  return TCommandStatus.INVALID_ARGS;
@@ -53,7 +53,7 @@ public class ChannelCommand implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    @TCommand(name = "channels", usage = "/channels", permission = "gearz.channels.command.list", senders = {TCommandSender.Player})
+    @TCommand(name = "channels", usage = "/channels", permission = "gearz.channels.command.list", senders = {TCommandSender.Player}, description = "Lists all currently regsistered channels.")
     @SuppressWarnings("unused")
     public TCommandStatus channels(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length != 0) {
@@ -69,7 +69,7 @@ public class ChannelCommand implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    @TCommand(name = "modbroadcast", usage = "/mb <message>", permission = "gearz.modbroadcast", senders = {TCommandSender.Player})
+    @TCommand(name = "modbroadcast", usage = "/mb <message>", permission = "gearz.modbroadcast", senders = {TCommandSender.Player}, description = "Switches the player to the staff channel.", aliases = {"mb"})
     @SuppressWarnings("unused")
     public TCommandStatus mb(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length == 0) {
@@ -87,7 +87,7 @@ public class ChannelCommand implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    @TCommand(name = "default", usage = "/default <message>", permission = "", senders = {TCommandSender.Player})
+    @TCommand(name = "default", usage = "/default <message>", permission = "", senders = {TCommandSender.Player}, description = "Switches the player to the default channel.", aliases = {"d"})
     @SuppressWarnings("unused")
     public TCommandStatus def(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length == 0) {

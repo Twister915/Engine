@@ -40,6 +40,7 @@ import java.util.List;
 public class ChatManager implements Listener, TCommandHandler {
     @TCommand(
             name = "censor",
+            description = "Command for managing censored words.",
             permission = "gearz.censor",
             usage = "/censor [list|remove|add] [message (required if applicable)]",
             senders = {TCommandSender.Player, TCommandSender.Console}
@@ -98,6 +99,7 @@ public class ChatManager implements Listener, TCommandHandler {
 
     @TCommand(
             name = "chat",
+            description = "Chat management commands such as mute, unmute, etc.",
             usage = "/chat <args>",
             permission = "gearz.chat",
             senders = {TCommandSender.Player, TCommandSender.Console})

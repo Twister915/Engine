@@ -31,6 +31,7 @@ public class SettingsCommands implements TCommandHandler {
 
     @TCommand(
             name = "toggle",
+            description = "Toggles a setting, if applicable",
             usage = "/toggle <setting>",
             permission = "gearz.settings.toggle",
             senders = {TCommandSender.Player})
@@ -61,6 +62,7 @@ public class SettingsCommands implements TCommandHandler {
 
     @TCommand(
             name = "set",
+            description = "Sets setting to specified value",
             usage = "/set <setting> <value>",
             permission = "gearz.settings.set",
             senders = {TCommandSender.Player})
@@ -93,6 +95,7 @@ public class SettingsCommands implements TCommandHandler {
 
     @TCommand(
             name = "get",
+            description = "Gets the value of the setting",
             usage = "/get <setting>",
             permission = "gearz.settings.get",
             senders = {TCommandSender.Player})
@@ -117,6 +120,7 @@ public class SettingsCommands implements TCommandHandler {
 
     @TCommand(
             name = "settings",
+            description = "Lists settings",
             usage = "/settings",
             permission = "gearz.settings.settings",
             senders = {TCommandSender.Player, TCommandSender.Console})

@@ -31,6 +31,13 @@ public @interface TCommand {
     String name();
 
     /**
+     * The description of the command
+     *
+     * @return Description of the command
+     */
+    String description();
+
+    /**
      * The usage of the command.
      *
      * @return This is the help text for the command, should be handled by the plugin.
@@ -43,6 +50,13 @@ public @interface TCommand {
      * @return Permission to use this command.
      */
     String permission();
+
+    /**
+     * Aliases for alternative use of command.
+     *
+     * @return Aliases for alternative use of this command.
+     */
+    String[] aliases() default {};
 
     /**
      * Valid senders, only these types of senders can send this command.

@@ -62,6 +62,7 @@ public class GameSetupFactory implements Listener, TCommandHandler {
 
     @TCommand(
             senders = {TCommandSender.Player},
+            description = "Setup start.",
             usage = "/setup <game> <lobby|arena>",
             permission = "gearzsetup.use",
             name = "setup")
