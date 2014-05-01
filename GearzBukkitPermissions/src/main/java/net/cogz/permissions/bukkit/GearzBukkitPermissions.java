@@ -39,15 +39,16 @@ public final class GearzBukkitPermissions extends TPlugin {
         GModel.setDefaultDatabase(Gearz.getInstance().getMongoDB());
         this.permsManager = new PermissionsManager();
         permsManager.reload();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         getServer().getPluginManager().registerEvents(this.permsManager, this);
         Gearz.getInstance().setPermissionsDelegate(permsManager);
         Gearz.getInstance().activatePermissionsFeatures();
         PermissionsCommands permsCommands = new PermissionsCommands();
         registerCommands(permsCommands);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
-                if (Bukkit.getOnlinePlayers().length == 0) return;
                 try {
                     GearzBukkitPermissions.getInstance().getPermsManager().reload();
                 } catch (Exception ex) {

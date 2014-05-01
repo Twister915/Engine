@@ -127,8 +127,8 @@ public abstract class GearzPermissions {
             one.save();
         }
         ((PermPlayer) one).name = player;
-        reloadPlayer((PermPlayer) one);
         this.players.put(player, (PermPlayer) one);
+        reloadPlayer(player);
         return (PermPlayer) one;
     }
 
@@ -256,9 +256,13 @@ public abstract class GearzPermissions {
     /**
      * Reloads a player (loads perms into them)
      *
-     * @param permPlayer Name of player to reload
+     * @param player Name of player to reload
      */
-    private void reloadPlayer(PermPlayer permPlayer) {
+    private void reloadPlayer(String player) {
+        PermPlayer permPlayer = this.players.get(player);
+        if (permPlayer == null) {
+            return;
+        }
         Map<String, Boolean> perms = new HashMap<>();
         for (PermGroup group : getAllGroups(permPlayer)) {
             for (String entry : group.getPermissions()) {

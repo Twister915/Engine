@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Implementation of the Gearz Permissions
  * API for Bukkit. Manages adding permissions
- * and UUID retrieval from DBObjects.
+ * and UUID retreival from DBObjects.
  *
  * <p>
  * Latest Change: UUID Changes
