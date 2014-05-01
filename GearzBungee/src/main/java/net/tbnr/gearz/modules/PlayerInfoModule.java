@@ -173,10 +173,10 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
     private <T> String formatList(List<? extends T> list) {
         StringBuilder builder = new StringBuilder();
         for (T aValue : list) {
-            builder.append(aValue).append(",");
+            builder.append(aValue).append(", ");
         }
         if (list.size() > 0) {
-            builder.deleteCharAt(builder.length() - 1);
+            builder.deleteCharAt(builder.length() - 2);
         }
         return builder.toString();
     }
