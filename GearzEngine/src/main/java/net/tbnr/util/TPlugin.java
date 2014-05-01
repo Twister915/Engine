@@ -172,7 +172,8 @@ public abstract class TPlugin extends JavaPlugin {
      */
     public final String getFormat(String formatPath, boolean color, String[]... data) {
 	    //Added default value
-        String string = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(formatPath, ""));
+        String string = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(formatPath));
+        if (string == null) return "";
         if (data != null) {
             for (String[] dataPart : data) {
                 if (dataPart.length < 2) continue;
