@@ -508,7 +508,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
     }
 
     /**
-     * Get's priority of a player
+     * Gets priority of a player
      *
      * @param p Player to test priority for.
      * @return priority of player, -1 default
@@ -520,9 +520,7 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
         Player player = p.getPlayer();
         for (int x = 0, l = priorities.size(); x < l; x++) {
             permissionPriority = "gearz.priority." + priorities.get(x);
-            System.out.println("Checking priority: " + permissionPriority + " at level " + x + " for " + p.getName()) ;
             if (player.hasPermission(permissionPriority)) {
-                System.out.println("Chose priority: " + permissionPriority + " at level " + x + " for " + p.getName());
                 priority = x;
             }
         }
