@@ -487,19 +487,19 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
                 continue;
             }
             if (!playersThatUsedPasses.contains(playerToKick)) {
-                if (checkForPass) {
-                    if (!playerToKick.hasPermission("gearz.staff")) {
+                if (!playerToKick.hasPermission("gearz.staff")) {
+                    if (checkForPass) {
                         if (event.isAbsolutePriority()) {
                             candidate = playerProvider.getPlayerFromPlayer(playerToKick);
                             playersThatUsedPasses.add(player);
                             break;
                         }
-                    }
-                } else {
-                    if (priorityForPlayer(player) > priorityForPlayer(playerToKick)) {
-                        candidate = playerProvider.getPlayerFromPlayer(playerToKick);
-                        playersThatUsedPasses.add(player);
-                        break;
+                    } else {
+                        if (priorityForPlayer(player) < priorityForPlayer(playerToKick)) {
+                            candidate = playerProvider.getPlayerFromPlayer(playerToKick);
+                            playersThatUsedPasses.add(player);
+                            break;
+                        }
                     }
                 }
             }
