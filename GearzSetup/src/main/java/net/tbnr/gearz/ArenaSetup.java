@@ -320,8 +320,6 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         }
         for (Field field : arena.getClass().getFields()) {
             if (!field.isAnnotationPresent(ArenaField.class)) continue;
-            Gearz.getInstance().getLogger().info("Type: " + field.getType());
-            if (!field.getType().equals(ArenaIterator.class)) continue;
             ArenaField annotation = field.getAnnotation(ArenaField.class);
             ArenaIterator arenaIterator = this.pointsMap.get(annotation);
             if (arenaIterator == null) arenaIterator = this.regionsMap.get(annotation);
