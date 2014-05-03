@@ -927,7 +927,6 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         event.getEntity().setHealth(event.getEntity().getHealthScale());
         Player deadPlayer = event.getEntity();
         final PlayerType dead = resolvePlayer(deadPlayer);
-        EntityDamageEvent.DamageCause cause = deadPlayer.getLastDamageCause().getCause();
         List<ItemStack> drops = event.getDrops();
         ItemStack[] itemStacks = drops.toArray(new ItemStack[drops.size()]);
         for (ItemStack stack : itemStacks) {
