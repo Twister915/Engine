@@ -158,14 +158,10 @@ public final class ArenaManager {
             }
             BasicDBList list = new BasicDBList(); //Pour our list into the DB List object
             while (iterator.hasNext()) {
-                try {
-                    Object next = iterator.next();
-                    ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
-                    if (serializerFor == null) continue;
-                    list.add(serializerFor.getObjectFor(next)); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Object next = iterator.next();
+                ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
+                if (serializerFor == null) continue;
+                list.add(serializerFor.getObjectFor(next)); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
             }
             objectBuilder.append(annotation.key(), list); //Put that in the database
         }
