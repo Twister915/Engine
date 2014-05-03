@@ -159,14 +159,22 @@ public final class ArenaManager {
             }
             BasicDBList list = new BasicDBList(); //Pour our list into the DB List object
             while (iterator.hasNext()) {
-                Object next = iterator.next();
-                Gearz.getInstance().getLogger().info("Starting: " + next.toString());
-                ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
-                Gearz.getInstance().getLogger().info("Finished?: " + next.toString());
-                if (serializerFor == null) continue;
-                Gearz.getInstance().getLogger().info("Not null: " + next.toString());
-                serializerFor.getObjectFor(next);
-                list.add(next); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
+                try {
+                    Object next = iterator.next();
+                    Gearz.getInstance().getLogger().info("Starting: " + next.toString());
+                    ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
+                    Gearz.getInstance().getLogger().info("Finished?: " + next.toString());
+                    if (serializerFor == null) continue;
+                    Gearz.getInstance().getLogger().info("Not null: " + next.toString());
+                    serializerFor.getObjectFor(next);
+                    list.add(next); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("Saving with: " + annotation.key());
+            for (Object object : list) {
+                Gearz.getInstance().getLogger().info("Listing: " + object.toString());
             }
             objectBuilder.append(annotation.key(), list); //Put that in the database
         }
@@ -224,15 +232,21 @@ public final class ArenaManager {
             for (Object lObject : list) {
                 if (lObject instanceof DBObject) {
                     DBObject lObject1 = (DBObject) lObject;
-                    if (serializer == null) serializer = ArenaFieldSerializer.getSerializerFor(lObject1);
-                    else if (!ArenaFieldSerializer.getSerializerFor(lObject1).equals(serializer)) continue; //In case we have a rogue strange value
+                    if (serializer == null) {
+                        serializer = ArenaFieldSerializer.getSerializerFor(lObject1);
+                    } else if (!ArenaFieldSerializer.getSerializerFor(lObject1).equals(serializer)) {
+                        continue; //In case we have a rogue strange value
+                    }
                     list2.add(serializer.getObjectFor(lObject1));
                 }
             }
             ArenaIterator iterator;
-            if (serializer == null) iterator = new PointIterator();
-            else //noinspection unchecked
+            if (serializer == null) {
+                iterator = new PointIterator();
+            } else //noinspection unchecked
+            {
                 iterator = serializer.getNewIterator(list2);
+            }
             iterator.setLoop(annotation.loop()); //Checks the annotation for this new looping thing. :D
             try {
                 field.set(arena, field.getType().cast(iterator));
