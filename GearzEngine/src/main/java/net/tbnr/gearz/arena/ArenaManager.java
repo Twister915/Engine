@@ -160,9 +160,11 @@ public final class ArenaManager {
             BasicDBList list = new BasicDBList(); //Pour our list into the DB List object
             while (iterator.hasNext()) {
                 Object next = iterator.next();
-                Gearz.getInstance().getLogger().info(next.toString());
+                Gearz.getInstance().getLogger().info("Starting: " + next.toString());
                 ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
+                Gearz.getInstance().getLogger().info("Finished?: " + next.toString());
                 if (serializerFor == null) continue;
+                Gearz.getInstance().getLogger().info("Not null: " + next.toString());
                 serializerFor.getObjectFor(next);
                 list.add(next); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
             }
