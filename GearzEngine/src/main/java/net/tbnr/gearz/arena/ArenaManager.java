@@ -146,7 +146,6 @@ public final class ArenaManager {
     public static DBObject objectFromArena(Arena arena) {
         BasicDBObjectBuilder objectBuilder = new BasicDBObjectBuilder(); //Start building the database object for this arena
         for (Field field : arena.getClass().getFields()) { //Get all the fields ...
-            Gearz.getInstance().getLogger().info("calling loop");
             if (!field.isAnnotationPresent(ArenaField.class)) {
                 continue; //... that we can access, and are annotated by ArenaField ...
             }
@@ -161,19 +160,12 @@ public final class ArenaManager {
             while (iterator.hasNext()) {
                 try {
                     Object next = iterator.next();
-                    Gearz.getInstance().getLogger().info("Starting: " + next.toString());
                     ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
-                    Gearz.getInstance().getLogger().info("Finished?: " + next.toString());
                     if (serializerFor == null) continue;
-                    Gearz.getInstance().getLogger().info("Not null: " + next.toString());
                     list.add(serializerFor.getObjectFor(next)); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            System.out.println("Saving with: " + annotation.key());
-            for (Object object : list) {
-                Gearz.getInstance().getLogger().info("Listing: " + object.toString());
             }
             objectBuilder.append(annotation.key(), list); //Put that in the database
         }

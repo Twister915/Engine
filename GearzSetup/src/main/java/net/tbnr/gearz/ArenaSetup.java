@@ -119,7 +119,6 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         this.regionsMap = new HashMap<>();
         for (Field field : this.arena.getFields()) {
             if (!(field.isAnnotationPresent(ArenaField.class))) continue;
-            GearzSetup.getInstance().getLogger().info("Field detected " + field.getName());
             ArenaField annotation = field.getAnnotation(ArenaField.class);
             if (field.getType().equals(PointIterator.class)) this.pointsMap.put(annotation, null);
             if (field.getType().equals(RegionIterator.class)) this.regionsMap.put(annotation, null);
@@ -293,9 +292,6 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
         }
         if (!this.world.equals(event.getPlayer().getWorld())) return;
         this.points.add(relative);
-        for (Point point : this.points.getArrayList()) {
-            Gearz.getInstance().getLogger().info(point.toString());
-        }
         event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.selected", false, new String[]{"<count>", String.valueOf(this.points.getArrayList().size())}));
     }
 
