@@ -126,7 +126,8 @@ public final class GameManagerSingleGame<PlayerType extends GearzPlayer, Abstrac
             description = "Gives info about the map.",
             senders = {TCommandSender.Player, TCommandSender.Console},
             permission = "",
-            name = "map")
+            name = "map",
+            aliases = {"arena"})
     @SuppressWarnings("unused")
     public TCommandStatus mapCommand(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
         if (args.length != 0) {
