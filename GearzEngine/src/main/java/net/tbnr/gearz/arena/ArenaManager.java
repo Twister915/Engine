@@ -146,8 +146,9 @@ public final class ArenaManager {
     public static DBObject objectFromArena(Arena arena) {
         BasicDBObjectBuilder objectBuilder = new BasicDBObjectBuilder(); //Start building the database object for this arena
         for (Field field : arena.getClass().getFields()) { //Get all the fields ...
+            Gearz.getInstance().getLogger().info("calling loop");
             if (!field.isAnnotationPresent(ArenaField.class)) {
-                continue; //... that we can access, and are annotated by ArenaFeild ...
+                continue; //... that we can access, and are annotated by ArenaField ...
             }
             if (!field.getType().equals(ArenaIterator.class)) {
                 continue; //... and are ArenaIterators.
@@ -162,6 +163,7 @@ public final class ArenaManager {
             BasicDBList list = new BasicDBList(); //Pour our list into the DB List object
             while (iterator.hasNext()) {
                 Object next = iterator.next();
+                Gearz.getInstance().getLogger().info(next.toString());
                 ArenaFieldSerializer.SerializationDelegate<?> serializerFor = ArenaFieldSerializer.getSerializerFor(next.getClass());
                 if (serializerFor == null) continue;
                 serializerFor.getObjectFor(next);
