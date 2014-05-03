@@ -292,10 +292,10 @@ public class ArenaSetup implements Listener, TCommandHandler, SkullDelegate {
             event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.already-exists"));
         }
         if (!this.world.equals(event.getPlayer().getWorld())) return;
+        this.points.add(relative);
         for (Point point : this.points.getArrayList()) {
             Gearz.getInstance().getLogger().info(point.toString());
         }
-        this.points.add(relative);
         event.getPlayer().sendMessage(GearzSetup.getInstance().getFormat("formats.selected", false, new String[]{"<count>", String.valueOf(this.points.getArrayList().size())}));
     }
 
