@@ -166,8 +166,7 @@ public final class ArenaManager {
                     Gearz.getInstance().getLogger().info("Finished?: " + next.toString());
                     if (serializerFor == null) continue;
                     Gearz.getInstance().getLogger().info("Not null: " + next.toString());
-                    serializerFor.getObjectFor(next);
-                    list.add(next); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
+                    list.add(serializerFor.getObjectFor(next)); //Add whatever "next" is now. Depending on code above, it could be a DBObject, or whatever the iterator has in store.
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
