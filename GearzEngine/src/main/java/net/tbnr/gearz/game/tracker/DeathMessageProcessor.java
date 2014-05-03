@@ -26,6 +26,8 @@ import tc.oc.tracker.trackers.ProjectileDistanceTracker;
 import tc.oc.tracker.trackers.base.gravity.Attack;
 import tc.oc.tracker.trackers.base.gravity.SimpleGravityKillTracker;
 
+import static java.lang.Math.round;
+
 /**
  * <p>
  * Latest Change:
@@ -149,7 +151,4 @@ public class DeathMessageProcessor {
         }
     }
 
-    protected Integer round(double number) {
-        return (int) Math.round(number);
-    }
 }

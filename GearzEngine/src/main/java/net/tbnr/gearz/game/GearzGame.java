@@ -689,7 +689,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         for (PlayerType player : allPlayers()) {
             try {
                 player.getTPlayer().sendMessage(message);
-            } catch (Throwable ignored) {
+            } catch (Exception ignored) {
             }
         }
     }
