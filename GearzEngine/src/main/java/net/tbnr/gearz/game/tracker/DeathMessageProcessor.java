@@ -26,8 +26,6 @@ import tc.oc.tracker.trackers.ProjectileDistanceTracker;
 import tc.oc.tracker.trackers.base.gravity.Attack;
 import tc.oc.tracker.trackers.base.gravity.SimpleGravityKillTracker;
 
-import static java.lang.Math.round;
-
 /**
  * <p>
  * Latest Change:
@@ -146,7 +144,7 @@ public class DeathMessageProcessor {
                 double distance = projectile.getLocation().distance(tracker.getLaunchLocation(projectile));
 
                 death.setKiller(shooter);
-                death.setMisc("(" + round(distance) + " blocks)");
+                death.setMisc("(" + (int) Math.round(distance) + " blocks)");
             }
         }
     }

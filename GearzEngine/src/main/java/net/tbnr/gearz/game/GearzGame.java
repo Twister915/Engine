@@ -25,6 +25,7 @@ import net.tbnr.gearz.game.classes.GearzAbstractClass;
 import net.tbnr.gearz.game.classes.GearzClassResolver;
 import net.tbnr.gearz.game.classes.GearzClassable;
 import net.tbnr.gearz.game.tracker.DeathMessageProcessor;
+import net.tbnr.gearz.game.tracker.PlayerDeath;
 import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
@@ -187,7 +188,8 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
             }
 
             @Override
-            public void onGUIClose(BaseGUI gui, Player player) {}
+            public void onGUIClose(BaseGUI gui, Player player) {
+            }
         });
     }
 
@@ -769,10 +771,12 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
                         }
 
                         @Override
-                        public void onGUIOpen(BaseGUI selector, Player player) {}
+                        public void onGUIOpen(BaseGUI selector, Player player) {
+                        }
 
                         @Override
-                        public void onGUIClose(BaseGUI selector, Player player) {}
+                        public void onGUIClose(BaseGUI selector, Player player) {
+                        }
                     });
                     selectorInstance.open(player.getPlayer());
                     event.setCancelled(true);
@@ -800,8 +804,9 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
             return;
         }
         if (!canUse(player)) {
-            if (event.getAction() != Action.PHYSICAL)
+            if (event.getAction() != Action.PHYSICAL) {
                 player.getTPlayer().sendMessage(getFormat("no-interact"));
+            }
             event.setCancelled(true);
         }
     }
@@ -930,36 +935,26 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
                 event.getDrops().remove(stack);
             }
         }
-        if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-            final EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) deadPlayer.getLastDamageCause();
-            if (deadPlayer.getKiller() != null) {
-                final PlayerType player = resolvePlayer(deadPlayer.getKiller());
-                Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        playerKilledPlayer(player, dead);
-                    }
-                }, 2L);
-            } else {
-                fakeDeath(dead);
-                Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        playerKilled(dead, (LivingEntity) entityDamageByEntityEvent.getEntity());
-                    }
-                }, 2L);
-            }
-            broadcast(new DeathMessageProcessor(event, this).processDeath().getDeathMessage());
-            return;
+        DeathMessageProcessor processor = new DeathMessageProcessor(event, this);
+        final PlayerDeath death = processor.processDeath();
+        if (death.getCredited() != null) {
+            final PlayerType player = resolvePlayer(deadPlayer.getKiller());
+            Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+                    playerKilledPlayer(player, dead);
+                }
+            }, 2L);
+        } else {
+            fakeDeath(dead);
+            Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+                    playerKilled(dead, death.getCredited());
+                }
+            }, 2L);
         }
-        fakeDeath(dead);
-        Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                onDeath(dead);
-            }
-        }, 2L);
-        broadcast(new DeathMessageProcessor(event, this).processDeath().getDeathMessage());
+        broadcast(death.getDeathMessage());
     }
 
     private void playerKilledPlayer(final PlayerType damager, final PlayerType target) {
@@ -1281,12 +1276,12 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
             classFor.deregisterClass();
             classFor.onClassDeactivate();
         }
-        if(this.getClassResolver() != null) {
+        if (this.getClassResolver() != null) {
             AbstractClassType abstractClassType = constructClassType(getClassResolver().getClassForPlayer(player, this), player);
             this.classInstances.put(player, abstractClassType);
             abstractClassType.registerClass();
             abstractClassType.onClassActivate();
-            if(classFor == null) abstractClassType.onGameStart();
+            if (classFor == null) abstractClassType.onGameStart();
             abstractClassType.onPlayerActivate();
         }
     }
