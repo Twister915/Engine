@@ -150,9 +150,6 @@ public final class ArenaManager {
             if (!field.isAnnotationPresent(ArenaField.class)) {
                 continue; //... that we can access, and are annotated by ArenaField ...
             }
-            if (!field.getType().equals(ArenaIterator.class)) {
-                continue; //... and are ArenaIterators.
-            }
             ArenaField annotation = field.getAnnotation(ArenaField.class); //Get the Annotation from the field as an object
             ArenaIterator iterator; //Setup an object to put the iterator in
             try {
