@@ -17,6 +17,7 @@ import net.cogz.chat.GearzChat;
 import net.cogz.chat.filter.Filter;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.util.delegates.PermissionsDelegate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -177,7 +178,9 @@ public class ChannelManager {
             }
             message = filterData.getMessage();
         }
-        channel.sendMessage(formatMessage(message, sender), sender);
+        String finalMessage = formatMessage(message, sender);
+        channel.sendMessage(finalMessage, sender);
+        Bukkit.getConsoleSender().sendMessage(finalMessage);
         return channel;
     }
 
