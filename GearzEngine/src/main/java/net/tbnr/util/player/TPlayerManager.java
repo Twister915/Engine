@@ -115,6 +115,7 @@ public final class TPlayerManager implements Listener {
             if (event.getPlayer().getName().equals(player.getName())) {
                 event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
                 event.setKickMessage("A player with this name is already on the server!");
+                player.kickPlayer("A player with this name is attempting to join the server!");
             }
         }
         if (ServerManager.canJoin()) {
