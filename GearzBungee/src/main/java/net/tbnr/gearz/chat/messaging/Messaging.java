@@ -66,10 +66,6 @@ public class Messaging implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        if (target == null) {
-            player.sendMessage(GearzBungee.getInstance().getFormat("message-notonline", false, false));
-            return TCommandStatus.INVALID_ARGS;
-        }
         if (args.length == 1 && !GearzBungee.getInstance().getConversationManager().isPlayerInConversation(player)) {
             new PrivateConversation(player, target);
             return TCommandStatus.SUCCESSFUL;
