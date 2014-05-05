@@ -200,7 +200,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                             sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join-bad", false));
                         }
                     }
-                }.runTaskLaterAsynchronously(GearzBukkitFriends.getInstance(), 20L);
+                }.runTaskLaterAsynchronously(GearzBukkitFriends.getInstance(), 0L);
                 return TCommandStatus.SUCCESSFUL;
             default:
                 return TCommandStatus.INVALID_ARGS;
