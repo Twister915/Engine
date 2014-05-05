@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
@@ -52,6 +53,13 @@ public class PrivateConversation implements Listener {
         if (!GearzBungee.getInstance().getConversationManager().isPlayerInConversation(player)) return;
 
         GearzBungee.getInstance().getConversationManager().getConversationForPlayer(player).sendMessage(event.getMessage());
+    }
+
+    @EventHandler
+    public void onDisconnect(PlayerDisconnectEvent event) {
+        if (this.conversation.getSender().equals(event.getPlayer())) {
+            this.conversation.end();
+        }
     }
 
     @AllArgsConstructor
