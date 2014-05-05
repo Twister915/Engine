@@ -9,10 +9,9 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util;
+package net.tbnr.util.player;
 
 import lombok.Data;
-import net.tbnr.util.player.TPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.inventory.ItemStack;
 

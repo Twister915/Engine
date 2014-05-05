@@ -9,8 +9,9 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util;
+package net.tbnr.util.coloring;
 
+import net.tbnr.util.annotations.GUtility;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;

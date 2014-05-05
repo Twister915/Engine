@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014.
- * Cogz Development LLC USA
+ * CogzMC LLC USA
  * All Right reserved
  *
  * This software is the confidential and proprietary information of Cogz Development, LLC.
@@ -9,18 +9,15 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util.delegates;
-
-import org.bukkit.entity.Player;
+package net.tbnr.util.annotations;
 
 /**
- * <p>
- * Latest Change:
- * <p>
- *
- * @author Jake
- * @since 4/18/2014
+ * Represents A class that needs to be merged into gearz
+ * Created by George on 07/02/14.
+ * <p/>
+ * Purpose Of File: Represents A class that needs to be merged into gearz
+ * <p/>
+ * Latest Change: Added it
  */
-public interface ChatDelegate {
-    void setChannel(Player player, String channel);
+public interface Move2Gearz {
 }

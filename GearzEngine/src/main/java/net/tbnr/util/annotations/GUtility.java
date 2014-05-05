@@ -9,15 +9,15 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util;
+package net.tbnr.util.annotations;
 
 /**
- * Represents A class that needs to be merged into gearz
+ * Represents A Utility Class
  * Created by George on 07/02/14.
  * <p/>
- * Purpose Of File: Represents A class that needs to be merged into gearz
+ * Purpose Of File: To represent a utility class
  * <p/>
- * Latest Change: Added it
+ * Latest Change: Created it
  */
-public interface Move2Gearz {
+public interface GUtility {
 }

@@ -11,6 +11,7 @@
 
 package net.tbnr.gearz.config;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,16 +29,12 @@ import java.io.InputStream;
  * @author Jake
  * @since 3/29/2014
  */
+@RequiredArgsConstructor
 public class GearzConfig {
-    private String fileName;
-    private Plugin instance;
+    private final Plugin instance;
+    private final String fileName;
     private FileConfiguration customConfig = null;
     private File customConfigFile = null;
-
-    public GearzConfig(Plugin plugin, String fileName) {
-        this.fileName = fileName;
-        this.instance = plugin;
-    }
 
     public void reloadConfig() {
         if (customConfigFile == null) {
@@ -99,7 +96,6 @@ public class GearzConfig {
         if (color) {
             string = ChatColor.translateAlternateColorCodes('&', string);
         }
-        //else string = ChatColor.stripColor(string)
         return string;
     }
 

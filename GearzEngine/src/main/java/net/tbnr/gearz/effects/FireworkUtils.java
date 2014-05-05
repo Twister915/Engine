@@ -12,7 +12,7 @@
 package net.tbnr.gearz.effects;
 
 import com.google.common.collect.Lists;
-import net.tbnr.util.GUtility;
+import net.tbnr.util.annotations.GUtility;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;

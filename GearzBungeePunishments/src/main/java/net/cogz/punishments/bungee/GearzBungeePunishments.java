@@ -13,8 +13,8 @@ package net.cogz.punishments.bungee;
 
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
-import net.tbnr.util.FileUtil;
 import net.tbnr.util.TPluginBungee;
+import net.tbnr.util.io.FileUtil;
 
 import java.io.File;
 import java.io.FileInputStream;

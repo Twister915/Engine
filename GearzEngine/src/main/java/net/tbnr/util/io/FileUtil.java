@@ -9,7 +9,9 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util;
+package net.tbnr.util.io;
+
+import net.tbnr.util.annotations.GUtility;
 
 import java.io.*;
 import java.net.MalformedURLException;

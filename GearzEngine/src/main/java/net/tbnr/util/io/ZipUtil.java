@@ -9,7 +9,9 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util;
+package net.tbnr.util.io;
+
+import net.tbnr.util.annotations.GUtility;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,8 +54,7 @@ public class ZipUtil implements GUtility {
         }
     }
 
-    private static void addFolderToZip(String path, String srcFolder,
-                                       ZipOutputStream zip) throws Exception {
+    private static void addFolderToZip(String path, String srcFolder, ZipOutputStream zip) throws Exception {
         File folder = new File(srcFolder);
 
         for (String fileName : folder.list()) {

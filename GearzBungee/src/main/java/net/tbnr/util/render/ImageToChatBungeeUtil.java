@@ -9,11 +9,11 @@
  * with the terms of the license agreement you entered into with Cogz LLC.
  */
 
-package net.tbnr.util;
+package net.tbnr.util.render;
 
 import com.google.common.collect.Maps;
+import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,17 +21,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ImageToChatBukkitUtil implements GUtility {
+public class ImageToChatBungeeUtil {
 
-    private static final ColorExBukkit[] colors = {new ColorExBukkit(Color.decode("#000000")), new ColorExBukkit(Color.decode("#0000AA")), new ColorExBukkit(Color.decode("#00AA00")), new ColorExBukkit(Color.decode("#00AAAA")), new ColorExBukkit(Color.decode("#AA0000")), new ColorExBukkit(Color.decode("#AA00AA")), new ColorExBukkit(Color.decode("#FFAA00")), new ColorExBukkit(Color.decode("#AAAAAA")), new ColorExBukkit(Color.decode("#555555")), new ColorExBukkit(Color.decode("#5555FF")), new ColorExBukkit(Color.decode("#55FF55")), new ColorExBukkit(Color.decode("#55FFFF")), new ColorExBukkit(Color.decode("#FF5555")), new ColorExBukkit(Color.decode("#FF55FF")), new ColorExBukkit(Color.decode("#FF5555")), new ColorExBukkit(Color.decode("#FFFFFF"))};
+    private static final ColorExBungee[] colors = {new ColorExBungee(Color.decode("#000000")), new ColorExBungee(Color.decode("#0000AA")), new ColorExBungee(Color.decode("#00AA00")), new ColorExBungee(Color.decode("#00AAAA")), new ColorExBungee(Color.decode("#AA0000")), new ColorExBungee(Color.decode("#AA00AA")), new ColorExBungee(Color.decode("#FFAA00")), new ColorExBungee(Color.decode("#AAAAAA")), new ColorExBungee(Color.decode("#555555")), new ColorExBungee(Color.decode("#5555FF")), new ColorExBungee(Color.decode("#55FF55")), new ColorExBungee(Color.decode("#55FFFF")), new ColorExBungee(Color.decode("#FF5555")), new ColorExBungee(Color.decode("#FF55FF")), new ColorExBungee(Color.decode("#FF5555")), new ColorExBungee(Color.decode("#FFFFFF"))};
 
     private static final Map<String, ChatColor> colorHexMap;
-
-    private static final Map<String, List<String>> images = new HashMap<>();
 
     static {
         colorHexMap = Maps.newHashMap();
@@ -54,7 +51,7 @@ public class ImageToChatBukkitUtil implements GUtility {
     }
 
     private static ChatColor getColorFor(Color color) {
-        String rgb = Integer.toHexString(findClosestColor(new ColorExBukkit(color), colors).toRGB());
+        String rgb = Integer.toHexString(findClosestColor(new ColorExBungee(color), colors).toRGB());
         rgb = rgb.substring(2, rgb.length()).toUpperCase();
         return colorHexMap.get(rgb);
     }
@@ -67,8 +64,7 @@ public class ImageToChatBukkitUtil implements GUtility {
     }
 
     public static List<String> getHeadImage(String player, boolean filledTextShadow) {
-        if (images.containsKey(player)) return images.get(player);
-        return images.put(player, getTextImage("https://minotar.net/helm/" + player + "/8.png", filledTextShadow));
+        return getTextImage("https://minotar.net/helm/" + player + "/8.png", filledTextShadow);
     }
 
     public static List<String> getImageWithCenteredText(String urlText, String text, boolean filledTextShadow) {
@@ -91,25 +87,6 @@ public class ImageToChatBukkitUtil implements GUtility {
         return strings;
     }
 
-    /**
-     * Get text (usuing a certain character) from an image
-     * @param urlText    The the url where the image is
-     * @param character  The character you want to use
-     * @return the text from an image
-     */
-    public static List<String> getTextImage(String urlText, char character) {
-        BufferedImage i = getImageFromURL(urlText);
-        List<String> strings = new ArrayList<>();
-        for (int y = 0; y < i.getHeight(); y++) {
-            StringBuilder builder = new StringBuilder();
-            for (int x = 0; x < i.getWidth(); x++) {
-                builder.append(getColorFor(getColor(i, x, y))).append(character);
-            }
-            strings.add(builder.toString());
-        }
-        return strings;
-    }
-
     public static Color getColor(BufferedImage image, int x, int y) {
         if (x < 0 || x >= image.getWidth(null)) {
             throw new IndexOutOfBoundsException("x must be between 0 and " + (image.getWidth(null) - 1));
@@ -122,7 +99,7 @@ public class ImageToChatBukkitUtil implements GUtility {
 
     public static BufferedImage getImageFromURL(String urlText) {
         try {
-            URL url = ImageToChatBukkitUtil.class.getResource(urlText);
+            URL url = ImageToChatBungeeUtil.class.getResource(urlText);
             if (url == null) {
                 url = new URL(urlText);
             }
@@ -138,20 +115,22 @@ public class ImageToChatBukkitUtil implements GUtility {
         return StringUtils.repeat(" ", spaces) + text;
     }
 
-    private static ColorExBukkit findClosestColor(ColorExBukkit c, ColorExBukkit[] palette) {
-        if (c.isTransparent()) return ColorExBukkit.WHITE;
+    private static ColorExBungee findClosestColor(ColorExBungee c, ColorExBungee[] palette) {
+        if (c.isTransparent()) {
+            return ColorExBungee.WHITE;
+        }
 
         double delta = 1.7976931348623157E+308D;
         int result = -1;
         for (int i = 0; i < palette.length; i++) {
-            ColorExBukkit palC = palette[i];
-            double d = ColorExBukkit.dist(c, palC);
+            ColorExBungee palC = palette[i];
+            double d = ColorExBungee.dist(c, palC);
             if (d < delta) {
                 result = i;
                 delta = d;
             }
         }
 
-        return result != -1 ? palette[result] : ColorExBukkit.WHITE;
+        return result != -1 ? palette[result] : ColorExBungee.WHITE;
     }
 }

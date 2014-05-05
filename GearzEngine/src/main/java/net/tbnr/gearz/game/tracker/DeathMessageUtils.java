@@ -11,7 +11,7 @@
 
 package net.tbnr.gearz.game.tracker;
 
-import net.tbnr.util.GUtility;
+import net.tbnr.util.annotations.GUtility;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;

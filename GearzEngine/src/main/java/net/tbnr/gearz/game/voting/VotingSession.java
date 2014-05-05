@@ -16,7 +16,7 @@ import lombok.Getter;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.game.*;
 import net.tbnr.gearz.player.GearzPlayer;
-import net.tbnr.util.MapImageRenderer;
+import net.tbnr.util.render.MapImageRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;

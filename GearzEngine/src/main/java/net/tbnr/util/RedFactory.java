@@ -14,6 +14,7 @@ package net.tbnr.util;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerAnimation;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerAnimation.Animations;
+import net.tbnr.util.annotations.GUtility;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerDisconnectEvent;
 import net.tbnr.util.player.TPlayerManager;
@@ -24,7 +25,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * Created by George on 14/03/14.
@@ -34,9 +34,6 @@ import java.util.logging.Logger;
  * Latest Change:
  */
 public class RedFactory implements GUtility, Listener {
-	private static final boolean debug = false; //TODO use gearz debug mode
-	private static final Logger log = null; //TODO get logger
-
 	private static ArrayList<TPlayer> redPlayers = new ArrayList<>();
 
 	public RedFactory() {

@@ -12,6 +12,7 @@
 package net.tbnr.util;
 
 import net.tbnr.gearz.Gearz;
+import net.tbnr.util.annotations.GUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
