@@ -40,7 +40,6 @@ public class PunishmentCommands implements TCommandHandler {
     private final PunishmentManager manager;
     private final SimpleDateFormat longReadable = new SimpleDateFormat("MM/dd/yyyy hh:mm zzzz");
 
-
     public PunishmentCommands(PunishmentManager manager) {
         this.manager = manager;
     }

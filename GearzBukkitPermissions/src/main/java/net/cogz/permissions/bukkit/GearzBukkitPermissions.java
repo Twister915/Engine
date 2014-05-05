@@ -39,8 +39,6 @@ public final class GearzBukkitPermissions extends TPlugin {
         GModel.setDefaultDatabase(Gearz.getInstance().getMongoDB());
         this.permsManager = new PermissionsManager();
         permsManager.reload();
-        getConfig().options().copyDefaults(true);
-        saveConfig();
         getServer().getPluginManager().registerEvents(this.permsManager, this);
         Gearz.getInstance().setPermissionsDelegate(permsManager);
         Gearz.getInstance().activatePermissionsFeatures();
@@ -60,7 +58,8 @@ public final class GearzBukkitPermissions extends TPlugin {
     }
 
     @Override
-    public void disable() { }
+    public void disable() {
+    }
 
     @Override
     public String getStorablePrefix() {

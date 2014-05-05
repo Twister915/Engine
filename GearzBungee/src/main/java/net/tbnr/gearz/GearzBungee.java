@@ -28,7 +28,6 @@ import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
-import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 import net.tbnr.util.FileUtil;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
@@ -103,9 +102,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     private SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-
-    @Setter @Getter
-    private PermissionsDelegate permissionsDelegate;
 
     @Getter
     private ConversationManager conversationManager;

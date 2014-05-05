@@ -68,7 +68,7 @@ public final class GearzPlayer {
     }
 
     /**
-     * Deprecated in palce of GearzPlayer(ProxiedPlayer)
+     * Deprecated in place of GearzPlayer(ProxiedPlayer)
      *
      * @param player player's name
      * @throws PlayerNotFoundException thrown when the player is not found

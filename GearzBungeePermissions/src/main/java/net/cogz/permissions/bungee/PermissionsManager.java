@@ -24,7 +24,6 @@ import net.md_5.bungee.event.EventPriority;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
-import net.tbnr.gearz.player.bungee.PermissionsDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ import java.util.List;
  * @author Jake
  * @since Unknown
  */
-public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
+public class PermissionsManager extends GearzPermissions implements Listener {
     private final List<ProxiedPlayer> playersAlreadyConnected = new ArrayList<>();
 
     @Override
@@ -110,30 +109,5 @@ public class PermissionsManager extends GearzPermissions implements Listener, Pe
     public void onLeave(PlayerDisconnectEvent event) {
         this.playersAlreadyConnected.remove(event.getPlayer());
         onQuit(event.getPlayer().getName());
-    }
-
-    @Override
-    public String getPrefix(String player) {
-        return getPrefix(getPlayer(player));
-    }
-
-    @Override
-    public String getSuffix(String player) {
-        return getSuffix(getPlayer(player));
-    }
-
-    @Override
-    public String getTabColor(String player) {
-        return getTabColor(getPlayer(player));
-    }
-
-    @Override
-    public String getNameColor(String player) {
-        return getNameColor(getPlayer(player));
-    }
-
-    @Override
-    public List<String> getAllPermissions(String player) {
-        return getPlayer(player).getPermissions();
     }
 }

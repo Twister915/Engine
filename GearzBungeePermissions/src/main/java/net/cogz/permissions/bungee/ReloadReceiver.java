@@ -18,7 +18,7 @@ import java.util.HashMap;
 /**
  * Handles the reloading of
  * permissions when the NetCommand
- * is receieved from the Bukkit
+ * is received from the Bukkit
  * end, where the command is initially
  * executed from.
  *

@@ -244,12 +244,10 @@ public class TCommandDispatch {
 
         @Override
         public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-            if (args.length > 2 || args.length == 0) {
+            if (args.length == 0) {
                 return ImmutableSet.of();
             }
-
             Set<String> matches = new HashSet<>();
-
             String search = args[args.length - 1].toLowerCase();
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                 if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {

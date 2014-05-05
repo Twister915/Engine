@@ -60,7 +60,7 @@ public final class GearzPlayerManager implements Listener {
         if (this.players.containsKey(player.getName())) return;
         try {
             this.players.put(player.getName(), new GearzPlayer(player));
-        } catch (GearzPlayer.PlayerNotFoundException e) {
+        } catch (GearzPlayer.PlayerNotFoundException ignored) {
             //Ignored
         }
     }

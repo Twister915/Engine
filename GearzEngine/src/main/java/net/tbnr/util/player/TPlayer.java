@@ -116,16 +116,22 @@ public final class TPlayer {
         this.playerDocument.put("last-seen", Calendar.getInstance().getTimeInMillis()); //Update last-seen
         this.playerDocument.put("online", true); //Update the online variable
         BasicDBList usernames = (BasicDBList) this.playerDocument.get("usernames");
-        if (usernames == null) {
-            usernames = new BasicDBList();
-        }
-        if (!usernames.contains(this.playerName)) {
-            usernames.add(this.playerName);
-        }
-        this.playerDocument.put("current_username", this.playerName);
-        this.playerDocument.put("usernames", usernames);
+        addToList("usernames", this.playerName);
+        addToList("ips", player.getAddress().getHostString());
+
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
+    }
+
+    private void addToList(String fieldName, String toAdd) {
+        BasicDBList field = (BasicDBList) this.playerDocument.get(fieldName);
+        if (field == null) {
+            field = new BasicDBList();
+        }
+        if (!field.contains(this.playerName)) {
+            field.add(this.playerName);
+        }
+        this.playerDocument.put(fieldName, field);
     }
 
     public static DBObject getPlayerObject(UUID uuid) {

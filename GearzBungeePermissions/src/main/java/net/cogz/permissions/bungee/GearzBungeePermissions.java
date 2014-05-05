@@ -42,7 +42,6 @@ public class GearzBungeePermissions extends TPluginBungee {
         GearzBungeePermissions.instance = this;
         GModel.setDefaultDatabase(GearzBungee.getInstance().getMongoDB());
         this.permsManager = new PermissionsManager();
-        GearzBungee.getInstance().setPermissionsDelegate(permsManager);
         registerEvents(permsManager);
         GearzBungee.getInstance().getDispatch().registerNetCommands(new ReloadReceiver());
         ProxyServer.getInstance().getScheduler().schedule(this, new Runnable() {

@@ -147,8 +147,8 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
                 sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
                 GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
                 sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
-                sender.sendMessage(formatData("Previous IPs:", formatList(gearzPlayer.getIPHistory())));
-                sender.sendMessage(formatData("Previous Usernames:", formatList(gearzPlayer.getUsernameHistory())));
+                sender.sendMessage(formatData("Previous IPs:", formatList(gearzPlayer.getIPHistory(), 5)));
+                sender.sendMessage(formatData("Previous Usernames:", formatList(gearzPlayer.getUsernameHistory(), 10)));
             }
         });
     }
@@ -169,41 +169,18 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
         return sdf.format(new Date(mills - TimeZone.getDefault().getRawOffset()));
     }
 
-    private <T> String formatList(List<? extends T> list) {
+    private <T> String formatList(List<? extends T> list, int max) {
         StringBuilder builder = new StringBuilder();
+        int current = 0;
         for (T aValue : list) {
+            if (current == max) break;
             builder.append(aValue).append(", ");
+            current++;
         }
         if (list.size() > 0) {
             builder.deleteCharAt(builder.length() - 2);
         }
         return builder.toString();
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PostLoginEvent event) {
-        ProxiedPlayer player = event.getPlayer();
-        GearzPlayer gearzPlayer;
-        try {
-            gearzPlayer = new GearzPlayer(event.getPlayer());
-        } catch (GearzPlayer.PlayerNotFoundException e) {
-            return;
-        }
-        DBObject playerDocument = gearzPlayer.getPlayerDocument();
-        BasicDBList ips = (BasicDBList) playerDocument.get("ips");
-        if (ips == null) {
-            ips = new BasicDBList();
-        }
-        String hostString = player.getAddress().getHostString();
-        if (!ips.contains(hostString)) {
-            ips.add(hostString);
-        }
-        playerDocument.put("ips", ips);
-        if (!playerDocument.containsField("uuid")) {
-            playerDocument.put("uuid", player.getUniqueId().toString());
-        }
-        playerDocument.put("current_username", player.getName());
-        GearzPlayer.getCollection().save(playerDocument);
     }
 
     @Override
