@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -88,100 +89,110 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
             sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-usehelp", false));
             return TCommandStatus.SUCCESSFUL;
         }
-        Player target = null;
-        if (args.length == 2) {
-            target = Bukkit.getPlayerExact(args[1]);
-        }
-        switch (args[0]) {
-            case "add":
-                if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                if (target == null) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                if (target.getName().equals(sender.getName())) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-self", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                try {
-                    manager.addFriend(sender.getName(), target.getName(), true);
-                } catch (IllegalStateException e) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-already", false));
-                    break;
-                } catch (FriendRequestException e) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-need-request", false));
-                    try {
-                        manager.addFriendRequest(target.getName(), sender.getName());
-                        target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-request-received", false, new String[]{"<player>", sender.getName()}));
-                    } catch (IllegalStateException ex) {
-                        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-already-request", false));
-                        return TCommandStatus.SUCCESSFUL;
-                    }
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-add", false, new String[]{"<player>", target.getName()}));
-                target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-add", false, new String[]{"<player>", sender.getName()}));
-                break;
-            case "remove":
-                if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                if (args[1].equals(sender.getName())) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-self", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                try {
-                    manager.removeFriend(sender.getName(), args[1], true);
-                } catch (IllegalStateException e) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-not"));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove", false, new String[]{"<player>", args[1]}));
-                if (target != null) {
-                    target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove-victim", false, new String[]{"<player>", sender.getName()}));
-                }
-                break;
-            case "deny":
-                if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                try {
-                    manager.denyFriendRequest(sender.getName(), args[1]);
-                } catch (IllegalStateException e) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-no-request", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-deny", false, new String[]{"<player>", args[1]}));
-                break;
-            case "requests":
-                if (args.length > 2) return TCommandStatus.INVALID_ARGS;
-                int page = 1;
+        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.attempting-process", true));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Player target = null;
                 if (args.length == 2) {
-                    try {
-                        page = Integer.parseInt(args[1]);
-                    } catch (NumberFormatException e) {
-                        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.not-a-number", false));
-                        return TCommandStatus.SUCCESSFUL;
-                    }
+                    target = Bukkit.getPlayerExact(args[1]);
                 }
-                try {
-                    paginate(sender, manager.getPendingRequests(sender.getName()), page, 1, 2);
-                } catch (IllegalArgumentException e) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.page-null", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                return TCommandStatus.SUCCESSFUL;
-            case "help":
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friends-help-header", false));
-                sender.sendMessage(formatHelp("/friend add <player>", "adds a player as a friend."));
-                sender.sendMessage(formatHelp("/friend remove <player>", "removes a player as a friend"));
-                sender.sendMessage(formatHelp("/friend join <player>", "joins the server that the specified friend is on"));
-                sender.sendMessage(formatHelp("/friend deny <player>", "denys a player's friend request"));
-                sender.sendMessage(formatHelp("/friend requests", "Lists all current friend requests"));
-                sender.sendMessage(formatHelp("/friends", "Lists all your friends"));
-                return TCommandStatus.SUCCESSFUL;
-            case "join":
-                if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.attempting-join", true));
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
+                switch (args[0]) {
+                    case "add":
+                        if (args.length != 2) {
+                            Gearz.handleCommandStatus(TCommandStatus.INVALID_ARGS, sender);
+                            return;
+                        }
+                        if (target == null) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
+                            return;
+                        }
+                        if (target.getName().equals(sender.getName())) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-self", false));
+                            return;
+                        }
+                        try {
+                            manager.addFriend(sender.getName(), target.getName(), true);
+                        } catch (IllegalStateException e) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-already", false));
+                            break;
+                        } catch (FriendRequestException e) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-need-request", false));
+                            try {
+                                manager.addFriendRequest(target.getName(), sender.getName());
+                                target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-request-received", false, new String[]{"<player>", sender.getName()}));
+                            } catch (IllegalStateException ex) {
+                                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-already-request", false));
+                                return;
+                            }
+                            return;
+                        }
+                        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-add", false, new String[]{"<player>", target.getName()}));
+                        target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-add", false, new String[]{"<player>", sender.getName()}));
+                        break;
+                    case "remove":
+                        if (args.length != 2) return;
+                        if (args[1].equals(sender.getName())) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-self", false));
+                            Gearz.handleCommandStatus(TCommandStatus.INVALID_ARGS, sender);
+                            return;
+                        }
+                        try {
+                            manager.removeFriend(sender.getName(), args[1], true);
+                        } catch (IllegalStateException e) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-not"));
+                            return;
+                        }
+                        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove", false, new String[]{"<player>", args[1]}));
+                        if (target != null) {
+                            target.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-remove-victim", false, new String[]{"<player>", sender.getName()}));
+                        }
+                        break;
+                    case "deny":
+                        if (args.length != 2) {
+                            Gearz.handleCommandStatus(TCommandStatus.INVALID_ARGS, sender);
+                            return;
+                        }
+                        try {
+                            manager.denyFriendRequest(sender.getName(), args[1]);
+                        } catch (IllegalStateException e) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-no-request", false));
+                            return;
+                        }
+                        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-deny", false, new String[]{"<player>", args[1]}));
+                        break;
+                    case "requests":
+                        if (args.length > 2) {
+                            Gearz.handleCommandStatus(TCommandStatus.INVALID_ARGS, sender);
+                            return;
+                        }
+                        int page = 1;
+                        if (args.length == 2) {
+                            try {
+                                page = Integer.parseInt(args[1]);
+                            } catch (NumberFormatException e) {
+                                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.not-a-number", false));
+                                return;
+                            }
+                        }
+                        try {
+                            paginate(sender, manager.getPendingRequests(sender.getName()), page, 1, 2);
+                        } catch (IllegalArgumentException e) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.page-null", false));
+                            return;
+                        }
+                        return;
+                    case "help":
+                        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friends-help-header", false));
+                        sender.sendMessage(formatHelp("/friend add <player>", "adds a player as a friend."));
+                        sender.sendMessage(formatHelp("/friend remove <player>", "removes a player as a friend"));
+                        sender.sendMessage(formatHelp("/friend join <player>", "joins the server that the specified friend is on"));
+                        sender.sendMessage(formatHelp("/friend deny <player>", "denys a player's friend request"));
+                        sender.sendMessage(formatHelp("/friend requests", "Lists all current friend requests"));
+                        sender.sendMessage(formatHelp("/friends", "Lists all your friends"));
+                        return;
+                    case "join":
+
                         if (!manager.isFriend(sender.getName(), args[1])) {
                             sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
                             return;
@@ -199,12 +210,13 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                         } else {
                             sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join-bad", false));
                         }
-                    }
-                }.runTaskLaterAsynchronously(GearzBukkitFriends.getInstance(), 0L);
-                return TCommandStatus.SUCCESSFUL;
-            default:
-                return TCommandStatus.INVALID_ARGS;
-        }
+                        return;
+                    default:
+                        Gearz.handleCommandStatus(TCommandStatus.INVALID_ARGS, sender);
+                }
+            }
+        }.runTaskLaterAsynchronously(GearzBukkitFriends.getInstance(), 0L);
+
         return TCommandStatus.SUCCESSFUL;
     }
 
