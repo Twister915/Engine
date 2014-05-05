@@ -120,7 +120,7 @@ public final class TPlayer {
         this.playerDocument.put("online", true); //Update the online variable
         BasicDBList usernames = (BasicDBList) this.playerDocument.get("usernames");
         addToList("usernames", this.playerName);
-        addToList("ips", player.getAddress().getHostString());
+        //addToList("ips", player.getAddress().getHostString());
 
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
