@@ -81,7 +81,7 @@ public class PermissionsCommands implements TCommandHandler {
             case "delete":
                 return deletePlayer(sender, player);
             case "set":
-                return setPlayerPerm(sender, player, args);
+                return setPlayerPerm(sender, args);
             case "remove":
             case "unset":
                 return unsetPlayersGroup(sender, player, args);
