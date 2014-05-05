@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
             permission = "gearz.friend",
             senders = {TCommandSender.Player})
     @SuppressWarnings("unused, unchecked")
-    public TCommandStatus friend(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
+    public TCommandStatus friend(final CommandSender sender, TCommandSender type, TCommand meta, Command command, final String[] args) {
         if (args.length < 1) {
             sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-usehelp", false));
             return TCommandStatus.SUCCESSFUL;
@@ -177,23 +178,29 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                 return TCommandStatus.SUCCESSFUL;
             case "join":
                 if (args.length != 2) return TCommandStatus.INVALID_ARGS;
-                if (!manager.isFriend(sender.getName(), args[1])) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                Server server = ServerManager.getServerByPlayer(args[1]);
-                if (server == null) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
-                    return TCommandStatus.SUCCESSFUL;
-                }
-                if (server.equals(ServerManager.getThisServer())) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-same-server", false));
-                } else if (server.isCanJoin()) {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join", false, new String[]{"<server>", server.getGame()}, new String[]{"<player>", args[1]}));
-                    BouncyUtils.sendPlayerToServer((Player) sender, server);
-                } else {
-                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join-bad", false));
-                }
+                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.attempting-join", true));
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (!manager.isFriend(sender.getName(), args[1])) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
+                            return;
+                        }
+                        Server server = ServerManager.getServerByPlayer(args[1]);
+                        if (server == null) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-null", false));
+                            return;
+                        }
+                        if (server.equals(ServerManager.getThisServer())) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-same-server", false));
+                        } else if (server.isCanJoin()) {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join", false, new String[]{"<server>", server.getGame()}, new String[]{"<player>", args[1]}));
+                            BouncyUtils.sendPlayerToServer((Player) sender, server);
+                        } else {
+                            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.friend-join-bad", false));
+                        }
+                    }
+                }.runTaskLater(GearzBukkitFriends.getInstance(), 20L);
                 return TCommandStatus.SUCCESSFUL;
             default:
                 return TCommandStatus.INVALID_ARGS;

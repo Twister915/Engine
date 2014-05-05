@@ -24,3 +24,4 @@ formats:
   friend-same-server: "&cYou are on the same server as that player!"
   page-null: "&cThat page does not exist!"
   not-a-number: "&cThat's not a number!"
+  attempting-join: "&cAttempting to join that player..."
