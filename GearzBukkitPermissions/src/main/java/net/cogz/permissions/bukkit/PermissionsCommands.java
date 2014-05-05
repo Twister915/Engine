@@ -61,7 +61,7 @@ public class PermissionsCommands implements TCommandHandler {
 
         PermPlayer player;
         try {
-            // Get's the offline version of the player ~ .trim() removes whitespace from the argument (Just in case)
+            // Gets the offline version of the player ~ .trim() removes whitespace from the argument (Just in case)
             player = permsManager.getOfflinePlayer(args[0].trim());
         } catch (Exception ex) {
             sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-player"));
@@ -81,7 +81,7 @@ public class PermissionsCommands implements TCommandHandler {
             case "delete":
                 return deletePlayer(sender, player);
             case "set":
-                return setPlayerPerm(sender, player, args);
+                return setPlayerPerm(sender, args);
             case "remove":
             case "unset":
                 return unsetPlayersGroup(sender, player, args);
@@ -216,7 +216,7 @@ public class PermissionsCommands implements TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    private TCommandStatus setPlayerPerm(CommandSender sender, PermPlayer player, String[] args) {
+    private TCommandStatus setPlayerPerm(CommandSender sender, String[] args) {
         if (!sender.hasPermission("gearz.permissions.player.set")) return TCommandStatus.PERMISSIONS;
         if (args.length < 3) return TCommandStatus.FEW_ARGS;
         Boolean value = true;
