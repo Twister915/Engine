@@ -33,8 +33,6 @@ public class GearzBukkitFriends extends TPlugin {
     @Override
     public void enable() {
         GearzBukkitFriends.instance = this;
-        getConfig().options().copyDefaults(true);
-        saveConfig();
         friendsManager = new FriendsManager();
         registerCommands(new FriendsCommands(friendsManager));
     }
