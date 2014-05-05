@@ -29,7 +29,6 @@ import net.tbnr.gearz.settings.SettingsRegistration;
 import net.tbnr.gearz.settings.commands.SettingsCommands;
 import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandStatus;
-import net.tbnr.util.delegates.ChatDelegate;
 import net.tbnr.util.delegates.PermissionsDelegate;
 import net.tbnr.util.inventory.SelectorManager;
 import net.tbnr.util.player.TPlayerManager;
@@ -81,7 +80,6 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
     }
 
     @Getter @Setter private PermissionsDelegate permissionsDelegate;
-    @Getter @Setter private ChatDelegate chatDelegate;
 
     @Getter GearzConfig databaseConfig;
 
