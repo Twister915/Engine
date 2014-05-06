@@ -38,9 +38,9 @@ import java.util.*;
 
 /**
  * Handles the display of server MOTDs,
- * server images, and a fake player list
- * to the ProxyPingEvent. This module also
- * displays the MOTD to the player on join
+ * server images, and a fake {@link net.md_5.bungee.api.connection.ProxiedPlayer} list
+ * to the {@link net.md_5.bungee.api.event.ProxyPingEvent}. This module also
+ * displays the MOTD to the {@link net.md_5.bungee.api.connection.ProxiedPlayer} on join
  *
  * <p>
  * Latest Change: Add fake player list

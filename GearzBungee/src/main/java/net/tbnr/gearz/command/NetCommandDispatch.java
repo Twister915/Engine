@@ -66,17 +66,6 @@ public class NetCommandDispatch {
                 command = new RegisteredNetCommand(annotation.name(), Arrays.asList(annotation.args()), new HashMap<Object, Method>());
                 this.netCommands.put(annotation, command);
                 this.nameToAnnotationMap.put(annotation.name(), annotation); //Other logic
-                /*
-                Assumed - String name is what we're searching for
-                NetCommandHandler result = null;
-                for (NetCommandHandler hand : this.netCommands.keySet()) {
-                    if (hand.name().equals(name)) {
-                        result = hand;
-                        break;
-                    }
-                }
-                Easier logic is to just store the result of that.
-                */
             } else {
                 command = this.netCommands.get(annotation);
             }
@@ -128,7 +117,7 @@ public class NetCommandDispatch {
             if (!(next instanceof String)) continue;
             String key = (String) next;
             Object o = data.get(key);
-            returnVal.put(key, parseObject(o)); //OMG SO RECURSIVE
+            returnVal.put(key, parseObject(o));
         }
         return returnVal;
     }
@@ -144,7 +133,7 @@ public class NetCommandDispatch {
         ArrayList<Object> objects = new ArrayList<>();
         int index = 0;
         while (index < array.length()) {
-            objects.add(parseObject(array.get(index))); //OMG SO RECURSIVE
+            objects.add(parseObject(array.get(index)));
             index++;
         }
         return objects;

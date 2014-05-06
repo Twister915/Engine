@@ -42,13 +42,13 @@ public class ListModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     public void onJoin(ServerSwitchEvent event) {
         if (event.getPlayer().hasPermission("gearz.staff")) {
-            if(!staffContains(event.getPlayer().getUniqueId())) staff.add(event.getPlayer());
+            if (!staffContains(event.getPlayer().getUniqueId())) staff.add(event.getPlayer());
         }
     }
 
     private Boolean staffContains(UUID uniqueId) {
         for (ProxiedPlayer proxiedPlayer : staff) {
-            if(proxiedPlayer.getUniqueId().equals(uniqueId)) return true;
+            if (proxiedPlayer.getUniqueId().equals(uniqueId)) return true;
         }
         return false;
     }
@@ -61,8 +61,8 @@ public class ListModule implements TCommandHandler, Listener {
 
     private void staffRemove(UUID uniqueId) {
         Iterator<ProxiedPlayer> iterator = staff.iterator();
-        while(iterator.hasNext()) {
-            if(iterator.next().getUniqueId().equals(uniqueId)) iterator.remove();
+        while (iterator.hasNext()) {
+            if (iterator.next().getUniqueId().equals(uniqueId)) iterator.remove();
         }
     }
 
@@ -128,14 +128,14 @@ public class ListModule implements TCommandHandler, Listener {
             messages.add(GearzBungee.getInstance().getFormat("player-status-where", false, true, new String[]{"<status>", online ? "&aonline" : "&coffline"}, new String[]{"<name>", name}));
             if (online) {
                 Server server = null;
-                for(Server server1 : ServerManager.getAllServers()) {
-                    if(server1.getBungee_name().equalsIgnoreCase(serverBungeeName)) {
+                for (Server server1 : ServerManager.getAllServers()) {
+                    if (server1.getBungee_name().equalsIgnoreCase(serverBungeeName)) {
                         server = server1;
                         break;
                     }
                 }
-                if(server != null)
-                    messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber() }));
+                if (server != null)
+                    messages.add(GearzBungee.getInstance().getFormat("player-server-where", false, true, new String[]{"<server>", server.getGame() + server.getNumber()}));
             }
         }
         for (String s : GearzBungee.boxMessage(ChatColor.BLUE, messages)) {

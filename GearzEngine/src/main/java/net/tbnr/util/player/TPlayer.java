@@ -24,6 +24,7 @@ import net.tbnr.util.IPUtils;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.RedFactory;
 import net.tbnr.util.TPlugin;
+import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -161,6 +162,12 @@ public final class TPlayer {
 
     public static DBObject getAnyPlayerWithUUID(String uuid) {
         BasicDBObject query = new BasicDBObject("uuid", uuid);
+        return TPlayerManager.getInstance().getCollection().findOne(query);
+    }
+
+    public static DBObject getPlayerByObjectId(String objectId) {
+        ObjectId created = new ObjectId(objectId);
+        BasicDBObject query = new BasicDBObject("_id", created);
         return TPlayerManager.getInstance().getCollection().findOne(query);
     }
 

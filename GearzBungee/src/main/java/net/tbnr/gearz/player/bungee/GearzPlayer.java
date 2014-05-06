@@ -68,9 +68,9 @@ public final class GearzPlayer {
     }
 
     /**
-     * Deprecated in place of GearzPlayer(ProxiedPlayer)
+     * Deprecated in place of {@link net.tbnr.gearz.player.bungee.GearzPlayer#GearzPlayer(net.md_5.bungee.api.connection.ProxiedPlayer)}
      *
-     * @param player player's name
+     * @param player the name so search for the most recent username of a player.
      * @throws PlayerNotFoundException thrown when the player is not found
      */
     public GearzPlayer(String player) throws PlayerNotFoundException {
@@ -111,11 +111,11 @@ public final class GearzPlayer {
     }
 
     /**
-     * Creates a GearzPlayer from a ProxiedPlayer
-     * This will store 100% correct UUIDs and names
+     * Creates a {@link net.tbnr.gearz.player.bungee.GearzPlayer} from a {@link net.md_5.bungee.api.connection.ProxiedPlayer}
+     * This will store 100% correct {@link java.util.UUID}s and names
      *
-     * @param player player to get the GearzPlayer for
-     * @throws PlayerNotFoundException thrown when a player is not found
+     * @param player player to get the {@link net.tbnr.gearz.player.bungee.GearzPlayer} for
+     * @throws PlayerNotFoundException thrown when a {@link net.md_5.bungee.api.connection.ProxiedPlayer} is not found
      */
     public GearzPlayer(ProxiedPlayer player) throws PlayerNotFoundException {
         this.username = player.getName();
@@ -137,7 +137,7 @@ public final class GearzPlayer {
     }
 
     /**
-     * Loads the document from the database representing the player :D
+     * Loads the document from the database representing the player
      *
      * @throws PlayerNotFoundException This occurs when there is no database object for that player, can be used as a hook
      *                                 for retrying the find.
@@ -195,7 +195,6 @@ public final class GearzPlayer {
     public ProxiedPlayer getProxiedPlayer() {
         return ProxyServer.getInstance().getPlayer(this.username);
     }
-
 
     public List<String> getUsernameHistory() {
         List<String> usernames = new ArrayList<>();

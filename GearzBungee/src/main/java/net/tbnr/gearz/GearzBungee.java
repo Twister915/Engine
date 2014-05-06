@@ -22,7 +22,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.gearz.activerecord.GModel;
 import net.tbnr.gearz.chat.ChatSpy;
-import net.tbnr.gearz.chat.messaging.ConversationManager;
 import net.tbnr.gearz.chat.messaging.Messaging;
 import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
@@ -47,11 +46,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-/**
- * - Reconnect attempts
- * - Register on Site TODO
- * - Help command
- */
 @SuppressWarnings({"NullArgumentToVariableArgMethod", "FieldCanBeLocal", "UnusedDeclaration"})
 public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
     /**
@@ -94,7 +88,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     private ListModule listModule;
 
     @Getter
-    private Hub hub;
+    private HubModule hubModule;
 
     @Getter
     @Setter
@@ -102,9 +96,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     private SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-
-    @Getter
-    private ConversationManager conversationManager;
 
     /**
      * Gets the current instance of the GearzBungee plugin.
@@ -149,13 +140,11 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         this.listModule = new ListModule();
 
         //Hub server manager
-        this.hub = new Hub();
+        this.hubModule = new HubModule();
 
         //Helpme manager
         this.helpMeModule = new HelpMe();
         this.helpMeModule.registerReminderTask(30);
-
-        this.conversationManager = new ConversationManager();
 
         //Player info module
         PlayerInfoModule infoModule = new PlayerInfoModule();
@@ -174,7 +163,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         TCommandHandler[] commandHandlers = {
                 motdHandler,
                 new Messaging(),
-                this.hub,
+                this.hubModule,
                 new UtilCommands(),
                 new ServerModule(),
                 new PlayerHistoryModule(),
@@ -190,7 +179,7 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         Listener[] listeners = {
                 this.playerManager,
                 motdHandler,
-                this.hub,
+                this.hubModule,
                 this.listModule,
                 this.helpMeModule,
                 infoModule,
@@ -205,13 +194,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
         for (Listener listener : listeners) {
             registerEvents(listener);
-        }
-
-        if (getConfig().getBoolean("modbroadcast.enabled", false)) {
-            ModBroadcast modBroadcast = new ModBroadcast();
-            registerEvents(modBroadcast);
-            registerCommandHandler(modBroadcast);
-            getLogger().info("Channels disabled...");
         }
 
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);

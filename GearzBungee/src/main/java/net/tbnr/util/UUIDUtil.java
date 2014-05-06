@@ -16,7 +16,7 @@ import com.mojang.api.profiles.Profile;
 import lombok.Getter;
 
 /**
- * Util to allow for username to UUID conversion
+ * Util to allow for {@link net.md_5.bungee.api.connection.ProxiedPlayer#getName()} to {@link java.util.UUID} conversion
  * Uses a callback for async call.
  *
  * <p>

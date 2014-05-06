@@ -45,7 +45,7 @@ import java.util.List;
  * @author Joey
  * @since 10/14/2013
  */
-public class Hub implements TCommandHandler, Listener {
+public class HubModule implements TCommandHandler, Listener {
 
     private List<Server> hubServers;
 
@@ -72,7 +72,7 @@ public class Hub implements TCommandHandler, Listener {
     }
 
     public static boolean isHubServer(ServerInfo info) {
-        for (Server s : GearzBungee.getInstance().getHub().hubServers) {
+        for (Server s : GearzBungee.getInstance().getHubModule().hubServers) {
             if (s.getBungee_name().equals(info.getName())) return true;
         }
         return false;
@@ -90,7 +90,6 @@ public class Hub implements TCommandHandler, Listener {
             player.sendMessage(GearzBungee.getInstance().getFormat("server-cannot-disconnect", true));
             return TCommandStatus.SUCCESSFUL;
         }
-        player.getServer().getInfo();
         player.connect(getAHubServer());
         sender.sendMessage(GearzBungee.getInstance().getFormat("send-to-hub", true));
         return TCommandStatus.SUCCESSFUL;
@@ -147,11 +146,11 @@ public class Hub implements TCommandHandler, Listener {
     @Data
     @RequiredArgsConstructor
     static class HubServerReloadTask implements Runnable {
-        @NonNull private final Hub hubManager;
+        @NonNull private final HubModule hubModuleManager;
 
         @Override
         public void run() {
-            this.hubManager.hubServers = getHubServers();
+            this.hubModuleManager.hubServers = getHubServers();
         }
     }
 }

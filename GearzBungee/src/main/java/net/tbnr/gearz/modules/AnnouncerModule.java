@@ -13,6 +13,7 @@ package net.tbnr.gearz.modules;
 
 import com.mongodb.BasicDBList;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -29,8 +30,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Module to manage automaticaly broadcasted
- * announcents.
+ * Module to manage automatically broadcasted
+ * announcements.
  *
  * <p>
  * Latest Change: Created module
@@ -100,7 +101,6 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
                 sender.sendMessage(GearzBungee.getInstance().getFormat("index-out-of-range", false));
                 return TCommandStatus.SUCCESSFUL;
             }
-            //String s = strings.get(toRemove - 1); never used
             strings.remove(toRemove - 1);
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-remove", false, false, new String[]{"<num>", toRemove + ""}));
         } else if (args[0].equalsIgnoreCase("interval")) {
@@ -148,12 +148,9 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         GearzBungee.handleCommandStatus(status, sender);
     }
 
+    @RequiredArgsConstructor
     public static class Announcement {
         private final String rawText;
-
-        public Announcement(String text) {
-            this.rawText = text;
-        }
 
         public String getColoredText() {
             return ChatColor.translateAlternateColorCodes('&', rawText);
