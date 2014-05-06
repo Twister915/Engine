@@ -290,9 +290,10 @@ public abstract class GModel {
                 String[] strings = Arrays.copyOfRange(split, 1, split.length - 1);
                 StringBuilder className = new StringBuilder();
                 for (String string : strings) {
-                    className.append(className).append("_");
+                    className.append(string).append("_");
                 }
-                String cName = className.toString().substring(0, className.length()-2);
+                String s1 = className.toString();
+                String cName = s1.substring(0, s1.length() - 2);
                 return Enum.valueOf(aClass, cName);
             }
         }
