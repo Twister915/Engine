@@ -67,4 +67,9 @@ public final class MinigameMeta extends GModel {
 		this.pluginClass = pluginClass;
 		this.gameClass = gameClass;
 	}
+
+    public MinigameMeta(DB mongoDB, String key) {
+        this(mongoDB);
+        this.key = key;
+    }
 }

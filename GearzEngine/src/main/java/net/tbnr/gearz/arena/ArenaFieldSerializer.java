@@ -97,7 +97,7 @@ public enum ArenaFieldSerializer {
         this.type = type;
     }
 
-    static abstract class SerializationDelegate<T> {
+    public static abstract class SerializationDelegate<T> {
         protected abstract DBObject getObjectForInternal(T object);
         protected abstract T getObjectForInternal(DBObject object);
         protected abstract ArenaIterator<T> getNewIterator(List<T> values) throws GearzException;
