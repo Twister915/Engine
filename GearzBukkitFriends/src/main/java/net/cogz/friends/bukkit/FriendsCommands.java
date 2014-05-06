@@ -27,6 +27,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -34,10 +36,10 @@ import java.util.List;
  * Commands that allow players to manage
  * their friends, including adding, removing,
  * and checking the online status of them.
- *
- * <p>
+ * <p/>
+ * <p/>
  * Latest Change: UUIDs
- * <p>
+ * <p/>
  *
  * @author Jake
  * @since 3/8/2014
@@ -226,24 +228,42 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
             permission = "gearz.friends",
             usage = "/friends")
     @SuppressWarnings("unused")
-    public TCommandStatus friends(CommandSender sender, TCommandSender type, TCommand meta, Command command, String[] args) {
-        int page = 1;
-        if (args.length == 1) {
-            try {
-                page = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.not-a-number", false));
-                return TCommandStatus.SUCCESSFUL;
+    public TCommandStatus friends(final CommandSender sender, TCommandSender type, TCommand meta, Command command, final String[] args) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int page = 1;
+                if (args.length == 1) {
+                    try {
+                        page = Integer.parseInt(args[0]);
+                    } catch (NumberFormatException e) {
+                        sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.not-a-number", false));
+                        return;
+                    }
+                }
+
+                List<String> orderedFriends = sortFriends(manager.getPlayerFriends(sender.getName()));
+                try {
+                    sendFriendsList((Player) sender, orderedFriends, page);
+                } catch (IllegalArgumentException e) {
+                    sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.page-null", false));
+                }
+            }
+        }.runTaskLaterAsynchronously(GearzBukkitFriends.getInstance(), 0L);
+        return TCommandStatus.SUCCESSFUL;
+    }
+
+    private List<String> sortFriends(List<String> unsorted) {
+        List<String> sortedFriends = new ArrayList<>();
+        Iterator<String> iterator =  unsorted.iterator();
+        while (iterator.hasNext()) {
+            String friend = iterator.next();
+            if (Bukkit.getPlayerExact(friend) != null) {
+                sortedFriends.add(friend);
+                iterator.remove();
             }
         }
-        List<String> friends = manager.getPlayerFriends(sender.getName());
-        try {
-            sendFriendsList((Player) sender, friends, page);
-        } catch (IllegalArgumentException e) {
-            sender.sendMessage(GearzBukkitFriends.getInstance().getFormat("formats.page-null", false));
-            return TCommandStatus.SUCCESSFUL;
-        }
-        return TCommandStatus.SUCCESSFUL;
+        return sortedFriends;
     }
 
     @SuppressWarnings("unchecked")

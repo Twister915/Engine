@@ -118,9 +118,7 @@ public final class TPlayer {
         }
         this.playerDocument.put("last-seen", Calendar.getInstance().getTimeInMillis()); //Update last-seen
         this.playerDocument.put("online", true); //Update the online variable
-        BasicDBList usernames = (BasicDBList) this.playerDocument.get("usernames");
         addToList("usernames", this.playerName);
-        //addToList("ips", player.getAddress().getHostString());
 
         this.save();
         this.timeOnline = (Long) this.playerDocument.get("time-online");
@@ -135,6 +133,11 @@ public final class TPlayer {
             field.add(this.playerName);
         }
         this.playerDocument.put(fieldName, field);
+    }
+
+    public void logIp(String ip) {
+        addToList("ips", ip);
+        this.save();
     }
 
     public static DBObject getPlayerObject(UUID uuid) {
