@@ -287,13 +287,14 @@ public abstract class GModel {
                     e.printStackTrace(); //TODO Remove
                     return null;
                 }
-                String[] strings = Arrays.copyOfRange(split, 1, split.length - 1);
+                String[] strings = Arrays.copyOfRange(split, 1, split.length);
                 StringBuilder className = new StringBuilder();
                 for (String string : strings) {
                     className.append(string).append("_");
                 }
                 String s1 = className.toString();
-                String cName = s1.substring(0, s1.length() - 2);
+                if (s1.length() == 0) return null;
+                String cName = s1.substring(0, s1.length()-1);
                 return Enum.valueOf(aClass, cName);
             }
         }
