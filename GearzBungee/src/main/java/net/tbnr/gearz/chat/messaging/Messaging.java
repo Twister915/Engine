@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * Module to manage the /msg command
- * and also personal, one way, consversations.
+ * and also personal, one way, conversations.
  *
  * <p>
  * Latest Change: Create
@@ -43,10 +43,6 @@ public class Messaging implements TCommandHandler {
     @SuppressWarnings("unused")
     public TCommandStatus messageCommand(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         ProxiedPlayer player = (ProxiedPlayer) sender;
-        if (args.length == 0 && GearzBungee.getInstance().getConversationManager().isPlayerInConversation(player)) {
-            GearzBungee.getInstance().getConversationManager().getConversationForPlayer(player).end();
-            return TCommandStatus.SUCCESSFUL;
-        }
         if (args.length == 0) {
             return TCommandStatus.FEW_ARGS;
         }
@@ -66,8 +62,7 @@ public class Messaging implements TCommandHandler {
             return TCommandStatus.SUCCESSFUL;
         }
 
-        if (args.length == 1 && !GearzBungee.getInstance().getConversationManager().isPlayerInConversation(player)) {
-            new PrivateConversation(player, target);
+        if (args.length == 1) {
             return TCommandStatus.SUCCESSFUL;
         }
 

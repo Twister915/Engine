@@ -75,6 +75,5 @@ public class RegisteredNetCommand {
                 e.printStackTrace();
             }
         }
-
     }
 }

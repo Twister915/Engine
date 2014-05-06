@@ -226,8 +226,6 @@ public class HelpMe implements TCommandHandler, Listener {
 
     @SuppressWarnings("deprecation")
     @Data
-    @EqualsAndHashCode
-    @ToString
     @RequiredArgsConstructor
     public static class Conversation {
         private ProxiedPlayer staffMember;

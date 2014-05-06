@@ -32,10 +32,10 @@ import java.util.logging.Logger;
 public class FileUtil {
 
     /**
-     * Downloads the file from the parameters
+     * Downloads the {@link File} from the parameters
      *
-     * @param link URL of the file to download
-     * @param file Where to save the downloaded file
+     * @param link {@link java.net.URL} of the {@link File} to download in the form of a {@link String}
+     * @param file Where to save the downloaded {@link File}
      * @return boolean of whether or not the download was successful
      */
     public static boolean downloadFile(String link, String file) {
@@ -71,10 +71,10 @@ public class FileUtil {
     }
 
     /**
-     * Deletes the specified file
+     * Deletes the specified {@link File}
      *
-     * @param dir File to delete
-     * @return boolean of Whether or not the file was deleted
+     * @param dir {@link File} to delete
+     * @return boolean of Whether or not the {@link File} was deleted
      */
     public static boolean delete(File dir) {
         if (dir.isDirectory()) {
@@ -89,11 +89,11 @@ public class FileUtil {
     /**
      * Writes an internal resource that
      * is saved with in the jar to a
-     * local file.
+     * local {@link File}.
      *
      * @param resourceName name of the resource to save
      * @param file         path to save too
-     * @return whether or not the file was saved
+     * @return whether or not the {@link File} was saved
      */
     public static boolean writeEmbeddedResourceToLocalFile(final String resourceName, final File file, Class clazz) {
         boolean result = false;

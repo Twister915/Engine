@@ -19,7 +19,7 @@ import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import java.util.HashMap;
 
 /**
- * Base Receiver, gets all incoming NetCommand calls from this base plugin.
+ * {@link net.tbnr.gearz.command.BaseReceiver}, gets all incoming {@link net.tbnr.gearz.command.NetCommand} calls from this base {@link net.tbnr.util.TPluginBungee}.
  */
 public class BaseReceiver {
     @NetCommandHandler(args = {"player", "server"}, name = "send")

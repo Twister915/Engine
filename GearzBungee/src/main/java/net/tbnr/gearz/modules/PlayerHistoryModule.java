@@ -22,7 +22,7 @@ import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
 /**
- * Module to send the sender a list of a player's previous usernames.
+ * Module to send the {@link net.md_5.bungee.api.CommandSender} a list of a {@link net.md_5.bungee.api.connection.ProxiedPlayer}'s previous usernames.
  * <p>
  * Latest Change: Created module
  * <p>

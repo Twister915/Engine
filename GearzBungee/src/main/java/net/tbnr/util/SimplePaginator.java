@@ -27,7 +27,7 @@ public abstract class SimplePaginator<T> {
     int perPage;
 
     /**
-     * Creates an instance of a Paginator
+     * Creates an instance of a {@link net.tbnr.util.SimplePaginator}
      *
      * @param perPage number of entries per page
      */
@@ -36,10 +36,10 @@ public abstract class SimplePaginator<T> {
     }
 
     /**
-     * Paginates a list of Objects
+     * Paginates a list of {@link java.lang.Object}
      *
-     * @param sender command sender
-     * @param toPaginate the generics list to paginate
+     * @param sender {@link net.md_5.bungee.api.CommandSender} of the command to paginate
+     * @param toPaginate the generics {@link java.util.List} to paginate
      * @param page the page that should be sent
      * @param headerOption the option that should be used for the header
      * @param entryOption the option that should be used for the entry
@@ -60,12 +60,11 @@ public abstract class SimplePaginator<T> {
     /**
      * Formats an entry based on the arguments
      * Allows different options to be used when paginating.
-     * See FriendCommands as an example.
      *
      * @param entry the entry to be formatted
      * @param num the entry's number
      * @param optionNum the option number to format it with, see above
-     * @return the formatted string
+     * @return the formatted {@link java.lang.String}
      */
     public abstract String formatEntry(T entry, int num, int optionNum);
 

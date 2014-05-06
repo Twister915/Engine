@@ -68,6 +68,5 @@ public class NetDelegate extends JedisPubSub implements Runnable {
     public void run() {
         Jedis jedis = GearzBungee.getInstance().getJedisClient();
         jedis.subscribe(this, NetDelegate.CHAN);
-        //BouncyBungee.getInstance().returnJedis(jedis);
     }
 }

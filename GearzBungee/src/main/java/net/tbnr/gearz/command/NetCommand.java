@@ -20,7 +20,7 @@ import redis.clients.jedis.Jedis;
 import java.util.HashMap;
 
 /**
- * The NetCommand class is used solely to build commands to send. :D
+ * The {@link net.tbnr.gearz.command.NetCommand} class is used solely to build commands to send.
  */
 public class NetCommand {
     /**

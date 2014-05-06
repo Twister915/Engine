@@ -22,13 +22,13 @@ import net.tbnr.gearz.GearzBungee;
 import java.util.Calendar;
 
 /**
- * Error handler. Stores data about when there's an exception or other error..
+ * Error handler. Stores data about when there's an {@link java.lang.Exception} or other error.
  */
 public class ErrorHandler {
     /**
-     * Reports an exception without bindings
+     * Reports an {@link java.lang.Exception} without bindings
      *
-     * @param ex Exception to report
+     * @param ex {@link java.lang.Exception} to report
      */
     public static void reportError(Exception ex) {
         storeErrorReport(BasicDBObjectBuilder.start("error", formatException(ex)).get());
@@ -36,10 +36,10 @@ public class ErrorHandler {
     }
 
     /**
-     * Reports an error for a server and exception
+     * Reports an error for a {@link net.tbnr.gearz.server.Server} and {@link java.lang.Exception}
      *
-     * @param serverInfo The server with the error
-     * @param ex         The exception involved in the error
+     * @param serverInfo The {@link net.md_5.bungee.api.config.ServerInfo} with the error
+     * @param ex         The {@link java.lang.Exception} involved in the error
      */
     @SuppressWarnings("unused")
     public static void reportError(ServerInfo serverInfo, Exception ex) {
@@ -48,10 +48,10 @@ public class ErrorHandler {
     }
 
     /**
-     * Reports an error for a player, their active server, and the exception related
+     * Reports an error for a {@link net.md_5.bungee.api.connection.ProxiedPlayer}, their active {@link net.tbnr.gearz.server.Server}, and the {@link java.lang.Exception} related
      *
-     * @param player The player who is involved
-     * @param ex     The exception
+     * @param player The {@link net.md_5.bungee.api.connection.ProxiedPlayer} who is involved
+     * @param ex     The {@link java.lang.Exception}
      */
     @SuppressWarnings("unused")
     public static void reportError(ProxiedPlayer player, Exception ex) {
@@ -60,7 +60,7 @@ public class ErrorHandler {
     }
 
     /**
-     * Reports an error without a binding
+     * Reports an error without a key
      *
      * @param error Error to report
      */
@@ -70,9 +70,9 @@ public class ErrorHandler {
     }
 
     /**
-     * Reports an error with a binding.
+     * Reports an error with a key.
      *
-     * @param serverInfo Server error relavant to
+     * @param serverInfo {@link net.md_5.bungee.api.config.ServerInfo} error relevant to
      * @param error      The error itself.
      */
     @SuppressWarnings("unused")
@@ -81,10 +81,10 @@ public class ErrorHandler {
     }
 
     /**
-     * Reports an error with a binding.
+     * Reports an error with a key.
      *
-     * @param key Easy reference to find error in a certain spot
-     * @param ex      The error itself.
+     * @param key Easy reference to find error with a certain key
+     * @param ex  The error itself.
      */
     @SuppressWarnings("unused")
     public static void reportError(String key, Exception ex) {
@@ -94,7 +94,7 @@ public class ErrorHandler {
     /**
      * Reports an error
      *
-     * @param player The player to report the error on
+     * @param player The {@link net.md_5.bungee.api.connection.ProxiedPlayer} to report the error on
      * @param error  The error string.
      */
     @SuppressWarnings("unused")
@@ -103,9 +103,9 @@ public class ErrorHandler {
     }
 
     /**
-     * Stores the DB Object
+     * Stores the {@link com.mongodb.DBObject}
      *
-     * @param object The DBObject to store
+     * @param object The {@link com.mongodb.DBObject} to store
      */
     private static void storeErrorReport(DBObject object) {
         object.put("time", Calendar.getInstance().getTimeInMillis());
@@ -115,9 +115,9 @@ public class ErrorHandler {
     }
 
     /**
-     * Format exception for the database
+     * Format {@link java.lang.Exception} for the database
      *
-     * @param ex The exception to format.
+     * @param ex The {@link java.lang.Exception} to format.
      * @return List of database.
      */
     private static BasicDBList formatException(Exception ex) {

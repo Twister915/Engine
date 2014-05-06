@@ -32,14 +32,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-/**
- *
- */
 public final class TPlayerManager implements Listener {
     private final HashMap<String, TPlayer> players = new HashMap<>();
     private DBCollection collection = null;
     private DB database = null;
     private static TPlayerManager instance;
+
     public static String getUsernameForID(ObjectId id) {
         DBCollection collection1 = instance.collection;
         DBObject id1 = collection1.findOne(new BasicDBObject("_id", id));

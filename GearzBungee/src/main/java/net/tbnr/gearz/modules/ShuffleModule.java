@@ -121,7 +121,7 @@ public class ShuffleModule implements TCommandHandler, Listener {
             this.started = true;
             serversPlayed = new ArrayList<>();
             attemptedGames = new ArrayList<>();
-            if (!Hub.isHubServer(player.getServer().getInfo())) {
+            if (!HubModule.isHubServer(player.getServer().getInfo())) {
                 playingCurrently = true;
                 sendMessage(GearzBungee.getInstance().getFormat("shuffle-wait-for-hub", false));
             } else prepareForNextServer();
@@ -155,7 +155,7 @@ public class ShuffleModule implements TCommandHandler, Listener {
         private void prepareForNextServer() throws IllegalStateException {
             try {
                 if (this.playingCurrently) throw new IllegalStateException("Already ingame!");
-                if (!Hub.isHubServer(this.player.getServer().getInfo()))
+                if (!HubModule.isHubServer(this.player.getServer().getInfo()))
                     throw new IllegalStateException("Not currently on Hub.");
                 this.nextServer = getRandomServer();
                 this.task = ProxyServer.getInstance().getScheduler().schedule(GearzBungee.getInstance(), new ShuffleStateChanger(this), secondDelay, TimeUnit.SECONDS);
@@ -227,7 +227,7 @@ public class ShuffleModule implements TCommandHandler, Listener {
         public void serverSwitchEvent(ServerSwitchEvent event) {
             if (!event.getPlayer().equals(this.player)) return;
             if (!started) return;
-            if (Hub.isHubServer(event.getPlayer().getServer().getInfo())) {
+            if (HubModule.isHubServer(event.getPlayer().getServer().getInfo())) {
                 this.playingCurrently = false;
                 prepareForNextServer();
                 return;
