@@ -256,12 +256,18 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
     private List<String> sortFriends(List<String> unsorted) {
         List<String> sortedFriends = new ArrayList<>();
         Iterator<String> iterator =  unsorted.iterator();
+        int totalLooped = 0;
         while (iterator.hasNext()) {
             String friend = iterator.next();
+            if (totalLooped == unsorted.size()) {
+                sortedFriends.add(friend);
+                iterator.remove();
+            }
             if (Bukkit.getPlayerExact(friend) != null) {
                 sortedFriends.add(friend);
                 iterator.remove();
             }
+            totalLooped++;
         }
         return sortedFriends;
     }
