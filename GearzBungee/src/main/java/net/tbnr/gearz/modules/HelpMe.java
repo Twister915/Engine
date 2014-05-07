@@ -11,7 +11,10 @@
 
 package net.tbnr.gearz.modules;
 
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

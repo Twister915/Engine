@@ -11,12 +11,13 @@
 
 package net.tbnr.util.player;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import net.gearz.settings.SettingsManager;
-import net.gearz.settings.base.BaseSetting;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
 import net.tbnr.util.IPUtils;
@@ -41,7 +42,10 @@ import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.ParticleEffect;
 
