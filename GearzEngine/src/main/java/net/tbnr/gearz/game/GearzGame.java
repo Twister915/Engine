@@ -26,13 +26,11 @@ import net.tbnr.gearz.game.classes.GearzClassResolver;
 import net.tbnr.gearz.game.classes.GearzClassable;
 import net.tbnr.gearz.game.tracker.DeathMessageProcessor;
 import net.tbnr.gearz.game.tracker.PlayerDeath;
-import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.network.GearzPlayerProvider;
 import net.tbnr.gearz.player.GearzPlayer;
 import net.tbnr.util.BlockRepair;
 import net.tbnr.util.RandomUtils;
 import net.tbnr.util.inventory.InventoryGUI;
-import net.tbnr.util.inventory.ServerSelector;
 import net.tbnr.util.inventory.base.BaseGUI;
 import net.tbnr.util.inventory.base.GUICallback;
 import net.tbnr.util.inventory.base.GUIItem;
@@ -65,7 +63,7 @@ import java.util.*;
 /**
  * GearzGame is a class to represent a game.
  */
-@SuppressWarnings({"NullArgumentToVariableArgMethod", "DefaultFileTemplate", "UnusedDeclaration"})
+@SuppressWarnings({"NullArgumentToVariableArgMethod", "UnusedDeclaration"})
 @EqualsAndHashCode(of = {"id", "arena", "players"}, doNotUseGetters = true, callSuper = false)
 @ToString(of = {"arena", "id", "running", "players", "spectators", "gameMeta"})
 public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassType extends GearzAbstractClass<PlayerType>> extends GameDelegate<PlayerType> implements Listener, GearzClassable<PlayerType, AbstractClassType> {
@@ -172,7 +170,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         this.spectatorGui = new InventoryGUI(getPlayersForMenu(), ChatColor.RED + "Spectator menu.", new GUICallback() {
             @Override
             public void onItemSelect(BaseGUI gui, GUIItem item, Player player) {
-                Player target = Bukkit.getServer().getPlayer(item.getName());
+                Player target = Bukkit.getServer().getPlayerExact(item.getName());
                 if (target == null) return;
                 player.teleport(target.getLocation());
                 player.closeInventory();
@@ -745,46 +743,10 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         if (isSpectating(player)) {
             if (event.getPlayer().getItemInHand().getType() == Material.BOOK && event.getAction() != Action.PHYSICAL) {
                 if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(getFormat("server-book"))) {
-                    final ServerSelector selectorInstance = new ServerSelector(this.getGameMeta().key(), new GUICallback() {
-                        @Override
-                        public void onItemSelect(BaseGUI selector, GUIItem item, Player player) {
-                            /**
-                             * The reason you need to test as the person could have the selector
-                             * open for a while, and he clicks the last item while a server is restarting
-                             * so the server is no longer online and therefore is not in the servers list
-                             * Though the inventory is already open so it's not updated
-                             * Therefore it causes and IndexOutOfBoundsException
-                             * @see java.lang.IndexOutOfBoundsException
-                             */
-                            ServerSelector serverSelector = (ServerSelector) selector;
-                            net.tbnr.gearz.server.Server server;
-                            try {
-                                server = serverSelector.getServers().get(
-                                        /** if */item.getSlot() > serverSelector.getServers().size() ?
-                                                /** true */0 : /** false */item.getSlot()
-                                );
-                            } catch (IndexOutOfBoundsException e) {
-                                serverSelector.update();
-                                return;
-                            }
-                            BouncyUtils.sendPlayerToServer(player, server);
-                        }
-
-                        @Override
-                        public void onGUIOpen(BaseGUI selector, Player player) {
-                        }
-
-                        @Override
-                        public void onGUIClose(BaseGUI selector, Player player) {
-                        }
-                    });
-                    selectorInstance.open(player.getPlayer());
+                    spectatorGui.open(player.getPlayer());
                     event.setCancelled(true);
                     return;
                 }
-                spectatorGui.open(player.getPlayer());
-                event.setCancelled(true);
-                return;
             }
             event.setCancelled(true);
             return;
