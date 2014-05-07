@@ -471,8 +471,6 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         this.classInstances.remove(player);
         onPlayerBecomeSpectator(player);
         player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("spectator-chooser"));
-        player.getTPlayer().giveItem(Material.BOOK, 1, (short) 0, getFormat("server-book"));
-
         spectatorGui.updateContents(getPlayersForMenu());
         RandomUtils.setPlayerCollision(player.getPlayer(), false);
     }
