@@ -16,7 +16,7 @@ import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.netcommand.BouncyUtils;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
-import net.tbnr.util.SimplePaginator;
+import net.tbnr.util.chat.SimplePaginator;
 import net.tbnr.util.command.TCommand;
 import net.tbnr.util.command.TCommandHandler;
 import net.tbnr.util.command.TCommandSender;

@@ -12,6 +12,7 @@
 package net.tbnr.gearz.event.game;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.tbnr.gearz.event.GearzEvent;
 import net.tbnr.gearz.game.GearzGame;
@@ -24,13 +25,9 @@ import org.bukkit.event.Cancellable;
  * Time: 9:03 PM
  * To change this template use File | Settings | File Templates.
  */
+@RequiredArgsConstructor
 public final class GamePreStartEvent extends GearzEvent implements Cancellable {
     @Getter private final GearzGame game;
-    @Getter @Setter private boolean cancelled;
+    @Getter @Setter private boolean cancelled = false;
     @Getter @Setter private String reasonCancelled;
-
-    public GamePreStartEvent(GearzGame gearzGame) {
-        this.game = gearzGame;
-        this.cancelled = false;
-    }
 }
