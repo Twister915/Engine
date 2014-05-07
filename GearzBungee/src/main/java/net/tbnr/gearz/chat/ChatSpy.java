@@ -13,6 +13,7 @@ package net.tbnr.gearz.chat;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -52,7 +53,8 @@ public class ChatSpy implements Listener, TCommandHandler {
         for (Map.Entry<String, SpyType> p : this.spies.entrySet()) {
             ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(p.getKey());
             if (player1 == null) continue;
-            if ((p.getValue() == SpyType.All) || (p.getValue() == SpyType.Command && event.isCommand()) || (p.getValue() == SpyType.Chat && !event.isCommand())) {
+            Connection sender = event.getSender();
+            if ((p.getValue() == SpyType.All && sender instanceof ProxiedPlayer && ((ProxiedPlayer) sender).getServer() != null && ((ProxiedPlayer) sender).getServer() != player1.getServer()) || (p.getValue() == SpyType.Command && event.isCommand()) || (p.getValue() == SpyType.Chat && !event.isCommand() && sender instanceof ProxiedPlayer && ((ProxiedPlayer) sender).getServer() != null && ((ProxiedPlayer) sender).getServer() != player1.getServer())) {
                 player1.sendMessage(m);
             }
         }
