@@ -18,6 +18,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 
 /**
  * Created by George on 24/12/13.
@@ -59,6 +64,24 @@ public final class IPUtils implements GUtility {
             }
 
         });
+    }
+
+    public static String getExternalIP() throws SocketException, IndexOutOfBoundsException {
+        if (!Bukkit.getIp().equals("")) return Bukkit.getIp();
+        NetworkInterface eth0 = NetworkInterface.getByName(Gearz.getInstance().getConfig().getString("network_interface"));
+
+        if (eth0 == null) eth0 = NetworkInterface.getByName("eth0");
+
+        Enumeration<InetAddress> inetAddresses = eth0.getInetAddresses();
+        ArrayList<InetAddress> list = Collections.list(inetAddresses);
+        InetAddress fin = null;
+        for (InetAddress inetAddress : list) {
+            if (inetAddress.getHostAddress().matches("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}")) {
+                fin = inetAddress;
+                break;
+            }
+        }
+        return fin == null ? null : fin.getHostAddress();
     }
 
     public interface PingCallbackEventHandler {

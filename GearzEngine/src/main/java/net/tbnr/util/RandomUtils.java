@@ -32,7 +32,7 @@ public class RandomUtils implements GUtility {
     }
 
     /**
-     * Get's the spread location
+     * Gets the spread location
      *
      * @param location the location to test
      * @return the spread location

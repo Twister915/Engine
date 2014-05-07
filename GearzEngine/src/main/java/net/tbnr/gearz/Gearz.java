@@ -25,8 +25,6 @@ import net.tbnr.gearz.player.GearzNickname;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
 import net.tbnr.gearz.server.ServerManagerHelper;
-import net.tbnr.gearz.settings.SettingsRegistration;
-import net.tbnr.gearz.settings.commands.SettingsCommands;
 import net.tbnr.util.*;
 import net.tbnr.util.command.TCommandStatus;
 import net.tbnr.util.delegates.PermissionsDelegate;
@@ -38,8 +36,6 @@ import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.*;
 
@@ -66,13 +62,10 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
     @Getter SelectorManager selectorManager;
 
     @Getter @Setter private GearzNetworkManagerPlugin networkManager;
+    @Getter private boolean debug;
 
     public GearzPlayerProvider getPlayerProvider() {
         return this.networkManager.getPlayerProvider();
-    }
-
-    public boolean showDebug() {
-        return false;
     }
 
     public static Random getRandom() {
@@ -90,9 +83,7 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
     @Override
     public void enable() {
         Gearz.instance = this;
-
         //** ENABLE **
-        //This method is a bit confusing. Let's comment/clean it up a bit <3
 
         //Reset all players for the EnderBar
         EnderBar.resetPlayers();
@@ -121,7 +112,6 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
         //Generic player utils
         registerEvents(new PlayerListener());
         registerEvents(new EnderBar.EnderBarListeners());
-        registerCommands(new SettingsCommands());
         new TabListener();
 
         //EnderBar utils
@@ -140,14 +130,13 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
         Gearz.getInstance().getConfig().set("bg.name", RandomUtils.getRandomString(16));
 
         //Link the server up in the database.
-        SettingsRegistration.register();
         Bukkit.getScheduler().runTaskLater(Gearz.getInstance(), new Runnable() {
             @Override
             public void run() {
                 if (Gearz.getInstance().isGameServer()) {
                     Server thisServer = ServerManager.getThisServer();
                     try {
-                        thisServer.setAddress(Gearz.getExternalIP());
+                        thisServer.setAddress(IPUtils.getExternalIP());
                     } catch (SocketException e) {
                         e.printStackTrace();
                     }
@@ -244,26 +233,8 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
         return Gearz.bungeeName2;
     }
 
-    public static String getExternalIP() throws SocketException, IndexOutOfBoundsException {
-        if (!Bukkit.getIp().equals("")) return Bukkit.getIp();
-        NetworkInterface eth0 = NetworkInterface.getByName(Gearz.getInstance().getConfig().getString("network_interface"));
-
-        if (eth0 == null) eth0 = NetworkInterface.getByName("eth0");
-
-        Enumeration<InetAddress> inetAddresses = eth0.getInetAddresses();
-        ArrayList<InetAddress> list = Collections.list(inetAddresses);
-        InetAddress fin = null;
-        for (InetAddress inetAddress : list) {
-            if (inetAddress.getHostAddress().matches("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}")) {
-                fin = inetAddress;
-                break;
-            }
-        }
-        return fin == null ? null : fin.getHostAddress();
-    }
-
     public void debug(String string) {
-        if (!showDebug()) return;
+        if (!isDebug()) return;
         getLogger().info(string);
     }
 }
