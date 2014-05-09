@@ -17,13 +17,13 @@ import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.util.UUIDUtil;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
 import net.tbnr.util.bungee.command.TCommandStatus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Module that allows for global whitelisting
@@ -39,11 +39,35 @@ import java.util.List;
  */
 public class WhitelistModule implements TCommandHandler, Listener {
 
-    List<String> whitelisted = new ArrayList<>();
+	Map<UUID, String> whitelisted = new HashMap<>();
 
     {
         FileConfiguration config = GearzBungee.getInstance().getConfig();
-        whitelisted = config.getStringList("whitelisted");
+        for(String pair : config.getStringList("whitelisted")) {
+			String[] parts = pair.split(":");
+			// Hasn't been formatted yet
+			if(parts.length < 2) {
+				new UUIDUtil(pair, new UUIDUtil.UUIDCallback() {
+					@Override
+					public void complete(String username, String uuid) {
+						if(uuid == null) {
+							GearzBungee.getInstance().getLogger().info("Could not whitelist player \"" + username + "\" because the UUID cannot be found");
+							return;
+						}
+						whitelisted.put(UUID.fromString(uuid), username);
+					}
+				});
+			// Has been formatted as uuid:username
+			} else {
+				String uuid = parts[0];
+				String username = parts[1];
+				try {
+					whitelisted.put(UUID.fromString(uuid), username);
+				// Malformed UUID
+				} catch(IllegalArgumentException ignored) {}
+			}
+		}
+		save();
     }
 
     @TCommand(name = "gwhitelist", permission = "gearz.gwhitelist", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/gwhitelist <argument>")
@@ -52,23 +76,26 @@ public class WhitelistModule implements TCommandHandler, Listener {
         if (args.length > 2 || args.length == 0) {
             return TCommandStatus.INVALID_ARGS;
         }
-        FileConfiguration config = GearzBungee.getInstance().getConfig();
-        List<String> whitelisted = config.getStringList("whitelisted");
         switch (args[0]) {
             case "remove":
-                whitelisted.remove(args[1]);
-                config.set("whitelisted", whitelisted);
-                GearzBungee.getInstance().saveConfig();
+                UUID uuid = getLocalUUID(args[1]);
+				whitelisted.remove(uuid);
+                save();
                 break;
             case "add":
-                whitelisted.add(args[1]);
-                config.set("whitelisted", whitelisted);
-                GearzBungee.getInstance().saveConfig();
+				new UUIDUtil(args[1], new UUIDUtil.UUIDCallback() {
+					@Override
+					public void complete(String username, String uuid) {
+						if(uuid == null) return;
+						whitelisted.put(UUID.fromString(uuid), username);
+						save();
+					}
+				});
                 break;
             case "list":
                 StringBuilder sb = new StringBuilder();
                 sb.append("Whitelisted on bungee:");
-                for (String string : whitelisted) {
+                for (String string : this.whitelisted.values()) {
                     sb.append(" ").append(string).append(",");
                 }
                 sb.deleteCharAt(sb.length() - 1);
@@ -90,14 +117,26 @@ public class WhitelistModule implements TCommandHandler, Listener {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    private boolean isWhitelisted(String proxiedPlayer) {
-        return whitelisted.contains(proxiedPlayer);
-    }
+	private UUID getLocalUUID(String proxiedPlayer) {
+		for(Map.Entry<UUID, String> entry : whitelisted.entrySet()) {
+			if(entry.getValue().equalsIgnoreCase(proxiedPlayer)) return entry.getKey();
+		}
+		return null;
+	}
+
+	private void save() {
+		List<String> configWhitelist = new ArrayList<>();
+		for(Map.Entry<UUID, String> entry : this.whitelisted.entrySet()) {
+			configWhitelist.add(entry.getKey().toString() + ":" + entry.getValue());
+		}
+		GearzBungee.getInstance().getConfig().set("whitelisted", configWhitelist);
+		GearzBungee.getInstance().saveConfig();
+	}
 
     @SuppressWarnings("unused")
     @EventHandler
     public void onPostLogin(LoginEvent event) {
-        if (GearzBungee.getInstance().isWhitelisted() && !isWhitelisted(event.getConnection().getName())) {
+        if (GearzBungee.getInstance().isWhitelisted() && whitelisted.containsKey(event.getConnection().getUniqueId())) {
             event.getConnection().disconnect(GearzBungee.getInstance().getFormat("whitelisted"));
         }
     }
