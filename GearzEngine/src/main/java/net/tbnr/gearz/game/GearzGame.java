@@ -70,17 +70,24 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     private final Arena arena;
     private final Set<PlayerType> players;
     private final Set<PlayerType> spectators;
-    @Getter(AccessLevel.PROTECTED) private final Set<PlayerType> addedPlayers;
-    @Getter(AccessLevel.PROTECTED) private final Set<PlayerType> endedPlayers;
-    @Getter(AccessLevel.PROTECTED) private final InventoryGUI spectatorGui;
+    @Getter(AccessLevel.PROTECTED)
+    private final Set<PlayerType> addedPlayers;
+    @Getter(AccessLevel.PROTECTED)
+    private final Set<PlayerType> endedPlayers;
+    @Getter(AccessLevel.PROTECTED)
+    private final InventoryGUI spectatorGui;
     private final GameMeta gameMeta;
     private final GearzPlugin<PlayerType, AbstractClassType> plugin;
     private final Integer id;
     private final GearzMetrics<PlayerType> metrics;
-    @Getter(AccessLevel.PROTECTED) private final PvPTracker<PlayerType> tracker;
-    @Getter(AccessLevel.PROTECTED) private final GearzPlayerProvider<PlayerType> playerProvider;
-    @Getter private boolean running;
-    @Getter private boolean hideStream;
+    @Getter(AccessLevel.PROTECTED)
+    private final PvPTracker<PlayerType> tracker;
+    @Getter(AccessLevel.PROTECTED)
+    private final GearzPlayerProvider<PlayerType> playerProvider;
+    @Getter
+    private boolean running;
+    @Getter
+    private boolean hideStream;
     private final static ChatColor[] progressiveWinColors =
             {ChatColor.DARK_GREEN, ChatColor.GREEN,
                     ChatColor.DARK_AQUA, ChatColor.AQUA,
@@ -134,7 +141,8 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     //CLASS SECTION
-    @Getter private final Map<PlayerType, AbstractClassType> classInstances;
+    @Getter
+    private final Map<PlayerType, AbstractClassType> classInstances;
 
     /**
      * New game in this arena
@@ -317,7 +325,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Stop's the current game ~ forcefully
+     * Stops the current game ~ forcefully
      */
     public final void stopGame() {
         stopGame(GameStopCause.FORCED);
@@ -374,7 +382,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Get's the players which are playing the game
+     * Gets the players which are playing the game
      *
      * @return List<GearzPlayer> ~ List of players
      */
@@ -385,7 +393,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Get's current instance of game
+     * Gets current instance of game
      *
      * @return Arena ~ current instance of game
      */
@@ -394,7 +402,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Get's the players which are spectating
+     * Gets the players which are spectating
      *
      * @return List<PlayerType> ~ List of Players
      */
@@ -416,7 +424,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Check's whether a player is playing
+     * Checks whether a player is playing
      *
      * @param player ~ (in PlayerType wrapper) to be checked
      * @return boolean ~ true or false whether the player is playing
@@ -430,7 +438,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Turn's a player into a spectator
+     * Turns a player into a spectator
      *
      * @param player ~ (in PlayerType wrapper) to become a spectator
      */
@@ -679,7 +687,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Broadcast's message to all players in the game
+     * Broadcasts message to all players in the game
      *
      * @param message ~ The message to Broadcast
      */
@@ -693,7 +701,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Get's all the players including spectators
+     * Gets all the players including spectators
      *
      * @return List<PlayerType> List of players (in GearzPlayer wrapper) inc. Spectators
      */
@@ -705,7 +713,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Get's the Plugin
+     * Gets the Plugin
      *
      * @return Plugin ~ the plugin instance
      */
@@ -715,7 +723,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Get's the id of the game
+     * Gets the id of the game
      *
      * @return Integer ~ Id of game
      */
@@ -740,11 +748,8 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         }
         if (isSpectating(player)) {
             if (event.getPlayer().getItemInHand().getType() == Material.BOOK && event.getAction() != Action.PHYSICAL) {
-                if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(getFormat("server-book"))) {
-                    spectatorGui.open(player.getPlayer());
-                    event.setCancelled(true);
-                    return;
-                }
+                spectatorGui.open(player.getPlayer());
+                event.setCancelled(true);
             }
             event.setCancelled(true);
             return;
