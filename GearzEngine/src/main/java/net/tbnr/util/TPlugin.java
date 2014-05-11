@@ -206,7 +206,7 @@ public abstract class TPlugin extends JavaPlugin {
      * @return The formatted message.
      */
     public final String getFormat(String formatPath, boolean color) {
-        return this.getFormat(formatPath, color, null);
+        return this.getFormat(formatPath, color, new String[]{});
     }
 
     public abstract String getStorablePrefix();

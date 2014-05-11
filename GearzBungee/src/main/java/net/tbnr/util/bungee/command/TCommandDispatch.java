@@ -164,37 +164,41 @@ public class TCommandDispatch {
      *
      * @param sender  The sender of the command
      * @param meta    The command's meta object.
-     * @param strings The arguments passed.
+     * @param args The arguments passed.
      */
-    public void onCommand(CommandSender sender, TCommand meta, String[] strings) {
+    public void onCommand(CommandSender sender, TCommand meta, String[] args) {
         try {
             String name = meta.name();
             TCommandHandler handler = getHandler(name);
-            TCommandSender typesender = getType(sender);
+            if (handler == null) {
+                sender.sendMessage(ChatColor.RED + "There was no handler found for this command!");
+                return;
+            }
+            TCommandSender typeSender = getType(sender);
             Method method = getMethod(name);
             boolean validType = false;
-            for (TCommandSender vsender : meta.senders()) {
-                if (vsender.equals(typesender)) {
+            for (TCommandSender tsender : meta.senders()) {
+                if (tsender.equals(typeSender)) {
                     validType = true;
                     break;
                 }
             }
             if (!validType) {
-                handler.handleCommandStatus(TCommandStatus.WRONG_TARGET, sender, typesender);
+                handler.handleCommandStatus(TCommandStatus.WRONG_TARGET, sender, typeSender);
                 return;
             }
             if (!meta.permission().equals("") && !sender.hasPermission(meta.permission())) {
-                handler.handleCommandStatus(TCommandStatus.PERMISSIONS, sender, typesender);
+                handler.handleCommandStatus(TCommandStatus.PERMISSIONS, sender, typeSender);
                 return;
             }
-            Object invoke = method.invoke(handler, sender, typesender, meta, strings);
+            Object invoke = method.invoke(handler, sender, typeSender, meta, args);
             if (!(invoke instanceof TCommandStatus))
                 throw new TCommandException("Invalid value returned for command status!");
             TCommandStatus status = (TCommandStatus) invoke;
             if (status == TCommandStatus.HELP) {
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "/" + ChatColor.DARK_PURPLE + meta.name() + " " + ChatColor.AQUA + "- " + ChatColor.DARK_AQUA + meta.usage());
             }
-            handler.handleCommandStatus(status, sender, typesender);
+            handler.handleCommandStatus(status, sender, typeSender);
         } catch (InvocationTargetException ex) {
             Throwable e = ex.getTargetException(); //Gets the actual exception. I think
             //Handles any thrown exceptions
