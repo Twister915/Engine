@@ -22,7 +22,9 @@ import net.tbnr.gearz.GearzBungee;
 import java.util.Calendar;
 
 /**
- * Error handler. Stores data about when there's an {@link java.lang.Exception} or other error.
+ * Error handler. Stores data about when there is an {@link java.lang.Exception} or other error that needs
+ * to be stored in the Database for future reference. Useful for looking into errors that were missed
+ * in the console, or narrowing down a specific cause of an error.
  */
 public class ErrorHandler {
     /**
