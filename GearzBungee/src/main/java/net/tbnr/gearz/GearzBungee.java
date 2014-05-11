@@ -13,8 +13,9 @@ package net.tbnr.gearz;
 
 import com.mongodb.BasicDBList;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
-import net.md_5.bungee.api.ChatColor;
+import lombok.SneakyThrows;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -45,6 +46,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import static net.tbnr.util.Utils.*;
 
 @SuppressWarnings({"NullArgumentToVariableArgMethod", "FieldCanBeLocal", "UnusedDeclaration"})
 public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
@@ -295,20 +298,21 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         return this.playerManager;
     }
 
-    public String getFormat(String key, boolean prefix, boolean color, String[]... datas) {
-        if (this.strings.getProperty(key) == null) {
-            return key;
-        }
+	@SneakyThrows(Exception.class)
+    public String getFormat(@NonNull String key, @NonNull Boolean prefix, @NonNull Boolean colorReplacements, String[]... replacements) {
+        Exception ex = null;
+
         String property = this.strings.getProperty(key);
-        if (prefix)
-            property = ChatColor.translateAlternateColorCodes('&', this.strings.getProperty("prefix")) + property;
-        property = ChatColor.translateAlternateColorCodes('&', property);
-        if (datas == null) return property;
-        for (String[] data : datas) {
-            if (data.length != 2) continue;
-            property = property.replaceAll(data[0], data[1]);
-        }
-        if (color) property = ChatColor.translateAlternateColorCodes('&', property);
+	    property = tc(prefix ?  getFormat("prefix", false)+property : property);
+
+		if(replacements == null) return property;
+
+
+		property = replaceFromArray(property, replacements);
+
+        property = colorReplacements ? tc(property) : property;
+
+	    if(ex != null) throw ex;
         return property;
     }
 
@@ -356,20 +360,20 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
                 break;
         }
         if (msgFormat == null) return;
-        sender.sendMessage(GearzBungee.getInstance().getFormat(msgFormat, true));
+        sender.sendMessage(t2BC(GearzBungee.getInstance().getFormat(msgFormat, true)));
     }
 
     public static void connectPlayer(ProxiedPlayer player1, String server) {
         ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(server);
         if (serverInfo == null) {
-            player1.sendMessage(GearzBungee.getInstance().getFormat("server-not-online", true, true));
+            player1.sendMessage(t2BC(GearzBungee.getInstance().getFormat("server-not-online", true, true)));
             return;
         }
         if (player1.getServer().getInfo().getName().equals(server)) {
-            player1.sendMessage(GearzBungee.getInstance().getFormat("already-connected"));
+            player1.sendMessage(t2BC(GearzBungee.getInstance().getFormat("already-connected")));
             return;
         }
-        player1.sendMessage(GearzBungee.getInstance().getFormat("connecting", true, true));
+        player1.sendMessage(t2BC(GearzBungee.getInstance().getFormat("connecting", true, true)));
         player1.connect(serverInfo);
     }
 

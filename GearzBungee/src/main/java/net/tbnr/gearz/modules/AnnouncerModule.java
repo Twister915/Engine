@@ -14,12 +14,17 @@ package net.tbnr.gearz.modules;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.tbnr.gearz.GearzBungee;
+import net.tbnr.gearz.exceptions.FormatException;
+import net.tbnr.gearz.exceptions.GBungeeException;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandSender;
@@ -28,6 +33,8 @@ import net.tbnr.util.bungee.command.TCommandStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static net.tbnr.util.Utils.*;
 
 /**
  * Module to manage automatically broadcasted
@@ -72,17 +79,23 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
     @TCommand(aliases = {"announcer"}, usage = "/announcer", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.announcer", name = "announcer")
     @SuppressWarnings("unused")
     public TCommandStatus announcer(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
-        if (args.length == 0) {
+
+	    if (args.length == 0) {
             sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-help"));
             return TCommandStatus.SUCCESSFUL;
         }
-        Object[] list = GearzBungee.getInstance().getAnnouncements();
-        if (args[0].equalsIgnoreCase("list")) {
-            for (int x = 0; x < announcements.size(); x++) {
-                sender.sendMessage(GearzBungee.getInstance().getFormat("announcer-list", false, false, new String[]{"<num>", x + ""}, new String[]{"<announcement>", announcements.get(x).getColoredText()}));
-            }
-            return TCommandStatus.SUCCESSFUL;
-        }
+
+
+	    Object[] list = GearzBungee.getInstance().getAnnouncements();
+	    switch(args[0]) {
+		    case "list":
+			    return listAnnouncements(sender, args, list);
+		    case "add":
+			    return addAnnouncement(sender, args, list);
+		    default:
+			    return TCommandStatus.HELP;
+	    }
+
         List<String> strings = new ArrayList<>();
         for (Object o : list) {
             if (o instanceof String) strings.add((String) o);
@@ -139,7 +152,50 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         return TCommandStatus.SUCCESSFUL;
     }
 
-    public String compile(String[] args, int min, int max) {
+	private TCommandStatus addAnnouncement(CommandSender sender, String[] args, Object[] list) {
+		return null;
+	}
+
+	@SneakyThrows(Exception.class)
+	private TCommandStatus listAnnouncements(CommandSender sender, String[] args, Object[] list) {
+		// Get's the announcement list
+		Object[] gbAnnouncementList = GearzBungee.getInstance().getAnnouncements();
+
+		//Caches announcment list
+		String announcementList = _("announcer-list", false, false);
+
+
+		String[][] replacements;
+		for (Integer i = 0, l = announcements.size(); i < l; i++) {
+
+
+			// Send a message to said player
+			sender.sendMessage(
+				// Turn the text into a base component
+				t2BC(
+					/**
+					 * Replacements are done
+					 * per for loop, as it is cheaper than getting
+					 * the value from the config everytime
+					 */
+					replaceFromArray(
+						announcementList,
+						new String[] {
+								"<num>",
+								i.toString()
+						},
+						new String[] {
+								"<announcement>",
+								announcements.get(i).getColoredText()
+						}
+					)
+				)
+			);
+		}
+		return TCommandStatus.SUCCESSFUL;
+	}
+
+	public String compile(String[] args, int min, int max) {
         return GearzBungee.getInstance().compile(args, min, max);
     }
 
@@ -159,6 +215,10 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         public String getStringFor(ProxiedPlayer player) {
             return this.rawText.replaceAll("%player%", player.getName());
         }
+
+	    public BaseComponent[] getBaseComponent() {
+		    return TextComponent.fromLegacyText(getColoredText());
+	    }
     }
 
     public void start() {
@@ -186,4 +246,5 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
     public void announce(ProxiedPlayer proxiedPlayer) {
         proxiedPlayer.sendMessage(GearzBungee.getInstance().getFormat("prefix", false, true) + ChatColor.translateAlternateColorCodes('&', announcements.get(this.current).getStringFor(proxiedPlayer)));
     }
+
 }
