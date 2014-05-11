@@ -143,8 +143,8 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
                 sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
                 GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
                 sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
-                sender.sendMessage(formatData("Previous IPs:", formatList(gearzPlayer.getIPHistory(), 5)));
-                sender.sendMessage(formatData("Previous Usernames:", formatList(gearzPlayer.getUsernameHistory(), 10)));
+                sender.sendMessage(formatData("Previous IPs", formatList(gearzPlayer.getIPHistory(), 5)));
+                sender.sendMessage(formatData("Previous Usernames", formatList(gearzPlayer.getUsernameHistory(), 10)));
             }
         });
     }
