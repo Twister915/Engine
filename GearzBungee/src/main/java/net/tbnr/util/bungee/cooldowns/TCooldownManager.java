@@ -12,7 +12,6 @@
 package net.tbnr.util.bungee.cooldowns;
 
 import com.mongodb.*;
-import lombok.Getter;
 
 import java.util.HashMap;
 
@@ -23,15 +22,9 @@ import java.util.HashMap;
  * Time: 11:07 PM
  * To change this template use File | Settings | File Templates.
  */
-@SuppressWarnings("FieldCanBeLocal")
 public class TCooldownManager {
     private static final HashMap<String, TCooldown> cooldowns = new HashMap<>();
     public static DB database = null;
-    @Getter private static DBCollection collection;
-
-    static {
-        collection = database.getCollection("cooldowns");
-    }
 
     public static boolean canContinue(String key, TCooldown cooldown) {
         if (database == null) return true;
@@ -85,5 +78,9 @@ public class TCooldownManager {
             cooldowns.put(key, cooldown);
             return true;
         }
+    }
+
+    private static DBCollection getCollection() {
+        return database.getCollection("cooldowns");
     }
 }
