@@ -149,7 +149,7 @@ public class PunishmentCommands implements TCommandHandler {
                     }
                     manager.punishPlayer(uuid, punisherUUID, reason, PunishmentType.TEMP_BAN, end);
 
-                    sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", username}));
+                    sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("tempbanned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", username}, new String[] {"<end>", longReadable.format(end)}));
                 }
             });
         } else {
@@ -178,7 +178,7 @@ public class PunishmentCommands implements TCommandHandler {
             end.setTime(duration);
             manager.punishPlayer(gearzTarget.getUuid(), sender.getName(), reason, PunishmentType.TEMP_BAN, end);
 
-            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("banned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}));
+            sender.sendMessage(GearzBungeePunishments.getInstance().getFormat("tempbanned-player", false, true, new String[]{"<reason>", reason}, new String[]{"<target>", gearzTarget.getUsername()}, new String[] {"<end>", longReadable.format(end)}));
             if (gearzTarget.getProxiedPlayer() == null) return TCommandStatus.SUCCESSFUL;
             broadcastPunishment(gearzTarget.getProxiedPlayer().getServer().getInfo(), sender.getName(), gearzTarget.getUsername(), PunishmentType.TEMP_BAN, reason);
         }
