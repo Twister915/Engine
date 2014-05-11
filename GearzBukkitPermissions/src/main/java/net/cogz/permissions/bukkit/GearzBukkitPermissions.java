@@ -44,7 +44,7 @@ public final class GearzBukkitPermissions extends TPlugin {
         Gearz.getInstance().activatePermissionsFeatures();
         PermissionsCommands permsCommands = new PermissionsCommands();
         registerCommands(permsCommands);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
                 if (Bukkit.getOnlinePlayers().length == 0) return;
