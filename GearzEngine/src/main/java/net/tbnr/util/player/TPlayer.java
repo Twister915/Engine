@@ -120,6 +120,7 @@ public final class TPlayer {
         if (this.playerDocument.get("first-join") == null) {
             this.playerDocument.put("first-join", Calendar.getInstance().getTimeInMillis());
         }
+        this.playerDocument.put("current_username", player.getName());
         this.playerDocument.put("last-seen", Calendar.getInstance().getTimeInMillis()); //Update last-seen
         this.playerDocument.put("online", true); //Update the online variable
         addToList("usernames", this.playerName);
