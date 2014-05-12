@@ -77,10 +77,6 @@ public class GearzBungeePunishments extends TPluginBungee {
         return property;
     }
 
-    public String getFormat(String key, boolean prefix, boolean color) {
-        return getFormat(key, prefix, color, null);
-    }
-
     public String getFormat(String key, String[]... data) {
         return getFormat(key, false, false, data);
     }
