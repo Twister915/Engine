@@ -14,6 +14,7 @@ package net.tbnr.util;
 import com.mongodb.DB;
 import net.tbnr.util.command.TCommandDispatch;
 import net.tbnr.util.command.TCommandHandler;
+import net.tbnr.util.command.TTabCompleter;
 import net.tbnr.util.player.TPlayer;
 import net.tbnr.util.player.TPlayerJoinEvent;
 import net.tbnr.util.player.TPlayerManager;
@@ -62,6 +63,24 @@ public abstract class TPlugin extends JavaPlugin {
      */
     public final void registerCommands(TCommandHandler handler) {
         this.getCommandDispatch().registerHandler(handler);
+    }
+
+    /**
+     * This registers a {@link net.tbnr.util.command.TTabCompleter} for the specified command, provided as a {@link java.lang.String}.
+     *
+     * @param command command to register
+     * @param completer The {@link net.tbnr.util.command.TTabCompleter} to register the command for
+     */
+    public final void registerTabCompleter(String command, TTabCompleter completer) {
+        this.getCommandDispatch().registerTabCompleter(command, completer);
+    }
+
+    public final void registerTabCompleter(TCommandHandler handler, TTabCompleter completer) {
+        this.getCommandDispatch().registerTabCompleter(handler, completer);
+    }
+
+    public final List<String> getDefaultTabCompleter() {
+        return this.commandDispatch.getDefaultTabComplete();
     }
 
     /**

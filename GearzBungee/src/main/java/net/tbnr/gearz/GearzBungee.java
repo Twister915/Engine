@@ -197,6 +197,8 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             registerEvents(listener);
         }
 
+        registerTabCompleter("gwhitelist", whitelistModule);
+
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 

@@ -11,18 +11,19 @@
 
 package net.tbnr.gearz.modules;
 
+import com.google.common.collect.Lists;
+import lombok.extern.java.Log;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.util.UUIDUtil;
-import net.tbnr.util.bungee.command.TCommand;
-import net.tbnr.util.bungee.command.TCommandHandler;
-import net.tbnr.util.bungee.command.TCommandSender;
-import net.tbnr.util.bungee.command.TCommandStatus;
+import net.tbnr.util.bungee.command.*;
 
 import java.util.*;
 
@@ -30,45 +31,47 @@ import java.util.*;
  * Module that allows for global whitelisting
  * on the BungeeCord level. Includes the exact
  * same commands as Bukkit's default whitelist.
- *
- * <p>
+ * <p/>
+ * <p/>
  * Latest Change: Fix whitelisting players
- * <p>
+ * <p/>
  *
  * @author Jake
  * @since 1/15/2014
  */
-public class WhitelistModule implements TCommandHandler, Listener {
+@Log
+public class WhitelistModule implements TCommandHandler, Listener, TTabCompleter {
 
-	Map<UUID, String> whitelisted = new HashMap<>();
+    Map<UUID, String> whitelisted = new HashMap<>();
 
     {
         FileConfiguration config = GearzBungee.getInstance().getConfig();
-        for(String pair : config.getStringList("whitelisted")) {
-			String[] parts = pair.split(":");
-			// Hasn't been formatted yet
-			if(parts.length < 2) {
-				new UUIDUtil(pair, new UUIDUtil.UUIDCallback() {
-					@Override
-					public void complete(String username, String uuid) {
-						if(uuid == null) {
-							GearzBungee.getInstance().getLogger().info("Could not whitelist player \"" + username + "\" because the UUID cannot be found");
-							return;
-						}
-						whitelisted.put(UUID.fromString(uuid), username);
-					}
-				});
-			// Has been formatted as uuid:username
-			} else {
-				String uuid = parts[0];
-				String username = parts[1];
-				try {
-					whitelisted.put(UUID.fromString(uuid), username);
-				// Malformed UUID
-				} catch(IllegalArgumentException ignored) {}
-			}
-		}
-		save();
+        for (String pair : config.getStringList("whitelisted")) {
+            String[] parts = pair.split(":");
+            // Hasn't been formatted yet
+            if (parts.length < 2) {
+                new UUIDUtil(pair, new UUIDUtil.UUIDCallback() {
+                    @Override
+                    public void complete(String username, String uuid) {
+                        if (uuid == null) {
+                            GearzBungee.getInstance().getLogger().info("Could not whitelist player \"" + username + "\" because the UUID cannot be found");
+                            return;
+                        }
+                        whitelisted.put(UUID.fromString(uuid), username);
+                    }
+                });
+                // Has been formatted as uuid:username
+            } else {
+                String uuid = parts[0];
+                String username = parts[1];
+                try {
+                    whitelisted.put(UUID.fromString(uuid), username);
+                    // Malformed UUID
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        }
+        save();
     }
 
     @TCommand(name = "gwhitelist", permission = "gearz.gwhitelist", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/gwhitelist <argument>")
@@ -80,7 +83,7 @@ public class WhitelistModule implements TCommandHandler, Listener {
         switch (args[0]) {
             case "remove":
                 UUID uuid = getLocalUUID(args[1]);
-				whitelisted.remove(uuid);
+                whitelisted.remove(uuid);
                 save();
                 sender.sendMessage(ChatColor.GREEN + "Removed " + args[1] + " from the whitelist.");
                 break;
@@ -120,21 +123,21 @@ public class WhitelistModule implements TCommandHandler, Listener {
         return TCommandStatus.SUCCESSFUL;
     }
 
-	private UUID getLocalUUID(String proxiedPlayer) {
-		for(Map.Entry<UUID, String> entry : whitelisted.entrySet()) {
-			if(entry.getValue().equalsIgnoreCase(proxiedPlayer)) return entry.getKey();
-		}
-		return null;
-	}
+    private UUID getLocalUUID(String proxiedPlayer) {
+        for (Map.Entry<UUID, String> entry : whitelisted.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(proxiedPlayer)) return entry.getKey();
+        }
+        return null;
+    }
 
-	private void save() {
-		List<String> configWhitelist = new ArrayList<>();
-		for(Map.Entry<UUID, String> entry : this.whitelisted.entrySet()) {
-			configWhitelist.add(entry.getKey().toString() + ":" + entry.getValue());
-		}
-		GearzBungee.getInstance().getConfig().set("whitelisted", configWhitelist);
-		GearzBungee.getInstance().saveConfig();
-	}
+    private void save() {
+        List<String> configWhitelist = new ArrayList<>();
+        for (Map.Entry<UUID, String> entry : this.whitelisted.entrySet()) {
+            configWhitelist.add(entry.getKey().toString() + ":" + entry.getValue());
+        }
+        GearzBungee.getInstance().getConfig().set("whitelisted", configWhitelist);
+        GearzBungee.getInstance().saveConfig();
+    }
 
     @SuppressWarnings("unused")
     @EventHandler
@@ -147,5 +150,17 @@ public class WhitelistModule implements TCommandHandler, Listener {
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         GearzBungee.handleCommandStatus(status, sender);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, TCommandSender senderType, Command command, TCommand meta, String[] args) {
+        if (args.length >= 1 && args[0].equalsIgnoreCase("add")) {
+            return GearzBungee.getInstance().getDefaultTabComplete();
+        } else if (args.length >= 1 && args[0].equalsIgnoreCase("remove")) {
+            List<String> list = Lists.newArrayList();
+            list.addAll(this.whitelisted.values());
+            return list;
+        }
+        return null;
     }
 }
