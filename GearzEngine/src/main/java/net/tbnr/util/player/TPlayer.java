@@ -50,7 +50,7 @@ import java.util.UUID;
 import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.ParticleEffect;
 
 /**
- * TPlayer is a representation of the player in Bukkit that can store more data about the player, and also execute methods
+ * {@link net.tbnr.util.player.TPlayer} is a representation of the {@link org.bukkit.entity.Player} in {@link org.bukkit.Bukkit} that can store more data about the {@link net.tbnr.util.player.TPlayer}, and also execute methods
  * on the player that are considered "helper" methods. These methods are utilities to preform very simple tasks that would
  * otherwise be more difficult using the vanilla Bukkit API.
  */
@@ -59,7 +59,7 @@ import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.Par
 @ToString(of = {"playerName", "timeJoined"}, includeFieldNames = true, doNotUseGetters = true)
 public final class TPlayer {
     /**
-     * The variable storing the actual player this represents. R/O
+     * The variable storing the actual {@link org.bukkit.entity.Player} this represents. R/O
      */
     @Getter
     private final String playerName;
@@ -67,37 +67,37 @@ public final class TPlayer {
     @Getter
     private final String uuid;
     /**
-     * The database document representing the player.
+     * The database document representing the {@link org.bukkit.entity.Player}.
      */
     @Getter
     private DBObject playerDocument;
     /**
-     * The time the player joined.
+     * The time the {@link org.bukkit.entity.Player} joined.
      */
     @Getter
     private final long timeJoined;
     /**
-     * The time the player has spent online.
+     * The time the {@link org.bukkit.entity.Player} has spent online.
      */
     private long timeOnline;
     /**
-     * A boolean representing that a player has joined for the first time.
+     * A boolean representing that a {@link org.bukkit.entity.Player} has joined for the first time.
      */
     @Getter
     private boolean firstJoin;
     /**
-     * Scoreboard object for the player
+     * Scoreboard object for the {@link org.bukkit.entity.Player}
      */
     private Scoreboard scoreboard;
     /**
-     * Objective for player on sidebar
+     * Objective for {@link org.bukkit.entity.Player} on sidebar
      */
     private Objective sidebar = null;
 
     /**
-     * This is a protected method for creating a TPlayer instance from a Bukkit player.
+     * This is a protected method for creating a {@link net.tbnr.util.player.TPlayer} instance from a {@link org.bukkit.Bukkit} {@link org.bukkit.entity.Player}.
      *
-     * @param player The Bukkit player this represents.
+     * @param player The {@link org.bukkit.Bukkit} {@link org.bukkit.entity.Player} this represents.
      */
     protected TPlayer(Player player) {
         this.playerName = player.getName();
@@ -175,7 +175,7 @@ public final class TPlayer {
     }
 
     /**
-     * Get the actual player this object represents
+     * Get the actual {@link org.bukkit.entity.Player} this object represents
      *
      * @return The player object from Bukkit that this represents
      */
@@ -216,7 +216,7 @@ public final class TPlayer {
     }
 
     /**
-     * Adds a potion effect to a player quickly.
+     * Adds a potion effect to a {@link net.tbnr.util.player.TPlayer} quickly.
      *
      * @param type      The potion effect type
      * @param length    The length of the potion effect.
@@ -229,7 +229,7 @@ public final class TPlayer {
     }
 
     /**
-     * Adds a potion effect to a player quickly. Has a default ambiance of "true".
+     * Adds a potion effect to a {@link net.tbnr.util.player.TPlayer} quickly. Has a default ambiance of "true".
      *
      * @param type      The potion effect type
      * @param length    The length (I believe in ticks).
@@ -240,10 +240,10 @@ public final class TPlayer {
     }
 
     /**
-     * Adds a potion effect to a player quickly. Has a default ambiance of "true", and a default intensity of 0.
+     * Adds a potion effect to a {@link net.tbnr.util.player.TPlayer} quickly. Has a default ambiance of "true", and a default intensity of 0.
      *
      * @param type   The potion effect type.
-     * @param length The length (I believe in ticks).
+     * @param length The length in ticks
      */
     public void addPotionEffect(PotionEffectType type, int length) {
         this.addPotionEffect(type, length, 0);
@@ -339,7 +339,7 @@ public final class TPlayer {
     }
 
     /**
-     * Give an item to a player
+     * Give an item to a {@link net.tbnr.util.player.TPlayer}
      *
      * @param type       The material of the item
      * @param quantity   The quantity of the item
@@ -374,7 +374,7 @@ public final class TPlayer {
     }
 
     /**
-     * Give an item to a player
+     * Give an item to a {@link net.tbnr.util.player.TPlayer}
      *
      * @param type       The material of the item
      * @param quantity   The quantity of the item
@@ -387,7 +387,7 @@ public final class TPlayer {
     }
 
     /**
-     * Give an item to a player
+     * Give an item to a {@link net.tbnr.util.player.TPlayer}
      *
      * @param type       The material of the item
      * @param quantity   The quantity of the item
@@ -410,7 +410,7 @@ public final class TPlayer {
     }
 
     /**
-     * Give an item to a player
+     * Give an item to a {@link net.tbnr.util.player.TPlayer}
      *
      * @param type     The material of the item
      * @param quantity The quantity of the item
@@ -420,7 +420,7 @@ public final class TPlayer {
     }
 
     /**
-     * Gives a single item to a player
+     * Gives a single item to a {@link net.tbnr.util.player.TPlayer}
      *
      * @param type The material of the item
      */
@@ -442,7 +442,7 @@ public final class TPlayer {
     }
 
     /**
-     * Removes a singular item from the player's inventory
+     * Removes a singular item from the {@link net.tbnr.util.player.TPlayer}'s inventory
      *
      * @param material The material of the item to remove.
      * @return If the item was removed (ie; if they had the item in their inventory)
@@ -459,9 +459,9 @@ public final class TPlayer {
     }
 
     /**
-     * Sends messages to the player
+     * Sends messages to the {@link net.tbnr.util.player.TPlayer}
      *
-     * @param message The message(s) to send to the player.
+     * @param message The message(s) to send to the {@link net.tbnr.util.player.TPlayer}.
      */
     public void sendMessage(String... message) {
         if (!this.isOnline()) {
@@ -473,7 +473,7 @@ public final class TPlayer {
     }
 
     /**
-     * Called by the TPlayerManager when the player disconnects. Do not call otherwise
+     * Called by the {@link net.tbnr.util.player.TPlayerManager} when the player disconnects. Do not call otherwise
      */
     void disconnected() {
         this.playerDocument.put("online", false);
@@ -489,17 +489,17 @@ public final class TPlayer {
     }
 
     /**
-     * Saves the player document to the database. :D
+     * Saves the {@link net.tbnr.util.player.TPlayer} {@link com.mongodb.DBObject} to the database.
      */
     public void save() {
         TPlayerManager.getInstance().getCollection().save(this.playerDocument);
     }
 
     /**
-     * Use this to store prefixed and managed data about a player that can be accessed later.
+     * Use this to store prefixed and managed data about a {@link net.tbnr.util.player.TPlayer} that can be accessed later.
      *
-     * @param plugin   The plugin responsible for storing the data.
-     * @param storable The storable object.
+     * @param plugin   The {@link net.tbnr.util.TPlugin} responsible for storing the data.
+     * @param storable The {@link net.tbnr.util.player.TPlayerStorable} object.
      */
     public void store(TPlugin plugin, TPlayerStorable storable) {
         this.playerDocument.put(TPlayer.formatStorable(plugin.getStorablePrefix(), storable.getName()), storable.getValue());
@@ -521,22 +521,22 @@ public final class TPlayer {
     }
 
     /**
-     * Gets the value of a storable
+     * Gets the value of a {@link net.tbnr.util.player.TPlayerStorable}
      *
-     * @param plugin   The plugin storing this data. Used for keys.
-     * @param storable An empty storable object with the proper data name.
-     * @return The stored object.
+     * @param plugin   The {@link net.tbnr.util.TPlugin} storing this data. Used for keys.
+     * @param storable An empty {@link net.tbnr.util.player.TPlayerStorable} object with the proper data name.
+     * @return The stored {@link java.lang.Object}.
      */
     public Object getStorable(TPlugin plugin, TPlayerStorable storable) {
         return this.getStorable(plugin, storable.getName());
     }
 
     /**
-     * Gets the value of a storable
+     * Gets the value of a {@link net.tbnr.util.player.TPlayerStorable}
      *
-     * @param plugin       The plugin storing this data. Used for keys.
-     * @param storable_key The storable key.
-     * @return The stored object.
+     * @param plugin       The {@link net.tbnr.util.TPlugin} storing this data. Used for keys.
+     * @param storable_key The {@link net.tbnr.util.player.TPlayerStorable} key.
+     * @return The stored {@link java.lang.Object}.
      */
     public Object getStorable(TPlugin plugin, String storable_key) {
         return this.playerDocument.get(TPlayer.formatStorable(plugin.getStorablePrefix(), storable_key));
@@ -548,20 +548,20 @@ public final class TPlayer {
     }
 
     /**
-     * Formats strings for a storable key.
+     * Formats {@link java.lang.String} for a {@link net.tbnr.util.player.TPlayerStorable} key.
      *
-     * @param prefix The prefix of the storable (from the plugin)
-     * @param name   The name of the storable
-     * @return Fully formatted storable key.
+     * @param prefix The prefix of the {@link net.tbnr.util.player.TPlayerStorable} (from the plugin)
+     * @param name   The name of the {@link net.tbnr.util.player.TPlayerStorable}
+     * @return Fully formatted {@link net.tbnr.util.player.TPlayerStorable} key.
      */
     public static String formatStorable(String prefix, String name) {
         return prefix + "_" + name;
     }
 
     /**
-     * Checks if there is another object matching a storable in the database
+     * Checks if there is another object matching a {@link net.tbnr.util.player.TPlayerStorable} in the database
      *
-     * @param storable The storable prefix of the object
+     * @param storable The {@link net.tbnr.util.player.TPlayerStorable} prefix of the object
      * @param value    The value to match
      * @return If there is a match!
      */
@@ -572,7 +572,7 @@ public final class TPlayer {
     }
 
     /**
-     * Gets the amount of time spent online by this player (accurate at time being called)
+     * Gets the amount of time spent online by this {@link org.bukkit.entity.Player} (accurate at time being called)
      *
      * @return The time online in milliseconds.
      */
@@ -618,9 +618,9 @@ public final class TPlayer {
     }
 
     /**
-     * Teleports the player to a location with a nice Enderman_Teleport sound.
+     * Teleports the {@link org.bukkit.entity.Player} to a {@link org.bukkit.Location} with a nice {@link Sound#ENDERMAN_TELEPORT} sound.
      *
-     * @param location The location to teleport the player to
+     * @param location The {@link org.bukkit.Location} to teleport the {@link org.bukkit.entity.Player} to
      */
     public void teleport(Location location) {
         this.playSound(Sound.ENDERMAN_TELEPORT);
@@ -628,7 +628,7 @@ public final class TPlayer {
     }
 
     /**
-     * Clears the inventory of the player.
+     * Clears the {@link org.bukkit.inventory.PlayerInventory} of the {@link org.bukkit.entity.Player}.
      */
     public void clearInventory() {
         this.getPlayer().getInventory().clear();
@@ -636,7 +636,7 @@ public final class TPlayer {
     }
 
     /**
-     * Used to reset everything about the player, can be fine tuned the reset params.
+     * Used to reset everything about the {@link org.bukkit.entity.Player}, can be fine tuned the {@link net.tbnr.util.player.PlayerResetParams}.
      */
     public void resetPlayer(PlayerResetParams params) {
         final Player player = getPlayer();
@@ -684,7 +684,7 @@ public final class TPlayer {
     }
 
     /**
-     * Resets the Scoreboard
+     * Resets the {@link org.bukkit.scoreboard.Scoreboard}
      */
     public void resetScoreboard() {
         if (!this.isOnline()) return;
@@ -756,8 +756,8 @@ public final class TPlayer {
     }
 
     /**
-     * Returns the ping asynchronously via the PingCallbackEventHandler you pass in
-     * In that event handler you can do getPing() to the passed in PingCallbackEvent;
+     * Returns the ping asynchronously via the {@link net.tbnr.util.IPUtils.PingCallbackEventHandler} you pass in
+     * In that event handler you can do {@link net.tbnr.util.IPUtils.PingCallbackEventHandler#getPing(java.net.InetAddress, net.tbnr.util.IPUtils.PingCallbackEventHandler)} to the passed in {@link net.tbnr.util.IPUtils.PingCallbackEvent}.
      *
      * @param eventHandler ~ The PingCallbackEventHandler
      * @see net.tbnr.util.IPUtils.PingCallbackEvent
