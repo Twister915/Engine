@@ -1182,7 +1182,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     /**
-     * Get's the games meta
+     * Gets the games meta
      *
      * @return GameMeta ~ the game's meta
      */
@@ -1191,9 +1191,6 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     @Data
-    @ToString
-    @EqualsAndHashCode
-    @RequiredArgsConstructor
     private final class GameWins implements TPlayerStorable {
         @NonNull
         private final GearzGame<PlayerType, AbstractClassType> game;
@@ -1210,9 +1207,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         }
     }
 
-    @RequiredArgsConstructor
     @Data
-    @EqualsAndHashCode
     private final class SpectatorReminder implements Runnable {
 
         @NonNull
