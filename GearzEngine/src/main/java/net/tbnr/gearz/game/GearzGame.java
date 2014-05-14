@@ -902,7 +902,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         DeathMessageProcessor processor = new DeathMessageProcessor(event, this);
         final PlayerDeath death = processor.processDeath();
         if (death.getCredited() != null) {
-            final PlayerType player = resolvePlayer(deadPlayer.getKiller());
+            final PlayerType player = resolvePlayer(death.getCredited());
             Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
                 @Override
                 public void run() {
