@@ -18,6 +18,7 @@ import com.mongodb.DBObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.java.Log;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles;
 import net.tbnr.util.IPUtils;
@@ -57,6 +58,7 @@ import static net.tbnr.gearz.packets.wrapper.WrapperPlayServerWorldParticles.Par
 @SuppressWarnings("UnusedDeclaration")
 @EqualsAndHashCode(of = {"playerName", "timeJoined", "uuid"}, doNotUseGetters = true)
 @ToString(of = {"playerName", "timeJoined"}, includeFieldNames = true, doNotUseGetters = true)
+@Log
 public final class TPlayer {
     /**
      * The variable storing the actual {@link org.bukkit.entity.Player} this represents. R/O
@@ -133,8 +135,8 @@ public final class TPlayer {
         if (field == null) {
             field = new BasicDBList();
         }
-        if (!field.contains(this.playerName)) {
-            field.add(this.playerName);
+        if (!field.contains(toAdd)) {
+            field.add(toAdd);
         }
         this.playerDocument.put(fieldName, field);
     }
