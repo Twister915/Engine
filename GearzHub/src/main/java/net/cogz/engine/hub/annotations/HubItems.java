@@ -57,6 +57,7 @@ public class HubItems implements Listener {
             if (instance.getSubHub().getConfig().getBoolean("hub-items." + itemMeta.key() + ".isEnabled", false)) {
                 try {
                     HubItem item = hubItem.newInstance();
+                    item.setInstance(instance);
                     items.add(item);
                 } catch (InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
