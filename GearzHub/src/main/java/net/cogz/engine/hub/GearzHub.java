@@ -13,6 +13,7 @@ package net.cogz.engine.hub;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 import net.cogz.engine.hub.annotations.HubItem;
 import net.cogz.engine.hub.annotations.HubItems;
 import net.cogz.engine.hub.modules.Spawn;
@@ -33,6 +34,7 @@ import java.util.Set;
  * @author Jake
  * @since 5/16/2014
  */
+@Log
 public class GearzHub extends TPlugin {
     @Getter
     public static GearzHub instance;
@@ -75,6 +77,7 @@ public class GearzHub extends TPlugin {
     }
 
     public void registerHubItems(Set<Class<? extends HubItem>> items) {
+        log.info(this.subHub.getDataFolder().getAbsolutePath());
         this.hubItems = new HubItems(items);
         registerEvents(this.hubItems);
     }
