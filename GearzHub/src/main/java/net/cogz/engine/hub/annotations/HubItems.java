@@ -14,16 +14,13 @@ package net.cogz.engine.hub.annotations;
 import lombok.extern.java.Log;
 import net.cogz.engine.hub.GearzHub;
 import net.tbnr.util.player.TPlayerJoinEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.reflections.Reflections;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -88,6 +85,7 @@ public class HubItems implements Listener {
             itemInSlot = player.getInventory().getItem(itemMeta.slot());
             if (itemInSlot != null && itemInSlot.getType() != Material.AIR) return;
             player.getInventory().setItem(itemMeta.slot(), itemStack);
+            player.updateInventory();
         }
     }
 
