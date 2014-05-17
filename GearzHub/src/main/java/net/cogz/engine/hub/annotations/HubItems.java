@@ -48,7 +48,7 @@ public class HubItems implements Listener {
     public HubItems(String itemPackage) {
         items = new ArrayList<>();
 
-        Reflections hubItemsReflection = new Reflections(itemPackage).collect(new File(Bukkit.getWorldContainer().getAbsolutePath() + "/plugins/" + "GearzHub.jar"));
+        Reflections hubItemsReflection = new Reflections(itemPackage);
         log.info(itemPackage);
         Set<Class<? extends HubItem>> hubItems = hubItemsReflection.getSubTypesOf(HubItem.class);
         log.info(hubItems.size() + " SIZE");
