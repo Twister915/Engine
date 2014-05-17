@@ -30,23 +30,20 @@ import java.net.SocketException;
  * @author Jake
  * @since 5/16/2014
  */
-public class GearzHub extends TPlugin {
+public abstract class GearzHub extends TPlugin {
     @Getter
     public static GearzHub instance;
     @Getter
     private HubItems hubItems;
 
-/*    public GearzHub(String itemsPackage) {
-        this.hubItems = new HubItems(itemsPackage);
-    }
-
-    public void enableHub() {}
-
-    public void disableHub() {}*/
+    public abstract void enableHub();
+    public abstract void disableHub();
+    public abstract String getItemsPackage();
 
     @Override
     public void enable() {
         GearzHub.instance = this;
+        this.hubItems = new HubItems(getItemsPackage());
         registerEvents(this.hubItems);
         Spawn spawn = new Spawn();
         registerCommands(spawn);
@@ -64,10 +61,12 @@ public class GearzHub extends TPlugin {
         }
         thisServer.setPort(Bukkit.getPort());
         thisServer.save();
+        enableHub();
     }
 
     @Override
     public void disable() {
+        disableHub();
     }
 
     @Override
