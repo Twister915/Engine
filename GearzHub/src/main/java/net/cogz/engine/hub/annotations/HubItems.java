@@ -45,7 +45,7 @@ public class HubItems implements Listener {
      *
      * @param reflections ~ the reflections where all the items are
      */
-    public HubItems(Set<Class<? extends HubItem>> reflections) {
+    public HubItems(Set<Class<? extends HubItem>> reflections, GearzHub instance) {
         items = new ArrayList<>();
         log.info(reflections.size() + "size");
         for (Class<? extends HubItem> hubItem : reflections) {
@@ -53,7 +53,7 @@ public class HubItems implements Listener {
             HubItemMeta itemMeta = hubItem.getAnnotation(HubItemMeta.class);
             if (itemMeta == null) continue;
             if (itemMeta.hidden()) continue;
-            log.info(GearzHub.getInstance().getSubHub().getConfig().getString("prefix") + " prefix");
+            log.info(instance.getSubHub().getConfig().getString("prefix") + " prefix");
             log.info(itemMeta.key());
             if (GearzHub.getInstance().getSubHub().getConfig().getBoolean("hub-items." + itemMeta.key() + ".isEnabled", false)) {
                 try {
