@@ -46,6 +46,7 @@ public class HubItems implements Listener {
         Reflections hubItemsReflection = new Reflections(itemPackage);
 
         Set<Class<? extends HubItem>> hubItems = hubItemsReflection.getSubTypesOf(HubItem.class);
+        GearzHub.getInstance().getLogger().info("Attempted call!");
 
         for (Class<? extends HubItem> hubItem : hubItems) {
             GearzHub.getInstance().getLogger().info("Looping!");
