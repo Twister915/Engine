@@ -49,7 +49,7 @@ public class HubItems implements Listener {
         items = new ArrayList<>();
 
         Reflections hubItemsReflection = new Reflections(itemPackage);
-        log.info(hubItemsReflection.toString());
+        log.info(hubItemsReflection.getConfiguration().toString());
         log.info(itemPackage);
         Set<Class<? extends HubItem>> hubItems = hubItemsReflection.getSubTypesOf(HubItem.class);
 
