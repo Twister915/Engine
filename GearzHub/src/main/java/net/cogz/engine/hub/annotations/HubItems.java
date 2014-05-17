@@ -55,7 +55,7 @@ public class HubItems implements Listener {
             if (itemMeta.hidden()) continue;
             log.info(instance.getSubHub().getConfig().getString("prefix") + " prefix");
             log.info(itemMeta.key());
-            if (GearzHub.getInstance().getSubHub().getConfig().getBoolean("hub-items." + itemMeta.key() + ".isEnabled", false)) {
+            if (instance.getSubHub().getConfig().getBoolean("hub-items." + itemMeta.key() + ".isEnabled", false)) {
                 try {
                     HubItem item = hubItem.newInstance();
                     items.add(item);
