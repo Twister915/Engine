@@ -39,6 +39,7 @@ public abstract class HubItem implements Listener {
     @Getter
     @Setter
     GearzHub instance;
+
     public abstract List<ItemStack> getItems();
 
     public void rightClicked(Player player) {
