@@ -38,7 +38,6 @@
         <module>GearzFriends</module>
         <module>GearzBukkitFriends</module>
         <module>GearzChat</module>
-        <module>GearzHub</module>
     </modules>
 
     <properties>
