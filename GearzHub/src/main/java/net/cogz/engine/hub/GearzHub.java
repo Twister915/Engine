@@ -31,7 +31,7 @@ import java.net.SocketException;
  * @author Jake
  * @since 5/16/2014
  */
-public abstract class GearzHub extends TPlugin {
+public class GearzHub extends TPlugin {
     @Getter
     public static GearzHub instance;
     @Getter
@@ -65,6 +65,11 @@ public abstract class GearzHub extends TPlugin {
 
     @Override
     public void disable() {
+    }
+
+    @Override
+    public String getStorablePrefix() {
+        return "gearzhub";
     }
 
     public void registerHubItems(HubItems items) {
