@@ -36,12 +36,15 @@ import java.util.Set;
  */
 @Log
 public class GearzHub extends TPlugin {
-    @Getter
     public static GearzHub instance;
     @Getter
     @Setter
     private GearzHub subHub;
     private HubItems hubItems;
+
+    public static GearzHub getInstance() {
+        return instance;
+    }
 
     @Override
     public void enable() {
