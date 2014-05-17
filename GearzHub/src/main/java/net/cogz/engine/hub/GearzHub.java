@@ -78,7 +78,7 @@ public class GearzHub extends TPlugin {
 
     public void registerHubItems(Set<Class<? extends HubItem>> items) {
         log.info(this.subHub.getConfig().getString("prefix"));
-        this.hubItems = new HubItems(items);
+        this.hubItems = new HubItems(items, this);
         registerEvents(this.hubItems);
     }
 }
