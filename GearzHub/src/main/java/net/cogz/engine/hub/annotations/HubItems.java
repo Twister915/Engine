@@ -45,13 +45,10 @@ public class HubItems implements Listener {
      *
      * @param reflections ~ the reflections where all the items are
      */
-    public HubItems(Reflections reflections) {
+    public HubItems(Set<Class<? extends HubItem>> reflections) {
         items = new ArrayList<>();
 
-        Set<Class<? extends HubItem>> hubItems = reflections.getSubTypesOf(HubItem.class);
-
-        log.info(hubItems.size() + " SIZE");
-        for (Class<? extends HubItem> hubItem : hubItems) {
+        for (Class<? extends HubItem> hubItem : reflections) {
 
             HubItemMeta itemMeta = hubItem.getAnnotation(HubItemMeta.class);
             if (itemMeta == null) continue;
