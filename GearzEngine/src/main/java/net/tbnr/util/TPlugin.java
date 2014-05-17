@@ -68,7 +68,7 @@ public abstract class TPlugin extends JavaPlugin {
      * The enable method, as specified by bukkit.
      */
     @Override
-    public final void onEnable() {
+    public void onEnable() {
         try {
             this.saveDefaultConfig(); //save the config
             this.initGearzConfigs();
@@ -93,7 +93,7 @@ public abstract class TPlugin extends JavaPlugin {
      * I mean to access the newest config.
      */
     @Override
-    public final void onDisable() {
+    public void onDisable() {
         this.reloadConfig();
         this.disable();
         this.commandDispatch = null;
