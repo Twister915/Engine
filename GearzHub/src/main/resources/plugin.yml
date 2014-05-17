@@ -1,0 +1,6 @@
+name: GearzHub
+main: net.cogz.engine.GearzHub
+authors: [Jake0oo0]
+version: 1.0
+description: The Hub API plugin for creating hub servers
+depend: [Gearz]
