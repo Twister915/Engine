@@ -13,6 +13,7 @@ package net.cogz.engine.hub;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.cogz.engine.hub.annotations.HubItem;
 import net.cogz.engine.hub.annotations.HubItems;
 import net.cogz.engine.hub.modules.Spawn;
 import net.tbnr.gearz.server.Server;
@@ -22,6 +23,7 @@ import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 
 import java.net.SocketException;
+import java.util.Set;
 
 /**
  * <p/>
@@ -72,8 +74,8 @@ public class GearzHub extends TPlugin {
         return "gearzhub";
     }
 
-    public void registerHubItems(HubItems items) {
-        this.hubItems = items;
+    public void registerHubItems(Set<Class<? extends HubItem>> items) {
+        this.hubItems = new HubItems(items);
         registerEvents(this.hubItems);
     }
 }
