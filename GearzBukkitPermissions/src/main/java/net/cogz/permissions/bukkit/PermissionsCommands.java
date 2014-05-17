@@ -300,7 +300,7 @@ public class PermissionsCommands implements TCommandHandler {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group", false));
                     return TCommandStatus.SUCCESSFUL;
                 }
-                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-group-perm", false, new String[]{"<oermission>", args[2]}, new String[]{"<group>", args[0]}));
+                sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.remove-group-perm", false, new String[]{"<permission>", args[2]}, new String[]{"<group>", args[0]}));
                 permsManager.removeGroupPerm(group, args[2]);
                 return TCommandStatus.SUCCESSFUL;
             case "check":
