@@ -49,7 +49,7 @@ public class GearzHub extends TPlugin {
     @Override
     public void enable() {
         //set instance
-        GearzHub.instance = this;
+        instance = this;
 
         //Register modules
         Spawn spawn = new Spawn();
@@ -81,6 +81,7 @@ public class GearzHub extends TPlugin {
 
     public void registerHubItems(Set<Class<? extends HubItem>> items) {
         log.info(this.subHub.getConfig().getString("prefix"));
+        log.info(GearzHub.getInstance().getDataFolder().getAbsolutePath());
         this.hubItems = new HubItems(items, this);
         registerEvents(this.hubItems);
     }
