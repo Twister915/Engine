@@ -52,8 +52,6 @@ public class HubItems implements Listener {
             HubItemMeta itemMeta = hubItem.getAnnotation(HubItemMeta.class);
             if (itemMeta == null) continue;
             if (itemMeta.hidden()) continue;
-            log.info(instance.getSubHub().getConfig().getString("prefix") + " prefix");
-            log.info(itemMeta.key());
             if (instance.getSubHub().getConfig().getBoolean("hub-items." + itemMeta.key() + ".isEnabled", false)) {
                 try {
                     HubItem item = hubItem.newInstance();
