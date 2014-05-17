@@ -48,9 +48,12 @@ public class HubItems implements Listener {
         Set<Class<? extends HubItem>> hubItems = hubItemsReflection.getSubTypesOf(HubItem.class);
 
         for (Class<? extends HubItem> hubItem : hubItems) {
+            GearzHub.getInstance().getLogger().info("Looping!");
+
             HubItemMeta itemMeta = hubItem.getAnnotation(HubItemMeta.class);
             if (itemMeta == null) continue;
             if (itemMeta.hidden()) continue;
+            GearzHub.getInstance().getLogger().info("Looping and found!");
             if (GearzHub.getInstance().getSubHub().getConfig().getBoolean("hub-items." + itemMeta.key() + ".isEnabled", false)) {
                 try {
                     HubItem item = hubItem.newInstance();
