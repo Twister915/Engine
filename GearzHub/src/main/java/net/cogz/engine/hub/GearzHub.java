@@ -30,15 +30,15 @@ import java.net.SocketException;
  * @author Jake
  * @since 5/16/2014
  */
-public abstract class GearzHub extends TPlugin {
+public class GearzHub extends TPlugin {
     @Getter
     public static GearzHub instance;
     @Getter
     private HubItems hubItems;
 
-    public abstract void enableHub();
-    public abstract void disableHub();
-    public abstract String getItemsPackage();
+    public void enableHub( ) {}
+    public void disableHub() {}
+    public String getItemsPackage() { return "derp"; };
 
     @Override
     public void enable() {
