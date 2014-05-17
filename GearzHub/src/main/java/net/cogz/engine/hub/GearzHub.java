@@ -64,12 +64,10 @@ public class GearzHub extends TPlugin {
         }
         thisServer.setPort(Bukkit.getPort());
         thisServer.save();
-        enableHub();
     }
 
     @Override
     public void disable() {
-        disableHub();
     }
 
     @Override
