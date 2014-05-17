@@ -43,15 +43,12 @@ public class HubItems implements Listener {
     /**
      * Creates a new HubItems instance
      *
-     * @param itemPackage ~ the package where all the items are
+     * @param reflections ~ the reflections where all the items are
      */
-    public HubItems(String itemPackage) {
+    public HubItems(Reflections reflections) {
         items = new ArrayList<>();
 
-        Reflections hubItemsReflection = new Reflections(itemPackage);
-        log.info(hubItemsReflection.getConfiguration().toString());
-        log.info(itemPackage);
-        Set<Class<? extends HubItem>> hubItems = hubItemsReflection.getSubTypesOf(HubItem.class);
+        Set<Class<? extends HubItem>> hubItems = reflections.getSubTypesOf(HubItem.class);
 
         log.info(hubItems.size() + " SIZE");
         for (Class<? extends HubItem> hubItem : hubItems) {
