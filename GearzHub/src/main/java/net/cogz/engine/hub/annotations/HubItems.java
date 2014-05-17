@@ -77,7 +77,7 @@ public class HubItems implements Listener {
             HubItemMeta itemMeta = item.getClass().getAnnotation(HubItemMeta.class);
             if (itemMeta == null) continue;
             if (itemMeta.hidden()) continue;
-
+            log.info("adding item " + itemMeta.key());
             if (!player.hasPermission(itemMeta.permission()) && !itemMeta.permission().isEmpty()) return;
             itemStack = item.getItems().get(0);
             if (itemMeta.slot() == -1) {
