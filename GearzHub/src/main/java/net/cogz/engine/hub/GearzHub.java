@@ -30,7 +30,7 @@ import java.net.SocketException;
  * @author Jake
  * @since 5/16/2014
  */
-public abstract class GearzHub extends TPlugin {
+public class GearzHub extends TPlugin {
     @Getter
     public static GearzHub instance;
     @Getter
@@ -40,9 +40,9 @@ public abstract class GearzHub extends TPlugin {
         this.hubItems = new HubItems(itemsPackage);
     }
 
-    public abstract void enableHub();
+    public void enableHub() {}
 
-    public abstract void disableHub();
+    public void disableHub() {}
 
     @Override
     public void enable() {
