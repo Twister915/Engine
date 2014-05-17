@@ -13,6 +13,7 @@ package net.cogz.engine.hub.annotations;
 
 import net.cogz.engine.hub.GearzHub;
 import net.tbnr.util.player.TPlayerJoinEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,18 +44,16 @@ public class HubItems implements Listener {
      */
     public HubItems(String itemPackage) {
         items = new ArrayList<>();
+
         Reflections hubItemsReflection = new Reflections(itemPackage);
 
         Set<Class<? extends HubItem>> hubItems = hubItemsReflection.getSubTypesOf(HubItem.class);
-        GearzHub.getInstance().getLogger().info("Attempted call!");
 
         for (Class<? extends HubItem> hubItem : hubItems) {
-            GearzHub.getInstance().getLogger().info("Looping!");
 
             HubItemMeta itemMeta = hubItem.getAnnotation(HubItemMeta.class);
             if (itemMeta == null) continue;
             if (itemMeta.hidden()) continue;
-            GearzHub.getInstance().getLogger().info("Looping and found!");
             if (GearzHub.getInstance().getSubHub().getConfig().getBoolean("hub-items." + itemMeta.key() + ".isEnabled", false)) {
                 try {
                     HubItem item = hubItem.newInstance();
