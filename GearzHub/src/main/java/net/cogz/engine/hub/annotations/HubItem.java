@@ -41,7 +41,7 @@ public abstract class HubItem implements Listener {
     }
 
     public HubItem(boolean interactable) {
-        if (interactable) GearzHub.getInstance().getSubHub().registerEvents(this);
+        if (interactable) GearzHub.getInstance().registerEvents(this);
     }
 
     @EventHandler
