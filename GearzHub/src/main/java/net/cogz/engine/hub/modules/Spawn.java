@@ -134,7 +134,6 @@ public class Spawn implements Listener, TCommandHandler {
 
     public void setSpawn(Location location) {
         GearzHub.getInstance().getConfig().set("spawn", TPlugin.encodeLocationString(location));
-        GearzHub.getInstance().saveConfig();
         updateSpawn();
     }
 
