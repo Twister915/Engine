@@ -32,6 +32,7 @@ import java.util.List;
  * Latest Change:
  */
 public abstract class HubItem implements Listener {
+    GearzHub instance;
     public abstract List<ItemStack> getItems();
 
     public void rightClicked(Player player) {
@@ -42,6 +43,7 @@ public abstract class HubItem implements Listener {
 
     public HubItem(boolean interactable) {
         if (interactable) GearzHub.getInstance().registerEvents(this);
+        this.instance = GearzHub.getInstance();
     }
 
     @EventHandler
@@ -79,7 +81,7 @@ public abstract class HubItem implements Listener {
     public final Object getPropertyObject(@NonNull String property) {
         HubItemMeta name = getClass().getAnnotation(HubItemMeta.class);
         if (name == null) return "";
-        return GearzHub.getInstance().getSubHub().getConfig().get("hub-items." + name.key() + ".properties." + property);
+        return instance.getSubHub().getConfig().get("hub-items." + name.key() + ".properties." + property);
     }
 
     /**
@@ -90,7 +92,7 @@ public abstract class HubItem implements Listener {
     public final ConfigurationSection getConfigurationSection() {
         HubItemMeta name = getClass().getAnnotation(HubItemMeta.class);
         if (name == null) return null;
-        return GearzHub.getInstance().getSubHub().getConfig().getConfigurationSection("hub-items." + name.key() + ".properties");
+        return instance.getSubHub().getConfig().getConfigurationSection("hub-items." + name.key() + ".properties");
     }
 
     /**
@@ -113,6 +115,6 @@ public abstract class HubItem implements Listener {
     public final String getProperty(@NonNull String property, @NonNull boolean prefix, String[]... replacements) {
         HubItemMeta name = getClass().getAnnotation(HubItemMeta.class);
         if (name == null) return "";
-        return GearzHub.getInstance().getSubHub().getFormat("hub-items." + name.key() + ".properties." + property, prefix, replacements);
+        return instance.getSubHub().getFormat("hub-items." + name.key() + ".properties." + property, prefix, replacements);
     }
 }
