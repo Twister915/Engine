@@ -11,9 +11,9 @@
 
 package net.cogz.engine.hub.annotations;
 
+import lombok.extern.java.Log;
 import net.cogz.engine.hub.GearzHub;
 import net.tbnr.util.player.TPlayerJoinEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,6 +33,7 @@ import java.util.Set;
  * <p/>
  * Latest Change:
  */
+@Log
 public class HubItems implements Listener {
 
     private final ArrayList<HubItem> items;
@@ -46,9 +47,9 @@ public class HubItems implements Listener {
         items = new ArrayList<>();
 
         Reflections hubItemsReflection = new Reflections(itemPackage);
-
+        log.info(itemPackage);
         Set<Class<? extends HubItem>> hubItems = hubItemsReflection.getSubTypesOf(HubItem.class);
-
+        log.info(hubItems.size() + " SIZE");
         for (Class<? extends HubItem> hubItem : hubItems) {
 
             HubItemMeta itemMeta = hubItem.getAnnotation(HubItemMeta.class);
