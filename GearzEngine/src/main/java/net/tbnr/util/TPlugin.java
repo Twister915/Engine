@@ -94,6 +94,7 @@ public abstract class TPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        this.reloadConfig();
         this.disable();
         this.commandDispatch = null;
     }
