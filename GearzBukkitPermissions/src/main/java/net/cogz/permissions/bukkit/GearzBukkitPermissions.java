@@ -52,6 +52,7 @@ public final class GearzBukkitPermissions extends TPlugin {
                     GearzBukkitPermissions.getInstance().getPermsManager().reload();
                 } catch (Exception ex) {
                     GearzBukkitPermissions.getInstance().getLogger().severe(ex.getMessage());
+                    ex.printStackTrace();
                 }
             }
         }, 0, 30 * 20);
