@@ -36,13 +36,13 @@ public class GearzHub extends TPlugin {
     @Getter
     private HubItems hubItems;
 
-    public GearzHub(String itemsPackage) {
+/*    public GearzHub(String itemsPackage) {
         this.hubItems = new HubItems(itemsPackage);
     }
 
     public void enableHub() {}
 
-    public void disableHub() {}
+    public void disableHub() {}*/
 
     @Override
     public void enable() {
