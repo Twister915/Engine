@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
  * the player's UUID, and their current game.
  */
 @EqualsAndHashCode(of = {"username", "uuid"}, doNotUseGetters = true)
-@ToString(exclude = {"game"})
+@ToString(exclude = "game")
 public class GearzPlayer {
     /**
      * TPlayer instance of this GearzPlayer

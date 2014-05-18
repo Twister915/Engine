@@ -103,7 +103,7 @@ public class ShuffleModule implements TCommandHandler, Listener {
     }
 
     @Data
-    @RequiredArgsConstructor()
+    @RequiredArgsConstructor
     public static class ShuffleSession implements Listener {
         @NonNull
         private final ProxiedPlayer player;

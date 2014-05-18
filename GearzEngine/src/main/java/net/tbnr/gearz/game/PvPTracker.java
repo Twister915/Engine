@@ -88,9 +88,9 @@ public final class PvPTracker<PlayerType extends GearzPlayer> {
         }
     }
 
-    @Data
     @RequiredArgsConstructor
-    public final static class PlayerList<PlayerType2 extends GearzPlayer> implements TPlayerStorable {
+    @Data
+    public static final class PlayerList<PlayerType2 extends GearzPlayer> implements TPlayerStorable {
         @NonNull
         private final String key;
         @NonNull

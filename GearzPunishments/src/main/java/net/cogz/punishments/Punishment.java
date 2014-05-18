@@ -33,13 +33,20 @@ import java.util.Date;
  */
 @ToString
 public class Punishment extends GModel {
-    public @BasicField String issuer; //uuid of issuer
-    public @BasicField String punished; //uuid of punished player
-    public @BasicField String reason; //reason for punishment
-    public @BasicField Boolean valid; //whether or not the punishment was appealed
-    public @BasicField String type; //the type of punishment, tored as the string of an enum
-    public @BasicField Date time; //time punishment was given
-    public @BasicField Date end; //ending time of punishments, optional
+    @BasicField
+    public String issuer; //uuid of issuer
+    @BasicField
+    public String punished; //uuid of punished player
+    @BasicField
+    public String reason; //reason for punishment
+    @BasicField
+    public Boolean valid; //whether or not the punishment was appealed
+    @BasicField
+    public String type; //the type of punishment, tored as the string of an enum
+    @BasicField
+    public Date time; //time punishment was given
+    @BasicField
+    public Date end; //ending time of punishments, optional
 
     @SuppressWarnings("unused")
     public Punishment() {

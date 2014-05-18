@@ -88,7 +88,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     private boolean running;
     @Getter
     private boolean hideStream;
-    private final static ChatColor[] progressiveWinColors =
+    private static final ChatColor[] progressiveWinColors =
             {ChatColor.DARK_GREEN, ChatColor.GREEN,
                     ChatColor.DARK_AQUA, ChatColor.AQUA,
                     ChatColor.DARK_BLUE, ChatColor.BLUE,

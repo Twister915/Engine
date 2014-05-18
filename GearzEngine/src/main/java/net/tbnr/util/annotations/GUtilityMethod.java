@@ -28,6 +28,6 @@ import static java.lang.annotation.ElementType.METHOD;
  */
 @Documented
 @Retention(RetentionPolicy.SOURCE)
-@Target(value={CONSTRUCTOR, METHOD})
+@Target({CONSTRUCTOR, METHOD})
 public @interface GUtilityMethod {
 }
