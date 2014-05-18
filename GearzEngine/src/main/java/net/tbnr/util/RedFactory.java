@@ -93,10 +93,11 @@ public class RedFactory implements GUtility, Listener {
 					Player p = tPlayer.getPlayer();
 
 					WeakReference<WrapperPlayServerAnimation> wrapper = new WeakReference<>(new WrapperPlayServerAnimation());
-					wrapper.get().setAnimation(Animations.DAMAGE_ANIMATION);
-					wrapper.get().setEntityID(p.getEntityId());
-
 					try {
+						wrapper.get().setAnimation(Animations.DAMAGE_ANIMATION);
+						wrapper.get().setEntityID(p.getEntityId());
+
+
 						if (p == null || !p.isValid()) continue;
 
 						for (Player pl : p.getWorld().getPlayers()) {
