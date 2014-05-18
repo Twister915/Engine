@@ -39,7 +39,10 @@ public class ServerManager {
     @Setter @Getter
     private static ServerManagerHelper helper;     //Interface for the ServerManager
 
-    /**
+	private ServerManager() {
+	}
+
+	/**
      * Creates a new instance of the current
      * {@link Server} otherwise returns a new
      * instance based on the values in the

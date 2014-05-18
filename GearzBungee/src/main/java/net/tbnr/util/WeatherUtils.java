@@ -27,7 +27,10 @@ import java.nio.charset.Charset;
  * Latest Change:
  */
 public class WeatherUtils {
-    public static String getWeatherConditons(String place) {
+	private WeatherUtils() {
+	}
+
+	public static String getWeatherConditons(String place) {
         InputStream is;
         BufferedReader rd;
 

@@ -26,7 +26,10 @@ public class TCooldownManager {
     private static final HashMap<String, TCooldown> cooldowns = new HashMap<>();
     public static DB database = null;
 
-    public static boolean canContinue(String key, TCooldown cooldown) {
+	private TCooldownManager() {
+	}
+
+	public static boolean canContinue(String key, TCooldown cooldown) {
         if (database == null) {
             return true;
         }

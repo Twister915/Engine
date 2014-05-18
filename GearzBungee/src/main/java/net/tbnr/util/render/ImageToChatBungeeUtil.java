@@ -50,7 +50,10 @@ public class ImageToChatBungeeUtil {
         colorHexMap.put("FFFFFF", ChatColor.WHITE);
     }
 
-    private static ChatColor getColorFor(Color color) {
+	private ImageToChatBungeeUtil() {
+	}
+
+	private static ChatColor getColorFor(Color color) {
         String rgb = Integer.toHexString(findClosestColor(new ColorExBungee(color), colors).toRGB());
         rgb = rgb.substring(2, rgb.length()).toUpperCase();
         return colorHexMap.get(rgb);

@@ -22,7 +22,10 @@ import org.bukkit.util.Vector;
  * Latest Change:
  */
 public class LocationUtil {
-    public static Location getMinimum(Location l1, Location l2) {
+	private LocationUtil() {
+	}
+
+	public static Location getMinimum(Location l1, Location l2) {
         Vector v1 = new Vector(l1.getBlockX(), l1.getBlockY(), l1.getBlockZ());
         Vector v2 = new Vector(l2.getBlockX(), l2.getBlockY(), l2.getBlockZ());
         Vector minimum = Vector.getMinimum(v1, v2);
