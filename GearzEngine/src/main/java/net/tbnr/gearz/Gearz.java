@@ -221,6 +221,7 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
         this.gamePlugins.add(plugin);
     }
 
+    @Override
     @SuppressWarnings("unused")
     public boolean isGameServer() {
         return this.gamePlugins.size() > 0;
@@ -231,6 +232,7 @@ public final class Gearz extends TPlugin implements TDatabaseMaster, ServerManag
         return (this.isGameServer() ? this.gamePlugins.get(0).getGameManager().getGameMeta().key() : null);
     }
 
+    @Override
     public String getBungeeName() {
         return Gearz.bungeeName2;
     }

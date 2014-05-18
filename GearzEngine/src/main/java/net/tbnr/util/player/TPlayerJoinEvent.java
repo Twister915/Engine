@@ -26,6 +26,7 @@ public final class TPlayerJoinEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private String joinMessage;
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

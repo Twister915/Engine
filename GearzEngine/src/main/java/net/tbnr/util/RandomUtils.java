@@ -38,6 +38,7 @@ public class RandomUtils implements GUtility {
      * @return the spread location
      * @deprecated Not finishied
      */
+    @Deprecated
     public static Location getSpreadedLocation(Location location) {
        /* Random random = new Random();
         int xRangeMin = 0;

@@ -85,6 +85,7 @@ public class FakeEntity {
             destroy();
 
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Gearz.getInstance(), new Runnable() {
+                @Override
                 public void run() {
                     createEntity();
                 }

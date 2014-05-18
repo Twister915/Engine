@@ -30,6 +30,7 @@ import net.tbnr.gearz.Gearz;
 public class TabListener {
     public TabListener() {
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(Gearz.getInstance(), ListenerPriority.NORMAL, PacketType.Play.Client.TAB_COMPLETE) {
+            @Override
             public void onPacketReceiving(PacketEvent event) {
                 if (event.getPacketType() == PacketType.Play.Client.TAB_COMPLETE) {
                     try {
