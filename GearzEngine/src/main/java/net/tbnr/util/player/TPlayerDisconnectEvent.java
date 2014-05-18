@@ -26,6 +26,7 @@ public final class TPlayerDisconnectEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private String quitMessage;
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
