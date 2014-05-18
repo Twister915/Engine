@@ -26,7 +26,7 @@ import java.util.List;
  *
  * Latest Change:
  */
-@RequiredArgsConstructor()
+@RequiredArgsConstructor
 @EqualsAndHashCode
 @Data
 @ToString

@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Represents a registered NetCommand.
  */
-@EqualsAndHashCode(of = {"name"})
+@EqualsAndHashCode(of = "name")
 public class RegisteredNetCommand {
     /**
      * The arguments that this command accepts

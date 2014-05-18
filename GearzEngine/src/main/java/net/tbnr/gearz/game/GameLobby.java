@@ -23,7 +23,7 @@ import org.bukkit.World;
  * To change this template use File | Settings | File Templates.
  */
 @ArenaCollection(collection = "game_lobbys_v2")
-@ArenaMeta(meta = {"game:%key"})
+@ArenaMeta(meta = "game:%key")
 public final class GameLobby extends Arena {
 
     @ArenaField(loop = true, longName = "Spawn Points", key = "spawn_points", type = ArenaField.PointType.Player)
