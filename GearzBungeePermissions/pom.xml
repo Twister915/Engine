@@ -52,12 +52,6 @@
             <artifactId>GearzBungee</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.12.2</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -86,7 +80,6 @@
                             <artifactSet>
                                 <includes>
                                     <include>net.tbnr.gearz:GearzPermissions</include>
-                                    <include>org.projectlombok:lombok</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
