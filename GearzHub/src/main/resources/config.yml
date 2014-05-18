@@ -1,3 +1,8 @@
+hide-stream: true
+welcome-message: true
 formats:
    world-teleport: "&aYou've been teleported to &e<world>&a!"
    world-list: "&bWorlds you can teleport to &e<worlds>&b."
+   join-message: "&a<player>&6 has joined the game!"
+   quit-message: "&a<player>&6 has left the game!"
+   welcome-message: "&3Welcome &a<player>&3 to &6TBNR&3!"

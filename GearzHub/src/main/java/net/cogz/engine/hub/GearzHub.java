@@ -16,6 +16,8 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import net.cogz.engine.hub.annotations.HubItem;
 import net.cogz.engine.hub.annotations.HubItems;
+import net.cogz.engine.hub.modules.HideStream;
+import net.cogz.engine.hub.modules.Restrictions;
 import net.cogz.engine.hub.modules.Spawn;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
@@ -55,6 +57,8 @@ public class GearzHub extends TPlugin {
         Spawn spawn = new Spawn();
         registerCommands(spawn);
         registerEvents(spawn);
+        registerEvents(new HideStream());
+        registerEvents(new Restrictions());
 
         //Saves the hub to the database, always last lines of code
         ServerManager.setGame("lobby");
