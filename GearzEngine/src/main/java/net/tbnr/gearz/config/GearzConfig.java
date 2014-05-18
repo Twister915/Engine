@@ -108,15 +108,4 @@ public class GearzConfig {
     public final String getFormat(String formatPath) {
         return this.getFormat(formatPath, true);
     }
-
-    /**
-     * Get the format without using any data.
-     *
-     * @param formatPath The path to the format!
-     * @param color      Include colors in the passed args?
-     * @return The formatted message.
-     */
-    public final String getFormat(String formatPath, boolean color) {
-        return this.getFormat(formatPath, color);
-    }
 }
