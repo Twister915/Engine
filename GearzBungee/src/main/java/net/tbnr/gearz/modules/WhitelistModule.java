@@ -136,7 +136,7 @@ public class WhitelistModule implements TCommandHandler, Listener {
     @SuppressWarnings("unused")
     @EventHandler
     public void onPostLogin(LoginEvent event) {
-        if (GearzBungee.getInstance().isWhitelisted() && whitelisted.containsKey(event.getConnection().getUniqueId())) {
+        if (GearzBungee.getInstance().isWhitelisted() && !whitelisted.containsKey(event.getConnection().getUniqueId())) {
             event.getConnection().disconnect(GearzBungee.getInstance().getFormat("whitelisted"));
         }
     }
