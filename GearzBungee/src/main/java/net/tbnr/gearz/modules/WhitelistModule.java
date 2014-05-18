@@ -12,6 +12,7 @@
 package net.tbnr.gearz.modules;
 
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -72,7 +73,7 @@ public class WhitelistModule implements TCommandHandler, Listener {
 
     @TCommand(name = "gwhitelist", permission = "gearz.gwhitelist", senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/gwhitelist <argument>")
     @SuppressWarnings({"unused", "deprecation"})
-    public TCommandStatus gwhitelist(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
+    public TCommandStatus gwhitelist(final CommandSender sender, TCommandSender type, TCommand meta, String[] args) {
         if (args.length > 2 || args.length == 0) {
             return TCommandStatus.INVALID_ARGS;
         }
@@ -81,6 +82,7 @@ public class WhitelistModule implements TCommandHandler, Listener {
                 UUID uuid = getLocalUUID(args[1]);
 				whitelisted.remove(uuid);
                 save();
+                sender.sendMessage(ChatColor.GREEN + "Removed " + args[1] + " from the whitelist.");
                 break;
             case "add":
 				new UUIDUtil(args[1], new UUIDUtil.UUIDCallback() {
@@ -89,6 +91,7 @@ public class WhitelistModule implements TCommandHandler, Listener {
 						if(uuid == null) return;
 						whitelisted.put(UUID.fromString(uuid), username);
 						save();
+                        sender.sendMessage(ChatColor.GREEN + "Whitelisted " + username + " with the UUID " + uuid);
 					}
 				});
                 break;
