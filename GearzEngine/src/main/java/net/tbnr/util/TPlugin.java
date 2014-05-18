@@ -175,7 +175,7 @@ public abstract class TPlugin extends JavaPlugin {
         if (data != null) {
             for (String[] dataPart : data) {
                 if (dataPart.length < 2) continue;
-                string = string.replaceAll(dataPart[0], dataPart[1]);
+                string = StringUtils.replace(string, dataPart[0], dataPart[1]);
             }
         }
         if (color) {
