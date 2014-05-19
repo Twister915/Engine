@@ -11,6 +11,7 @@
 
 package net.tbnr.util.command;
 
+import com.google.common.collect.Lists;
 import net.tbnr.util.TPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -59,6 +60,10 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
      */
     private final HashMap<Command, TCommand> metas = new HashMap<>();
     /**
+     * A {@link java.util.HashMap} that associates a {@link org.bukkit.command.Command} to it's {@link net.tbnr.util.command.TTabCompleter}
+     */
+    private final HashMap<Command, TTabCompleter> completers = new HashMap<>();
+    /**
      * This is used as a utility to store the order of arguments, and their type for the executor method validation.
      */
     private static final Class[] argumentOrder = {CommandSender.class, TCommandSender.class, TCommand.class, Command.class, String[].class};
@@ -101,7 +106,6 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
             this.handlers.put(cmd, commandHandler);
             this.methods.put(cmd, method);
             this.metas.put(cmd, annotation);
-
         }
     }
 
@@ -113,7 +117,7 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
     private PluginCommand getCommand(String name, Plugin plugin) {
         PluginCommand command = null;
         try {
-            Constructor commandConstructor = PluginCommand.class.getDeclaredConstructor(new Class[] { String.class, Plugin.class });
+            Constructor commandConstructor = PluginCommand.class.getDeclaredConstructor(new Class[]{String.class, Plugin.class});
             commandConstructor.setAccessible(true);
             command = (PluginCommand) commandConstructor.newInstance(name, plugin);
         } catch (Exception ex) {
@@ -149,12 +153,49 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
         this.scanClass(handler, this.plugin);
     }
 
+    public void registerTabCompleter(String command, TTabCompleter completer) {
+        Command cmd = getCommandFromString(command);
+        if (cmd == null) return;
+        this.completers.put(cmd, completer);
+    }
+
+    public void registerTabCompleter(TCommandHandler handler, TTabCompleter completer) {
+        for (Command command : getCommandsForHandler(handler)) {
+            this.completers.put(command, completer);
+        }
+    }
+
+    private Command getCommandFromString(String query) {
+        for (Command command : this.metas.keySet()) {
+            if (command.getName().equalsIgnoreCase(query)) {
+                return command;
+            }
+        }
+        return null;
+    }
+
     /**
      * Un-register a handler
      *
      * @param handler Un-registers a handler!
      */
     public void unregisterHandler(TCommandHandler handler) {
+        for (Command cmd : getCommandsForHandler(handler)) { //Removes associations for all found commands.
+            methods.remove(cmd);
+            handlers.remove(cmd);
+            metas.remove(cmd);
+            completers.remove(cmd);
+        }
+    }
+
+    /**
+     * Returns a {@link java.util.List} of {@link org.bukkit.command.Command}s that are registered
+     * to the {@link net.tbnr.util.command.TCommandHandler} parameter.
+     *
+     * @param handler the {@link net.tbnr.util.command.TCommandHandler} to scan
+     * @return a {@link java.util.List} of {@link org.bukkit.command.Command}s that are registered
+     */
+    private List<Command> getCommandsForHandler(TCommandHandler handler) {
         ArrayList<Command> commands = new ArrayList<>(); //This is where we will store all commands handled by the class
         for (Command cmd : this.handlers.keySet()) { //Gets the commands handled by the class (populates "commands" (Line 83))
             TCommandHandler handler1 = this.handlers.get(cmd);
@@ -162,11 +203,7 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
                 commands.add(cmd);
             }
         }
-        for (Command cmd : commands) { //Removes associations for all found commands.
-            methods.remove(cmd);
-            handlers.remove(cmd);
-            metas.remove(cmd);
-        }
+        return commands;
     }
 
     /**
@@ -200,13 +237,25 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
     }
 
     /**
-     * Bukkit's onCommand method
+     * Returns a {@link net.tbnr.util.command.TTabCompleter} for the specified command
      *
-     * @param sender  Command sender
-     * @param command Command
-     * @param s       Label
-     * @param strings Args
-     * @return Command failure/success
+     * @param command the command to search handlers for
+     * @return the {@link net.tbnr.util.command.TTabCompleter} that the command is registered to
+     */
+    public TTabCompleter getCompleter(Command command) {
+        return completers.get(command);
+    }
+
+    /**
+     * This is the default {@link org.bukkit.command.CommandExecutor#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[])}
+     * method that manages the default {@link org.bukkit.command.Command} execution in Bukkit.
+     * This method has been adapted to handle Gearz {@link net.tbnr.util.command.TCommand} execution.
+     *
+     * @param sender  The {@link org.bukkit.command.CommandSender}
+     * @param command The {@link org.bukkit.command.Command} executed
+     * @param s       The command label, or alias used
+     * @param strings A {@link String} array that represents the command arguments.
+     * @return boolean returning the status of a command
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
@@ -268,21 +317,36 @@ public final class TCommandDispatch implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
-        List<String> matches = new ArrayList<>();
-        String search = args[args.length - 1].toLowerCase();
+        TTabCompleter completer = getCompleter(command);
+        if (completer == null) return getDefaultTabComplete();
+        List<String> list = completer.onTabComplete(sender, getType(sender), command, getMeta(command), args);
+        if (list == null) return Lists.newArrayList();
+        else return getMatching(list, args[args.length - 1], true);
+    }
+
+    public List<String> getDefaultTabComplete() {
+        List<String> list = Lists.newArrayList();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
-                matches.add(player.getName());
+            list.add(player.getName());
+        }
+        return list;
+    }
+
+    public List<String> getMatching(List<String> original, String query, boolean ignoreCase) {
+        List<String> matching = new ArrayList<>();
+        for (String ori : original) {
+            if (ori.toLowerCase().startsWith(query)) {
+                matching.add(ori);
             }
         }
-        return matches;
+        return matching;
     }
 
     /**
-     * Gets the type associated with the command sender.
+     * Gets the {@link net.tbnr.util.command.TCommandSender} associated with the {@link net.tbnr.util.command.TCommandSender}.
      *
-     * @param sender The actual sender object
-     * @return The sender type (enum value)
+     * @param sender The actual {@link org.bukkit.command.CommandSender} object
+     * @return The {@link net.tbnr.util.command.TCommandSender} (enum value)
      */
     private TCommandSender getType(CommandSender sender) {
         if (sender instanceof ConsoleCommandSender) {

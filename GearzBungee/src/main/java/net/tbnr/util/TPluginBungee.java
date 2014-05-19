@@ -17,6 +17,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.util.bungee.command.TCommandDispatch;
 import net.tbnr.util.bungee.command.TCommandHandler;
+import net.tbnr.util.bungee.command.TTabCompleter;
 import net.tbnr.util.bungee.cooldowns.TCooldownManager;
 
 import java.net.UnknownHostException;
@@ -89,6 +90,18 @@ public abstract class TPluginBungee extends ConfigurablePlugin {
 
     public void registerCommandHandler(TCommandHandler handler) {
         this.commandDispatch.registerHandler(handler);
+    }
+
+    public void registerTabCompleter(String command, TTabCompleter completer) {
+        this.commandDispatch.registerTabCompleter(command, completer);
+    }
+
+    public void registerTabCompleter(TCommandHandler handler, TTabCompleter completer) {
+        this.commandDispatch.registerTabCompleter(handler, completer);
+    }
+
+    public List<String> getDefaultTabComplete() {
+        return this.commandDispatch.getDefaultTabComplete();
     }
 
     public void registerEvents(Listener listener) {

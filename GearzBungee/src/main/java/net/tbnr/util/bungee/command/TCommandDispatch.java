@@ -11,7 +11,7 @@
 
 package net.tbnr.util.bungee.command;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -28,7 +28,6 @@ import java.util.*;
 /**
  * This is the dispatcher for all commands. It will handle commands and dispatch them to the proper methods.
  */
-@SuppressWarnings("UnusedDeclaration")
 public class TCommandDispatch {
     /**
      * Constructs the dispatcher
@@ -59,6 +58,8 @@ public class TCommandDispatch {
      * Stores the delegates between Bungee and TCommand handler for all commands, since they each need to be their own class e_e
      */
     private final HashMap<String, BungeeCommandDelegate> delegates = new HashMap<>();
+
+    private final HashMap<String, TTabCompleter> completers = new HashMap<>();
     /**
      * This is used as a utility to store the order of arguments, and their type for the executor method validation.
      */
@@ -101,20 +102,34 @@ public class TCommandDispatch {
         this.scanClass(handler, this.plugin);
     }
 
+    public void registerTabCompleter(String command, TTabCompleter completer) {
+        this.completers.put(command, completer);
+    }
+
+    public void registerTabCompleter(TCommandHandler handler, TTabCompleter completer) {
+        for (String command : getCommandsForHandler(handler)) {
+            this.completers.put(command, completer);
+        }
+    }
+
     /**
      * Un-register a handler
      *
      * @param handler Un-registers a handler!
      */
     public void unregisterHandler(TCommandHandler handler) {
+        for (String cmd : getCommandsForHandler(handler)) { //Removes associations for all found commands.
+            this.unregisterCommand(cmd);
+        }
+    }
+
+    private List<String> getCommandsForHandler(TCommandHandler handler) {
         ArrayList<String> commands = new ArrayList<>(); //This is where we will store all commands handled by the class
         for (String cmd : this.handlers.keySet()) { //Gets the commands handled by the class (populates "commands" (Line 83))
             TCommandHandler handler1 = this.handlers.get(cmd);
-            if (handler1.equals(handler1)) commands.add(cmd);
+            if (handler1.equals(handler)) commands.add(cmd);
         }
-        for (String cmd : commands) { //Removes associations for all found commands.
-            this.unregisterCommand(cmd);
-        }
+        return commands;
     }
 
     /**
@@ -159,12 +174,16 @@ public class TCommandDispatch {
         return metas.get(command);
     }
 
+    public TTabCompleter getCompleter(String command) {
+        return completers.get(command);
+    }
+
     /**
      * Called by our Delegate
      *
-     * @param sender  The sender of the command
-     * @param meta    The command's meta object.
-     * @param args The arguments passed.
+     * @param sender The sender of the command
+     * @param meta   The command's meta object.
+     * @param args   The arguments passed.
      */
     public void onCommand(CommandSender sender, TCommand meta, String[] args) {
         try {
@@ -248,18 +267,29 @@ public class TCommandDispatch {
 
         @Override
         public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-            if (args.length == 0) {
-                return ImmutableSet.of();
-            }
-            Set<String> matches = new HashSet<>();
-            String search = args[args.length - 1].toLowerCase();
-            for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-                if (player.getName().toLowerCase().startsWith(search.toLowerCase())) {
-                    matches.add(player.getName());
-                }
-            }
-
-            return matches;
+            TTabCompleter completer = this.commandDispatch.getCompleter(this.command.name());
+            if (completer == null) return getDefaultTabComplete();
+            List<String> list = completer.onTabComplete(sender, getType(sender), this, this.command, args);
+            if (list == null) return Lists.newArrayList();
+            else return getMatching(list, args[args.length - 1], true);
         }
+    }
+
+    public List<String> getDefaultTabComplete() {
+        List<String> list = Lists.newArrayList();
+        for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+            list.add(player.getName());
+        }
+        return list;
+    }
+
+    public List<String> getMatching(List<String> original, String query, boolean ignoreCase) {
+        List<String> matching = new ArrayList<>();
+        for (String ori : original) {
+            if (ori.toLowerCase().startsWith(query)) {
+                matching.add(ori);
+            }
+        }
+        return matching;
     }
 }

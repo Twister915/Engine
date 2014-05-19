@@ -189,6 +189,8 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
                 spy
         };
 
+        registerTabCompleter("gwhitelist", whitelistModule);
+
         for (TCommandHandler handler : commandHandlers) {
             registerCommandHandler(handler);
         }
