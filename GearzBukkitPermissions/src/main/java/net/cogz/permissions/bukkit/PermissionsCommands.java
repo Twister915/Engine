@@ -303,6 +303,7 @@ public class PermissionsCommands implements TCommandHandler {
             case "show":
             case "permissions":
                 if (args.length != 2) return TCommandStatus.INVALID_ARGS;
+                if (group == null) return TCommandStatus.INVALID_ARGS;
                 for (String perm : group.getPermissions()) {
                     String[] split = perm.split(",");
                     sender.sendMessage(split[0] + " : " + split[1]);
@@ -310,6 +311,7 @@ public class PermissionsCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             case "prefix":
                 if (args.length < 3) return TCommandStatus.INVALID_ARGS;
+                if (group == null) return TCommandStatus.INVALID_ARGS;
                 if (args[2].trim().equals("null")) {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-prefix-null", false, new String[]{"<target>", group.getName()}));
                     group.prefix = null;
@@ -323,6 +325,7 @@ public class PermissionsCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             case "suffix":
                 if (args.length < 3) return TCommandStatus.INVALID_ARGS;
+                if (group == null) return TCommandStatus.INVALID_ARGS;
                 if (args[2].trim().equals("null")) {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-suffix-null", false, new String[]{"<target>", group.getName()}));
                     group.suffix = null;
@@ -336,17 +339,20 @@ public class PermissionsCommands implements TCommandHandler {
                 return TCommandStatus.SUCCESSFUL;
             case "tabcolor":
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                if (group == null) return TCommandStatus.INVALID_ARGS;
                 group.tabColor = args[2].trim();
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-tab-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
             case "namecolor":
+                if (group == null) return TCommandStatus.INVALID_ARGS;
                 group.nameColor = args[2].trim();
                 sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.set-name-color", true, new String[]{"<color>", getChatColorFormatted(args[2])}));
                 group.save();
                 return TCommandStatus.SUCCESSFUL;
             case "addinheritance":
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                if (group == null) return TCommandStatus.INVALID_ARGS;
                 PermGroup toAdd = permsManager.getGroup(args[2]);
                 if (toAdd == null) {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group"));
@@ -358,6 +364,7 @@ public class PermissionsCommands implements TCommandHandler {
             case "removeinheritance":
                 if (!sender.hasPermission("gearz.permissions.group.inheritance")) return TCommandStatus.PERMISSIONS;
                 if (args.length != 3) return TCommandStatus.INVALID_ARGS;
+                if (group == null) return TCommandStatus.INVALID_ARGS;
                 PermGroup toRemove = permsManager.getGroup(args[2]);
                 if (toRemove == null) {
                     sender.sendMessage(GearzBukkitPermissions.getInstance().getFormat("formats.null-group"));
