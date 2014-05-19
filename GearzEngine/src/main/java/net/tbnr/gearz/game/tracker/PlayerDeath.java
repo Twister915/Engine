@@ -11,8 +11,10 @@
 
 package net.tbnr.gearz.game.tracker;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import net.tbnr.gearz.game.GearzGame;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -26,16 +28,18 @@ import org.bukkit.event.entity.EntityDamageEvent;
  * @author jake
  * @since 3/30/2014
  */
+@ToString
+@Data
 public class PlayerDeath {
-    @Setter @Getter private Player victim;
-    @Setter @Getter private Entity killer;
-    @Setter @Getter private String action;
-    @Setter @Getter private String itemStack;
-    @Setter @Getter private String from;
-    @Setter @Getter private String to;
-    @Setter @Getter private EntityDamageEvent event;
-    @Setter @Getter private String misc;
-    @Setter @Getter private GearzGame game;
+    private Player victim;
+    private Entity killer;
+    private String action;
+    private String itemStack;
+    private String from;
+    private String to;
+    private EntityDamageEvent event;
+    private String misc;
+    private GearzGame game;
 
     public PlayerDeath(Player victim, GearzGame game) {
         this.victim = victim;
