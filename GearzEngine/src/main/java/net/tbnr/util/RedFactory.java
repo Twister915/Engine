@@ -98,7 +98,7 @@ public class RedFactory implements GUtility, Listener {
 						wrapper.get().setEntityID(p.getEntityId());
 
 
-						if (p == null || !p.isValid()) continue;
+						if (!p.isValid()) continue;
 
 						for (Player pl : p.getWorld().getPlayers()) {
 							if(pl.equals(p) || pl.getLocation().distanceSquared(p.getLocation()) > 2500) continue;
