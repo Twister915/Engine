@@ -184,6 +184,10 @@ public abstract class TPlugin extends JavaPlugin {
         return string;
     }
 
+    public final String getFormat(String formatPath, boolean color) {
+        return getFormat(formatPath, color, null);
+    }
+
     public final String getFormat(String formatPath, String[]... data) {
         return getFormat(formatPath, true, data);
     }
