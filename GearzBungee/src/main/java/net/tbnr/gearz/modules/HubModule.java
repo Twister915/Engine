@@ -14,6 +14,7 @@ package net.tbnr.gearz.modules;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -89,6 +90,11 @@ public class HubModule implements TCommandHandler, Listener {
         if (!ServerModule.getServerForBungee(player.getServer().getInfo()).isCanJoin()) {
             player.sendMessage(GearzBungee.getInstance().getFormat("server-cannot-disconnect", true));
             return TCommandStatus.SUCCESSFUL;
+        }
+        ServerInfo info = getAHubServer();
+        if (info == null) {
+            new HubServerReloadTask(this).run();
+            sender.sendMessage(ChatColor.RED + "No hub server found, refreshing servers, try again in a second!");
         }
         player.connect(getAHubServer());
         sender.sendMessage(GearzBungee.getInstance().getFormat("send-to-hub", true));
