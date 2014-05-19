@@ -23,6 +23,8 @@ import net.tbnr.gearz.player.GearzPlayer;
 @Data
 @AllArgsConstructor
 public class PlayerGameDeathEvent extends GearzEvent {
-    @Setter(AccessLevel.NONE) private GearzGame game;
-    @Setter(AccessLevel.NONE) private GearzPlayer dead;
+    @Setter(AccessLevel.NONE)
+    private GearzGame game;
+    @Setter(AccessLevel.NONE)
+    private GearzPlayer dead;
 }

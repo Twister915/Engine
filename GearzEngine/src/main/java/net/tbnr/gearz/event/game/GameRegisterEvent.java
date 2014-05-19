@@ -30,9 +30,15 @@ import org.bukkit.event.Cancellable;
  */
 @RequiredArgsConstructor
 public final class GameRegisterEvent extends GearzEvent implements Cancellable {
-    @Getter private final Class<? extends Arena> arena;
-    @Getter private final Class<? extends GearzGame> game;
-    @Getter private final GameMeta meta;
-    @Getter private final GearzPlugin plugin;
-    @Getter @Setter private boolean cancelled = false;
+    @Getter
+    private final Class<? extends Arena> arena;
+    @Getter
+    private final Class<? extends GearzGame> game;
+    @Getter
+    private final GameMeta meta;
+    @Getter
+    private final GearzPlugin plugin;
+    @Getter
+    @Setter
+    private boolean cancelled = false;
 }

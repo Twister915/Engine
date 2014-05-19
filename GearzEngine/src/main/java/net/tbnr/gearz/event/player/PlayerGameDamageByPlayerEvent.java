@@ -17,13 +17,15 @@ import net.tbnr.gearz.player.GearzPlayer;
 
 /**
  * Created by Joey on 1/12/14.
- *
+ * <p/>
  * Purpose Of File:
- *
+ * <p/>
  * Latest Change:
  */
 public final class PlayerGameDamageByPlayerEvent extends PlayerGameDamageEvent {
-    @NonNull @Getter private final GearzPlayer damager;
+    @NonNull
+    @Getter
+    private final GearzPlayer damager;
 
     public PlayerGameDamageByPlayerEvent(PlayerGameDamageEvent event, GearzPlayer damager) {
         super(event.getGame(), event.getPlayer(), event.getDamage(), event.isCancelled());

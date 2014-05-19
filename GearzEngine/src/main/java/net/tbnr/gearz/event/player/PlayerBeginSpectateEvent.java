@@ -26,6 +26,8 @@ import net.tbnr.gearz.player.GearzPlayer;
  */
 @AllArgsConstructor
 public final class PlayerBeginSpectateEvent extends GearzEvent {
-    @Getter private final GearzPlayer player;
-    @Getter private final GearzGame game;
+    @Getter
+    private final GearzPlayer player;
+    @Getter
+    private final GearzGame game;
 }

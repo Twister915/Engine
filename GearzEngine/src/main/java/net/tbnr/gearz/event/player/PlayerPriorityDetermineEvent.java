@@ -26,5 +26,6 @@ public final class PlayerPriorityDetermineEvent extends GearzEvent implements Ca
     private boolean cancelled;
     private boolean absolutePriority = false;
     private String joinMessage = null;
-    @NonNull private GearzPlayer player;
+    @NonNull
+    private GearzPlayer player;
 }

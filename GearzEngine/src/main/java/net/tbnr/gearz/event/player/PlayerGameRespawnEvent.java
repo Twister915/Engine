@@ -20,6 +20,8 @@ import net.tbnr.gearz.player.GearzPlayer;
 @Data
 @AllArgsConstructor
 public final class PlayerGameRespawnEvent extends GearzEvent {
-    @Setter(AccessLevel.NONE) private GearzPlayer player;
-    @Setter(AccessLevel.NONE) private GearzGame game;
+    @Setter(AccessLevel.NONE)
+    private GearzPlayer player;
+    @Setter(AccessLevel.NONE)
+    private GearzGame game;
 }

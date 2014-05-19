@@ -24,8 +24,11 @@ import org.bukkit.event.Cancellable;
 @Data
 @AllArgsConstructor
 public class PlayerGameDamageEvent extends GearzEvent implements Cancellable {
-    @Setter(AccessLevel.NONE) private GearzGame game;
-    @Setter(AccessLevel.NONE) private GearzPlayer player;
-    @Setter(AccessLevel.NONE) private double damage;
+    @Setter(AccessLevel.NONE)
+    private GearzGame game;
+    @Setter(AccessLevel.NONE)
+    private GearzPlayer player;
+    @Setter(AccessLevel.NONE)
+    private double damage;
     private boolean cancelled;
 }

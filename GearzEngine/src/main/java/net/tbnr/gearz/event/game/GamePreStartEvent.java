@@ -27,7 +27,12 @@ import org.bukkit.event.Cancellable;
  */
 @RequiredArgsConstructor
 public final class GamePreStartEvent extends GearzEvent implements Cancellable {
-    @Getter private final GearzGame game;
-    @Getter @Setter private boolean cancelled = false;
-    @Getter @Setter private String reasonCancelled;
+    @Getter
+    private final GearzGame game;
+    @Getter
+    @Setter
+    private boolean cancelled = false;
+    @Getter
+    @Setter
+    private String reasonCancelled;
 }

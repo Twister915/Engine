@@ -15,9 +15,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * <p>
+ * <p/>
  * Latest Change:
- * <p>
+ * <p/>
  *
  * @author Jake
  * @since 5/4/2014

@@ -17,13 +17,15 @@ import net.tbnr.gearz.player.GearzPlayer;
 
 /**
  * Created by Joey on 1/12/14.
- *
+ * <p/>
  * Purpose Of File:
- *
+ * <p/>
  * Latest Change:
  */
 public final class PlayerGameKillEvent extends PlayerGameDeathEvent {
-    @Getter private final GearzPlayer killer;
+    @Getter
+    private final GearzPlayer killer;
+
     public PlayerGameKillEvent(GearzGame game, GearzPlayer dead, GearzPlayer killer) {
         super(game, dead);
         this.killer = killer;
