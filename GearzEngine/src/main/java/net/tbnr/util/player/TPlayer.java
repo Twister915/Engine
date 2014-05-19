@@ -192,7 +192,7 @@ public final class TPlayer {
      * @param sound  The sound.
      * @param volume The volume.
      */
-    public void playSound(Sound sound, int volume) {
+    public void playSound(Sound sound, Integer volume) {
         this.playSound(sound, volume, 0);
     }
 
@@ -212,7 +212,7 @@ public final class TPlayer {
      * @param volume The volume.
      * @param pitch  The pitch.
      */
-    public void playSound(Sound sound, int volume, int pitch) {
+    public void playSound(Sound sound, Integer volume, Integer pitch) {
         if (!this.isOnline()) return;
         this.getPlayer().playSound(getPlayer().getLocation(), sound, volume, pitch);
     }
@@ -225,7 +225,7 @@ public final class TPlayer {
      * @param intensity The intensity of the potion effect.
      * @param ambient   Is this potion effect ambient? Check Bukkit docs for more info on this one.
      */
-    public void addPotionEffect(PotionEffectType type, int length, int intensity, boolean ambient) {
+    public void addPotionEffect(PotionEffectType type, Integer length, Integer intensity, boolean ambient) {
         PotionEffect toAdd = new PotionEffect(type, (length == Integer.MAX_VALUE ? Integer.MAX_VALUE : length * 20), intensity, ambient);
         this.getPlayer().addPotionEffect(toAdd);
     }
@@ -237,7 +237,7 @@ public final class TPlayer {
      * @param length    The length (I believe in ticks).
      * @param intensity The intensity of the potion effect.
      */
-    public void addPotionEffect(PotionEffectType type, int length, int intensity) {
+    public void addPotionEffect(PotionEffectType type, Integer length, Integer intensity) {
         this.addPotionEffect(type, length, intensity, true);
     }
 
@@ -247,7 +247,7 @@ public final class TPlayer {
      * @param type   The potion effect type.
      * @param length The length in ticks
      */
-    public void addPotionEffect(PotionEffectType type, int length) {
+    public void addPotionEffect(PotionEffectType type, Integer length) {
         this.addPotionEffect(type, length, 0);
     }
 
@@ -266,7 +266,7 @@ public final class TPlayer {
      * @param type      The type of the potion effect.
      * @param intensity The intensity of the potion effect. (0 = Level 1)
      */
-    public void addInfinitePotionEffect(PotionEffectType type, int intensity) {
+    public void addInfinitePotionEffect(PotionEffectType type, Integer intensity) {
         this.addPotionEffect(type, Integer.MAX_VALUE, intensity);
     }
 
@@ -350,7 +350,7 @@ public final class TPlayer {
      * @param lore       The lore of the item
      * @param slot       The slot to put the item in
      */
-    public ItemStack giveItem(Material type, int quantity, short data_value, String title, String[] lore, int slot) {
+    public ItemStack giveItem(Material type, Integer quantity, short data_value, String title, String[] lore, Integer slot) {
         Player player = this.getPlayer();
         if (type == null || quantity < 1) return null;
 
@@ -363,7 +363,7 @@ public final class TPlayer {
         itemStack.setItemMeta(meta);
         //HotBar slots are from 1-9
         if (slot < 1 || slot > 9) {
-            int toGive = quantity;
+            Integer toGive = quantity;
             while (toGive > 0) {
                 itemStack.setAmount(Math.min(itemStack.getMaxStackSize(), toGive));
                 player.getInventory().addItem(itemStack);
@@ -384,7 +384,7 @@ public final class TPlayer {
      * @param title      The title of the item.
      * @param lore       The lore of the item
      */
-    public ItemStack giveItem(Material type, int quantity, short data_value, String title, String[] lore) {
+    public ItemStack giveItem(Material type, Integer quantity, short data_value, String title, String[] lore) {
         return giveItem(type, quantity, data_value, title, lore, -1);
     }
 
@@ -396,7 +396,7 @@ public final class TPlayer {
      * @param data_value The data value (used for wool colors, etc)
      * @param title      The title of the item.
      */
-    public ItemStack giveItem(Material type, int quantity, short data_value, String title) {
+    public ItemStack giveItem(Material type, Integer quantity, short data_value, String title) {
         return giveItem(type, quantity, data_value, title, null);
     }
 
@@ -407,7 +407,7 @@ public final class TPlayer {
      * @param quantity   The quantity of the item
      * @param data_value The data value (used for wool colors, etc)
      */
-    public ItemStack giveItem(Material type, int quantity, short data_value) {
+    public ItemStack giveItem(Material type, Integer quantity, short data_value) {
         return giveItem(type, quantity, data_value, null);
     }
 
@@ -417,7 +417,7 @@ public final class TPlayer {
      * @param type     The material of the item
      * @param quantity The quantity of the item
      */
-    public ItemStack giveItem(Material type, int quantity) {
+    public ItemStack giveItem(Material type, Integer quantity) {
         return giveItem(type, quantity, (short) 0);
     }
 
@@ -435,7 +435,7 @@ public final class TPlayer {
      * @param quantity How many of the items to remove
      * @return If the item was removed (if the user had enough).
      */
-    public boolean removeItem(Material material, int quantity) {
+    public boolean removeItem(Material material, Integer quantity) {
         if (!getPlayer().getInventory().contains(material, quantity)) {
             return false;
         }
@@ -706,7 +706,7 @@ public final class TPlayer {
         this.sidebar.setDisplayName(title);
     }
 
-    public void setScoreBoardSide(String key, int value) {
+    public void setScoreBoardSide(String key, Integer value) {
         if (!this.isOnline()) return;
 
         Score score = this.sidebar.getScore(key.substring(0, Math.min(key.length(), 15)));
@@ -733,12 +733,12 @@ public final class TPlayer {
         @Getter
         private final float offset;
         @Getter
-        private final int count;
+        private final Integer count;
         @Getter
         private final float speed;
         private final List<ParticleEffect> particleEffectTypes;
 
-        public TParticleEffect(Location location, float height, float offset, int count, float speed, ParticleEffect... particleEffectType) {
+        public TParticleEffect(Location location, float height, float offset, Integer count, float speed, ParticleEffect... particleEffectType) {
             this.location = location;
             this.height = height;
             this.offset = offset;
