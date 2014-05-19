@@ -27,6 +27,7 @@ import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
+import net.tbnr.util.StringUtils;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
 import net.tbnr.util.bungee.command.TCommandHandler;
@@ -296,17 +297,11 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     }
 
     public String getFormat(String key, boolean prefix, boolean color, String[]... datas) {
-        if (this.strings.getProperty(key) == null) {
-            return key;
-        }
-        String property = this.strings.getProperty(key);
-        if (prefix)
-            property = ChatColor.translateAlternateColorCodes('&', this.strings.getProperty("prefix")) + property;
-        property = ChatColor.translateAlternateColorCodes('&', property);
+        String property = ChatColor.translateAlternateColorCodes('&', this.strings.getProperty(prefix ? this.strings.getProperty("prefix") : "" + key, ""));
         if (datas == null) return property;
         for (String[] data : datas) {
             if (data.length != 2) continue;
-            property = property.replaceAll(data[0], data[1]);
+            property = StringUtils.replace(property, data[0], data[1]);
         }
         if (color) property = ChatColor.translateAlternateColorCodes('&', property);
         return property;
