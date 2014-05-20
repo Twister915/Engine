@@ -142,6 +142,7 @@ public final class TPlayer {
     }
 
     public void logIp(String ip) {
+        if (ip == null) return;
         addToList("ips", ip);
         this.save();
     }
@@ -330,25 +331,25 @@ public final class TPlayer {
 	}
 
     /**
-     * Test is player has certain potion effect
+     * Test if a {@link TPlayer} has certain {@link PotionEffectType}
      *
-     * @param e ~ Potion Type
-     * @return True if the player does
+     * @param effect - The {@link PotionEffectType} to test for.
+     * @return True if the {@link TPlayer} has the {@link PotionEffectType}
      */
-    public boolean hasPotionEffect(PotionEffectType e) {
-        return e != null && getPlayer().hasPotionEffect(e);
-
+    public boolean hasPotionEffect(PotionEffectType effect) {
+        return effect != null && getPlayer().hasPotionEffect(effect);
     }
 
     /**
      * Give an item to a {@link net.tbnr.util.player.TPlayer}
      *
-     * @param type       The material of the item
+     * @param type       The {@link Materia}l of the item
      * @param quantity   The quantity of the item
-     * @param data_value The data value (used for wool colors, etc)
+     * @param data_value The data value (used for wool colors, etc) @see {@link DyeColor}
      * @param title      The title of the item.
      * @param lore       The lore of the item
      * @param slot       The slot to put the item in
+     * @return the created {@link ItemStack}
      */
     public ItemStack giveItem(Material type, Integer quantity, short data_value, String title, String[] lore, Integer slot) {
         Player player = this.getPlayer();
@@ -378,11 +379,12 @@ public final class TPlayer {
     /**
      * Give an item to a {@link net.tbnr.util.player.TPlayer}
      *
-     * @param type       The material of the item
+     * @param type       The {@link Material} of the item
      * @param quantity   The quantity of the item
-     * @param data_value The data value (used for wool colors, etc)
+     * @param data_value The data value (used for wool colors, etc) @see {@link DyeColor}
      * @param title      The title of the item.
      * @param lore       The lore of the item
+     * @return the created {@link ItemStack}
      */
     public ItemStack giveItem(Material type, Integer quantity, short data_value, String title, String[] lore) {
         return giveItem(type, quantity, data_value, title, lore, -1);
@@ -391,10 +393,11 @@ public final class TPlayer {
     /**
      * Give an item to a {@link net.tbnr.util.player.TPlayer}
      *
-     * @param type       The material of the item
+     * @param type       The {@link Material} of the item
      * @param quantity   The quantity of the item
      * @param data_value The data value (used for wool colors, etc)
      * @param title      The title of the item.
+     * @return the created {@link ItemStack}
      */
     public ItemStack giveItem(Material type, Integer quantity, short data_value, String title) {
         return giveItem(type, quantity, data_value, title, null);
@@ -403,9 +406,10 @@ public final class TPlayer {
     /**
      * Give an item to a player
      *
-     * @param type       The material of the item
+     * @param type       The {@link Material} of the item
      * @param quantity   The quantity of the item
      * @param data_value The data value (used for wool colors, etc)
+     * @return the created {@link ItemStack}
      */
     public ItemStack giveItem(Material type, Integer quantity, short data_value) {
         return giveItem(type, quantity, data_value, null);

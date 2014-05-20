@@ -792,6 +792,19 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     @EventHandler
+    public final void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        PlayerType player = resolvePlayer(event.getPlayer());
+        if (!isIngame(player)) {
+            return;
+        }
+        if (canBuild(player) && !isSpectating(player)) {
+            return;
+        }
+        player.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public final void onHangingDestroy(HangingBreakByEntityEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
