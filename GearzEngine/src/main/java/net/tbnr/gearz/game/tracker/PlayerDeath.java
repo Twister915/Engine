@@ -28,7 +28,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
  * @author jake
  * @since 3/30/2014
  */
-@ToString
+@ToString(exclude = {"game"})
 @Data
 public class PlayerDeath {
     private Player victim;

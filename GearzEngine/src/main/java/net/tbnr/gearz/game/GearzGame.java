@@ -903,28 +903,23 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         DeathMessageProcessor processor = new DeathMessageProcessor(event, this);
         final PlayerDeath death = processor.processDeath();
         final Logger logger = Gearz.getInstance().getLogger();
-        logger.info("Processed death: " + death.toString());
         if (death.getCredited() != null) {
-            logger.info("Credited is not null");
             final PlayerType player = resolvePlayer(death.getCredited());
-            logger.info("Killer is " + player.getUsername());
             Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
                 @Override
                 public void run() {
                     playerKilledPlayer(player, dead);
-                    logger.info("Calling for killer: " + player + " and dead " + dead);
                 }
             }, 2L);
         } else {
-            fakeDeath(dead);
-            logger.info("Faking NULL death for " + dead.getUsername());
             Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
                 @Override
                 public void run() {
                     playerKilled(dead, death.getCredited());
-                    logger.info("Calling NULL METHOD for killer: " + death.getCredited() + " and dead " + dead);
+                    fakeDeath(dead);
                 }
             }, 2L);
+
         }
         broadcast(death.getDeathMessage());
     }
