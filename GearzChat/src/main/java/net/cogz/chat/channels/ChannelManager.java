@@ -116,7 +116,7 @@ public class ChannelManager {
     private void unregisterChannel(Channel channel) {
         if (channels.contains(channel)) {
             for (Player player : channel.getMembers()) {
-                setChannel(player, getDefaultChannel());
+                setChannel(player, getDefaultChannel(), true);
             }
             channels.remove(channel);
         }
@@ -220,13 +220,28 @@ public class ChannelManager {
      * @param player  player to set the channel of
      * @param channel channel to set the player to
      */
-    public void setChannel(Player player, Channel channel) {
+    public void setChannel(Player player, Channel channel, boolean isNecessary) {
+        Channel oldChannel = null;
         if (this.playerChannels.containsKey(player.getName())) {
-            this.playerChannels.get(player.getName()).removeMember(player);
+            oldChannel = this.playerChannels.get(player.getName());
+        }
+        ChannelSwitchEvent calledEvent = new ChannelSwitchEvent(player, oldChannel, channel, isNecessary);
+        Bukkit.getPluginManager().callEvent(calledEvent);
+
+        if (calledEvent.isCancelled()) {
+            return;
         }
 
-        this.playerChannels.put(player.getName(), channel);
+        if (oldChannel != null) {
+            oldChannel.removeMember(player);
+        }
+
+        this.playerChannels.put(player.getName(), calledEvent.getNewChannel());
         channel.addMember(player);
+    }
+
+    public void setChannel(Player player, Channel channel) {
+        this.setChannel(player, channel, false);
     }
 
     /**
@@ -243,7 +258,7 @@ public class ChannelManager {
      * Gets a {@link Player}'s channel
      *
      * @param player player to get the channel of
-     * @return the channel of the player paramater
+     * @return the channel of the player parameter
      */
     public Channel getChannel(Player player) {
         return this.playerChannels.get(player.getName());

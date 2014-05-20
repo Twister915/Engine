@@ -56,7 +56,7 @@ public interface BaseChannel {
      *
      * @return channel permission
      */
-    public String getListeningPermission();
+    public String getPermission();
 
     /**
      * Whether or not the channel has a permission. Checks if the permisison is null or is empty.

@@ -11,6 +11,7 @@
 
 package net.cogz.chat.channels;
 
+import lombok.Data;
 import lombok.ToString;
 import net.cogz.chat.channels.base.BaseChannel;
 import net.tbnr.gearz.netcommand.NetCommand;
@@ -35,6 +36,7 @@ import java.util.List;
  * @author Jake
  * @since 1/16/2014
  */
+@Data
 @ToString(exclude = {"members", "format"})
 public class Channel implements BaseChannel {
     private String name;
@@ -53,28 +55,8 @@ public class Channel implements BaseChannel {
     }
 
     @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public String getFormat() {
-        return this.format;
-    }
-
-    @Override
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    @Override
-    public String getListeningPermission() {
-        return this.permission;
-    }
-
-    @Override
     public boolean hasPermission() {
-        return permission == null || !permission.equals("");
+        return permission != null && !permission.equals("");
     }
 
     @Override
@@ -88,45 +70,17 @@ public class Channel implements BaseChannel {
     }
 
     @Override
-    public boolean isCrossServer() {
-        return this.crossServer;
-    }
-
-    @Override
-    public void setCrossServer(boolean crossServer) {
-        this.crossServer = crossServer;
-    }
-
-    @Override
-    public boolean isFiltered() {
-        return this.filtered;
-    }
-
-    @Override
-    public void setFiltered(boolean filtered) {
-        this.filtered = filtered;
-    }
-
-    @Override
     public void sendMessage(String message, Player sender) {
         for (Player receiver : Bukkit.getOnlinePlayers()) {
             if (!receiver.isValid()) continue;
             if (this.hasPermission()) {
-                if (receiver.hasPermission(getListeningPermission())) {
+                if (receiver.hasPermission(getPermission())) {
                     receiver.sendMessage(message);
                 }
             } else {
                 receiver.sendMessage(message);
             }
         }
-        //if (this.isCrossServer()) {
-            //NetCommand.withName("chat").withArg("channel", this.name).withArg("message", message);
-        //}
-    }
-
-    @Override
-    public List<Player> getMembers() {
-        return members;
     }
 
     /**
