@@ -14,7 +14,6 @@ package net.tbnr.gearz;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -27,23 +26,17 @@ import net.tbnr.gearz.command.BaseReceiver;
 import net.tbnr.gearz.command.NetCommandDispatch;
 import net.tbnr.gearz.modules.*;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
-import net.tbnr.util.StringUtils;
 import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandStatus;
-import net.tbnr.util.io.FileUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -53,10 +46,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
      * Gearz Instance
      */
     private static GearzBungee instance;
-    /**
-     * Stores the static strings file loaded into memory
-     */
-    @Getter private Properties strings;
     /**
      * Responder object, in it's own thread
      */
@@ -119,11 +108,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
         //Set instance
         GearzBungee.instance = this;
-
-        //Load properties
-        if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
-        this.strings = new Properties();
-        reloadStrings();
 
         //Setup redis and database
         GModel.setDefaultDatabase(this.getMongoDB());
@@ -202,22 +186,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
-    public void reloadStrings() {
-        try {
-            this.strings.load(new FileInputStream(getDataFolder() + File.separator + "strings.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveStrings() {
-        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"), this.getClass());
-    }
-
-    public void resetStrings() {
-        saveStrings();
-        reloadStrings();
-    }
 
     @Override
     protected void stop() {
@@ -298,32 +266,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         return this.playerManager;
     }
 
-    public String getFormat(String key, boolean prefix, boolean color, String[]... datas) {
-        String property = ChatColor.translateAlternateColorCodes('&', this.strings.getProperty(prefix ? this.strings.getProperty("prefix") : "" + key, ""));
-        if (datas == null) return property;
-        for (String[] data : datas) {
-            if (data.length != 2) continue;
-            property = StringUtils.replace(property, data[0], data[1]);
-        }
-        if (color) property = ChatColor.translateAlternateColorCodes('&', property);
-        return property;
-    }
-
-    public String getFormat(String key, boolean prefix, boolean color) {
-        return getFormat(key, prefix, color, null);
-    }
-
-    public String getFormat(String key, String[]... data) {
-        return getFormat(key, false, false, data);
-    }
-
-    public String getFormat(String key, boolean prefix) {
-        return getFormat(key, prefix, true);
-    }
-
-    public String getFormat(String key) {
-        return getFormat(key, true);
-    }
 
     public Jedis getJedisClient() {
         return this.pool.getResource();

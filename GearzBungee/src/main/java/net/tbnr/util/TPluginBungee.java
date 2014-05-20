@@ -11,19 +11,27 @@
 
 package net.tbnr.util;
 
+import com.google.common.base.Preconditions;
 import com.mongodb.*;
 import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.util.bungee.command.TCommandDispatch;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TTabCompleter;
 import net.tbnr.util.bungee.cooldowns.TCooldownManager;
+import net.tbnr.util.io.FileUtil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,11 +43,16 @@ import java.util.List;
 public abstract class TPluginBungee extends ConfigurablePlugin {
     private TCommandDispatch commandDispatch;
     private static DB mongoDB = null;
+    private Properties properties;
 
     @Override
     public void onEnable() {
         if (this instanceof TDatabaseManagerBungee) getMongoDB();
         this.commandDispatch = new TCommandDispatch(this);
+        if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
+        this.properties = new Properties();
+        reloadStrings();
+
         this.start();
     }
 
@@ -151,4 +164,51 @@ public abstract class TPluginBungee extends ConfigurablePlugin {
     public static List<String> boxMessage(List<String> message) {
         return boxMessage(ChatColor.WHITE, message);
     }
+
+    public void reloadStrings() {
+        try {
+            this.properties.load(new FileInputStream(new File(getDataFolder(), "strings.properties")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveStrings() {
+        Plugin plugin = ProxyServer.getInstance().getPluginManager().getPlugin(this.getDescription().getName());
+        Preconditions.checkNotNull(plugin);
+        System.out.println(plugin.getClass().getSimpleName());
+        File f = new File(getDataFolder().getAbsolutePath());
+        if (!f.exists()) {
+            if (!f.mkdirs()) return;
+        }
+        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder(), "strings.properties"), plugin.getClass());
+    }
+
+    public String getFormat(String key, boolean prefix, boolean color, String[]... datas) {
+        String property = ChatColor.translateAlternateColorCodes('&', this.properties.getProperty(prefix ? this.properties.getProperty("prefix") : "" + key, ""));
+        if (datas == null) return property;
+        for (String[] data : datas) {
+            if (data.length != 2) continue;
+            property = StringUtils.replace(property, data[0], data[1]);
+        }
+        if (color) property = ChatColor.translateAlternateColorCodes('&', property);
+        return property;
+    }
+
+    public String getFormat(String key, boolean prefix, boolean color) {
+        return getFormat(key, prefix, color, null);
+    }
+
+    public String getFormat(String key, String[]... data) {
+        return getFormat(key, false, false, data);
+    }
+
+    public String getFormat(String key, boolean prefix) {
+        return getFormat(key, prefix, true);
+    }
+
+    public String getFormat(String key) {
+        return getFormat(key, true);
+    }
+
 }
