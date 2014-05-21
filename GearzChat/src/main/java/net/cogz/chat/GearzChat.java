@@ -29,11 +29,16 @@ import net.tbnr.util.TPlugin;
  * @since 4/14/2014
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class GearzChat extends TPlugin {
-    @Getter public static GearzChat instance;
-    @Getter private Chat chat;
-    @Getter private ChannelManager channelManager;
-    @Getter GearzConfig channelConfig;
+public final class GearzChat extends TPlugin {
+    @Getter
+    private static GearzChat instance;
+    @Getter
+    private Chat chat;
+    @Getter
+    private ChannelManager channelManager;
+    @Getter
+    private GearzConfig channelConfig;
+
     @Override
     public void enable() {
         GearzChat.instance = this;

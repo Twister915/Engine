@@ -41,7 +41,7 @@ import java.util.List;
  * @author Jake
  * @since Unknown
  */
-public class PermissionsManager extends GearzPermissions implements Listener {
+public final class PermissionsManager extends GearzPermissions implements Listener {
     private final List<ProxiedPlayer> playersAlreadyConnected = new ArrayList<>();
 
     @Override

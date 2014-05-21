@@ -13,7 +13,7 @@ package net.tbnr.gearz.command;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.tbnr.gearz.GearzBungee;
+import net.tbnr.util.ConnectionUtils;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class BaseReceiver {
         String server = (String) s;
         ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(player);
         if (player1 == null) return;
-        GearzBungee.connectPlayer(player1, server);
+        ConnectionUtils.connectPlayer(player1, server);
     }
 
     @NetCommandHandler(args = {"name"}, name = "update_p")

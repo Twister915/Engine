@@ -23,19 +23,20 @@ import java.util.concurrent.TimeUnit;
 /**
  * Bungee Plugin implementation of the
  * Gearz permissions API
- *
- * <p>
+ * <p/>
+ * <p/>
  * Latest Change: Run reload ASync
- * <p>
+ * <p/>
  *
  * @author Jake
  * @since Unknown
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class GearzBungeePermissions extends TPluginBungee {
+public final class GearzBungeePermissions extends TPluginBungee {
     @Getter
     private static GearzBungeePermissions instance;
-    @Getter private PermissionsManager permsManager;
+    @Getter
+    private PermissionsManager permsManager;
 
     @Override
     protected void start() {
@@ -59,5 +60,6 @@ public class GearzBungeePermissions extends TPluginBungee {
     }
 
     @Override
-    protected void stop() { }
+    protected void stop() {
+    }
 }

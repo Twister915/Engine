@@ -37,7 +37,7 @@ import java.util.List;
  * @author Joey
  * @since 9/29/2013
  */
-public class ChatManager implements Listener, TCommandHandler {
+public final class ChatManager implements Listener, TCommandHandler {
     @TCommand(
             name = "censor",
             description = "Command for managing censored words.",

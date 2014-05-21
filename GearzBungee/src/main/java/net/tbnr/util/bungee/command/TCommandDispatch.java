@@ -28,7 +28,7 @@ import java.util.*;
 /**
  * This is the dispatcher for all commands. It will handle commands and dispatch them to the proper methods.
  */
-public class TCommandDispatch {
+public final class TCommandDispatch {
     /**
      * Constructs the dispatcher
      *

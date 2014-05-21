@@ -210,5 +210,4 @@ public abstract class TPluginBungee extends ConfigurablePlugin {
     public String getFormat(String key) {
         return getFormat(key, true);
     }
-
 }

@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
  * @author Jake
  * @since 12/28/2013
  */
-public class Filter {
+public final class Filter {
     public static FilterData filter(String message, Player player) {
         FilterData filterData = new FilterData(message, player, false);
         if (player.hasPermission("gearz.chat.filters.bypass")) return filterData;

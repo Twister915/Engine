@@ -29,7 +29,7 @@ import java.util.HashMap;
  * @author Jake
  * @since Unknown
  */
-public class ReloadReceiver {
+public final class ReloadReceiver {
     @NetCommandHandler(args = {"reload"}, name = "permissions")
     public void permissions(HashMap<String, Object> args) {
         GearzBungeePermissions.getInstance().getPermsManager().reload();

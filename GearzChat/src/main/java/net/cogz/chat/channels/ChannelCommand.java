@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
  * @author Jake0oo0
  * @since 1/18/2014
  */
-public class ChannelCommand implements TCommandHandler {
+public final class ChannelCommand implements TCommandHandler {
 
     @TCommand(name = "channel", usage = "/channel <channel>", permission = "gearz.channels.command.switch", senders = {TCommandSender.Player}, description = "Allows the user to switch channels.")
     @SuppressWarnings("unused")

@@ -36,7 +36,7 @@ import java.util.Map;
  * @since Unknown
  */
 @SuppressWarnings("unused")
-public class Messaging implements TCommandHandler {
+public final class Messaging implements TCommandHandler {
     final Map<String, String> lastReplies = new HashMap<>();
 
     @TCommand(senders = {TCommandSender.Player, TCommandSender.Console}, usage = "/msg <player>", permission = "gearz.message", name = "msg", aliases = {"m", "w", "whisper", "tell", "t"})

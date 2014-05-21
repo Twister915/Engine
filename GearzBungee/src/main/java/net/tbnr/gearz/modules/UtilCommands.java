@@ -33,7 +33,7 @@ import net.tbnr.util.bungee.command.TCommandStatus;
  * @author George
  * @since 1/5/2013
  */
-public class UtilCommands implements TCommandHandler, Listener {
+public final class UtilCommands implements TCommandHandler, Listener {
 
     @TCommand(name = "help",
             permission = "gearz.help",

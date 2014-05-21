@@ -12,6 +12,7 @@
 package net.cogz.permissions.bukkit;
 
 import com.google.common.collect.Lists;
+import lombok.RequiredArgsConstructor;
 import net.cogz.permissions.PermGroup;
 import net.cogz.permissions.PermPlayer;
 import net.tbnr.gearz.Gearz;
@@ -38,14 +39,9 @@ import java.util.Map;
  * @author Jake
  * @since Unknown
  */
+@RequiredArgsConstructor
 public class PermissionsCommands implements TCommandHandler, TTabCompleter {
-
-    private PermissionsManager permsManager;
-
-    public PermissionsCommands() {
-        // Get the perm manager current instance
-        permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
-    }
+    private final PermissionsManager permsManager;
 
     @TCommand(
             name = "player",

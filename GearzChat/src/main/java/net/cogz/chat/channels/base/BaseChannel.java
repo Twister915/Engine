@@ -59,7 +59,7 @@ public interface BaseChannel {
     public String getPermission();
 
     /**
-     * Whether or not the channel has a permission. Checks if the permisison is null or is empty.
+     * Whether or not the channel has a permission. Checks if the permission is null or is empty.
      *
      * @return whether or not a permission exists
      */

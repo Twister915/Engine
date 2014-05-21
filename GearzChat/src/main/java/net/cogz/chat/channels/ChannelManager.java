@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
  * @author Jake
  * @since 1/16/2014
  */
-public class ChannelManager {
+public final class ChannelManager {
     /**
      * Whether or not channels are enabled
      */
@@ -60,6 +60,9 @@ public class ChannelManager {
      * A map of players to their respective channels
      */
     private final Map<String, Channel> playerChannels = new HashMap<>();
+
+    public static final char COLOR_CHAR = '\u0026';
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(COLOR_CHAR) + "[0-9A-FK-OR]");
 
     public ChannelManager() {
         enabled = GearzChat.getInstance().getChannelConfig().getConfig().getBoolean("channels.enabled");
@@ -183,9 +186,6 @@ public class ChannelManager {
         Bukkit.getConsoleSender().sendMessage(finalMessage);
         return channel;
     }
-
-    public static final char COLOR_CHAR = '\u0026';
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(COLOR_CHAR) + "[0-9A-FK-OR]");
 
     private String formatMessage(String message, Player player) {
         String chanFormat = getCurrentChannel(player).getFormat();

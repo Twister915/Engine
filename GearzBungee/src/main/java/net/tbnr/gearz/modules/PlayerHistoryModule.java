@@ -30,7 +30,7 @@ import net.tbnr.util.bungee.command.TCommandStatus;
  * @author Jake
  * @since 3/29/2014
  */
-public class PlayerHistoryModule implements TCommandHandler {
+public final class PlayerHistoryModule implements TCommandHandler {
     @TCommand(usage = "/history <target>", senders = {TCommandSender.Player, TCommandSender.Console}, permission = "gearz.playerhistory", aliases = {"usernames"}, name = "playerhistory")
     @SuppressWarnings("unused")
     public TCommandStatus playerHistory(CommandSender sender, TCommandSender type, TCommand meta, String[] args) {

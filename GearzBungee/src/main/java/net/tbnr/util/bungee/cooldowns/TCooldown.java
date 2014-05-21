@@ -20,7 +20,7 @@ import java.util.Calendar;
  * Time: 11:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TCooldown {
+public final class TCooldown {
     private final long time_stored;
     private final long length;
 

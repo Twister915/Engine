@@ -48,7 +48,7 @@ import java.util.concurrent.TimeUnit;
  * @author Joey
  * @since Unknown
  */
-public class ShuffleModule implements TCommandHandler, Listener {
+public final class ShuffleModule implements TCommandHandler, Listener {
 
     private final HashMap<ProxiedPlayer, ShuffleSession> shuffleSessionHashMap = new HashMap<>();
 
@@ -103,7 +103,6 @@ public class ShuffleModule implements TCommandHandler, Listener {
     }
 
     @Data
-    @RequiredArgsConstructor
     public static class ShuffleSession implements Listener {
         @NonNull
         private final ProxiedPlayer player;
@@ -240,10 +239,8 @@ public class ShuffleModule implements TCommandHandler, Listener {
 
     }
 
-    @AllArgsConstructor
-    @ToString
+    @Data
     public static class ShuffleStateChanger implements Runnable {
-
         @Getter @NonNull
         private final ShuffleSession shuffleSession;
 

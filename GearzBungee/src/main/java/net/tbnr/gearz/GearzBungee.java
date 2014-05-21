@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.gearz.activerecord.GModel;
@@ -41,10 +40,11 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"NullArgumentToVariableArgMethod", "FieldCanBeLocal", "UnusedDeclaration"})
-public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
+public final class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
     /**
      * Gearz Instance
      */
+    @Getter
     private static GearzBungee instance;
     /**
      * Responder object, in it's own thread
@@ -52,11 +52,12 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     /**
      * The JEDIS pool object.
      */
+    @Getter
     private JedisPool pool;
     /**
      * Random number generator
      */
-    private static final Random random = new Random();
+    @Getter private static final Random random = new Random();
     /**
      * Stores the player manager.
      */
@@ -86,19 +87,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
     @Getter
     private SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-
-    /**
-     * Gets the current instance of the GearzBungee plugin.
-     *
-     * @return The instance.
-     */
-    public static GearzBungee getInstance() {
-        return GearzBungee.instance;
-    }
-
-    public static Random getRandom() {
-        return random;
-    }
 
     @Override
     protected void start() {
@@ -186,7 +174,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
     }
 
-
     @Override
     protected void stop() {
         saveConfig();
@@ -266,7 +253,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         return this.playerManager;
     }
 
-
     public Jedis getJedisClient() {
         return this.pool.getResource();
     }
@@ -296,20 +282,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         }
         if (msgFormat == null) return;
         sender.sendMessage(GearzBungee.getInstance().getFormat(msgFormat, true));
-    }
-
-    public static void connectPlayer(ProxiedPlayer player1, String server) {
-        ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(server);
-        if (serverInfo == null) {
-            player1.sendMessage(GearzBungee.getInstance().getFormat("server-not-online", true, true));
-            return;
-        }
-        if (player1.getServer().getInfo().getName().equals(server)) {
-            player1.sendMessage(GearzBungee.getInstance().getFormat("already-connected"));
-            return;
-        }
-        player1.sendMessage(GearzBungee.getInstance().getFormat("connecting", true, true));
-        player1.connect(serverInfo);
     }
 
     public List<String> getUserNames() {

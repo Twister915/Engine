@@ -12,11 +12,9 @@
 package net.tbnr.gearz.modules;
 
 import com.google.common.collect.Lists;
-import lombok.extern.java.Log;
 import net.craftminecraft.bungee.bungeeyaml.bukkitapi.file.FileConfiguration;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
@@ -39,8 +37,7 @@ import java.util.*;
  * @author Jake
  * @since 1/15/2014
  */
-@Log
-public class WhitelistModule implements TCommandHandler, Listener, TTabCompleter {
+public final class WhitelistModule implements TCommandHandler, Listener, TTabCompleter {
 
     Map<UUID, String> whitelisted = new HashMap<>();
 

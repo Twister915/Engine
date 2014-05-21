@@ -22,6 +22,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.tbnr.util.ConnectionUtils;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
@@ -46,7 +47,7 @@ import java.util.List;
  * @author Joey
  * @since 10/14/2013
  */
-public class HubModule implements TCommandHandler, Listener {
+public final class HubModule implements TCommandHandler, Listener {
 
     private List<Server> hubServers;
 
@@ -113,7 +114,7 @@ public class HubModule implements TCommandHandler, Listener {
                 aHubServer = getAHubServer();
             }
             if (aHubServer != null && !aHubServer.equals(info)) {
-                GearzBungee.connectPlayer(player, aHubServer.getName());
+                ConnectionUtils.connectPlayer(player, aHubServer.getName());
                 return;
             }
             Server server;
@@ -123,7 +124,7 @@ public class HubModule implements TCommandHandler, Listener {
                 return;
             }
             player.sendMessage(GearzBungee.getInstance().getFormat("hub-disconnected-disperse"));
-            GearzBungee.connectPlayer(player, server.getBungee_name());
+            ConnectionUtils.connectPlayer(player, server.getBungee_name());
             return;
         }
         event.setCancelServer(getAHubServer());

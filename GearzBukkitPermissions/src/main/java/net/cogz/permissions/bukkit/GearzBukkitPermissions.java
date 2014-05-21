@@ -44,7 +44,7 @@ public final class GearzBukkitPermissions extends TPlugin {
         getServer().getPluginManager().registerEvents(this.permsManager, this);
         Gearz.getInstance().setPermissionsDelegate(permsManager);
         Gearz.getInstance().activatePermissionsFeatures();
-        PermissionsCommands permsCommands = new PermissionsCommands();
+        PermissionsCommands permsCommands = new PermissionsCommands(this.permsManager);
         registerCommands(permsCommands);
         registerTabCompleter("group", permsCommands);
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {

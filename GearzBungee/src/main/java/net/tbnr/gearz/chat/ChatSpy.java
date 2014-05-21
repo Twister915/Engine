@@ -37,7 +37,7 @@ import java.util.Map;
  * @author Jake
  * @since 4/14/2014
  */
-public class ChatSpy implements Listener, TCommandHandler {
+public final class ChatSpy implements Listener, TCommandHandler {
 
     public static enum SpyType {
         Chat, Command, All

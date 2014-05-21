@@ -11,7 +11,6 @@
 
 package net.cogz.chat.channels;
 
-import lombok.extern.java.Log;
 import net.cogz.chat.GearzChat;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.event.game.GameStartEvent;
@@ -39,8 +38,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * @author Jake
  * @since 1/16/2014
  */
-@Log
-public class ChannelsListener implements Listener {
+public final class ChannelsListener implements Listener {
     private ChannelManager channelManager;
 
     public ChannelsListener(ChannelManager channelManager) {

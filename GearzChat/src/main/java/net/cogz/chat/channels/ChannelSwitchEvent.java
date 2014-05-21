@@ -28,14 +28,17 @@ import javax.annotation.Nullable;
  * @author Jake
  * @since 5/19/2014
  */
-public class ChannelSwitchEvent extends GearzEvent implements Cancellable {
+public final class ChannelSwitchEvent extends GearzEvent implements Cancellable {
     @Getter
     private Player player;
-    @Getter private Channel oldChannel;
+    @Getter
+    private Channel oldChannel;
     @Getter @Setter
     private Channel newChannel;
-    @Getter @Setter private boolean cancelled = false;
-    @Getter private boolean isNecessary = false;
+    @Getter @Setter
+    private boolean cancelled = false;
+    @Getter
+    private boolean isNecessary = false;
 
     public ChannelSwitchEvent(Player player, @Nullable Channel oldChannel, @Nonnull Channel newChannel, boolean isNecessary) {
         this.player = player;

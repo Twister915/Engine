@@ -38,7 +38,7 @@ import java.util.List;
  */
 @Data
 @ToString(exclude = {"members", "format"})
-public class Channel implements BaseChannel {
+public final class Channel implements BaseChannel {
     private String name;
     private String format;
     private String permission;

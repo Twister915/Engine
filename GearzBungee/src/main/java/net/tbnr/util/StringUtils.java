@@ -11,6 +11,12 @@
 
 package net.tbnr.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 /**
  * <p/>
  * Latest Change:
@@ -35,5 +41,24 @@ public class StringUtils {
         if (sb == null) return s;
         sb.append(s, start, s.length());
         return sb.toString();
+    }
+
+    public static <T> String formatList(List<? extends T> list, int max) {
+        StringBuilder builder = new StringBuilder();
+        int current = 0;
+        for (T aValue : list) {
+            if (current == max) break;
+            builder.append(aValue).append(", ");
+            current++;
+        }
+        if (list.size() > 0) {
+            builder.deleteCharAt(builder.length() - 2);
+        }
+        return builder.toString();
+    }
+
+    public static String formatDuration(Long mills) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault());
+        return sdf.format(new Date(mills - TimeZone.getDefault().getRawOffset()));
     }
 }

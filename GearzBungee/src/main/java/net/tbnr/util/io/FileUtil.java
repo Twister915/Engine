@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  *
  * Latest Change:
  */
-public class FileUtil {
+public final class FileUtil {
 
     /**
      * Downloads the {@link File} from the parameters

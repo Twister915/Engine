@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * List module, deals with the /list and /where command.
  */
-public class ListModule implements TCommandHandler, Listener {
+public final class ListModule implements TCommandHandler, Listener {
     @Getter
     public final Collection<ProxiedPlayer> staff = new HashSet<>(); //Cache this for efficiency, don't for loop it every tie someone types /list staff lol
 

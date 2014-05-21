@@ -26,7 +26,7 @@ import lombok.Getter;
  * @author Jake
  * @since 3/29/2014
  */
-public class UUIDUtil {
+public final class UUIDUtil {
     private static final String AGENT = "minecraft";
 
     public UUIDUtil(String user, UUIDCallback callback) {
