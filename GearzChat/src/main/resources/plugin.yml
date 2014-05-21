@@ -2,5 +2,5 @@ name: GearzChat
 version: 1.0
 authors: [Jake0oo0, Twister915]
 description: Chat Management Plugin for Gearz
-main: net.cogz.chat.GearzChat
+main: net.cogzmc.engine.chat.GearzChat
 depend: [Gearz]

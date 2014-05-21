@@ -2,7 +2,7 @@ name: Gearz
 version: 1.2
 authors: [Twister915, xIGBClutchIx, Thecraftgod, pokuit]
 description: o, dem gearz
-main: net.tbnr.gearz.Gearz
+main: net.cogzmc.engine.gearz.Gearz
 depend: [ProtocolLib]
 load: STARTUP
 permissions:

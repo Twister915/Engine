@@ -1,5 +1,5 @@
 name: GearzBungeePermissions
 version: 1.2
 author: Jake0oo0
-main: net.cogz.permissions.bungee.GearzBungeePermissions
+main: net.cogzmc.engine.permissions.bungee.GearzBungeePermissions
 depends: ['GearzBungee']
