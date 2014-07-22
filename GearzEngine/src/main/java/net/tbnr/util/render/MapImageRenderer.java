@@ -11,11 +11,13 @@
 
 package net.tbnr.util.render;
 
+import lombok.extern.java.Log;
 import org.bukkit.entity.Player;
 import org.bukkit.map.*;
 
 import java.awt.image.BufferedImage;
 
+@Log
 public class MapImageRenderer extends MapRenderer {
 
     private boolean hasRendered;
@@ -33,6 +35,7 @@ public class MapImageRenderer extends MapRenderer {
     @Override
     public void render(MapView view, final MapCanvas canvas, Player player) {
         if (!hasRendered && image != null && renderImageThread == null) {
+            log.info("[DEBUG] Running Map Render");
             renderImageThread = new Thread() {
                 @Override
                 public void run() {
@@ -45,4 +48,3 @@ public class MapImageRenderer extends MapRenderer {
         }
     }
 }
-
