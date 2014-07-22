@@ -49,7 +49,7 @@ import java.util.*;
  * @author Joey
  * @since 9/28/13
  */
-public class MotdHandler implements Listener, TCommandHandler {
+public final class MotdHandler implements Listener, TCommandHandler {
     private List<String> motd;
     private ServerPing.PlayerInfo[] pingInfo;
     private Integer index;
@@ -282,7 +282,6 @@ public class MotdHandler implements Listener, TCommandHandler {
     }
 
     @Data
-    @RequiredArgsConstructor
     private static class StaticMOTD {
         private final String motd;
         private final Date created = new Date();

@@ -18,6 +18,7 @@ import net.cogz.chat.GearzChat;
 import net.cogz.chat.filter.CensoredWord;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ import java.util.Map;
  * @author Jake
  * @since 12/28/2013
  */
-public class Chat {
+public final class Chat {
 
     /**
      * Whether or not chat is globally muted
@@ -50,11 +51,10 @@ public class Chat {
     /**
      * The last messages that a player sent
      */
-    @Getter Map<String, String> lastMessages = Maps.newHashMap();
+    @Getter private final Map<String, String> lastMessages = new HashMap<>();
 
     public Chat() {
         this.censoredWords = new ArrayList<>();
-        this.lastMessages = Maps.newHashMap();
         updateCensor();
     }
 

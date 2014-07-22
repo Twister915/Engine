@@ -12,11 +12,13 @@
 package net.tbnr.util.io;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.tbnr.gearz.GearzBungee;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.ProxySelector;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.logging.Logger;
  *
  * Latest Change:
  */
-public class FileUtil {
+public final class FileUtil {
 
     /**
      * Downloads the {@link File} from the parameters
@@ -99,7 +101,7 @@ public class FileUtil {
         boolean result = false;
 
         final URL resourceUrl = clazz.getClassLoader().getResource(resourceName);
-        final Logger logger = GearzBungee.getInstance().getLogger();
+        final Logger logger = ProxyServer.getInstance().getLogger();
 
         // 1Kb buffer
         byte[] buffer = new byte[1024];

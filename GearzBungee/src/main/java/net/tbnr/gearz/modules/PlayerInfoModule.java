@@ -24,6 +24,7 @@ import net.tbnr.gearz.player.bungee.GearzPlayer;
 import net.tbnr.gearz.player.bungee.GearzPlayerManager;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
+import net.tbnr.util.StringUtils;
 import net.tbnr.util.WeatherUtils;
 import net.tbnr.util.bungee.command.TCommand;
 import net.tbnr.util.bungee.command.TCommandHandler;
@@ -37,10 +38,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -142,9 +141,9 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
                 sender.sendMessage(formatData("Timezone", timezone == null ? "Error" : timezone));
                 sender.sendMessage(formatData("Local Time", tz == null ? "Error" : dateFormatter.format(new Date())));
                 GearzPlayer gearzPlayer = GearzPlayerManager.getGearzPlayer(player);
-                sender.sendMessage(formatData("Total Time Online", formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
-                sender.sendMessage(formatData("Previous IPs", formatList(gearzPlayer.getIPHistory(), 5)));
-                sender.sendMessage(formatData("Previous Usernames", formatList(gearzPlayer.getUsernameHistory(), 10)));
+                sender.sendMessage(formatData("Total Time Online", StringUtils.formatDuration((Long) gearzPlayer.getPlayerDocument().get("time-online"))));
+                sender.sendMessage(formatData("Previous IPs", StringUtils.formatList(gearzPlayer.getIPHistory(), 5)));
+                sender.sendMessage(formatData("Previous Usernames", StringUtils.formatList(gearzPlayer.getUsernameHistory(), 10)));
             }
         });
     }
@@ -158,25 +157,6 @@ public final class PlayerInfoModule implements TCommandHandler, Listener {
 
     private String formatData(String key, String value) {
         return "  " + GearzBungee.getInstance().getFormat("playerinfo-display-item", false, false, new String[]{"<key>", key}, new String[]{"<value>", value});
-    }
-
-    private String formatDuration(Long mills) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault());
-        return sdf.format(new Date(mills - TimeZone.getDefault().getRawOffset()));
-    }
-
-    private <T> String formatList(List<? extends T> list, int max) {
-        StringBuilder builder = new StringBuilder();
-        int current = 0;
-        for (T aValue : list) {
-            if (current == max) break;
-            builder.append(aValue).append(", ");
-            current++;
-        }
-        if (list.size() > 0) {
-            builder.deleteCharAt(builder.length() - 2);
-        }
-        return builder.toString();
     }
 
     @Override

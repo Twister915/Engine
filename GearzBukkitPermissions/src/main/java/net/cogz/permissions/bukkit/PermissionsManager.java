@@ -44,7 +44,7 @@ import java.util.Map;
  * @since Unknown
  */
 public class PermissionsManager extends GearzPermissions implements Listener, PermissionsDelegate {
-    private Map<String, Player> loggedPlayers = new HashMap<>();
+    private final Map<String, Player> loggedPlayers = new HashMap<>();
 
     @Override
     public List<String> onlinePlayers() {

@@ -14,10 +14,8 @@ package net.tbnr.gearz;
 import com.mongodb.BasicDBList;
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.tbnr.gearz.activerecord.GModel;
@@ -31,42 +29,35 @@ import net.tbnr.util.TDatabaseManagerBungee;
 import net.tbnr.util.TPluginBungee;
 import net.tbnr.util.bungee.command.TCommandHandler;
 import net.tbnr.util.bungee.command.TCommandStatus;
-import net.tbnr.util.io.FileUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"NullArgumentToVariableArgMethod", "FieldCanBeLocal", "UnusedDeclaration"})
-public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
+public final class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee {
     /**
      * Gearz Instance
      */
+    @Getter
     private static GearzBungee instance;
-    /**
-     * Stores the static strings file loaded into memory
-     */
-    @Getter private Properties strings;
     /**
      * Responder object, in it's own thread
      */
     /**
      * The JEDIS pool object.
      */
+    @Getter
     private JedisPool pool;
     /**
      * Random number generator
      */
-    private static final Random random = new Random();
+    @Getter private static final Random random = new Random();
     /**
      * Stores the player manager.
      */
@@ -97,19 +88,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
     @Getter
     private SimpleDateFormat readable = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
-    /**
-     * Gets the current instance of the GearzBungee plugin.
-     *
-     * @return The instance.
-     */
-    public static GearzBungee getInstance() {
-        return GearzBungee.instance;
-    }
-
-    public static Random getRandom() {
-        return random;
-    }
-
     @Override
     protected void start() {
         //Load config
@@ -118,11 +96,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
 
         //Set instance
         GearzBungee.instance = this;
-
-        //Load properties
-        if (!new File(getDataFolder() + File.separator + "strings.properties").exists()) saveStrings();
-        this.strings = new Properties();
-        reloadStrings();
 
         //Setup redis and database
         GModel.setDefaultDatabase(this.getMongoDB());
@@ -196,24 +169,9 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
             registerEvents(listener);
         }
 
+        registerTabCompleter("gwhitelist", whitelistModule);
+
         ProxyServer.getInstance().getScheduler().schedule(this, new ServerModule.BungeeServerReloadTask(), 0, 1, TimeUnit.SECONDS);
-    }
-
-    public void reloadStrings() {
-        try {
-            this.strings.load(new FileInputStream(getDataFolder() + File.separator + "strings.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveStrings() {
-        FileUtil.writeEmbeddedResourceToLocalFile("strings.properties", new File(getDataFolder() + File.separator + "strings.properties"), this.getClass());
-    }
-
-    public void resetStrings() {
-        saveStrings();
-        reloadStrings();
     }
 
     @Override
@@ -295,39 +253,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         return this.playerManager;
     }
 
-    public String getFormat(String key, boolean prefix, boolean color, String[]... datas) {
-        if (this.strings.getProperty(key) == null) {
-            return key;
-        }
-        String property = this.strings.getProperty(key);
-        if (prefix)
-            property = ChatColor.translateAlternateColorCodes('&', this.strings.getProperty("prefix")) + property;
-        property = ChatColor.translateAlternateColorCodes('&', property);
-        if (datas == null) return property;
-        for (String[] data : datas) {
-            if (data.length != 2) continue;
-            property = property.replaceAll(data[0], data[1]);
-        }
-        if (color) property = ChatColor.translateAlternateColorCodes('&', property);
-        return property;
-    }
-
-    public String getFormat(String key, boolean prefix, boolean color) {
-        return getFormat(key, prefix, color, null);
-    }
-
-    public String getFormat(String key, String[]... data) {
-        return getFormat(key, false, false, data);
-    }
-
-    public String getFormat(String key, boolean prefix) {
-        return getFormat(key, prefix, true);
-    }
-
-    public String getFormat(String key) {
-        return getFormat(key, true);
-    }
-
     public Jedis getJedisClient() {
         return this.pool.getResource();
     }
@@ -357,20 +282,6 @@ public class GearzBungee extends TPluginBungee implements TDatabaseManagerBungee
         }
         if (msgFormat == null) return;
         sender.sendMessage(GearzBungee.getInstance().getFormat(msgFormat, true));
-    }
-
-    public static void connectPlayer(ProxiedPlayer player1, String server) {
-        ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(server);
-        if (serverInfo == null) {
-            player1.sendMessage(GearzBungee.getInstance().getFormat("server-not-online", true, true));
-            return;
-        }
-        if (player1.getServer().getInfo().getName().equals(server)) {
-            player1.sendMessage(GearzBungee.getInstance().getFormat("already-connected"));
-            return;
-        }
-        player1.sendMessage(GearzBungee.getInstance().getFormat("connecting", true, true));
-        player1.connect(serverInfo);
     }
 
     public List<String> getUserNames() {

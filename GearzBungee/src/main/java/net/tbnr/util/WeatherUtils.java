@@ -26,7 +26,7 @@ import java.nio.charset.Charset;
  *
  * Latest Change:
  */
-public class WeatherUtils {
+public final class WeatherUtils {
 	private WeatherUtils() {
 	}
 

@@ -22,4 +22,6 @@ formats:
   removed-motd: "<motd>&c has been removed!"
   added-motd: "<motd>&a has been added!"
   list-motdlist: "&3<index>&a:&r <motd>"
+  spectating: "&cYou are spectating and can not change to that channel."
+  ingame: "&cYou are currently playing a game and can not change to that channel."
   

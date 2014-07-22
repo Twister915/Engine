@@ -13,7 +13,7 @@ package net.tbnr.util.render;
 
 import java.awt.*;
 
-public class ColorExBungee {
+public final class ColorExBungee {
     public static final ColorExBungee WHITE = new ColorExBungee(Color.decode("#000000"));
     private final int m_r;
     private final int m_g;

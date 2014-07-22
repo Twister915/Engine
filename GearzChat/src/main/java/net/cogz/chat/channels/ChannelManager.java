@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
  * @author Jake
  * @since 1/16/2014
  */
-public class ChannelManager {
+public final class ChannelManager {
     /**
      * Whether or not channels are enabled
      */
@@ -60,6 +60,9 @@ public class ChannelManager {
      * A map of players to their respective channels
      */
     private final Map<String, Channel> playerChannels = new HashMap<>();
+
+    public static final char COLOR_CHAR = '\u0026';
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(COLOR_CHAR) + "[0-9A-FK-OR]");
 
     public ChannelManager() {
         enabled = GearzChat.getInstance().getChannelConfig().getConfig().getBoolean("channels.enabled");
@@ -116,7 +119,7 @@ public class ChannelManager {
     private void unregisterChannel(Channel channel) {
         if (channels.contains(channel)) {
             for (Player player : channel.getMembers()) {
-                setChannel(player, getDefaultChannel());
+                setChannel(player, getDefaultChannel(), true);
             }
             channels.remove(channel);
         }
@@ -184,9 +187,6 @@ public class ChannelManager {
         return channel;
     }
 
-    public static final char COLOR_CHAR = '\u0026';
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(COLOR_CHAR) + "[0-9A-FK-OR]");
-
     private String formatMessage(String message, Player player) {
         String chanFormat = getCurrentChannel(player).getFormat();
         PermissionsDelegate perms = Gearz.getInstance().getPermissionsDelegate();
@@ -220,13 +220,28 @@ public class ChannelManager {
      * @param player  player to set the channel of
      * @param channel channel to set the player to
      */
-    public void setChannel(Player player, Channel channel) {
+    public void setChannel(Player player, Channel channel, boolean isNecessary) {
+        Channel oldChannel = null;
         if (this.playerChannels.containsKey(player.getName())) {
-            this.playerChannels.get(player.getName()).removeMember(player);
+            oldChannel = this.playerChannels.get(player.getName());
+        }
+        ChannelSwitchEvent calledEvent = new ChannelSwitchEvent(player, oldChannel, channel, isNecessary);
+        Bukkit.getPluginManager().callEvent(calledEvent);
+
+        if (calledEvent.isCancelled()) {
+            return;
         }
 
-        this.playerChannels.put(player.getName(), channel);
+        if (oldChannel != null) {
+            oldChannel.removeMember(player);
+        }
+
+        this.playerChannels.put(player.getName(), calledEvent.getNewChannel());
         channel.addMember(player);
+    }
+
+    public void setChannel(Player player, Channel channel) {
+        this.setChannel(player, channel, false);
     }
 
     /**
@@ -243,7 +258,7 @@ public class ChannelManager {
      * Gets a {@link Player}'s channel
      *
      * @param player player to get the channel of
-     * @return the channel of the player paramater
+     * @return the channel of the player parameter
      */
     public Channel getChannel(Player player) {
         return this.playerChannels.get(player.getName());

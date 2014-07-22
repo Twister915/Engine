@@ -156,8 +156,6 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     public GearzGame(List<PlayerType> players, Arena arena, GearzPlugin<PlayerType, AbstractClassType> plugin, GameMeta meta, Integer id, final GearzPlayerProvider<PlayerType> playerProvider) {
         this.playerProvider = playerProvider;
         this.arena = arena;
-        /*this.players = players;
-        this.spectators = new ArrayList<>();*/
         this.players = new HashSet<>();
         this.addedPlayers = new HashSet<>();
         for (PlayerType player : players) {
@@ -240,8 +238,7 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
                 Location location = playerRespawn(player2);
                 player2.getTPlayer().teleport(location);
                 callActivatePlayer(player2);
-            } catch (Throwable t) {
-                //ignored
+            } catch (Throwable ignored) {
             }
         }
         //Ghosting player fix hopefully
@@ -795,6 +792,19 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     @EventHandler
+    public final void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        PlayerType player = resolvePlayer(event.getPlayer());
+        if (!isIngame(player)) {
+            return;
+        }
+        if (canBuild(player) && !isSpectating(player)) {
+            return;
+        }
+        player.getTPlayer().sendMessage(getFormat("not-allowed-spectator"));
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public final void onHangingDestroy(HangingBreakByEntityEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
@@ -903,28 +913,23 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
         DeathMessageProcessor processor = new DeathMessageProcessor(event, this);
         final PlayerDeath death = processor.processDeath();
         final Logger logger = Gearz.getInstance().getLogger();
-        logger.info("Processed death: " + death.toString());
         if (death.getCredited() != null) {
-            logger.info("Credited is not null");
             final PlayerType player = resolvePlayer(death.getCredited());
-            logger.info("Killer is " + player.getUsername());
             Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
                 @Override
                 public void run() {
                     playerKilledPlayer(player, dead);
-                    logger.info("Calling for killer: " + player + " and dead " + dead);
                 }
             }, 2L);
         } else {
-            fakeDeath(dead);
-            logger.info("Faking NULL death for " + dead.getUsername());
             Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
                 @Override
                 public void run() {
                     playerKilled(dead, death.getCredited());
-                    logger.info("Calling NULL METHOD for killer: " + death.getCredited() + " and dead " + dead);
+                    fakeDeath(dead);
                 }
             }, 2L);
+
         }
         broadcast(death.getDeathMessage());
     }
@@ -1132,15 +1137,6 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
     }
 
     @EventHandler
-    public final void onPlayerChat(AsyncPlayerChatEvent event) {
-        PlayerType player = resolvePlayer(event.getPlayer());
-        if (isSpectating(player)) {
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(getFormat("spectating-chat"));
-        }
-    }
-
-    @EventHandler
     public final void onPortalCreate(PortalCreateEvent event) {
         event.setCancelled(!canCreatePortal());
     }
@@ -1217,7 +1213,6 @@ public abstract class GearzGame<PlayerType extends GearzPlayer, AbstractClassTyp
 
     @Data
     private final class SpectatorReminder implements Runnable {
-
         @NonNull
         private final GearzGame<PlayerType, AbstractClassType> game;
 

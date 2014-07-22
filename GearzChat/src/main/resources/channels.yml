@@ -3,7 +3,7 @@ channels:
   list:
   - default
   - staff
-  - specatator
+  - spectator
 
 formatting:
   default:
@@ -18,9 +18,9 @@ formatting:
     default: false
     filter: false
     cross-server: false
-  specatator:
+  spectator:
     format: '&7[&cSpectator&7] {4} {6}{1}{5}{7}&r: {3}'
-    permission: ''
+    permission: gearz.spectator
     default: false
     filter: true
     cross-server: false

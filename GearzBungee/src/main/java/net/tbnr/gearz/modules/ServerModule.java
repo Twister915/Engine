@@ -17,6 +17,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
+import net.tbnr.util.ConnectionUtils;
 import net.tbnr.gearz.GearzBungee;
 import net.tbnr.gearz.server.Server;
 import net.tbnr.gearz.server.ServerManager;
@@ -104,7 +105,7 @@ public class ServerModule implements TCommandHandler, Listener {
                 player.sendMessage(GearzBungee.getInstance().getFormat("server-not-joinable", false));
                 return TCommandStatus.SUCCESSFUL;
             }
-            GearzBungee.connectPlayer(player, server.getBungee_name());
+            ConnectionUtils.connectPlayer(player, server.getBungee_name());
             return TCommandStatus.SUCCESSFUL;
         }
         List<Server> allServers = ServerManager.getAllServers();

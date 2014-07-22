@@ -26,7 +26,7 @@ import java.util.Calendar;
  * to be stored in the Database for future reference. Useful for looking into errors that were missed
  * in the console, or narrowing down a specific cause of an error.
  */
-public class ErrorHandler {
+public final class ErrorHandler {
     /**
      * Reports an {@link java.lang.Exception} without bindings
      *

@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  * @since 10/28/2013
  */
 @SuppressWarnings("unused")
-public class AnnouncerModule implements Runnable, TCommandHandler {
+public final class AnnouncerModule implements Runnable, TCommandHandler {
     @Getter
     private List<Announcement> announcements;
     private boolean running;
@@ -60,7 +60,6 @@ public class AnnouncerModule implements Runnable, TCommandHandler {
         List<Announcement> finalAnnouncements = new ArrayList<>();
         for (Object a : announceList) {
             if (!(a instanceof String)) continue;
-            // String ann = (String) a; never used
             finalAnnouncements.add(new Announcement((String) a));
         }
         this.announcements = finalAnnouncements;

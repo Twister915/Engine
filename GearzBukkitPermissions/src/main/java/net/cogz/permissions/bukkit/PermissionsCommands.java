@@ -11,18 +11,18 @@
 
 package net.cogz.permissions.bukkit;
 
+import com.google.common.collect.Lists;
+import lombok.RequiredArgsConstructor;
 import net.cogz.permissions.PermGroup;
 import net.cogz.permissions.PermPlayer;
 import net.tbnr.gearz.Gearz;
 import net.tbnr.gearz.netcommand.NetCommand;
-import net.tbnr.util.command.TCommand;
-import net.tbnr.util.command.TCommandHandler;
-import net.tbnr.util.command.TCommandSender;
-import net.tbnr.util.command.TCommandStatus;
+import net.tbnr.util.command.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -39,14 +39,9 @@ import java.util.Map;
  * @author Jake
  * @since Unknown
  */
-public class PermissionsCommands implements TCommandHandler {
-
-    private PermissionsManager permsManager;
-
-    public PermissionsCommands() {
-        // Get the perm manager current instance
-        permsManager = GearzBukkitPermissions.getInstance().getPermsManager();
-    }
+@RequiredArgsConstructor
+public class PermissionsCommands implements TCommandHandler, TTabCompleter {
+    private final PermissionsManager permsManager;
 
     @TCommand(
             name = "player",
@@ -416,5 +411,15 @@ public class PermissionsCommands implements TCommandHandler {
     @Override
     public void handleCommandStatus(TCommandStatus status, CommandSender sender, TCommandSender senderType) {
         Gearz.handleCommandStatus(status, sender);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, TCommandSender senderType, Command command, TCommand meta, String[] args) {
+        List<String> list = Lists.newArrayList();
+        if (meta.name().equals("group")) {
+            list.addAll(permsManager.getGroups().keySet());
+            return list;
+        }
+        return list;
     }
 }

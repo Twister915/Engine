@@ -50,7 +50,7 @@ import java.util.concurrent.TimeUnit;
  * @since 12/27/2013
  */
 @SuppressWarnings({"UnusedDeclaration", "deprecation"})
-public class HelpMe implements TCommandHandler, Listener {
+public final class HelpMe implements TCommandHandler, Listener {
     private final HashMap<String, Boolean> activeResponders = new HashMap<>();
     private final ArrayList<Conversation> conversations = new ArrayList<>();
 
@@ -229,7 +229,6 @@ public class HelpMe implements TCommandHandler, Listener {
 
     @SuppressWarnings("deprecation")
     @Data
-    @RequiredArgsConstructor
     public static class Conversation {
         private ProxiedPlayer staffMember;
         @NonNull

@@ -22,7 +22,7 @@ import java.util.HashMap;
  * Time: 11:07 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TCooldownManager {
+public final class TCooldownManager {
     private static final HashMap<String, TCooldown> cooldowns = new HashMap<>();
     public static DB database = null;
 
@@ -49,7 +49,6 @@ public class TCooldownManager {
             } else {
                 return false;
             }
-
         }
     }
 

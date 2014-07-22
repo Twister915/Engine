@@ -21,17 +21,19 @@ import org.bukkit.Bukkit;
 /**
  * Bukkit Plugin implementation of the
  * Gearz permissions API
- *
- * <p>
+ * <p/>
+ * <p/>
  * Latest Change: Run reload ASync
- * <p>
+ * <p/>
  *
  * @author Jake
  * @since Unknown
  */
 public final class GearzBukkitPermissions extends TPlugin {
-    @Getter private static GearzBukkitPermissions instance;
-    @Getter public PermissionsManager permsManager;
+    @Getter
+    private static GearzBukkitPermissions instance;
+    @Getter
+    public PermissionsManager permsManager;
 
     @Override
     public void enable() {
@@ -42,8 +44,9 @@ public final class GearzBukkitPermissions extends TPlugin {
         getServer().getPluginManager().registerEvents(this.permsManager, this);
         Gearz.getInstance().setPermissionsDelegate(permsManager);
         Gearz.getInstance().activatePermissionsFeatures();
-        PermissionsCommands permsCommands = new PermissionsCommands();
+        PermissionsCommands permsCommands = new PermissionsCommands(this.permsManager);
         registerCommands(permsCommands);
+        registerTabCompleter("group", permsCommands);
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {

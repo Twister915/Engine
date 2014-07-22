@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @author Joey
  * @since Unknown
  */
-public class CensoredWord {
+public final class CensoredWord {
     /**
      * Stores the compiled pattern for the string
      */
