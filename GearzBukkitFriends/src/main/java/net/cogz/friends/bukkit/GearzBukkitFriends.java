@@ -12,6 +12,8 @@
 package net.cogz.friends.bukkit;
 
 import lombok.Getter;
+import net.cogz.friends.bukkit.manager.PlayerListener;
+import net.tbnr.util.input.SignGUI;
 import net.tbnr.util.TPlugin;
 
 
@@ -29,17 +31,21 @@ import net.tbnr.util.TPlugin;
 public class GearzBukkitFriends extends TPlugin {
     @Getter public static GearzBukkitFriends instance;
     @Getter public FriendsManager friendsManager;
+    @Getter public SignGUI signGUI;
 
     @Override
     public void enable() {
         GearzBukkitFriends.instance = this;
         friendsManager = new FriendsManager();
+        this.signGUI = new SignGUI(this);
         registerCommands(new FriendsCommands(friendsManager));
+        registerEvents(new PlayerListener(friendsManager));
     }
 
     @Override
     public void disable() {
         saveConfig();
+        signGUI.destroy();
     }
 
     @Override

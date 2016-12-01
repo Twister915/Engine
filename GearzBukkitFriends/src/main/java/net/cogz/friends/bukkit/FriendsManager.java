@@ -31,12 +31,9 @@ import org.bukkit.entity.Player;
  * @since 3/8/2014
  */
 public class FriendsManager extends GearzFriends {
-    DBCollection collection;
     @Override
     public DBCollection getCollection() {
-        if (collection != null) return collection;
-        this.collection = Gearz.getInstance().getMongoDB().getCollection("users");
-        return this.collection;
+        return Gearz.getInstance().getMongoDB().getCollection("users");
     }
 
     public boolean isPlayerOnline(String player) {

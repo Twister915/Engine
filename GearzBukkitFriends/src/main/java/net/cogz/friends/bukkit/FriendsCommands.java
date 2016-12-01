@@ -242,7 +242,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                     }
                 }
 
-                List<String> orderedFriends = sortFriends(manager.getPlayerFriends(sender.getName()));
+                List<String> orderedFriends = manager.getPlayerFriends(sender.getName());
                 try {
                     sendFriendsList((Player) sender, orderedFriends, page);
                 } catch (IllegalArgumentException e) {
@@ -254,7 +254,7 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
     }
 
     private List<String> sortFriends(List<String> unsorted) {
-        List<String> sortedFriends = new ArrayList<>();
+/*        List<String> sortedFriends = new ArrayList<>();
         Iterator<String> iterator =  unsorted.iterator();
         int totalLooped = 0;
         while (iterator.hasNext()) {
@@ -268,8 +268,8 @@ public class FriendsCommands extends SimplePaginator implements TCommandHandler 
                 iterator.remove();
             }
             totalLooped++;
-        }
-        return sortedFriends;
+        }*/
+        return unsorted;
     }
 
     @SuppressWarnings("unchecked")
