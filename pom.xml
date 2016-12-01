@@ -24,6 +24,61 @@
     <description>Parent project for all gearz modules.</description>
     <url>https://github.com/CogzMC/Engine</url>
 
+    <developers>
+        <developer>
+            <id>Twister915</id>
+        </developer>
+        <developer>
+            <id>pokuit</id>
+            <name>George Padolsey</name>
+            <email>george@cogzmc.com</email>
+            <url>http://www.george.padolsey.co.uk/</url>
+            <timezone>0</timezone>
+            <organization>Cogz Development LLC</organization>
+            <organizationUrl>http://cogzmc.com/</organizationUrl>
+            <properties>
+                <picUrl>http://i.imgur.com/6N7ihFs.png</picUrl>
+            </properties>
+            <roles>
+                <role>Developer</role>
+                <role>Effect Maker</role>
+                <role>Vanilla Tweaker</role>
+                <role>Jaffa Cake Eater</role>
+                <role>Awesome Person</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>Thecraftgod</id>
+            <name>Igor Randjelovic</name>
+            <email>rigi@cogzmc.com</email>
+            <url>http://www.igor-randjelovic.com</url>
+            <timezone>GMT+1</timezone>
+            <organization>Cogz Development LLC</organization>
+            <organizationUrl>http://cogzmc.com/</organizationUrl>
+            <properties>
+                <picUrl>http://i.imgur.com/XimgwMm.jpg</picUrl>
+            </properties>
+            <roles>
+                <role>Developer</role>
+                <role>Web Developer</role>
+                <role>System Administrator</role>
+                <role>Website Manager</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>xIGBClutchIx</id>
+        </developer>
+        <developer>
+            <id>Ranil</id>
+        </developer>
+        <developer>
+            <id>Jake0oo0</id>
+            <name>Jake</name>
+            <email>jake0oo0andminecraft@gmail.com</email>
+            <url>https://github.com/Jake0oo0</url>
+        </developer>
+    </developers>
+
     <modules>
         <module>GearzEngine</module>
         <module>GearzActiveRecord</module>
